@@ -1,0 +1,47 @@
+# Directories #
+/build/
+/bin/
+target/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+######################
+# Windows
+######################
+
+# Windows image file caches
+Thumbs.db 
+ 
+# Folder config file
+Desktop.ini
+
+
+######################
+# Eclipse
+######################
+
+.metadata
+.project
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+/src/main/resources/rebel.xml
+# External tool builders
+.externalToolBuilders/
+ 
+# CDT-specific
+.cproject
+ 
+# PDT-specific
+.buildpath
