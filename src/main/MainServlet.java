@@ -33,6 +33,7 @@ public class MainServlet extends HttpServlet {
 		}
 		else {
 			request.setAttribute("currentUser", user.getReadableName());
+			request.setAttribute("userRole", user.getRole());
 			request.getRequestDispatcher("main.jsp").forward(request, response);
 		}
 	}
