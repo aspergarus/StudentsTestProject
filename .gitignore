@@ -17,7 +17,7 @@ Thumbs.db
  
 # Folder config file
 Desktop.ini
-config_project.ini
+src/resources/config_project.ini
 
 
 ######################

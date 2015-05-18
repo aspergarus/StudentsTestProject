@@ -22,7 +22,8 @@ public class UserDAO {
 		String query = "SELECT * FROM users "
 				+ "WHERE username = ?";
 
-		con = ConnectionManager.getConnection();
+		ConnectionManager conM = new ConnectionManager();
+		con = conM.getConnection();
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setString(1, username);
 			rs = stmt.executeQuery();
@@ -61,7 +62,8 @@ public class UserDAO {
 				+ "(username, password, email, role, firstName, lastName) "
 				+ "VALUES (?,?,?,?,?,?)";
 
-		con = ConnectionManager.getConnection();
+		ConnectionManager conM = new ConnectionManager();
+		con = conM.getConnection();
         int rowsAffected = 0;
 		try (PreparedStatement insertUser = con.prepareStatement(query)) {
 			insertUser.setString(1, username);

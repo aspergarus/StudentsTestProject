@@ -15,10 +15,11 @@ public class ConnectionManager {
 	static String admin;
 	static String password;
 
-	public static Connection getConnection() {
+	public Connection getConnection() {
 		
 		try {
-			String filePath = "D:\\Projects\\Eclipse\\StudentsTestProject\\config_project.ini";
+			ClassLoader classLoader = getClass().getClassLoader();
+			String filePath = classLoader.getResource("resources/config_project.ini").getPath();
 			
 			Ini ini = new Ini(new FileReader(filePath));
 			Ini.Section config = ini.get("database");
