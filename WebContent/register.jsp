@@ -3,8 +3,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+
 <title>Register form</title>
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
 
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -12,6 +17,10 @@
 
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+
+<% String basePath = request.getContextPath(); %>
+<% String status = (String) request.getAttribute("status"); %>
+<% String message = (String) request.getAttribute("message"); %>
 
 </head>
 <body>
@@ -22,18 +31,16 @@
 		</div>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
-				<li><a href="<%= request.getContextPath() %>">Home</a></li>
-				<li><a href="<%= request.getContextPath() %>/users">Users</a></li>
-				<li class="active"><a href="<%= request.getContextPath() %>/register">Register</a></li>
-				<li><a href="<%= request.getContextPath() %>/logout">Logout</a></li>
+				<li><a href="<%= basePath %>">Home</a></li>
+				<li><a href="<%= basePath %>/users">Users</a></li>
+				<li class="active"><a href="<%= basePath %>/register">Register</a></li>
+				<li><a href="<%= basePath %>/logout">Logout</a></li>
 			</ul>
 		</div>
 	</div>
 	</nav>
 	<div class="container">
-		<% String status = (String) request.getAttribute("status"); %>
-		<%	String message = (String) request.getAttribute("message"); %>
-	
+
 		<%	if (status != null && message != null) { %>
 		<div class="alert alert-${status}">
 			<p>${message}</p>

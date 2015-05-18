@@ -5,8 +5,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+
 <title>Main page</title>
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
 
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -34,7 +39,7 @@
 			<ul class="nav navbar-nav">
 				<li><a href="<%= basePath %>">Home</a></li>
 				<li class="active"><a href="<%= basePath %>/users">Users</a></li>
-				<li><a href="${basePath}/register">Register</a></li>
+				<li><a href="<%= basePath %>/register">Register</a></li>
 				<li><a href="<%= basePath %>/logout">Logout</a></li>
 			</ul>
 		</div>
