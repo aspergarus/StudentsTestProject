@@ -23,6 +23,7 @@
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
 				<li><a href="<%= request.getContextPath() %>">Home</a></li>
+				<li><a href="<%= request.getContextPath() %>/users">Users</a></li>
 				<li class="active"><a href="<%= request.getContextPath() %>/register">Register</a></li>
 				<li><a href="<%= request.getContextPath() %>/logout">Logout</a></li>
 			</ul>

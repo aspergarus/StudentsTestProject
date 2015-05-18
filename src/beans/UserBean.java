@@ -3,7 +3,7 @@ package beans;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 
 public class UserBean {
-
+	private int id;
 	private String userName;
 	private String password;
 	private String firstName;
@@ -11,7 +11,6 @@ public class UserBean {
 	private byte role;
 	private String email;
 	public boolean valid;
-	StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
 
 	public UserBean(String name) {
 		this.userName = name;
@@ -26,6 +25,8 @@ public class UserBean {
 		this.lastName = lastName;
 		this.setPassword(password);
 	}
+
+	public UserBean() {}
 
 	public String getFirstName() {
 		return firstName;
@@ -52,6 +53,7 @@ public class UserBean {
 	}
 	
 	public boolean isPasswordValid(String plainPass) {
+		StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
 		return passwordEncryptor.checkPassword(plainPass, password);
 	}
 
@@ -88,7 +90,12 @@ public class UserBean {
 	}
 	
 	public String toString() {
-		return userName + " " + role + " " + email;
+		return "id: " + id + ", "
+				+ "username: " + userName + ", "
+				+ "role: " + role + ", "
+				+ "email: " + email + ", "
+				+ "first name: " + firstName + ", "
+				+ "last name: " + lastName;
 	}
 
 	public String getReadableName() {
@@ -98,4 +105,28 @@ public class UserBean {
 		return userName;
 	}
 
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public String getHumanRole() {
+		String roleName;
+		switch (role) {
+			case 0: roleName = "Student";
+					break;
+
+			case 1: roleName = "Teacher";
+					break;
+
+			case 2: roleName = "Admin";
+					break;
+
+			default: roleName = "None";
+		}
+		return roleName;
+	}
 }

@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 import org.jasypt.util.password.StrongPasswordEncryptor;
 
@@ -81,5 +83,33 @@ public class UserDAO {
 
         bean.setValid(rowsAffected > 0);
 		return bean;
+	}
+
+	public static ArrayList<UserBean> findAll() {
+		ArrayList<UserBean> users = new ArrayList<UserBean>();;
+		UserBean bean = null;
+
+		ConnectionManager conM = new ConnectionManager();
+		con = conM.getConnection();
+		try (Statement stmt = con.createStatement()) {
+			String query = "SELECT * FROM users";
+			rs = stmt.executeQuery(query);
+			
+			while (rs.next()) {
+				bean = new UserBean();
+				bean.setId(rs.getInt("id"));
+				bean.setUserName(rs.getString("userName"));
+				bean.setFirstName(rs.getString("firstName"));
+				bean.setLastName(rs.getString("lastName"));
+				bean.setEmail(rs.getString("email"));
+				bean.setRole(rs.getByte("role"));
+				
+				users.add(bean);
+			}
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return users.isEmpty() ? null : users;
 	}
 }
