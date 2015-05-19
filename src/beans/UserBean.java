@@ -129,4 +129,15 @@ public class UserBean {
 		}
 		return roleName;
 	}
+
+	public boolean getAccess(String pageName) {
+		switch (pageName) {
+			case "register":
+				return this.role == 2;
+
+			case "users":
+				return this.role == 2;
+		}
+		return false;
+	}
 }
