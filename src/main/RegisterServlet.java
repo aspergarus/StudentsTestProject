@@ -1,6 +1,13 @@
 package main;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import config.ConnectionManager;
 import dao.UserDAO;
 import beans.UserBean;
 
@@ -18,6 +26,7 @@ import beans.UserBean;
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private ArrayList<String> errorMessageList;
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -26,6 +35,7 @@ public class RegisterServlet extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
 		if (user == null || user.getRole() != 2) {
+			session.setAttribute("status", "warning");
 			request.setAttribute("message", "You don't have access to this page.");
 			request.getRequestDispatcher("error-access.jsp").forward(request, response);
 		}
@@ -55,11 +65,11 @@ public class RegisterServlet extends HttpServlet {
 		String firstName = request.getParameter("firstname").trim();
 		String lastName = request.getParameter("lastname").trim();
 
-		boolean formIsValid = formValidate(request, response, userName, password, email);
+		String message = formValidate(request, response, userName, password, email);
 
 		HttpSession session = request.getSession(false);
 
-		if (formIsValid) {
+		if (errorMessageList.isEmpty()) {
 			UserBean user = null;
 
 			try {
@@ -83,16 +93,70 @@ public class RegisterServlet extends HttpServlet {
 		}
 		else {
 			session.setAttribute("status", "danger");
-			session.setAttribute("message", "Required field should not be empty");
+			session.setAttribute("message", message);
 			response.sendRedirect("register");
 		}
 	}
 
-	private boolean formValidate(HttpServletRequest request, HttpServletResponse response, String name, String pass, String email) {
-		if (name.isEmpty() || pass.isEmpty() || email.isEmpty()) {
-			return false;
+	private String formValidate(HttpServletRequest request, HttpServletResponse response, String name, String pass, String email) {
+		
+		errorMessageList = new ArrayList<>();
+		String errorMessage = "";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		
+		String findName = "SELECT * FROM users "
+				+ "WHERE username = ?";
+		String findEmail = "SELECT * FROM users "
+				+ "WHERE email = ?";
+		
+		try (PreparedStatement stmt = con.prepareStatement(findName)) {
+			stmt.setString(1, name);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				errorMessageList.add("The Username is already used");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		return true;
+		
+		try (PreparedStatement stmt = con.prepareStatement(findEmail)) {
+			stmt.setString(1, email);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				errorMessageList.add("The email is already used");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		//Email validator
+		
+		String EMAIL_PATTERN = 
+				"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+		
+		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+		Matcher matcher = pattern.matcher(email);
+		if (matcher.matches() == false) {
+			errorMessageList.add("Email is not valid.");
+		}
+		
+		
+		//Name and password validator
+		
+		if (name.isEmpty() || pass.isEmpty()) {
+			errorMessageList.add("Name or password is Empty");
+		}
+		
+		for(String message: errorMessageList) {
+			errorMessage += message + "<br>";
+		}
+		
+		
+		return errorMessage; 
 	}
 
 }

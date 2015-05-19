@@ -50,7 +50,7 @@
 			<h2 class="form-signin-heading">Please sign in</h2>
 			<label for="login" class="sr-only">Email address</label> <input
 				type="text" id="login" class="form-control"
-				placeholder="Email address" required="" autofocus="" name="login">
+				placeholder="Email address or Username" required="" autofocus="" name="login">
 			<label for="pass" class="sr-only">Password</label> <input
 				type="password" id="pass" class="form-control"
 				placeholder="Password" required="" name="pass">

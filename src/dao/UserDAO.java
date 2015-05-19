@@ -20,10 +20,20 @@ public class UserDAO {
 	public static UserBean find(UserBean bean) throws SQLException {
 		String username = bean.getUsername();
 		bean.setValid(false);
-
-		String query = "SELECT * FROM users "
-				+ "WHERE username = ?";
-
+		
+		String EMAIL_PATTERN = 
+				"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+		String query;
+		
+		if (username.matches(EMAIL_PATTERN)) {
+			query = "SELECT * FROM users "
+					+ "WHERE email = ?";
+		} else {
+			query = "SELECT * FROM users "
+					+ "WHERE username = ?";
+		}
+		
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
