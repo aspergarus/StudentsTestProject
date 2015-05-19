@@ -18,6 +18,7 @@
 
 <% String basePath = request.getContextPath(); %>
 <% String status = (String) request.getAttribute("status"); %>
+<% String message = (String) request.getAttribute("message"); %>
 
 </head>
 <body>
@@ -29,24 +30,17 @@
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li><a href="<%= basePath %>">Home</a></li>
-					<li class="active"><a
-						href="<%= basePath %>/login">Login</a></li>
+					<li><a href="<%= basePath %>/logout">Logout</a></li>
 				</ul>
 			</div>
 		</div>
 	</nav>
 
-	<% 
-		String message = (String) request.getAttribute("message");
-		if (message != null) {
-	%>
+	<% if (message != null) { %>
 		<div class="alert alert-${status}">
 			<p>${message}</p>
 		</div>
 	<% } %>
-	
-	
-	
-	
+
 </body>
 </html>
