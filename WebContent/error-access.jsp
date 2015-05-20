@@ -40,8 +40,8 @@
 		String message = (String) request.getAttribute("message");
 		if (message != null) {
 	%>
-		<div class="alert alert-${status}" role="alert">
-			<p><b>Warning!</b> ${message}</p>
+		<div class="alert alert-${status}">
+			<p>${message}</p>
 		</div>
 	<% } %>
 	

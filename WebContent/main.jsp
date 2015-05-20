@@ -45,25 +45,12 @@
 
 
 	<div class="container">
-		<div>
+
+		<div class="starter-template">
 			<h1>Welcome, ${currentUser}</h1>
+			<p class="lead">Currently site is under construction. Please,
+				wait for content.</p>
 		</div>
-		
-		<% if (userRole.byteValue() == 0) { %>
-			<a href="<%= basePath %>/lectures" class="">Lectures</a>
-			<a href="<%= basePath %>/practicals" class="">Practicals</a>
-			<a href="<%= basePath %>/tests" class="">Tests</a>
-		<% } else %>
-		<% if (userRole.byteValue() == 1) { %>
-			<a href="<%= basePath %>/lectures" class="">Lectures</a>
-			<a href="<%= basePath %>/practicals" class="">Practicals</a>
-			<a href="<%= basePath %>/tests" class="">Tests</a>
-			<a href="<%= basePath %>/students" class="">Students</a>
-		<% } %>
-		
-		
-		
-		
 
 	</div>
 
