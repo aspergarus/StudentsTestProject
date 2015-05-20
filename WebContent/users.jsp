@@ -2,6 +2,11 @@
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
+<% String basePath = request.getContextPath(); %>
+<% ArrayList<UserBean> users = (ArrayList<UserBean>) request.getAttribute("usersList"); %>
+<% String usersJson = (String) request.getAttribute("usersJson"); %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -10,23 +15,18 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="<%= basePath %>/favicon.ico" type="image/x-icon">
+<link rel="icon" href="<%= basePath %>/favicon.ico" type="image/x-icon">
 
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" href="css/bootstrap-theme.css">
-<link rel="stylesheet" href="css/bootstrap-table.min.css">
+<link rel="stylesheet" href="<%= basePath %>/css/style.css">
+<link rel="stylesheet" href="<%= basePath %>/css/bootstrap.min.css">
+<link rel="stylesheet" href="<%= basePath %>/css/bootstrap-theme.css">
+<link rel="stylesheet" href="<%= basePath %>/css/bootstrap-table.min.css">
 
-
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/bootstrap-table.min.js"></script>
-<script src="js/script.js"></script>
-
-<% String basePath = request.getContextPath(); %>
-<% ArrayList<UserBean> users = (ArrayList<UserBean>) request.getAttribute("usersList"); %>
-<% String usersJson = (String) request.getAttribute("usersJson"); %>
+<script src="<%= basePath %>/js/jquery.min.js"></script>
+<script src="<%= basePath %>/js/bootstrap.min.js"></script>
+<script src="<%= basePath %>/js/bootstrap-table.min.js"></script>
+<script src="<%= basePath %>/js/script.js"></script>
 
 </head>
 <body>
@@ -72,7 +72,7 @@
 				        <td><% out.print(user.getFirstName()); %></td>
 				        <td><% out.print(user.getLastName()); %></td>
 				        <td><% out.print(user.getHumanRole()); %></td>
-				        <td><a href="<% out.print(basePath + "/user/" + user.getId() + "/edit"); %>" target="_blank">Edit</a></td>
+				        <td><a href="<% out.print(basePath + "/user/" + user.getId()); %>" target="_blank">Edit</a></td>
 				    </tr>
 				<% } %>
 				</tbody>

@@ -17,9 +17,8 @@ public class UserDAO {
 	static Connection con = null;
 	static ResultSet rs = null;
 
-	public static UserBean find(UserBean bean) throws SQLException {
-		String username = bean.getUsername();
-		bean.setValid(false);
+	public static UserBean find(String username) throws SQLException {
+		UserBean bean = null;
 		
 		String EMAIL_PATTERN = 
 				"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
@@ -27,11 +26,9 @@ public class UserDAO {
 		String query;
 		
 		if (username.matches(EMAIL_PATTERN)) {
-			query = "SELECT * FROM users "
-					+ "WHERE email = ?";
+			query = "SELECT * FROM users WHERE email = ?";
 		} else {
-			query = "SELECT * FROM users "
-					+ "WHERE username = ?";
+			query = "SELECT * FROM users WHERE username = ?";
 		}
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -43,6 +40,41 @@ public class UserDAO {
 
 			// if user exists set the isValid variable to true
 			if (more) {
+				bean = new UserBean();
+				bean.setId(rs.getInt("id"));
+				bean.setUserName(rs.getString("userName"));
+				bean.setFirstName(rs.getString("firstName"));
+				bean.setLastName(rs.getString("lastName"));
+				bean.setEmail(rs.getString("email"));
+				bean.setRole(rs.getByte("role"));
+				bean.setPassword(rs.getString("password"));
+				bean.setValid(true);
+			}
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return bean;
+	}
+
+	public static UserBean find(int id) throws SQLException {
+		UserBean bean = null;
+
+		String query = "SELECT * FROM users WHERE id = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		con = conM.getConnection();
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, id);
+			rs = stmt.executeQuery();
+			boolean more = rs.next();
+
+			// if user exists set the isValid variable to true
+			if (more) {
+				bean = new UserBean();
+				bean.setId(rs.getInt("id"));
+				bean.setUserName(rs.getString("userName"));
 				bean.setFirstName(rs.getString("firstName"));
 				bean.setLastName(rs.getString("lastName"));
 				bean.setEmail(rs.getString("email"));
@@ -121,5 +153,46 @@ public class UserDAO {
 			System.out.println(e.getMessage());
 		}
 		return users.isEmpty() ? null : users;
+	}
+
+	public static boolean update(UserBean user, String userName2, String plainPassword, String email2, byte role2, String firstName2, String lastName2) {
+		StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+		String password = passwordEncryptor.encryptPassword(plainPassword);
+		int id = user.getId();
+
+		boolean setPass = false;
+
+		String query = "UPDATE users SET username=?, email=?, role=?, firstName=?, lastName=?";
+		if (!plainPassword.trim().isEmpty()) {
+			query += ", password=?";
+			setPass = true;
+		}
+		query += "WHERE id = ?";
+
+		ConnectionManager conM = new ConnectionManager();
+		con = conM.getConnection();
+        int rowsAffected = 0;
+		try (PreparedStatement updateUser = con.prepareStatement(query)) {
+			updateUser.setString(1, userName2);
+			updateUser.setString(2, email2);
+			updateUser.setByte(3, role2);
+			updateUser.setString(4, firstName2);
+			updateUser.setString(5, lastName2);
+			if (setPass) {
+				updateUser.setString(6, password);
+				updateUser.setInt(7, id);
+			}
+			else {
+				updateUser.setInt(6, id);
+			}
+
+	        rowsAffected = updateUser.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+        
+        System.out.println(rowsAffected);
+
+		return rowsAffected > 0;
 	}
 }
