@@ -10,7 +10,7 @@ public class UserBean {
 	private String lastName;
 	private byte role;
 	private String email;
-	public boolean valid;
+	public boolean valid = false;
 
 	public UserBean(String name) {
 		this.userName = name;

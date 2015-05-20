@@ -52,8 +52,7 @@ public class LoginServlet extends HttpServlet {
 		
 		
 		try {
-			UserBean user = new UserBean(name);
-		    user = UserDAO.find(user);
+			UserBean user = UserDAO.find(name);
 
 		    if (user.isValid() && user.isPasswordValid(password)) {
 		    	HttpSession session = request.getSession(true);

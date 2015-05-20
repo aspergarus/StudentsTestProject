@@ -68,7 +68,7 @@ public class RegisterServlet extends HttpServlet {
 		String firstName = request.getParameter("firstname").trim();
 		String lastName = request.getParameter("lastname").trim();
 
-		String message = formValidate(request, response, userName, password, email);
+		String message = formValidate(userName, password, email);
 
 		HttpSession session = request.getSession(false);
 
@@ -101,7 +101,7 @@ public class RegisterServlet extends HttpServlet {
 		}
 	}
 
-	private String formValidate(HttpServletRequest request, HttpServletResponse response, String name, String pass, String email) {
+	private String formValidate(String name, String pass, String email) {
 		
 		errorMessageList = new ArrayList<>();
 		String errorMessage = "";
