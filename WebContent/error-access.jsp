@@ -38,7 +38,7 @@
 
 	<% if (message != null) { %>
 		<div class="alert alert-${status}">
-			<p>${message}</p>
+			<p><b>Warning! </b>${message}</p>
 		</div>
 	<% } %>
 

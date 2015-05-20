@@ -46,11 +46,67 @@
 
 	<div class="container">
 
-		<div class="starter-template">
+		
 			<h1>Welcome, ${currentUser}</h1>
-			<p class="lead">Currently site is under construction. Please,
-				wait for content.</p>
-		</div>
+			
+			<% if (userRole.byteValue() == 0) { %>
+				<div class="main-page">
+	  				<div class="col-xs-6 col-md-3">
+	   					<a href="<%= basePath %>/lectures" class="thumbnail">
+	      					<img src="lectures.jpg" alt="Lections">
+	      					<h2><small>Lectures</small></h2>
+	    				</a>
+	  				</div>
+	  				
+	  				<div class="col-xs-6 col-md-3">
+	   					<a href="<%= basePath %>/practicals" class="thumbnail">
+	      					<img src="practicals.jpg" alt="Practical">
+	      					<h2><small>Practicals</small></h2>
+	    				</a>
+	  				</div>
+	  				
+	  				<div class="col-xs-6 col-md-3">
+	   					<a href="<%= basePath %>/tests" class="thumbnail">
+	      					<img src="tests.jpg" alt="Tests">
+	      					<h2><small>Tests</small></h2>
+	    				</a>
+	  				</div>
+  				</div>
+					<% } else %>
+					
+			<% if (userRole.byteValue() == 1) { %>
+				<div class="main-page">
+	  				<div class="col-xs-6 col-md-3">
+	   					<a href="<%= basePath %>/lectures" class="thumbnail">
+	      					<img src="lectures.jpg" alt="Lections">
+	      					<h2><small>Lectures</small></h2>
+	    				</a>
+	  				</div>
+	  				
+	  				<div class="col-xs-6 col-md-3">
+	   					<a href="<%= basePath %>/practicals" class="thumbnail">
+	      					<img src="practicals.jpg" alt="Practical">
+	      					<h2><small>Practicals</small></h2>
+	    				</a>
+	  				</div>
+	  				
+	  				<div class="col-xs-6 col-md-3">
+	   					<a href="<%= basePath %>/tests" class="thumbnail">
+	      					<img src="tests.jpg" alt="Tests">
+	      					<h2><small>Tests</small></h2>
+	    				</a>
+	  				</div>
+	  				
+	  				<div class="col-xs-6 col-md-3">
+   						<a href="<%= basePath %>/students" class="thumbnail">
+      						<img src="students.jpg" alt="Students">
+      						<h2><small>Students</small></h2>
+    					</a>
+  					</div>
+					<% } %>
+			
+
+		
 
 	</div>
 
