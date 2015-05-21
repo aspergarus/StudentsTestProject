@@ -34,14 +34,20 @@ public class UserEditServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
-		System.out.println(request.getPathInfo());
+
+//		System.out.println("getPathInfo :" + request.getPathInfo());
+//		System.out.println("getRequestURI : " + request.getRequestURI());
+//		System.out.println("getServletPath : " + request.getServletPath());
+//		System.out.println("getContextPath : " + request.getContextPath());
+//		System.out.println("getRequestURL : " + request.getRequestURL());
+
 		if (user == null) {
 			response.sendRedirect(request.getContextPath() + "/login");
 		}
-		else if (!user.getAccess("users")) {
+		else if (!user.getAccess(request.getServletPath() + request.getPathInfo())) {
 			request.setAttribute("status", "warning");
 			request.setAttribute("message", "You don't have access to this page.");
-			request.getRequestDispatcher("error-access.jsp").forward(request, response);
+			request.getRequestDispatcher(request.getContextPath() + "/error-access.jsp").forward(request, response);
 		}
 		else {
 			String status = null;
@@ -55,9 +61,12 @@ public class UserEditServlet extends HttpServlet {
 			request.setAttribute("status", status);
 			request.setAttribute("message", message);
 
+			UserBean editedUser = null;
+
+			// Get user id from path.
 			String[] pathParts = request.getPathInfo().split("/");
 			int id = Integer.valueOf(pathParts[1]);
-			UserBean editedUser = null;
+
 			try {
 				editedUser = UserDAO.find(id);
 			} catch (SQLException e) {
@@ -79,6 +88,18 @@ public class UserEditServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+
+		String[] pathParts = request.getPathInfo().split("/");
+
+		int id = Integer.valueOf(pathParts[1]);
+
+		if (user == null || !user.getAccess(request.getServletPath() + request.getPathInfo())) {
+			response.sendError(403);
+			return;
+		}
+
 		String userName = request.getParameter("editedusername").trim();
 		String password = request.getParameter("editedpass").trim();
 		String email = request.getParameter("editedemail").trim();
@@ -86,24 +107,14 @@ public class UserEditServlet extends HttpServlet {
 		String firstName = request.getParameter("firstname").trim();
 		String lastName = request.getParameter("lastname").trim();
 
-		String[] pathParts = request.getPathInfo().split("/");
-		System.out.println(request.getPathInfo());
-		int i = 0;
-		for (String part : pathParts) {
-			System.out.println(i++ + ": " + part);
-		}
-		int id = Integer.valueOf(pathParts[1]);
-
 		String message = formValidate(id, userName, email);
 
-		HttpSession session = request.getSession(false);
-
 		if (errorMessageList.isEmpty()) {
-			UserBean user = null;
+			UserBean editeduser = null;
 
 			try {
-				user = UserDAO.find(id);
-			    if (UserDAO.update(user, userName, password, email, role, firstName, lastName)) {
+				editeduser = UserDAO.find(id);
+			    if (UserDAO.update(editeduser, userName, password, email, role, firstName, lastName)) {
 			    	session.setAttribute("status", "success");
 					session.setAttribute("message", "User '" + userName + "' was updated successfully");
 			    }
@@ -111,7 +122,7 @@ public class UserEditServlet extends HttpServlet {
 			    	session.setAttribute("status", "danger");
 					session.setAttribute("message", "Some problem appears during updating the user.");
 			    }
-			    response.sendRedirect(request.getContextPath() + "/user/" + id);
+			    response.sendRedirect(request.getRequestURI());
 			} catch (Throwable theException) {
 			     System.out.println(theException);
 			}
@@ -119,7 +130,7 @@ public class UserEditServlet extends HttpServlet {
 		else {
 			session.setAttribute("status", "danger");
 			session.setAttribute("message", message);
-			response.sendRedirect(request.getContextPath() + "/user/" + id);
+			response.sendRedirect(request.getRequestURI());
 		}
 	}
 
