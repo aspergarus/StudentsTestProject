@@ -131,12 +131,16 @@ public class UserBean {
 	}
 
 	public boolean getAccess(String pageName) {
-		switch (pageName) {
-			case "register":
-				return this.role == 2;
-
-			case "users":
-				return this.role == 2;
+		System.out.println(pageName);
+		if (pageName.matches("register|users")) {
+			return this.getRole() == 2;
+		}
+		else if (pageName.startsWith("/user/")) {
+			String[] parts = pageName.split("/");
+			if (Integer.valueOf(parts[2]) == this.getId()) {
+				return true;
+			}
+			return this.getRole() == 2;
 		}
 		return false;
 	}
