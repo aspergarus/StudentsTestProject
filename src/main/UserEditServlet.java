@@ -79,6 +79,7 @@ public class UserEditServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		String userName = request.getParameter("editedusername").trim();
 		String password = request.getParameter("editedpass").trim();
 		String email = request.getParameter("editedemail").trim();
@@ -87,7 +88,6 @@ public class UserEditServlet extends HttpServlet {
 		String lastName = request.getParameter("lastname").trim();
 
 		String[] pathParts = request.getPathInfo().split("/");
-		System.out.println(request.getPathInfo());
 		int i = 0;
 		for (String part : pathParts) {
 			System.out.println(i++ + ": " + part);
