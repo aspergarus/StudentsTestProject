@@ -79,3 +79,8 @@ body {
    	align-items: center;
    	text-align: center;
 }
+.add-file {
+	float:left;
+	margin-right: 1em;
+	height: 34px;
+}

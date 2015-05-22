@@ -21,7 +21,7 @@ public class LectureDAO {
 		ArrayList<LectureBean> lectures = new ArrayList<>();
 		LectureBean bean = null;
 		
-		String query = "SELECT * FROM lectures WHERE id_teacher = ?";
+		String query = "SELECT * FROM lectures WHERE idTeacher = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
