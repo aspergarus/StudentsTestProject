@@ -93,7 +93,7 @@ public class PracticalsDAO {
 
 	@SuppressWarnings("finally")
 	public static ArrayList<String> findSubjects(String subjectTitle) {
-		String query = "SELECT subject FROM practicals WHERE subject LIKE ?";
+		String query = "SELECT DISTINCT subject FROM practicals WHERE subject LIKE ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
@@ -106,7 +106,7 @@ public class PracticalsDAO {
 
 			subjects = new ArrayList<>();
 
-			if (rs.next()) {
+			while (rs.next()) {
 				subjects.add(rs.getString("subject"));
 			}
 		}
