@@ -60,9 +60,7 @@ public class PracticalsServlet extends HttpServlet {
 
 			Set<String> keys = practicalsMap.keySet();
 			for (String key : keys) {
-				System.out.println(key);
 				ArrayList<PracticalsBean> list = practicalsMap.get(key);
-				System.out.println(list);
 			}
 
 			request.setAttribute("practicalsMap", practicalsMap);
@@ -101,7 +99,6 @@ public class PracticalsServlet extends HttpServlet {
 	        	if (name.equals("upload")) {
 	        		fileName = extractFileName(part);
 	        		if (!fileName.isEmpty()) {
-	        			System.out.println("filename: " + fileName);
 	        			filePath = SAVE_DIR + File.separator + fileName;
 		                part.write(savePath + File.separator + fileName);
 	        		}
@@ -133,7 +130,6 @@ public class PracticalsServlet extends HttpServlet {
      */
     private String extractFileName(Part part) {
         String contentDisp = part.getHeader("content-disposition");
-        System.out.println("contentDisp: " + contentDisp);
         String[] items = contentDisp.split(";");
         for (String s : items) {
             if (s.trim().startsWith("filename")) {
