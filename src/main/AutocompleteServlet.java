@@ -32,10 +32,7 @@ public class AutocompleteServlet extends HttpServlet {
 
 		HttpSession session = request.getSession(false);
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
-		if (user == null) {
-			response.sendError(403);
-		}
-		else if (!user.getAccess("students")) {
+		if (user == null || !user.getAccess("students")) {
 			response.sendError(403);
 		}
 		else {
@@ -54,6 +51,11 @@ public class AutocompleteServlet extends HttpServlet {
 		switch (pathInfo) {
 			case "/students":
 				list = UserDAO.findStudents(query);
+				break;
+
+			case "/subjects":
+				list = PracticalsDAO.findSubjects(query);
+				break;
 		}
 		String out = gson.toJson(list);
 		return out;
