@@ -11,7 +11,7 @@
 <html>
 <head>
 
-<title>Main page</title>
+<title>Users</title>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -52,7 +52,7 @@
 		<div class="starter-template">
 			<h1>Users</h1>
 <!-- 			class="table table-striped table-bordered" -->
-			<table id="table" data-search="true" data-show-columns="true">
+			<table class="table" data-search="true" data-show-columns="true">
 				<% out.print(users == null ? "Users are not exists" : ""); %>
 			    <thead>
 			        <tr>

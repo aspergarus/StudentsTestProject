@@ -53,63 +53,59 @@
 				<div class="main-page">
 	  				<div class="col-xs-6 col-md-3">
 	   					<a href="<%= basePath %>/lectures" class="thumbnail">
-	      					<img src="lectures.jpg" alt="Lections">
+	      					<img src="imgs/lectures.jpg" alt="Lections">
 	      					<h2><small>Lectures</small></h2>
 	    				</a>
 	  				</div>
 	  				
 	  				<div class="col-xs-6 col-md-3">
 	   					<a href="<%= basePath %>/practicals" class="thumbnail">
-	      					<img src="practicals.jpg" alt="Practical">
+	      					<img src="imgs/practicals.jpg" alt="Practical">
 	      					<h2><small>Practicals</small></h2>
 	    				</a>
 	  				</div>
 	  				
 	  				<div class="col-xs-6 col-md-3">
 	   					<a href="<%= basePath %>/tests" class="thumbnail">
-	      					<img src="tests.jpg" alt="Tests">
+	      					<img src="imgs/tests.jpg" alt="Tests">
 	      					<h2><small>Tests</small></h2>
 	    				</a>
 	  				</div>
   				</div>
-					<% } else %>
-					
-			<% if (userRole.byteValue() == 1) { %>
+			<% } else { %>
 				<div class="main-page">
 	  				<div class="col-xs-6 col-md-3">
 	   					<a href="<%= basePath %>/lectures" class="thumbnail">
-	      					<img src="lectures.jpg" alt="Lections">
+	      					<img src="imgs/lectures.jpg" alt="Lections">
 	      					<h2><small>Lectures</small></h2>
 	    				</a>
 	  				</div>
 	  				
 	  				<div class="col-xs-6 col-md-3">
 	   					<a href="<%= basePath %>/practicals" class="thumbnail">
-	      					<img src="practicals.jpg" alt="Practical">
+	      					<img src="imgs/practicals.jpg" alt="Practical">
 	      					<h2><small>Practicals</small></h2>
 	    				</a>
 	  				</div>
 	  				
 	  				<div class="col-xs-6 col-md-3">
 	   					<a href="<%= basePath %>/tests" class="thumbnail">
-	      					<img src="tests.jpg" alt="Tests">
+	      					<img src="imgs/tests.jpg" alt="Tests">
 	      					<h2><small>Tests</small></h2>
 	    				</a>
 	  				</div>
 	  				
 	  				<div class="col-xs-6 col-md-3">
    						<a href="<%= basePath %>/students" class="thumbnail">
-      						<img src="students.jpg" alt="Students">
+      						<img src="imgs/students.jpg" alt="Students">
       						<h2><small>Students</small></h2>
     					</a>
   					</div>
-					<% } %>
+			<% } %>
 			
 
 		
 
 	</div>
-
-
 </body>
 </html>
