@@ -120,8 +120,6 @@ public class UserDAO {
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-        
-        System.out.println(rowsAffected);
 
         bean.setValid(rowsAffected > 0);
 		return bean;
@@ -190,8 +188,6 @@ public class UserDAO {
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-        
-        System.out.println(rowsAffected);
 
 		return rowsAffected > 0;
 	}
