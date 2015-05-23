@@ -195,4 +195,28 @@ public class UserDAO {
 
 		return rowsAffected > 0;
 	}
+
+	public static ArrayList<String> findStudents(String namePart) {
+		String query = "SELECT id, firstName, lastName FROM users "
+				+ "WHERE role = 0 AND (firstName LIKE ? OR lastName LIKE ?)";
+
+		ConnectionManager conM = new ConnectionManager();
+		con = conM.getConnection();
+
+		ArrayList<String> list = new ArrayList<>();
+
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setString(1, "%" + namePart.trim() + "%");
+			stmt.setString(2, "%" + namePart.trim() + "%");
+			rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				list.add(rs.getString("firstName") + " " + rs.getString("lastName") + " [" + rs.getInt("id") +"]");
+			}
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return list;
+	}
 }

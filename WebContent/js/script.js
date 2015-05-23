@@ -1,8 +1,13 @@
 $(function () {
     $('.table').bootstrapTable();
     
-    var typeaheadSource = ['John', 'Alex', 'Terry'];
-    $('input.typeahead').typeahead({
-        ajax: 'subjects'
+    $('input.typeahead').each(function() {
+    	$this = $(this);
+
+    	var autocompleteUrl = $this.data("autocomplete-url");
+    	$this.typeahead({
+            ajax: autocompleteUrl
+        });
     });
+    
 });

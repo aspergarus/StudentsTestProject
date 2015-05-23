@@ -71,7 +71,7 @@
 				<label for="subject" class="col-sm-2 control-label">Subject*</label>
 				<div class="col-sm-10">
 					<input name="subject" type="text" class="form-control typeahead"
-						id="subject" required autocomplete="off">
+						id="subject" required autocomplete="off" data-autocomplete-url="subjects">
 				</div>
 			</div>
  
@@ -102,7 +102,6 @@
 					<button type="submit" class="btn btn-primary">Add practical</button>
 				</div>
 			</div>
-			<input type="hidden" name="id">
 		</form>
 	</div>
 
