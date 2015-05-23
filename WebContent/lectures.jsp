@@ -52,8 +52,8 @@
 			
 			<form class="navbar-form navbar-left" method="post" enctype="multipart/form-data" action="upload">
     			<input type="text" class="form-control add-file" placeholder="Title">
-    			<button type="submit" class="btn btn-default">Add new lection</button>
- 				<input type="file" class="btn btn-default add-file"/>
+ 				<input type="file" class="btn btn-default add-file" name="file">
+ 				<button type="submit" class="btn btn-default">Add lection</button>
 			</form>
 			
 			<table id="table" data-search="true" data-show-columns="true">

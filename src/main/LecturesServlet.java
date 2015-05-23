@@ -36,6 +36,7 @@ public class LecturesServlet extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
 		if (user == null || user.getRole() == 0) {
+			request.setAttribute("status", "warning");
 			request.setAttribute("message", "You don't have access to this page.");
 			request.getRequestDispatcher("error-access.jsp").forward(request, response);
 		}
