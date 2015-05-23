@@ -135,6 +135,9 @@ public class UserBean {
 		if (pageName.matches("register|users")) {
 			return this.getRole() == 2;
 		}
+		else if (pageName.matches("students")) {
+			return this.getRole() > 0;
+		}
 		else if (pageName.startsWith("/user/")) {
 			String[] parts = pageName.split("/");
 			if (Integer.valueOf(parts[2]) == this.getId()) {
