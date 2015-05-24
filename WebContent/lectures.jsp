@@ -34,7 +34,6 @@
 <script src="<%= basePath %>/js/bootstrap.min.js"></script>
 <script src="<%= basePath %>/js/bootstrap-table.min.js"></script>
 <script src="<%= basePath %>/js/bootstrap-typeahead.min.js"></script>
-<script src="<%= basePath %>/js/script.js"></script>
 
 <!-- Custom javascripts -->
 <script src="<%= basePath %>/js/script.js"></script>
