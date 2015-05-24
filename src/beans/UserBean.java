@@ -131,7 +131,6 @@ public class UserBean {
 	}
 
 	public boolean getAccess(String pageName) {
-		System.out.println(pageName);
 		if (pageName.matches("register|users")) {
 			return this.getRole() == 2;
 		}
