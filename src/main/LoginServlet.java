@@ -50,25 +50,26 @@ public class LoginServlet extends HttpServlet {
 		String name = request.getParameter("login").trim();
 		String password = request.getParameter("pass").trim();
 		
-		
 		try {
 			UserBean user = UserDAO.find(name);
-
-		    if (user.isValid() && user.isPasswordValid(password)) {
+			
+			if (user == null) {
+				request.setAttribute("status", "warning");
+				request.setAttribute("message", "Username or password not found.");
+				request.getRequestDispatcher("login.jsp").forward(request, response);
+			} else if (user.isValid() && user.isPasswordValid(password)) {
+				System.out.println(user + " Valid");
 		    	HttpSession session = request.getSession(true);
 		    	session.setAttribute("user", user);
 		    	response.sendRedirect(request.getContextPath() + "/");
+		    } else {
+		    	request.setAttribute("status", "warning");
+				request.setAttribute("message", "Username or password not found.");
+				request.getRequestDispatcher("login.jsp").forward(request, response);
 		    }
-		    else {
-		    	HttpSession session = request.getSession();
-		    	if (session != null) {
-		    		session.setAttribute("error", "You entered invalid data. Please, try again");
-		    	}
-		    	response.sendRedirect(request.getContextPath() + "/login");
-		    }
+		    	
 		} catch (Throwable theException) {
 		     System.out.println(theException);
 		}
 	}
-
 }
