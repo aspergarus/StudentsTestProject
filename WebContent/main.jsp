@@ -1,5 +1,12 @@
+<%@page import="beans.UserBean"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
+<% String basePath = request.getContextPath(); %>
+<% Byte userRole = (Byte) request.getAttribute("userRole"); %>
+<% String status = (String) request.getAttribute("status"); %>
+<% UserBean user = (UserBean) session.getAttribute("user"); %>
+	
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -18,10 +25,6 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 
-<% String basePath = request.getContextPath(); %>
-<% Byte userRole = (Byte) request.getAttribute("userRole"); %>
-<% String status = (String) request.getAttribute("status"); %>
-
 </head>
 <body>
 	
@@ -33,21 +36,29 @@
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="<%= basePath %>">Home</a></li>
+					
 					<% if (userRole.byteValue() == 2) { %>
 						<li><a href="<%= basePath %>/users">Users</a></li>
 						<li><a href="<%= basePath %>/register">Register</a></li>
 					<% } %>
-					<li><a href="<%= basePath %>/logout">Logout</a></li>
 				</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li><p class="navbar-text welcome">Welcome</p></li>
+						<li class="dropdown">
+    						<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+      							${currentUser} <span class="caret"></span>
+    						</a>
+    						<ul class="dropdown-menu" role="menu">
+    							<li><a href="<%= basePath %>/user/<%= user.getId() %>">Edit profile</a></li>
+      							<li><a href="<%= basePath %>/logout">Logout</a></li>
+    						</ul>
+  						</li>
+  					</ul>
+				</div>
 			</div>
-		</div>
-	</nav>
-
+		</nav>
 
 	<div class="container">
-
-		
-			<h1>Welcome, ${currentUser}</h1>
 			
 			<% if (userRole.byteValue() == 0) { %>
 				<div class="main-page">
@@ -101,11 +112,8 @@
       						<h2><small>Students</small></h2>
     					</a>
   					</div>
-			<% } %>
-			
-
-		
-
+  				</div>	
+			<% } %>			
 	</div>
 </body>
 </html>

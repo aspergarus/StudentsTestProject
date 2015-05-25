@@ -23,8 +23,6 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 
-
-
 </head>
 <body>
 	<nav class="navbar navbar-inverse navbar-fixed-top">
@@ -41,7 +39,6 @@
 			</div>
 		</div>
 	</nav>
-
 
 	<div class="container">
 		<%	if (status != null && message != null) { %>
@@ -61,7 +58,6 @@
 			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign
 				in</button>
 		</form>
-
 	</div>
 </body>
 </html>
