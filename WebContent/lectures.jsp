@@ -49,6 +49,8 @@
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
 				<li><a href="<%= basePath %>">Home</a></li>
+				<li><a href="<%= basePath %>/users">Users</a></li>
+				<li><a href="<%= basePath %>/register">Register</a></li>
 				<li><a href="<%= basePath %>/logout">Logout</a></li>
 			</ul>
 		</div>
@@ -56,11 +58,14 @@
 	</nav>
 	
 	<div class="container">
-	<%	if (status != null && message != null) { %>
-		<div class="alert alert-${status}">
-			<p>${message}</p>
-		</div>
+		<%	if (status != null && message != null) { %>
+			<div class="alert alert-${status}">
+				<p>${message}</p>
+			</div>
 		<% } %>
+		
+	<% if (userRole != 0) { %>
+		
 		<h3 class="lead">Add lecture</h3>
 		<form action="<%= basePath %>/lectures" class="form" method="post"
 			class="form-horizontal" enctype="multipart/form-data">
@@ -100,7 +105,11 @@
 				</div>
 			</div>
 		</form>
+	
+	<% } %>
 	</div>
+	
+	
 	
 	<div class="container">
 		<h1>Lectures</h1>
@@ -123,8 +132,10 @@
 						        <tr>
 						            <th data-field="title" data-align="center" data-sortable="true">Title</th>
 						            <th data-field="view" data-align="center">View</th>
+						            <% if (userRole != 0) { %>
 						            <th data-field="edit" data-align="center">Edit</th>
 						            <th data-field="delete" data-align="center">Delete</th>
+						            <% } %>
 						        </tr>
 						    </thead>
 						    <tbody>
@@ -132,8 +143,10 @@
 						    	<tr>
 									<td><%= lecture.getTitle() %></td>
 							        <td><a href="practicals/<%= lecture.getId() %>">View</a></td>
+							        <% if (userRole != 0) { %>
 							        <td><a href="practicals/<%= lecture.getId() %>/edit">Edit</a></td>
 							        <td><a href="practicals/<%= lecture.getId() %>/delete">Delete</a></td>
+							        <% } %>
 						        </tr>
 							<% } %>
 							</tbody>

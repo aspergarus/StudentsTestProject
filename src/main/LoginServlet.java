@@ -58,7 +58,6 @@ public class LoginServlet extends HttpServlet {
 				request.setAttribute("message", "Username or password not found.");
 				request.getRequestDispatcher("login.jsp").forward(request, response);
 			} else if (user.isValid() && user.isPasswordValid(password)) {
-				System.out.println(user + " Valid");
 		    	HttpSession session = request.getSession(true);
 		    	session.setAttribute("user", user);
 		    	response.sendRedirect(request.getContextPath() + "/");
