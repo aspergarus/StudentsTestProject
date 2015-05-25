@@ -32,8 +32,7 @@ public class MainServlet extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/login");
 		}
 		else {
-			request.setAttribute("currentUser", user.getReadableName());
-			request.setAttribute("userRole", user.getRole());
+			request.setAttribute("currentUser", user);
 			request.getRequestDispatcher("main.jsp").forward(request, response);
 		}
 	}

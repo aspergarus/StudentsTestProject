@@ -54,17 +54,12 @@ public class PracticalsServlet extends HttpServlet {
 				session.setAttribute("status", null);
 				session.setAttribute("message", null);
 			}
-			
-			// @TODO Get all practicals of current teacher grouped by subjects.
-			Map<String, ArrayList<PracticalsBean>> practicalsMap = PracticalsDAO.findAll(user.getId());
 
-			Set<String> keys = practicalsMap.keySet();
-			for (String key : keys) {
-				ArrayList<PracticalsBean> list = practicalsMap.get(key);
-			}
+			Map<String, ArrayList<PracticalsBean>> practicalsMap = PracticalsDAO.findAll(user.getId());
 
 			request.setAttribute("practicalsMap", practicalsMap);
 			request.setAttribute("userRole", user.getRole());
+			request.setAttribute("currentUser", user);
 			request.getRequestDispatcher("practicals.jsp").forward(request, response);
 		}
 	}

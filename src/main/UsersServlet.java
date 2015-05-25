@@ -38,6 +38,7 @@ public class UsersServlet extends HttpServlet {
 			// Select all users here.
 			ArrayList<UserBean> users = UserDAO.findAll();
 			request.setAttribute("usersList", users);
+			request.setAttribute("currentUser", user);
 			request.getRequestDispatcher("users.jsp").forward(request, response);
 		}
 	}

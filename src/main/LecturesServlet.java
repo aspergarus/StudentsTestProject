@@ -56,17 +56,13 @@ public class LecturesServlet extends HttpServlet {
 				session.setAttribute("status", null);
 				session.setAttribute("message", null);
 			}
-			
-			// TODO: LecturesMap for students!
+
 			Map<String, ArrayList<LecturesBean>> lecturesMap = LecturesDAO.findAll(user.getId(), user.getRole());
-	
-			Set<String> keys = lecturesMap.keySet();
-			for (String key : keys) {
-				ArrayList<LecturesBean> list = lecturesMap.get(key);
-			}
-				request.setAttribute("lecturesMap", lecturesMap);
-				request.setAttribute("userRole", user.getRole());
-				request.getRequestDispatcher("lectures.jsp").forward(request, response);
+
+			request.setAttribute("lecturesMap", lecturesMap);
+			request.setAttribute("userRole", user.getRole());
+			request.setAttribute("currentUser", user);
+			request.getRequestDispatcher("lectures.jsp").forward(request, response);
 		}
 	}
 	
@@ -121,21 +117,20 @@ public class LecturesServlet extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/lectures");
 		
 		}
-  }
+	}
 
-  /**
-   * Extracts file name from HTTP header content-disposition
-   */
-  private String extractFileName(Part part) {
-      String contentDisp = part.getHeader("content-disposition");
-      String[] items = contentDisp.split(";");
-      for (String s : items) {
-          if (s.trim().startsWith("filename")) {
-              return s.substring(s.indexOf("=") + 2, s.length()-1);
-          }
-      }
-      return "";
-  }
-		
+	/**
+	 * Extracts file name from HTTP header content-disposition
+	 */
+	private String extractFileName(Part part) {
+		String contentDisp = part.getHeader("content-disposition");
+		String[] items = contentDisp.split(";");
+		for (String s : items) {
+			if (s.trim().startsWith("filename")) {
+				return s.substring(s.indexOf("=") + 2, s.length()-1);
+			}
+		}
+		return "";
+	}
 	
 }

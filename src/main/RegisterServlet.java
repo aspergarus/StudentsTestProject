@@ -53,6 +53,7 @@ public class RegisterServlet extends HttpServlet {
 			}
 			request.setAttribute("status", status);
 			request.setAttribute("message", message);
+			request.setAttribute("currentUser", user);
 			request.getRequestDispatcher("register.jsp").forward(request, response);
 		}
 	}

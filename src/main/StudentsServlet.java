@@ -11,9 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import beans.UserBean;
-import dao.PracticalsDAO;
 import dao.StudentDAO;
-import dao.UserDAO;
 
 /**
  * Servlet implementation class StudentsServlet
@@ -49,6 +47,7 @@ public class StudentsServlet extends HttpServlet {
 			// Select all users here.
 			ArrayList<UserBean> studentList = StudentDAO.findAll(user.getId());
 			request.setAttribute("studentList", studentList);
+			request.setAttribute("currentUser", user);
 			request.getRequestDispatcher("students.jsp").forward(request, response);
 		}
 	}
