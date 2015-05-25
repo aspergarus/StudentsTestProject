@@ -17,8 +17,15 @@ public class LecturesDAO {
 	private static ResultSet rs;
 	
 	@SuppressWarnings("finally")
-	public static Map<String, ArrayList<LecturesBean>> findAll(int teacherId){
-		String query = "SELECT * FROM lectures WHERE teacherId = ? ORDER BY subject";
+	public static Map<String, ArrayList<LecturesBean>> findAll(int teacherId, byte role){
+		
+		String query;
+		
+		if (role == 0){
+			query = "SELECT * FROM lectures";
+		} else {
+			query = "SELECT * FROM lectures WHERE teacherId = ? ORDER BY subject";
+		}
 		
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
@@ -27,7 +34,9 @@ public class LecturesDAO {
 		Map<String, ArrayList<LecturesBean>> lecturesMap = new HashMap<>();
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setInt(1, teacherId);
+			if (role != 0){
+				stmt.setInt(1, teacherId);
+			}
 			rs = stmt.executeQuery();
 			
 			String tmpSubject = "", subject = "";

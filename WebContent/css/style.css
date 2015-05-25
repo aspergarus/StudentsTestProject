@@ -84,3 +84,6 @@ body {
 	margin-right: 4px;
 	height: 34px;
 }
+.welcome {
+	margin-right: 0px!important;
+}

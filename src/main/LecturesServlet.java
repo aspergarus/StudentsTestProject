@@ -57,7 +57,8 @@ public class LecturesServlet extends HttpServlet {
 				session.setAttribute("message", null);
 			}
 			
-			Map<String, ArrayList<LecturesBean>> lecturesMap = LecturesDAO.findAll(user.getId());
+			// TODO: LecturesMap for students!
+			Map<String, ArrayList<LecturesBean>> lecturesMap = LecturesDAO.findAll(user.getId(), user.getRole());
 	
 			Set<String> keys = lecturesMap.keySet();
 			for (String key : keys) {
