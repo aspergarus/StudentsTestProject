@@ -6,50 +6,11 @@
 <% String status = (String) request.getAttribute("status"); %>
 <% String message = (String) request.getAttribute("message"); %>
 <% UserBean editedUser = (UserBean) request.getAttribute("editedUser"); %>
-<% byte userRole = (byte) request.getAttribute("userRole"); %>
 
+<%@ include file="header.jsp" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
+<%@ include file="menu.jsp" %>
 
-<title>Edit user</title>
-
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<link rel="shortcut icon" href="<%= basePath %>/favicon.ico" type="image/x-icon">
-<link rel="icon" href="<%= basePath %>/favicon.ico" type="image/x-icon">
-
-<link rel="stylesheet" href="<%= basePath %>/css/style.css">
-<link rel="stylesheet" href="<%= basePath %>/css/bootstrap.min.css">
-<link rel="stylesheet" href="<%= basePath %>/css/bootstrap-theme.css">
-<link rel="stylesheet" href="<%= basePath %>/css/bootstrap-table.min.css">
-
-<script src="<%= basePath %>/js/jquery.min.js"></script>
-<script src="<%= basePath %>/js/bootstrap.min.js"></script>
-<script src="<%= basePath %>/js/bootstrap-table.min.js"></script>
-<script src="<%= basePath %>/js/script.js"></script>
-
-</head>
-<body>
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-	<div class="container">
-		<div class="navbar-header">
-			<a class="navbar-brand" href="<%= basePath %>">Students
-				Test Project</a>
-		</div>
-		<div id="navbar" class="collapse navbar-collapse">
-			<ul class="nav navbar-nav">
-				<li><a href="<%= basePath %>">Home</a></li>
-				<% if (userRole == 2) { %>
-					<li class="active"><a href="<%= basePath %>/users">Users</a></li>
-					<li><a href="<%= basePath %>/register">Register</a></li>
-				<% } %>
-				<li><a href="<%= basePath %>/logout">Logout</a></li>
-			</ul>
-		</div>
-	</div>
-	</nav>
 	<div class="container">
 
 		<%	if (status != null && message != null) { %>
@@ -135,5 +96,4 @@
 		</form>
 	</div>
 
-</body>
-</html>
+<%@ include file="footer.jsp" %>

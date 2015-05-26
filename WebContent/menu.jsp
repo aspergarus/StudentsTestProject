@@ -1,29 +1,38 @@
 <%@page import="beans.UserBean"%>
 <% String basePathMenu = request.getContextPath(); %>
-<% UserBean currentUserMenu = (UserBean) request.getAttribute("currentUser"); %>
+<% UserBean currentUserMenu = (UserBean) session.getAttribute("user"); %>
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="<%= request.getContextPath() %>">Students Test Project</a>
+			<a class="navbar-brand" href="<%= request.getContextPath() %>"><span class="translate" data-lang-key="Students Test Project"></span></a>
 		</div>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="nav navbar-nav top-menu">
-				<li><a href="<%= basePathMenu %>">Home</a></li>
+				<li><a href="<%= basePathMenu %>"><span class="translate" data-lang-key="Home"></span></a></li>
 				<% if (currentUserMenu.getRole() == 2) { %>
-					<li><a href="<%= basePathMenu %>/users">Users</a></li>
-					<li><a href="<%= basePathMenu %>/register">Register</a></li>
+					<li><a href="<%= basePathMenu %>/users"><span class="translate" data-lang-key="Users"></span></a></li>
+					<li><a href="<%= basePathMenu %>/register"><span class="translate" data-lang-key="Register"></span></a></li>
 				<% } %>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li><p class="navbar-text welcome">Welcome</p></li>
+				<li><p class="navbar-text welcome"><span class="translate" data-lang-key="Welcome"></span></p></li>
 				<li class="dropdown">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
 						<%= currentUserMenu.getReadableName() %> <span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="<%= basePathMenu %>/user/<%= currentUserMenu.getId() %>">Edit profile</a></li>
-						<li><a href="<%= basePathMenu %>/logout">Logout</a></li>
+						<li><a href="<%= basePathMenu %>/user/<%= currentUserMenu.getId() %>"><span class="translate" data-lang-key="Edit profile"></span></a></li>
+						<li><a href="<%= basePathMenu %>/logout"><span class="translate" data-lang-key="Logout"></span></a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+						<span class="translate" data-lang-key="Language"></span><span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="#" class="translate-trigger" data-lang="en">EN</a></li>
+						<li><a href="#" class="translate-trigger" data-lang="ua">UA</a></li>
 					</ul>
 				</li>
 			</ul>

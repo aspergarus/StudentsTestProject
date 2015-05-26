@@ -1,0 +1,13 @@
+{
+  "Lectures": {"ua": "Лекції", "en": "Lectures"},
+  "Practicals": {"ua": "Практичні", "en": "Practicals"},
+  "Tests": {"ua": "Тести", "en": "Tests"},
+  "Students": {"ua": "Студенти", "en": "Students"},
+  "Home": {"ua": "Домівка", "en": "Home"},
+  "Users": {"ua": "Юзерята", "en": "Users"},
+  "Welcome": {"ua": "Привіт, куме ", "en": "Welcome"},
+  "Edit profile": {"ua": "Змінити пику", "en": "Edit profile"},
+  "Logout": {"ua": "Пшолнах", "en": "Logout"},
+  "Language": {"ua": "Мова рідна", "en": "Language"},
+  "Students Test Project": {"ua": "Студентський проект", "en": "Students Test Project"}
+}

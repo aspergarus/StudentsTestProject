@@ -21,4 +21,26 @@ $(function () {
     	}
     });
 
+    // Translate block.
+    updateTranslate("en");
+
+    $(".translate-trigger").click(function(e) {
+    	e.preventDefault();
+
+    	updateTranslate($(this).data("lang"));
+    });
+
+    function updateTranslate(lang) {
+		$.getJSON("js/translate.json" , function(translateData) {
+        	$(".translate").each(function() {
+            	var $this = $(this);
+            	var key = $this.data("lang-key");
+            	if (translateData[key] != undefined) {
+            		$this.text(translateData[key][lang]);
+            	}
+            });
+        });
+    }
+    // End of translate block.
+
 });
