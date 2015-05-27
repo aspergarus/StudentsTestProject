@@ -26,8 +26,18 @@ $(function () {
 
     $(".translate-trigger").click(function(e) {
     	e.preventDefault();
-
-    	updateTranslate($(this).data("lang"));
+    	
+    	var $this = $(this);
+    	
+    	if($this.attr("data-lang") == "en"){
+    		$this.attr("data-lang", "ua");
+    		$this.find('.change-picture').attr('src', 'imgs/gb.png');
+    	}
+    	else {
+    		$this.attr("data-lang", "en");
+    		$this.find('.change-picture').attr('src', 'imgs/ua.png');
+    	}
+    	updateTranslate($this.attr("data-lang"));
     });
 
     function updateTranslate(lang) {
@@ -41,6 +51,8 @@ $(function () {
             });
         });
     }
+    
+  
     // End of translate block.
 
 });
