@@ -26,7 +26,9 @@
 						<li><a href="<%= basePathMenu %>/logout"><span class="translate" data-lang-key="Logout"></span></a></li>
 					</ul>
 				</li>
-				<li class="dropdown">
+				<li><a href="#" data-lang="en" class="translate-trigger"><img class="change-picture" src="imgs/ua.png"></a></li>
+				
+				<!-- <li class="dropdown">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
 						<span class="translate" data-lang-key="Language"></span><span class="caret"></span>
 					</a>
@@ -34,7 +36,7 @@
 						<li><a href="#" class="translate-trigger" data-lang="en">EN</a></li>
 						<li><a href="#" class="translate-trigger" data-lang="ua">UA</a></li>
 					</ul>
-				</li>
+				</li> -->
 			</ul>
 		</div>
 	</div>

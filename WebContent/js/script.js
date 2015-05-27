@@ -26,12 +26,22 @@ $(function () {
 
     $(".translate-trigger").click(function(e) {
     	e.preventDefault();
-
-    	updateTranslate($(this).data("lang"));
+    	
+    	if($(this).attr("data-lang") == "en"){
+    		$(this).attr("data-lang", "ua");
+    		$(this).find('.change-picture').attr('src', 'imgs/gb.png');
+    	}
+    	else {
+    		$(this).attr("data-lang", "en");
+    		$(this).find('.change-picture').attr('src', 'imgs/ua.png');
+    	}
+    	updateTranslate($(this).attr("data-lang"));
     });
 
     function updateTranslate(lang) {
+    	console.log(lang);
 		$.getJSON("js/translate.json" , function(translateData) {
+			console.log(translateData);
         	$(".translate").each(function() {
             	var $this = $(this);
             	var key = $this.data("lang-key");
@@ -41,6 +51,8 @@ $(function () {
             });
         });
     }
+    
+  
     // End of translate block.
 
 });
