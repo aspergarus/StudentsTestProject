@@ -66,17 +66,18 @@ public class LecturesServlet extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
+		
 		HttpSession session = request.getSession(false);
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+		
 		if (user == null) {
 			response.sendError(403);
-		}
-		else {
+			
+		} else {
 			String mainDir = "files";
-		    String saveDir = "uploadLecturesFiles";
-	        String appPath = request.getServletContext().getRealPath("");
-	        String savePath = appPath + File.separator + mainDir + File.separator + saveDir;
+			String saveDir = "uploadLecturesFiles";
+			String appPath = request.getServletContext().getRealPath("");
+			String savePath = appPath + File.separator + mainDir + File.separator + saveDir;
 			
 			String fileName = null, filePath = "";
 	       
