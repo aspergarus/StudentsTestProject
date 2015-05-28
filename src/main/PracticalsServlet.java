@@ -73,41 +73,41 @@ public class PracticalsServlet extends HttpServlet {
 			response.sendError(403);
 		}
 		else {
-            String mainDir = "files";
-            String saveDir = "uploadPracticalFiles";
-            String appPath = request.getServletContext().getRealPath("");
-            String savePath = appPath + File.separator + mainDir + File.separator + saveDir;
-             
-            String fileName = null, filePath = "";
-
-	        // Save uploaded file, and retrieve his path.
-            for (Part part : request.getParts()) {
-                String name = part.getName();
-                if (name.equals("upload")) {
-                    fileName = extractFileName(part);
-                    if (!fileName.isEmpty()) {
-                        filePath = saveDir + File.separator + fileName;
-                        part.write(savePath + File.separator + fileName);
-                    }
-                }
-            }
-
-            // Get form values.
-            String subject = request.getParameter("subject").trim();
-            String title = request.getParameter("title").trim();
-            String body = request.getParameter("body").trim();
-            
-            // Create new practicals bean.
-            PracticalsBean bean = new PracticalsBean(user.getId(), subject, title, body, filePath);
-            
-            if (PracticalsDAO.insert(bean)) {
-            	session.setAttribute("status", "success");
-            	session.setAttribute("message", "Practical has been added");
-            }
-            else {
-            	session.setAttribute("status", "danger");
-            	session.setAttribute("message", "Some troubles were occurred during creating a practical");
-            }
+			String mainDir = "files";
+			String saveDir = "uploadPracticalFiles";
+			String appPath = request.getServletContext().getRealPath("");
+			String savePath = appPath + File.separator + mainDir + File.separator + saveDir;
+			 
+			String fileName = null, filePath = "";
+			
+			// Save uploaded file, and retrieve his path.
+			for (Part part : request.getParts()) {
+				String name = part.getName();
+				if (name.equals("upload")) {
+					fileName = extractFileName(part);
+					if (!fileName.isEmpty()) {
+						filePath = saveDir + File.separator + fileName;
+						part.write(savePath + File.separator + fileName);
+					}
+				}
+			}
+			
+			// Get form values.
+			String subject = request.getParameter("subject").trim();
+			String title = request.getParameter("title").trim();
+			String body = request.getParameter("body").trim();
+			
+			// Create new practicals bean.
+			PracticalsBean bean = new PracticalsBean(user.getId(), subject, title, body, filePath);
+			
+			if (PracticalsDAO.insert(bean)) {
+				session.setAttribute("status", "success");
+				session.setAttribute("message", "Practical has been added");
+			}
+			else {
+				session.setAttribute("status", "danger");
+				session.setAttribute("message", "Some troubles were occurred during creating a practical");
+			}
 			response.sendRedirect(request.getContextPath() + "/practicals");
 		}
 	}
