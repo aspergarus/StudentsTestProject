@@ -28,7 +28,6 @@ maxFileSize=1024*1024*10,      // 10MB
 maxRequestSize=1024*1024*50)   // 50MB
 public class LecturesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String SAVE_DIR = "uploadLecturesFiles";
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -67,22 +66,18 @@ public class LecturesServlet extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
+		
 		HttpSession session = request.getSession(false);
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+		
 		if (user == null) {
 			response.sendError(403);
-		}
-		else {
-			String appPath = request.getServletContext().getRealPath("");
-			String savePath = appPath + File.separator + SAVE_DIR;
-			request.setAttribute("path", savePath);
 			
-			// creates the save directory if it does not exists
-			File fileSaveDir = new File(savePath);
-			if (!fileSaveDir.exists()) {
-				fileSaveDir.mkdir();
-			}
+		} else {
+			String mainDir = "files";
+			String saveDir = "uploadLecturesFiles";
+			String appPath = request.getServletContext().getRealPath("");
+			String savePath = appPath + File.separator + mainDir + File.separator + saveDir;
 			
 			String fileName = null, filePath = "";
 	       
@@ -92,7 +87,7 @@ public class LecturesServlet extends HttpServlet {
 	        	if (name.equals("upload")) {
 	        		fileName = extractFileName(part);
 	        		if (!fileName.isEmpty()) {
-	        			filePath = SAVE_DIR + File.separator + fileName;
+	        			filePath = saveDir + File.separator + fileName;
 		                part.write(savePath + File.separator + fileName);
 	        		}
 	        	}
