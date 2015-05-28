@@ -34,7 +34,6 @@ public class PracticalsServlet extends HttpServlet {
      * Name of the directory where uploaded files will be saved, relative to
      * the web application directory.
      */
-    private static final String SAVE_DIR = "uploadPracticalFiles";
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -74,18 +73,11 @@ public class PracticalsServlet extends HttpServlet {
 			response.sendError(403);
 		}
 		else {
-			// gets absolute path of the web application
+			String mainDir = "files";
+		    String saveDir = "uploadPracticalFiles";
 	        String appPath = request.getServletContext().getRealPath("");
-
-	        // constructs path of the directory to save uploaded file
-	        String savePath = appPath + File.separator + SAVE_DIR;
+	        String savePath = appPath + File.separator + mainDir + File.separator + saveDir;
 	         
-	        // creates the save directory if it does not exists
-	        File fileSaveDir = new File(savePath);
-	        if (!fileSaveDir.exists()) {
-	            fileSaveDir.mkdir();
-	        }
-
 	        String fileName = null, filePath = "";
 
 	        // Save uploaded file, and retrieve his path.
@@ -94,7 +86,7 @@ public class PracticalsServlet extends HttpServlet {
 	        	if (name.equals("upload")) {
 	        		fileName = extractFileName(part);
 	        		if (!fileName.isEmpty()) {
-	        			filePath = SAVE_DIR + File.separator + fileName;
+	        			filePath = saveDir + File.separator + fileName;
 		                part.write(savePath + File.separator + fileName);
 	        		}
 	        	}
