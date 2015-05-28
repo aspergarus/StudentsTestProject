@@ -26,7 +26,7 @@
 						<li><a href="<%= basePathMenu %>/logout"><span class="translate" data-lang-key="Logout"></span></a></li>
 					</ul>
 				</li>
-				<li><a href="#" data-lang="en" class="translate-trigger"><img class="change-picture" src="imgs/ua.png"></a></li>
+				<li><a href="#" data-lang="en" class="translate-trigger"><img class="change-picture" src="<%= basePathMenu %>/imgs/ua.png"></a></li>
 			</ul>
 		</div>
 	</div>

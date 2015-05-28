@@ -21,6 +21,8 @@
 <script src="<%= basePathHeader %>/js/bootstrap-table.min.js"></script>
 <script src="<%= basePathHeader %>/js/bootstrap-typeahead.min.js"></script>
 
+<!-- Custom javascripts variables -->
+<script>var basePath = "<%= basePathHeader %>";</script>
 <!-- Custom javascripts -->
 <script src="<%= basePathHeader %>/js/script.js"></script>
 
