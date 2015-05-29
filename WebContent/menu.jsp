@@ -16,9 +16,10 @@
 				<% } %>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li><p class="navbar-text welcome"><span class="translate" data-lang-key="Welcome"></span></p></li>
+				<li></li>
 				<li class="dropdown">
-					<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+					<a class="dropdown-toggle dropdown-user" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+					<img src="imgs/practicals.jpg" class="img-circle avatar">
 						<%= currentUserMenu.getReadableName() %> <span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu" role="menu">

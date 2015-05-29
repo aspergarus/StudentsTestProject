@@ -85,5 +85,12 @@ body {
 	height: 34px;
 }
 .welcome {
-	margin-right: 0px!important;
+	
+}
+.avatar {
+	width: 40px!important;
+	height: 40px!important;
+}
+.dropdown-user {
+	padding: 8px 10px 0px 5px!important;
 }
