@@ -2,6 +2,7 @@ package main;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -45,8 +46,8 @@ public class StudentsServlet extends HttpServlet {
 			}
 
 			// Select all users here.
-			ArrayList<UserBean> studentList = StudentDAO.findAll(user.getId());
-			request.setAttribute("studentList", studentList);
+			Map <String, ArrayList<UserBean>> studentMap = StudentDAO.findAll(user.getId());
+			request.setAttribute("studentMap", studentMap);
 			request.setAttribute("currentUser", user);
 			request.getRequestDispatcher("students.jsp").forward(request, response);
 		}
@@ -63,24 +64,34 @@ public class StudentsServlet extends HttpServlet {
 		}
 		else {
 			// Get form values.
-	        String name = request.getParameter("name");
-	        String studentDeleteId = request.getParameter("delete-id");
-	        if (name != null && !name.isEmpty()) {
-		        int studentId = Integer.valueOf(name.substring(name.lastIndexOf("[") + 1, name.lastIndexOf("]")));
+			String name = request.getParameter("name");
+			String group = request.getParameter("group");
+			String studentDeleteId = request.getParameter("delete-id");
+			if (name != null && !name.isEmpty()) {
+				group = group.isEmpty() ? "" : group;
 
-				// Add student to list
-		        if (StudentDAO.insert(user.getId(), studentId)) {
-					session.setAttribute("status", "success");
-					session.setAttribute("message", "Student has been added to list");
+				String errorMessage = studentValidate(name);
+				if (errorMessage == null) {
+					// Add student to list only if he is not in other groups.
+					int studentId = Integer.valueOf(getStudentIdFromName(name));
+					if (StudentDAO.insert(user.getId(), studentId, group)) {
+						session.setAttribute("status", "success");
+						session.setAttribute("message", "Student has been added to list");
+					}
+					else {
+						session.setAttribute("status", "danger");
+						session.setAttribute("message", "Some troubles were occurred during creating a student");
+					}
 				}
 				else {
 					session.setAttribute("status", "danger");
-					session.setAttribute("message", "Some troubles were occurred during creating a student");
+					session.setAttribute("message", errorMessage);
 				}
-	        }
-	        else if (studentDeleteId != null && !studentDeleteId.isEmpty()) {
-	        	// Delete student from list
-		        if (StudentDAO.delete(user.getId(), Integer.valueOf(studentDeleteId))) {
+
+			}
+			else if (studentDeleteId != null && !studentDeleteId.isEmpty()) {
+				// Delete student from list
+				if (StudentDAO.delete(user.getId(), Integer.valueOf(studentDeleteId))) {
 					session.setAttribute("status", "success");
 					session.setAttribute("message", "Student has been deleted successfully from your list");
 				}
@@ -88,10 +99,32 @@ public class StudentsServlet extends HttpServlet {
 					session.setAttribute("status", "danger");
 					session.setAttribute("message", "Some troubles were occurred during deleting a student");
 				}
-	        }
-	        
+			}
+
 			response.sendRedirect("students");
 		}
+	}
+
+	private String studentValidate(String studentName) {
+		int studentId = 0;
+		if (studentName.lastIndexOf("[") == -1) {
+			return "Can't find this student. Please, search it using autocomplete.";
+		}
+		else {
+			studentId = Integer.valueOf(getStudentIdFromName(studentName));
+		}
+		if (studentBelongGroup(studentId)) {
+			return "You can't add the same user to different groups";
+		}
+		return null;
+	}
+
+	private boolean studentBelongGroup(int studentId) {
+		return StudentDAO.findStudentCount(studentId) > 0;
+	}
+	
+	private String getStudentIdFromName(String studentName) {
+		return studentName.substring(studentName.lastIndexOf("[") + 1, studentName.lastIndexOf("]"));
 	}
 
 }
