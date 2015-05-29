@@ -24,11 +24,11 @@ public class ConnectionManager {
 			Ini ini = new Ini(new FileReader(filePath));
 			Ini.Section config = ini.get("database");
 
-	        url = config.get("url");
-	        admin = config.get("admin");
-	        password = config.get("password");
-			
-			
+			url = config.get("url");
+			admin = config.get("admin");
+			password = config.get("password");
+
+
 		} catch (InvalidFileFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

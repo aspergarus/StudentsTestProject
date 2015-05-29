@@ -38,7 +38,7 @@ public class PracticalsDAO {
 				bean.setTitle(rs.getString("title"));
 				bean.setSubject(subject);
 				bean.setBody(rs.getString("body"));
-				bean.setFilePath(rs.getString("filepath"));
+				bean.setFilePath(rs.getString("fileName"));
 
 				if (!tmpSubject.equals(subject) && tmpSubject.isEmpty()) {
 					tmpSubject = new String(subject);
@@ -66,7 +66,7 @@ public class PracticalsDAO {
 	@SuppressWarnings("finally")
 	public static boolean insert(PracticalsBean bean) {
 		String query = "INSERT INTO practicals "
-				+ "(teacherId, subject, title, body, filepath) "
+				+ "(teacherId, subject, title, body, fileName) "
 				+ "VALUES (?, ?, ?, ?, ?)";
 
 		ConnectionManager conM = new ConnectionManager();
@@ -115,6 +115,57 @@ public class PracticalsDAO {
 		}
 		finally {
 			return subjects;
+		}
+	}
+
+	@SuppressWarnings("finally")
+    public static int findPracticalsCountInSubject(String title, String subject) {
+		String query = "SELECT COUNT(*) as practicalsCount FROM practicals "
+				+ " WHERE title = ? AND subject = ?";
+
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		int practicalsCount = 0;
+
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setString(1, title);
+			stmt.setString(2, subject);
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				practicalsCount = rs.getInt("practicalsCount");
+			}
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		finally {
+			return practicalsCount;
+		}
+	}
+
+	@SuppressWarnings("finally")
+	public static int equivalentFileCount(String fileName) {
+		String query = "SELECT COUNT(*) as filesCount FROM practicals "
+				+ " WHERE fileName LIKE ? ";
+
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		int filesCount = 0;
+
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setString(1, fileName + "%");
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				filesCount = rs.getInt("filesCount");
+			}
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		finally {
+			return filesCount;
 		}
 	}
 }

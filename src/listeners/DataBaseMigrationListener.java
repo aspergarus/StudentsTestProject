@@ -76,6 +76,15 @@ public class DataBaseMigrationListener implements ServletRequestListener {
 					+ "CHANGE COLUMN `teacherId` `groupName` VARCHAR(32) NOT NULL DEFAULT '' ;";
 			querysList.add(query);
 		}
+		if (migrationId < 2) {
+			String query = "ALTER TABLE `ourproject`.`practicals` DROP INDEX `title_UNIQUE` ;";
+			querysList.add(query);
+		}
+		if (migrationId < 3) {
+			String query = "ALTER TABLE `ourproject`.`practicals` CHANGE COLUMN `filepath` `fileName` VARCHAR(128) NULL DEFAULT '' ;";
+			querysList.add(query);
+		}
+
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		Statement stmt = null;
