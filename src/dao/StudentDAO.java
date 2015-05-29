@@ -8,16 +8,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import beans.PracticalsBean;
 import beans.UserBean;
 import config.ConnectionManager;
 
 public class StudentDAO {
 	@SuppressWarnings("finally")
-	public static boolean insert(int teacherId, int studentId, String group) {
+	public static boolean insert(String group, int studentId) {
 		String query = "INSERT INTO students "
-				+ "(teacherId, studentId, groupName) "
-				+ "VALUES (?, ?, ?)";
+				+ "(groupName, studentId) "
+				+ "VALUES (?, ?)";
 
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -25,9 +24,8 @@ public class StudentDAO {
 		int rowsAffected = 0;
 
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setInt(1, teacherId);
+			stmt.setString(1, group);
 			stmt.setInt(2, studentId);
-			stmt.setString(3, group);
 
 			rowsAffected = stmt.executeUpdate();
 		}
@@ -40,10 +38,9 @@ public class StudentDAO {
 	}
 
 	@SuppressWarnings("finally")
-	public static Map<String, ArrayList<UserBean>> findAll(int teacherId) {
+	public static Map<String, ArrayList<UserBean>> findAll() {
 		String query = "SELECT * FROM students s "
 				+ "INNER JOIN users u ON s.studentId = u.id "
-				+ "WHERE s.teacherId = ? "
 				+ "ORDER BY groupName";
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -53,7 +50,6 @@ public class StudentDAO {
 		Map<String, ArrayList<UserBean>> studentMap = new HashMap<>();
 
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setInt(1, teacherId);
 			ResultSet rs = stmt.executeQuery();
 
 			String tmpGroupName = "", groupName = "";
@@ -89,9 +85,9 @@ public class StudentDAO {
 	}
 
 	@SuppressWarnings("finally")
-	public static boolean delete(int teacherId, int studentId) {
+	public static boolean delete(int studentId) {
 		String query = "DELETE FROM students "
-				+ "WHERE teacherId = ? AND studentId = ?";
+				+ "WHERE studentId = ?";
 
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -99,8 +95,7 @@ public class StudentDAO {
 		int rowsAffected = 0;
 
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setInt(1, teacherId);
-			stmt.setInt(2, studentId);
+			stmt.setInt(1, studentId);
 
 			rowsAffected = stmt.executeUpdate();
 		}

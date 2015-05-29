@@ -46,7 +46,7 @@ public class StudentsServlet extends HttpServlet {
 			}
 
 			// Select all users here.
-			Map <String, ArrayList<UserBean>> studentMap = StudentDAO.findAll(user.getId());
+			Map <String, ArrayList<UserBean>> studentMap = StudentDAO.findAll();
 			request.setAttribute("studentMap", studentMap);
 			request.setAttribute("currentUser", user);
 			request.getRequestDispatcher("students.jsp").forward(request, response);
@@ -74,7 +74,7 @@ public class StudentsServlet extends HttpServlet {
 				if (errorMessage == null) {
 					// Add student to list only if he is not in other groups.
 					int studentId = Integer.valueOf(getStudentIdFromName(name));
-					if (StudentDAO.insert(user.getId(), studentId, group)) {
+					if (StudentDAO.insert(group, studentId)) {
 						session.setAttribute("status", "success");
 						session.setAttribute("message", "Student has been added to list");
 					}
@@ -91,7 +91,7 @@ public class StudentsServlet extends HttpServlet {
 			}
 			else if (studentDeleteId != null && !studentDeleteId.isEmpty()) {
 				// Delete student from list
-				if (StudentDAO.delete(user.getId(), Integer.valueOf(studentDeleteId))) {
+				if (StudentDAO.delete(Integer.valueOf(studentDeleteId))) {
 					session.setAttribute("status", "success");
 					session.setAttribute("message", "Student has been deleted successfully from your list");
 				}
