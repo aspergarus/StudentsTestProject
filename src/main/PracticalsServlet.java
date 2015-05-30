@@ -53,12 +53,29 @@ public class PracticalsServlet extends HttpServlet {
 				session.setAttribute("message", null);
 			}
 
-			Map<String, ArrayList<PracticalsBean>> practicalsMap = PracticalsDAO.findAll(user.getId());
+			String id = request.getParameter("id");
+			if (id == null) {
+				// Show all practicals
+				Map<String, ArrayList<PracticalsBean>> practicalsMap = PracticalsDAO.findAll(user.getId());
 
-			request.setAttribute("practicalsMap", practicalsMap);
-			request.setAttribute("userRole", user.getRole());
-			request.setAttribute("currentUser", user);
-			request.getRequestDispatcher("practicals.jsp").forward(request, response);
+				request.setAttribute("practicalsMap", practicalsMap);
+				request.setAttribute("currentUser", user);
+				request.getRequestDispatcher("practicals.jsp").forward(request, response);
+			}
+			else {
+				// Show specific practical
+				PracticalsBean practicalBean = PracticalsDAO.find(Integer.valueOf(id));
+				if (practicalBean == null) {
+					session.setAttribute("status", "Warning");
+					session.setAttribute("message", "Such practical does not exist");
+					response.sendRedirect(request.getContextPath() + "/practicals");
+				}
+				else {
+					request.setAttribute("practicalBean", practicalBean);
+					request.setAttribute("saveDir", saveDir);
+					request.getRequestDispatcher("practical-view.jsp").forward(request, response);
+				}
+			}
 		}
 	}
 
