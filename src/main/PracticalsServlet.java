@@ -88,6 +88,9 @@ public class PracticalsServlet extends HttpServlet {
 		if (user == null) {
 			response.sendError(403);
 		}
+		else if (!user.getAccess("practicals")) {
+			response.sendError(403);
+		}
 		else {
 			// Delete practical
 			String deleteId = request.getParameter("delete-id");
