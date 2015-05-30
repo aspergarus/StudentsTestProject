@@ -197,4 +197,26 @@ public class PracticalsDAO {
 			return pBean;
 		}
 	}
+
+	@SuppressWarnings("finally")
+    public static boolean delete(int id) {
+		String query = "DELETE FROM practicals WHERE id = ?";
+
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+
+		int rowsAffected = 0;
+
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, id);
+
+			rowsAffected = stmt.executeUpdate();
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		finally {
+			return rowsAffected > 0;
+		}
+	}
 }

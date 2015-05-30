@@ -89,6 +89,38 @@ public class PracticalsServlet extends HttpServlet {
 			response.sendError(403);
 		}
 		else {
+			// Delete practical
+			String deleteId = request.getParameter("delete-id");
+			if (deleteId != null) {
+				int id = Integer.valueOf(deleteId);
+				PracticalsBean pBean = PracticalsDAO.find(id);
+
+				// Delete file from file system.
+				if (!pBean.getFileName().isEmpty()) {
+					String savePath = request.getServletContext().getRealPath("") + File.separator + saveDir;
+					File file = new File(savePath + File.separator + pBean.getFileName());
+					 
+		    		if(file.delete()){
+		    			System.out.println(file.getName() + " is deleted!");
+		    		}else{
+		    			System.out.println("Delete operation is failed.");
+		    		}
+				}
+
+				boolean deletedFlag = PracticalsDAO.delete(id);
+				if (deletedFlag) {
+					session.setAttribute("status", "success");
+					session.setAttribute("message", "Practical has been deleted successfully");
+				}
+				else {
+					session.setAttribute("status", "danger");
+					session.setAttribute("message", "Some troubles were occurred during deleting a practical");
+				}
+				response.sendRedirect(request.getContextPath() + "/practicals");
+				return;
+			}
+
+			// Create new practical
 			// Save uploaded file, and retrieve his path.
 			String fileName = uploadFile("upload", request);
 
