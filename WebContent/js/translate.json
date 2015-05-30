@@ -9,5 +9,10 @@
   "Edit profile": {"ua": "Змінити пику", "en": "Edit profile"},
   "Logout": {"ua": "Пшолнах", "en": "Logout"},
   "Language": {"ua": "Мова рідна", "en": "Language"},
+  "Group": {"ua": "Група", "en": "Group"},
+  "Search group using autocomplete or create new": {"ua": "Шукайте групу, або ж створіть нову", "en": "Search group using autocomplete or create new"},
+  "Student name": {"ua": "Імя студента", "en": "Student name"},
+  "You can find students by first or last name": {"ua": "Ви можете знайти студентів по імені або прізвищу", "en": "You can find students by first or last name"},
+  "Add to the list": {"ua": "Добавити в список", "en": "Add to the list"},
   "Students Test Project": {"ua": "Студентський проект", "en": "Students Test Project"}
 }

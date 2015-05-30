@@ -1,6 +1,10 @@
 package main;
 
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -9,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.ini4j.Ini;
 
 import com.google.gson.Gson;
 
@@ -47,21 +53,30 @@ public class AutocompleteServlet extends HttpServlet {
 	private String getAutocompleteData(String pathInfo, String query) {
 		Gson gson = new Gson();
 		ArrayList<String> list = new ArrayList<>();
+		String out = "";
 
 		switch (pathInfo) {
 			case "/students":
 				list = UserDAO.findStudents(query);
+				out = gson.toJson(list);
 				break;
 
 			case "/practicalSubjects":
 				list = PracticalsDAO.findSubjects(query);
+				out = gson.toJson(list);
 				break;
 				
 			case "/lecturesSubjects":
 				list = LecturesDAO.findSubjects(query);
+				out = gson.toJson(list);
+				break;
+
+			case "/group":
+				list = UserDAO.findStudentGroups(query);
+				out = gson.toJson(list);
 				break;
 		}
-		String out = gson.toJson(list);
+
 		return out;
 	}
 

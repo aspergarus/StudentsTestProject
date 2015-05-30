@@ -5,16 +5,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-import beans.PracticalsBean;
 import beans.UserBean;
 import config.ConnectionManager;
 
 public class StudentDAO {
 	@SuppressWarnings("finally")
-	public static boolean insert(int teacherId, int studentId) {
+	public static boolean insert(String group, int studentId) {
 		String query = "INSERT INTO students "
-				+ "(teacherId, studentId) "
+				+ "(groupName, studentId) "
 				+ "VALUES (?, ?)";
 
 		ConnectionManager conM = new ConnectionManager();
@@ -23,7 +24,7 @@ public class StudentDAO {
 		int rowsAffected = 0;
 
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setInt(1, teacherId);
+			stmt.setString(1, group);
 			stmt.setInt(2, studentId);
 
 			rowsAffected = stmt.executeUpdate();
@@ -37,44 +38,56 @@ public class StudentDAO {
 	}
 
 	@SuppressWarnings("finally")
-	public static ArrayList<UserBean> findAll(int teacherId) {
+	public static Map<String, ArrayList<UserBean>> findAll() {
 		String query = "SELECT * FROM students s "
 				+ "INNER JOIN users u ON s.studentId = u.id "
-				+ "WHERE s.teacherId = ?";
-
+				+ "ORDER BY groupName";
+		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 
 		ArrayList<UserBean> studentList = new ArrayList<>();
+		Map<String, ArrayList<UserBean>> studentMap = new HashMap<>();
 
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setInt(1, teacherId);
-
 			ResultSet rs = stmt.executeQuery();
 
+			String tmpGroupName = "", groupName = "";
 			while (rs.next()) {
+				groupName = rs.getString("groupName");
 				UserBean bean = new UserBean();
 
 				bean.setId(rs.getInt("studentId"));
 				bean.setFirstName(rs.getString("firstName"));
 				bean.setLastName(rs.getString("lastName"));
 
+				if (!tmpGroupName.equals(groupName) && tmpGroupName.isEmpty()) {
+					tmpGroupName = new String(groupName);
+				}
+				if (!tmpGroupName.equals(groupName)) {
+					studentMap.put(tmpGroupName, studentList);
+
+					tmpGroupName = new String(groupName);
+					studentList = new ArrayList<>();
+				}
 				studentList.add(bean);
+			}
+			if (!studentList.isEmpty()) {
+				studentMap.put(groupName, studentList);
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
 		finally {
-			return studentList;
+			return studentMap;
 		}
 	}
 
 	@SuppressWarnings("finally")
-	public static boolean delete(int teacherId, int studentId) {
+	public static boolean delete(int studentId) {
 		String query = "DELETE FROM students "
-				+ "WHERE teacherId = ? AND studentId = ?";
+				+ "WHERE studentId = ?";
 
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -82,8 +95,7 @@ public class StudentDAO {
 		int rowsAffected = 0;
 
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setInt(1, teacherId);
-			stmt.setInt(2, studentId);
+			stmt.setInt(1, studentId);
 
 			rowsAffected = stmt.executeUpdate();
 		}
@@ -92,6 +104,31 @@ public class StudentDAO {
 		}
 		finally {
 			return rowsAffected > 0;
+		}
+	}
+
+	@SuppressWarnings("finally")
+	public static int findStudentCount(int studentId) {
+		String query = "SELECT COUNT(*) as countStudents FROM students s "
+				+ " WHERE studentId = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		int studentsCount = 0;
+
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, studentId);
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				studentsCount = rs.getInt("countStudents");
+			}
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		finally {
+			return studentsCount;
 		}
 	}
 }

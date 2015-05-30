@@ -37,7 +37,7 @@ public class EncodingRequestListener implements ServletRequestListener {
 		}
         
         // Creating directories for upload files.
-        String[] directories = {"files", "uploadLecturesFiles", "uploadPracticalFiles", "UploadAvatars"};
+        String[] directories = {"files", "uploadLecturesFiles", "practicalFiles", "UploadAvatars"};
         String appPath = request.getServletContext().getRealPath("");
         
         for(String directory : directories) {
