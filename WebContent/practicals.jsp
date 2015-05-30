@@ -8,7 +8,6 @@
 	pageEncoding="UTF-8"%>
 
 <% String basePath = request.getContextPath(); %>
-<% Byte userRole = (Byte) request.getAttribute("userRole"); %>
 <% String status = (String) request.getAttribute("status"); %>
 <% String message = (String) request.getAttribute("message"); %>
 <% Map<String, ArrayList<PracticalsBean>> practicalsMap = (HashMap<String, ArrayList<PracticalsBean>>) request.getAttribute("practicalsMap"); %>
@@ -93,7 +92,7 @@
 					    <% for (PracticalsBean practical : practicalsMap.get(subject)) { %>
 					    	<tr>
 								<td><%= practical.getTitle() %></td>
-						        <td><a href="practicals/<%= practical.getId() %>">View</a></td>
+						        <td><a href="practicals?id=<%= practical.getId() %>">View</a></td>
 						        <td><a href="practicals/<%= practical.getId() %>/edit">Edit</a></td>
 						        <td><a href="practicals/<%= practical.getId() %>/delete">Delete</a></td>
 					        </tr>

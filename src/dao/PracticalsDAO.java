@@ -38,7 +38,7 @@ public class PracticalsDAO {
 				bean.setTitle(rs.getString("title"));
 				bean.setSubject(subject);
 				bean.setBody(rs.getString("body"));
-				bean.setFilePath(rs.getString("fileName"));
+				bean.setFileName(rs.getString("fileName"));
 
 				if (!tmpSubject.equals(subject) && tmpSubject.isEmpty()) {
 					tmpSubject = new String(subject);
@@ -79,7 +79,7 @@ public class PracticalsDAO {
 			stmt.setString(2, bean.getSubject());
 			stmt.setString(3, bean.getTitle());
 			stmt.setString(4, bean.getBody());
-			stmt.setString(5, bean.getFilePath());
+			stmt.setString(5, bean.getFileName());
 
 			rowsAffected = stmt.executeUpdate();
 		}
@@ -166,6 +166,35 @@ public class PracticalsDAO {
 		}
 		finally {
 			return filesCount;
+		}
+	}
+
+	@SuppressWarnings("finally")
+    public static PracticalsBean find(int id) {
+		String query = "SELECT * FROM practicals WHERE id = ?";
+
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		PracticalsBean pBean = null;
+
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				pBean = new PracticalsBean();
+				pBean.setId(id);
+				pBean.setSubject(rs.getString("subject"));
+				pBean.setTitle(rs.getString("title"));
+				pBean.setBody(rs.getString("body"));
+				pBean.setFileName(rs.getString("fileName"));
+			}
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		finally {
+			return pBean;
 		}
 	}
 }
