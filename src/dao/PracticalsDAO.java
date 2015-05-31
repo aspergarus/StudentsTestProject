@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jasypt.util.password.StrongPasswordEncryptor;
+
 import beans.PracticalsBean;
 import config.ConnectionManager;
 
@@ -218,5 +220,34 @@ public class PracticalsDAO {
 		finally {
 			return rowsAffected > 0;
 		}
+	}
+
+	public static boolean update(PracticalsBean bean) {
+		String query = "UPDATE practicals SET subject=?, title=?, body=?";
+		if (!bean.getFileName().isEmpty()) {
+			query += ", fileName=? WHERE id = ?";
+		}
+		query += " WHERE id = ?";
+
+		ConnectionManager conM = new ConnectionManager();
+		con = conM.getConnection();
+		int rowsAffected = 0;
+		try (PreparedStatement updateStmt = con.prepareStatement(query)) {
+			updateStmt.setString(1, bean.getSubject());
+			updateStmt.setString(2, bean.getTitle());
+			updateStmt.setString(3, bean.getBody());
+			if (!bean.getFileName().isEmpty()) {
+				updateStmt.setString(4, bean.getFileName());
+				updateStmt.setInt(5, bean.getId());
+			}
+			else {
+				updateStmt.setInt(4, bean.getId());
+			}
+
+			rowsAffected = updateStmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return rowsAffected > 0;
 	}
 }

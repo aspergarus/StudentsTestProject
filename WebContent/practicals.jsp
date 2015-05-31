@@ -93,7 +93,7 @@
 							<tr>
 								<td><%= practical.getTitle() %></td>
 								<td><a href="practicals?id=<%= practical.getId() %>">View</a></td>
-								<td><a href="practicals/<%= practical.getId() %>/edit">Edit</a></td>
+								<td><a href="practicals?edit=true&id=<%= practical.getId() %>">Edit</a></td>
 								<td>
 									<form action="<%= basePath %>/practicals" method="post">
 										<button type="submit" class="btn btn-danger">Delete</button>

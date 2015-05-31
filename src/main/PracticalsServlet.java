@@ -55,6 +55,8 @@ public class PracticalsServlet extends HttpServlet {
 			}
 
 			String id = request.getParameter("id");
+			boolean edit = request.getParameter("edit") == null ? false : Boolean.valueOf(request.getParameter("edit"));
+
 			if (id == null) {
 				// Show all practicals
 				Map<String, ArrayList<PracticalsBean>> practicalsMap = PracticalsDAO.findAll(user.getId());
@@ -64,6 +66,9 @@ public class PracticalsServlet extends HttpServlet {
 				request.getRequestDispatcher("practicals.jsp").forward(request, response);
 			}
 			else {
+				// Show practical info, or editing form for practical/.
+				String jsp = edit ? "practical-edit.jsp" : "practical-view.jsp";
+
 				// Show specific practical
 				PracticalsBean practicalBean = PracticalsDAO.find(Integer.valueOf(id));
 				if (practicalBean == null) {
@@ -74,7 +79,7 @@ public class PracticalsServlet extends HttpServlet {
 				else {
 					request.setAttribute("practicalBean", practicalBean);
 					request.setAttribute("saveDir", saveDir);
-					request.getRequestDispatcher("practical-view.jsp").forward(request, response);
+					request.getRequestDispatcher(jsp).forward(request, response);
 				}
 			}
 		}
@@ -100,16 +105,8 @@ public class PracticalsServlet extends HttpServlet {
 				PracticalsBean pBean = PracticalsDAO.find(id);
 
 				// Delete file from file system.
-				if (!pBean.getFileName().isEmpty()) {
-					String savePath = request.getServletContext().getRealPath("") + File.separator + saveDir;
-					File file = new File(savePath + File.separator + pBean.getFileName());
-					 
-		    		if(file.delete()){
-		    			System.out.println(file.getName() + " is deleted!");
-		    		}else{
-		    			System.out.println("Delete operation is failed.");
-		    		}
-				}
+				String filePath = request.getServletContext().getRealPath("") + File.separator + saveDir;
+				FileUploadManager.delete(filePath + File.separator + pBean.getFileName());
 
 				boolean deletedFlag = PracticalsDAO.delete(id);
 				if (deletedFlag) {
@@ -124,9 +121,57 @@ public class PracticalsServlet extends HttpServlet {
 				return;
 			}
 
+			// Update existed practical
+			String updateId = request.getParameter("update-id");
+			if (updateId != null) {
+				// Get form values.
+				String subject = request.getParameter("subject").trim();
+				String title = request.getParameter("title").trim();
+				String body = request.getParameter("body").trim();
+
+				String errorMessage = practicalValidate(title, subject, 1);
+
+				if (errorMessage == null) {
+					PracticalsBean pBean = PracticalsDAO.find(Integer.valueOf(updateId));
+
+					
+					String filePath = request.getServletContext().getRealPath("") + File.separator + saveDir;
+					String uploadedFileName = FileUploadManager.getFileName("upload", request.getParts());
+					String fileName = "";
+					if (!uploadedFileName.isEmpty()) {
+						// Save uploaded file, and retrieve his path.
+						fileName = FileUploadManager.uploadFile("upload", filePath, request.getParts());
+
+						// Delete existed file.
+						FileUploadManager.delete(filePath + File.separator + pBean.getFileName());
+					}
+
+					// Update fields in practical bean.
+					pBean.setTitle(title);
+					pBean.setBody(body);
+					pBean.setSubject(subject);
+					pBean.setFileName(fileName);
+
+					if (PracticalsDAO.update(pBean)) {
+						session.setAttribute("status", "success");
+						session.setAttribute("message", "Practical has been updated");
+					}
+					else {
+						session.setAttribute("status", "danger");
+						session.setAttribute("message", "Some troubles were occurred during updating a practical");
+					}
+				}
+				else {
+					session.setAttribute("status", "danger");
+					session.setAttribute("message", errorMessage);
+				}
+
+				response.sendRedirect(request.getContextPath() + "/practicals");
+				return;
+			}
+
 			// Create new practical
 			// Save uploaded file, and retrieve his path.
-			// String fileName = uploadFile("upload", request);
 			String filePath = request.getServletContext().getRealPath("") + File.separator + saveDir;
 			String fileName = FileUploadManager.uploadFile("upload", filePath, request.getParts());
 
@@ -135,7 +180,7 @@ public class PracticalsServlet extends HttpServlet {
 			String title = request.getParameter("title").trim();
 			String body = request.getParameter("body").trim();
 
-			String errorMessage = practicalValidate(title, subject);
+			String errorMessage = practicalValidate(title, subject, 0);
 
 			if (errorMessage == null) {
 				// Create new practicals bean.
@@ -159,12 +204,12 @@ public class PracticalsServlet extends HttpServlet {
 		}
 	}
 
-	private boolean practicalBelongSubject(String title, String subject) {
-		return PracticalsDAO.findPracticalsCountInSubject(title, subject) > 0;
+	private boolean practicalBelongSubject(String title, String subject, int numExisted) {
+		return PracticalsDAO.findPracticalsCountInSubject(title, subject) > numExisted;
 	}
 
-	private String practicalValidate(String title, String subject) {
-		if (practicalBelongSubject(title, subject)) {
+	private String practicalValidate(String title, String subject, int numExisted) {
+		if (practicalBelongSubject(title, subject, numExisted)) {
 			return "Subject should not contain the same practicals";
 		}
 		return null;
