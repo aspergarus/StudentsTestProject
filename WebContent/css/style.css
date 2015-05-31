@@ -84,6 +84,20 @@ body {
 	margin-right: 4px;
 	height: 34px;
 }
-.welcome {
-	margin-right: 0px!important;
+.avatar-menu {
+	width: 40px!important;
+	height: 40px!important;
+}
+.avatar-table {
+	width: 30px!important;
+	height: 30px!important;
+}
+.avatar-form {
+	width: 80px!important;
+	height: 80px!important;
+	margin-bottom: 1em;
+}
+
+.dropdown-user {
+	padding: 8px 10px 0px 5px!important;
 }

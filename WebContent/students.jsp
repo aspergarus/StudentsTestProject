@@ -2,6 +2,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
+<%@page import="java.io.File"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
@@ -65,6 +66,7 @@
 					<table class="table">
 						<thead>
 							<tr>
+								<th data-field="avatar" data-align="center" data-sortable="false">Avatar</th>
 								<th data-field="firstName" data-align="center" data-sortable="true">First Name</th>
 								<th data-field="lastName" data-align="center" data-sortable="true">Last Name</th>
 								<th data-field="delete" data-align="center">Delete from list</th>
@@ -73,6 +75,11 @@
 						<tbody>
 						<% for (UserBean student : studentMap.get(groupName)) { %>
 							<tr>
+							<td><%  if (student.getAvatar().isEmpty()) { %>
+								<img src="<%= defaultAvatar %>" class="img-circle avatar-table"><% } else { %>
+								<img src="<%= uploadAvatarPath + File.separator + student.getAvatar() %>" class="img-circle avatar-table">
+								<% } %>
+							</td>
 							<td><% out.print(student.getFirstName()); %></td>
 							<td><% out.print(student.getLastName()); %></td>
 							<td>

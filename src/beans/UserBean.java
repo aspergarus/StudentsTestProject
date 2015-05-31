@@ -10,6 +10,7 @@ public class UserBean {
 	private String lastName;
 	private byte role;
 	private String email;
+	private String avatarName = "";
 	public boolean valid = false;
 
 	public UserBean(String name) {
@@ -17,12 +18,13 @@ public class UserBean {
 	}
 
 	public UserBean(String name, String password, String email,
-			byte role, String firstName, String lastName) {
+			byte role, String firstName, String lastName, String avatarName) {
 		this.userName = name;
 		this.email = email;
 		this.role = role;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.avatarName = avatarName;
 		this.setPassword(password);
 	}
 
@@ -80,6 +82,13 @@ public class UserBean {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public String getAvatar() {
+		return avatarName;
+	}
+	public void setAvatar(String avatarName) {
+		this.avatarName = avatarName;
+	}
 
 	public byte getRole() {
 		return role;
@@ -95,7 +104,8 @@ public class UserBean {
 				+ "role: " + role + ", "
 				+ "email: " + email + ", "
 				+ "first name: " + firstName + ", "
-				+ "last name: " + lastName;
+				+ "last name: " + lastName + ", "
+				+ "file name: " + avatarName;
 	}
 
 	public String getReadableName() {

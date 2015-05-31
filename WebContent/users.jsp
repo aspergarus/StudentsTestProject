@@ -1,4 +1,5 @@
 <%@page import="beans.UserBean"%>
+<%@page import="java.io.File"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -19,6 +20,7 @@
 			<% out.print(users == null ? "Users are not exists" : ""); %>
 		    <thead>
 		        <tr>
+		        	<th data-field="avatar" data-align="center" data-sortable="false">Avatar</th>
 		            <th data-field="userName" data-align="center" data-sortable="true">User Name</th>
 		            <th data-field="email" data-align="center" data-sortable="true">Email</th>
 		            <th data-field="firstName" data-align="center" data-sortable="true">First Name</th>
@@ -30,6 +32,11 @@
 		    <tbody>
 		    <% for (UserBean user: users) { %>
 				<tr>
+					<td><%  if (user.getAvatar().isEmpty()) { %>
+					<img src="<%= defaultAvatar %>" class="img-circle avatar-table"><% } else { %>
+					<img src="<%= uploadAvatarPath + File.separator + user.getAvatar() %>" class="img-circle avatar-table">
+					<% } %>
+					</td>
 			        <td><% out.print(user.getUsername()); %></td>
 			        <td><% out.print(user.getEmail()); %></td>
 			        <td><% out.print(user.getFirstName()); %></td>

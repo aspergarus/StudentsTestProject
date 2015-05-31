@@ -1,6 +1,14 @@
 <%@page import="beans.UserBean"%>
+<%@page import="java.io.File"%>
+
 <% String basePathMenu = request.getContextPath(); %>
 <% UserBean currentUserMenu = (UserBean) session.getAttribute("user"); %>
+<% String defaultAvatar = basePathMenu + File.separator + "imgs" + File.separator + "user-avatar.png"; %>
+<% String uploadAvatarPath = basePathMenu + File.separator + "files" + File.separator + "avatars" + File.separator; %>
+<% String avatar = defaultAvatar; %>
+<% if (!currentUserMenu.getAvatar().isEmpty()) {
+	avatar = uploadAvatarPath + currentUserMenu.getAvatar();
+} %>
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container">
@@ -16,9 +24,10 @@
 				<% } %>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li><p class="navbar-text welcome"><span class="translate" data-lang-key="Welcome"></span></p></li>
+				<li></li>
 				<li class="dropdown">
-					<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+					<a class="dropdown-toggle dropdown-user" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+					<img src="<%= avatar %>" class="img-circle avatar-menu">
 						<%= currentUserMenu.getReadableName() %> <span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu" role="menu">

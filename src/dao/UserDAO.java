@@ -48,6 +48,7 @@ public class UserDAO {
 				bean.setEmail(rs.getString("email"));
 				bean.setRole(rs.getByte("role"));
 				bean.setPassword(rs.getString("password"));
+				bean.setAvatar(rs.getString("avatarName"));
 				bean.setValid(true);
 			}
 		}
@@ -80,6 +81,7 @@ public class UserDAO {
 				bean.setEmail(rs.getString("email"));
 				bean.setRole(rs.getByte("role"));
 				bean.setPassword(rs.getString("password"));
+				bean.setAvatar(rs.getString("avatarName"));
 				bean.setValid(true);
 			}
 		}
@@ -143,7 +145,7 @@ public class UserDAO {
 				bean.setLastName(rs.getString("lastName"));
 				bean.setEmail(rs.getString("email"));
 				bean.setRole(rs.getByte("role"));
-				
+				bean.setAvatar(rs.getString("avatarName"));
 				users.add(bean);
 			}
 		}
@@ -153,15 +155,15 @@ public class UserDAO {
 		return users.isEmpty() ? null : users;
 	}
 
-	public static boolean update(UserBean user, String userName2, String plainPassword, String email2, byte role2, String firstName2, String lastName2) {
+	public static boolean update(UserBean user, UserBean updatedUser) {
 		StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
-		String password = passwordEncryptor.encryptPassword(plainPassword);
+		String password = passwordEncryptor.encryptPassword(updatedUser.getPassword());
 		int id = user.getId();
 
 		boolean setPass = false;
 
-		String query = "UPDATE users SET username=?, email=?, role=?, firstName=?, lastName=?";
-		if (!plainPassword.trim().isEmpty()) {
+		String query = "UPDATE users SET username=?, email=?, role=?, firstName=?, lastName=?, avatarName=?";
+		if (!updatedUser.getPassword().trim().isEmpty()) {
 			query += ", password=?";
 			setPass = true;
 		}
@@ -171,24 +173,24 @@ public class UserDAO {
 		con = conM.getConnection();
         int rowsAffected = 0;
 		try (PreparedStatement updateUser = con.prepareStatement(query)) {
-			updateUser.setString(1, userName2);
-			updateUser.setString(2, email2);
-			updateUser.setByte(3, role2);
-			updateUser.setString(4, firstName2);
-			updateUser.setString(5, lastName2);
+			updateUser.setString(1, updatedUser.getUsername());
+			updateUser.setString(2, updatedUser.getEmail());
+			updateUser.setByte(3, updatedUser.getRole());
+			updateUser.setString(4, updatedUser.getFirstName());
+			updateUser.setString(5, updatedUser.getLastName());
+			updateUser.setString(6, updatedUser.getAvatar());
 			if (setPass) {
-				updateUser.setString(6, password);
-				updateUser.setInt(7, id);
+				updateUser.setString(7, password);
+				updateUser.setInt(8, id);
 			}
 			else {
-				updateUser.setInt(6, id);
+				updateUser.setInt(7, id);
 			}
 
 	        rowsAffected = updateUser.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-
 		return rowsAffected > 0;
 	}
 

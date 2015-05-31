@@ -68,7 +68,7 @@ public class RegisterServlet extends HttpServlet {
 		byte role = Byte.valueOf(request.getParameter("role"));
 		String firstName = request.getParameter("firstname").trim();
 		String lastName = request.getParameter("lastname").trim();
-
+		String avatarName = "";
 		String message = formValidate(userName, password, email);
 
 		HttpSession session = request.getSession(false);
@@ -77,7 +77,7 @@ public class RegisterServlet extends HttpServlet {
 			UserBean user = null;
 
 			try {
-				user = new UserBean(userName, password, email, role, firstName, lastName);
+				user = new UserBean(userName, password, email, role, firstName, lastName, avatarName);
 			    user = UserDAO.register(user);
 			} catch (Throwable theException) {
 			     System.out.println(theException);
