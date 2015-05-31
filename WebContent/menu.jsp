@@ -3,8 +3,8 @@
 
 <% String basePathMenu = request.getContextPath(); %>
 <% UserBean currentUserMenu = (UserBean) session.getAttribute("user"); %>
-<% String defaultAvatar = basePathMenu + File.separator + "imgs" + File.separator + "user-avatar.png"; %>
-<% String uploadAvatarPath = basePathMenu + File.separator + "files" + File.separator + "avatars" + File.separator; %>
+<% String defaultAvatar = basePathMenu + "/imgs/user-avatar.png"; %>
+<% String uploadAvatarPath = basePathMenu + "/files/avatars/"; %>
 <% String avatar = defaultAvatar; %>
 <% if (!currentUserMenu.getAvatar().isEmpty()) {
 	avatar = uploadAvatarPath + currentUserMenu.getAvatar();

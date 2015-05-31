@@ -85,16 +85,16 @@ body {
 	height: 34px;
 }
 .avatar-menu {
-	width: 40px!important;
-	height: 40px!important;
+	width: 40px;
+	height: 40px;
 }
 .avatar-table {
-	width: 30px!important;
-	height: 30px!important;
+	width: 30px;
+	height: 30px;
 }
 .avatar-form {
-	width: 80px!important;
-	height: 80px!important;
+	width: 80px;
+	height: 80px;
 	margin-bottom: 1em;
 }
 

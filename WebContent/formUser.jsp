@@ -91,7 +91,7 @@
 				<label for="avatar" class="col-sm-2 control-label required">Avatar</label>
 				<div class="col-sm-10">
 					<img src="<%= avatar %>" class="img-circle avatar-form">
-					<input type="file" name="avatar" class="form-control">
+					<input type="file" name="avatar" class="form-control" accept=".gif,.jpg,.png,.doc,.pdf">
 				</div>
 			</div>
 
