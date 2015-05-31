@@ -8,6 +8,7 @@
 <% String status = (String) request.getAttribute("status"); %>
 <% String message = (String) request.getAttribute("message"); %>
 <% String saveDir = (String) request.getAttribute("saveDir"); %>
+<% saveDir = saveDir.replaceAll("\\\\", "/");; %>
 <% PracticalsBean pBean = (PracticalsBean) request.getAttribute("practicalBean"); %>
 <% String body = pBean.getBody(); %>
 <% String fileName = pBean.getFileName(); %>
@@ -33,7 +34,7 @@
 	<% } %>
 	<% if (!fileName.isEmpty()) { %>
 		<div class="file">
-			<a href="<%= saveDir + File.separator + fileName %>">
+			<a href="<%= saveDir + "/" + fileName %>">
 			<img src="imgs/icons/<%= fileExt %>.png" alt="<%= fileName %>" />
 			<%= fileName %>
 			</a>

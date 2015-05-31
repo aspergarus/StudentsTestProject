@@ -31,6 +31,18 @@ public class FileUploadManager {
 		return destination;
 	}
 
+	public static String getFileName(String fileFieldName, Collection<Part> collection) {
+		String fileName = "";
+
+		for (Part part : collection) {
+			String name = part.getName();
+			if (name.equals(fileFieldName)) {
+				fileName = extractFileName(part);
+			}
+		}
+		return fileName;
+	}
+
 	public static String uploadFile(String fileFieldName, String savePath, Collection<Part> collection) {
 		String fileName = null, filePath = "";
 
@@ -63,6 +75,18 @@ public class FileUploadManager {
 			}
 		}
 		return "";
+	}
+
+	public static void delete(String fullFilePath) {
+		if (fullFilePath != null && !fullFilePath.isEmpty()) {
+			File file = new File(fullFilePath);
+			 
+			if(file.delete()){
+				System.out.println(file.getName() + " is deleted!");
+			}else{
+				System.out.println("Delete operation is failed.");
+			}
+		}
 	}
 
 }
