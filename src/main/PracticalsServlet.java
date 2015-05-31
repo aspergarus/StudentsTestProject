@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import util.FileUploadManager;
 import dao.PracticalsDAO;
 import beans.PracticalsBean;
 import beans.UserBean;
@@ -125,7 +126,9 @@ public class PracticalsServlet extends HttpServlet {
 
 			// Create new practical
 			// Save uploaded file, and retrieve his path.
-			String fileName = uploadFile("upload", request);
+			// String fileName = uploadFile("upload", request);
+			String filePath = request.getServletContext().getRealPath("") + File.separator + saveDir;
+			String fileName = FileUploadManager.uploadFile("upload", filePath, request.getParts());
 
 			// Get form values.
 			String subject = request.getParameter("subject").trim();
@@ -154,59 +157,6 @@ public class PracticalsServlet extends HttpServlet {
 
 			response.sendRedirect(request.getContextPath() + "/practicals");
 		}
-	}
-
-	private String uploadFile(String fileFieldName, HttpServletRequest request) {
-		String appPath = request.getServletContext().getRealPath("");
-		String savePath = appPath + File.separator + saveDir;
-		String fileName = null;
-
-		try {
-			for (Part part : request.getParts()) {
-				String name = part.getName();
-				if (name.equals(fileFieldName)) {
-					fileName = extractFileName(part);
-					if (!fileName.isEmpty()) {
-						fileName = checkExistingFileName(fileName);
-						part.write(savePath + File.separator + fileName);
-					}
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return fileName;
-	}
-
-	private String checkExistingFileName(String fileFullName) {
-		String fileExt = null, fileName = null;
-		if (fileFullName.indexOf(".") > 0) {
-			fileExt = fileFullName.substring(fileFullName.indexOf("."));
-			fileName = fileFullName.substring(0, fileFullName.indexOf("."));
-		}
-		else {
-			fileExt = "";
-			fileName = fileFullName;
-		}
-		int count = PracticalsDAO.equivalentFileCount(fileName);
-		if (count == 0) {
-			return fileFullName;
-		}
-		return fileName + "_" + (count + 1) + fileExt;
-	}
-
-	/**
-	 * Extracts file name from HTTP header content-disposition
-	 */
-	private String extractFileName(Part part) {
-		String contentDisp = part.getHeader("content-disposition");
-		String[] items = contentDisp.split(";");
-		for (String s : items) {
-			if (s.trim().startsWith("filename")) {
-				return s.substring(s.indexOf("=") + 2, s.length()-1);
-			}
-		}
-		return "";
 	}
 
 	private boolean practicalBelongSubject(String title, String subject) {
