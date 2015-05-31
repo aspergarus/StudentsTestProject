@@ -53,12 +53,29 @@ public class PracticalsServlet extends HttpServlet {
 				session.setAttribute("message", null);
 			}
 
-			Map<String, ArrayList<PracticalsBean>> practicalsMap = PracticalsDAO.findAll(user.getId());
+			String id = request.getParameter("id");
+			if (id == null) {
+				// Show all practicals
+				Map<String, ArrayList<PracticalsBean>> practicalsMap = PracticalsDAO.findAll(user.getId());
 
-			request.setAttribute("practicalsMap", practicalsMap);
-			request.setAttribute("userRole", user.getRole());
-			request.setAttribute("currentUser", user);
-			request.getRequestDispatcher("practicals.jsp").forward(request, response);
+				request.setAttribute("practicalsMap", practicalsMap);
+				request.setAttribute("currentUser", user);
+				request.getRequestDispatcher("practicals.jsp").forward(request, response);
+			}
+			else {
+				// Show specific practical
+				PracticalsBean practicalBean = PracticalsDAO.find(Integer.valueOf(id));
+				if (practicalBean == null) {
+					session.setAttribute("status", "Warning");
+					session.setAttribute("message", "Such practical does not exist");
+					response.sendRedirect(request.getContextPath() + "/practicals");
+				}
+				else {
+					request.setAttribute("practicalBean", practicalBean);
+					request.setAttribute("saveDir", saveDir);
+					request.getRequestDispatcher("practical-view.jsp").forward(request, response);
+				}
+			}
 		}
 	}
 
@@ -71,7 +88,42 @@ public class PracticalsServlet extends HttpServlet {
 		if (user == null) {
 			response.sendError(403);
 		}
+		else if (!user.getAccess("practicals")) {
+			response.sendError(403);
+		}
 		else {
+			// Delete practical
+			String deleteId = request.getParameter("delete-id");
+			if (deleteId != null) {
+				int id = Integer.valueOf(deleteId);
+				PracticalsBean pBean = PracticalsDAO.find(id);
+
+				// Delete file from file system.
+				if (!pBean.getFileName().isEmpty()) {
+					String savePath = request.getServletContext().getRealPath("") + File.separator + saveDir;
+					File file = new File(savePath + File.separator + pBean.getFileName());
+					 
+		    		if(file.delete()){
+		    			System.out.println(file.getName() + " is deleted!");
+		    		}else{
+		    			System.out.println("Delete operation is failed.");
+		    		}
+				}
+
+				boolean deletedFlag = PracticalsDAO.delete(id);
+				if (deletedFlag) {
+					session.setAttribute("status", "success");
+					session.setAttribute("message", "Practical has been deleted successfully");
+				}
+				else {
+					session.setAttribute("status", "danger");
+					session.setAttribute("message", "Some troubles were occurred during deleting a practical");
+				}
+				response.sendRedirect(request.getContextPath() + "/practicals");
+				return;
+			}
+
+			// Create new practical
 			// Save uploaded file, and retrieve his path.
 			String fileName = uploadFile("upload", request);
 

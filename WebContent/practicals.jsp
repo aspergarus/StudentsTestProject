@@ -8,7 +8,6 @@
 	pageEncoding="UTF-8"%>
 
 <% String basePath = request.getContextPath(); %>
-<% Byte userRole = (Byte) request.getAttribute("userRole"); %>
 <% String status = (String) request.getAttribute("status"); %>
 <% String message = (String) request.getAttribute("message"); %>
 <% Map<String, ArrayList<PracticalsBean>> practicalsMap = (HashMap<String, ArrayList<PracticalsBean>>) request.getAttribute("practicalsMap"); %>
@@ -82,21 +81,26 @@
 				<div class="panel-body">
 					<table class="table">
 						<thead>
-					        <tr>
-					            <th data-field="title" data-align="center" data-sortable="true">Title</th>
-					            <th data-field="view" data-align="center">View</th>
-					            <th data-field="edit" data-align="center">Edit</th>
-					            <th data-field="delete" data-align="center">Delete</th>
-					        </tr>
-					    </thead>
-					    <tbody>
-					    <% for (PracticalsBean practical : practicalsMap.get(subject)) { %>
-					    	<tr>
+							<tr>
+								<th data-field="title" data-align="center" data-sortable="true">Title</th>
+								<th data-field="view" data-align="center">View</th>
+								<th data-field="edit" data-align="center">Edit</th>
+								<th data-field="delete" data-align="center">Delete</th>
+							</tr>
+						</thead>
+						<tbody>
+						<% for (PracticalsBean practical : practicalsMap.get(subject)) { %>
+							<tr>
 								<td><%= practical.getTitle() %></td>
-						        <td><a href="practicals/<%= practical.getId() %>">View</a></td>
-						        <td><a href="practicals/<%= practical.getId() %>/edit">Edit</a></td>
-						        <td><a href="practicals/<%= practical.getId() %>/delete">Delete</a></td>
-					        </tr>
+								<td><a href="practicals?id=<%= practical.getId() %>">View</a></td>
+								<td><a href="practicals/<%= practical.getId() %>/edit">Edit</a></td>
+								<td>
+									<form action="<%= basePath %>/practicals" method="post">
+										<button type="submit" class="btn btn-danger">Delete</button>
+										<input type="hidden" name="delete-id" value="<%= practical.getId() %>">
+									</form>
+								</td>
+							</tr>
 						<% } %>
 						</tbody>
 					</table>
