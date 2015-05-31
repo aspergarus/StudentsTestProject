@@ -1,5 +1,6 @@
 package main;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,11 +11,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import config.ConnectionManager;
 import beans.UserBean;
@@ -24,9 +27,13 @@ import dao.UserDAO;
  * Servlet implementation class UserEditServlet
  */
 @WebServlet("/user/*")
+@MultipartConfig(fileSizeThreshold=1024*1024*2, // 2MB
+maxFileSize=1024*1024*5,      // 5MB
+maxRequestSize=1024*1024*10)   // 10MB
 public class UserEditServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ArrayList<String> errorMessageList;
+	public static final String saveDir = "files" + File.separator + "avatars";
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -88,7 +95,6 @@ public class UserEditServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
 
 		HttpSession session = request.getSession(false);
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
@@ -107,16 +113,21 @@ public class UserEditServlet extends HttpServlet {
 
 		String[] pathParts = request.getPathInfo().split("/");
 		int id = Integer.valueOf(pathParts[1]);
+		
+		// Save uploaded file, and retrieve his path.
+		String avatarName = uploadFile("avatar", request, session);
 
 		String message = formValidate(id, userName, email);
 
 		if (errorMessageList.isEmpty()) {
-			UserBean editeduser = null;
+			UserBean editedUser = null;
 
 			try {
-				editeduser = UserDAO.find(id);
-			    if (UserDAO.update(editeduser, userName, password, email, role, firstName, lastName)) {
+				editedUser = UserDAO.find(id);
+				UserBean updatedUser = new UserBean(userName, password, email, role, firstName, lastName, avatarName);
+			    if (UserDAO.update(editedUser, updatedUser)) {
 			    	session.setAttribute("status", "success");
+			    	session.setAttribute("user", updatedUser);
 					session.setAttribute("message", "User '" + userName + "' was updated successfully");
 			    }
 			    else {
@@ -176,6 +187,47 @@ public class UserEditServlet extends HttpServlet {
 		}
 
 		return errorMessage; 
+	}
+	
+	private String uploadFile(String fileFieldName, HttpServletRequest request, HttpSession session) {
+		String appPath = request.getServletContext().getRealPath("");
+		String savePath = appPath + File.separator + saveDir;
+		String fileName = null;
+		
+		UserBean user = (UserBean) session.getAttribute("user");
+		if (!user.getAvatar().isEmpty()) {
+			File file = new File(savePath + File.separator + user.getAvatar());
+			file.delete();
+		}
+		
+		try {
+			for (Part part : request.getParts()) {
+				String name = part.getName();
+				if (name.equals(fileFieldName)) {
+					fileName = extractFileName(part);
+					if (!fileName.isEmpty()) {
+						part.write(savePath + File.separator + fileName);
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return fileName;
+	}
+	
+	/**
+	 * Extracts file name from HTTP header content-disposition
+	 */
+	private String extractFileName(Part part) {
+		String contentDisp = part.getHeader("content-disposition");
+		String[] items = contentDisp.split(";");
+		for (String s : items) {
+			if (s.trim().startsWith("filename")) {
+				return s.substring(s.indexOf("=") + 2, s.length()-1);
+			}
+		}
+		return "";
 	}
 
 }

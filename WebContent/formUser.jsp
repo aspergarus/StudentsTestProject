@@ -19,10 +19,10 @@
 		</div>
 		<% } %>
 		<div class="page-header">
-			<h1>User registration</h1>
+			<h1>Edit profile</h1>
 		</div>
 
-		<form action="<%= basePath %>/user/<%= editedUser.getId() %>" id="form" method="post"
+		<form action="<%= basePath %>/user/<%= editedUser.getId() %>" id="form" method="post" enctype="multipart/form-data"
 			class="form-horizontal">
 			<div class="form-group">
 				<label for="editedusername" class="col-sm-2 control-label required">Username*</label>
@@ -84,6 +84,14 @@
 				<div class="col-sm-10">
 					<input name="lastname" type="text" class="form-control"
 						id="lastname" placeholder="Last Name" required value="<%= editedUser.getLastName() == null ? "" : editedUser.getLastName() %>">
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="avatar" class="col-sm-2 control-label required">Avatar</label>
+				<div class="col-sm-10">
+					<img src="<%= avatar %>" class="img-circle avatar-form">
+					<input type="file" name="avatar" class="form-control">
 				</div>
 			</div>
 
