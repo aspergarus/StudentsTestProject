@@ -5,8 +5,8 @@ public class LecturesBean {
 	private int teacherId;
 	private String subject;
 	private String title;
-	private String body;
-	private String filePath;
+	private String body = "";
+	private String fileName = "";
 	
 	
 	public int getId() {
@@ -44,25 +44,25 @@ public class LecturesBean {
 		this.body = body;
 	}
 	
-	public String getFilePath() {
-		return filePath;
+	public String getFileName() {
+		return fileName;
 	}
 	
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 	
-	public LecturesBean(int teacher, String subject, String title, String body, String filePath) {
+	public LecturesBean(int teacher, String subject, String title, String body, String fileName) {
 		this.teacherId = teacher;
 		this.subject = subject;
 		this.title = title;
 		this.body = body;
-		this.filePath = filePath;
+		this.fileName = fileName;
 	}
 	public LecturesBean() {}
 
 	public String toString() {
-		return this.title + " " + this.body + " " + this.filePath;
+		return this.title + " " + this.body + " " + this.fileName;
 	}
 	
 }

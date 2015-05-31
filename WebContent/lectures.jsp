@@ -14,6 +14,7 @@
 <% Map<String, ArrayList<LecturesBean>> lecturesMap = (HashMap<String, ArrayList<LecturesBean>>) request.getAttribute("lecturesMap"); %>
 
 <%@ include file="header.jsp"%>
+
 <%@ include file="menu.jsp"%>
 	
 <div class="container">
@@ -91,17 +92,22 @@
 					            <% if (currentUser.getRole() > 0) { %>
 					            <th data-field="edit" data-align="center">Edit</th>
 					            <th data-field="delete" data-align="center">Delete</th>
-					            <% } %>
+					            <%} %>
 					        </tr>
 					    </thead>
 					    <tbody>
 					    <% for (LecturesBean lecture : lecturesMap.get(subject)) { %>
 					    	<tr>
 								<td><%= lecture.getTitle() %></td>
-						        <td><a href="practicals/<%= lecture.getId() %>">View</a></td>
+						        <td><a href="lectures?id=<%= lecture.getId() %>">View</a></td>
 						        <% if (currentUser.getRole() > 0) { %>
-						        <td><a href="practicals/<%= lecture.getId() %>/edit">Edit</a></td>
-						        <td><a href="practicals/<%= lecture.getId() %>/delete">Delete</a></td>
+						        <td><a href="lectures/<%= lecture.getId() %>/edit">Edit</a></td>
+						        <td>
+						        	<form action="<%= basePath %>/lectures" method="post">
+										<button type="submit" class="btn btn-danger">Delete</button>
+										<input type="hidden" name="delete-id" value="<%= lecture.getId() %>">
+									</form>
+								</td>
 						        <% } %>
 					        </tr>
 						<% } %>
