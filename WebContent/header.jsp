@@ -14,12 +14,14 @@
 <link rel="stylesheet" href="<%= basePathHeader %>/css/bootstrap.min.css">
 <link rel="stylesheet" href="<%= basePathHeader %>/css/bootstrap-theme.css">
 <link rel="stylesheet" href="<%= basePathHeader %>/css/bootstrap-table.min.css">
+<link rel="stylesheet" href="<%= basePathHeader %>/css/jasny-bootstrap.min.css">
 
 <!-- js libraries -->
 <script src="<%= basePathHeader %>/js/jquery.min.js"></script>
 <script src="<%= basePathHeader %>/js/bootstrap.min.js"></script>
 <script src="<%= basePathHeader %>/js/bootstrap-table.min.js"></script>
 <script src="<%= basePathHeader %>/js/bootstrap-typeahead.min.js"></script>
+<script src="<%= basePathHeader %>/js/jasny-bootstrap.min.js"></script>
 
 <!-- Custom javascripts variables -->
 <script>var basePath = "<%= basePathHeader %>";</script>

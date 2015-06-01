@@ -52,7 +52,11 @@
 			<div class="form-group">
 				<label for="upload" class="col-sm-2 control-label required">Upload files</label>
 				<div class="col-sm-10">
-					<input type="file" name="upload" id="upload" class="form-control" accept="application/msword, application/pdf">
+					<div class="fileinput fileinput-new input-group" data-provides="fileinput">
+  						<div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+  						<span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span><input type="file" name="..."></span>
+  						<a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+					</div>
 					<p class="help-block">File size not more then 10 MB. Allowed formats: pdf, doc, docx.</p>
 				</div>
 			</div>
