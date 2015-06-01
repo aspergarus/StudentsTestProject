@@ -91,7 +91,11 @@
 				<label for="avatar" class="col-sm-2 control-label required">Avatar</label>
 				<div class="col-sm-10">
 					<img src="<%= avatar %>" class="img-circle avatar-form">
-					<input type="file" name="avatar" class="form-control" accept=".gif,.jpg,.png,.doc,.pdf">
+					<div class="fileinput fileinput-new" data-provides="fileinput">
+  						<span class="btn btn-default btn-file"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span><input type="file" name="avatar"></span>
+  						<span class="fileinput-filename"></span>
+  						<a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">&times;</a>
+					</div>
 				</div>
 			</div>
 
