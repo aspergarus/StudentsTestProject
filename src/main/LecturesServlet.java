@@ -127,6 +127,7 @@ public class LecturesServlet extends HttpServlet {
 			// Create new practical
 			// Save uploaded file, and retrieve his path.
 			String fileName = uploadFile("upload", request);
+			fileName = fileName == null ? "" : fileName;
 			
 			// Get form values.
 			String subject = request.getParameter("subject").trim();
