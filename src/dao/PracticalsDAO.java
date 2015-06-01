@@ -227,7 +227,9 @@ public class PracticalsDAO {
 		if (!bean.getFileName().isEmpty()) {
 			query += ", fileName=? WHERE id = ?";
 		}
-		query += " WHERE id = ?";
+		else {
+			query += " WHERE id = ?";
+		}
 
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
