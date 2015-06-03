@@ -68,25 +68,23 @@ $(function () {
 	}
 	
 	// Date & Time block.
-	(function () {
-	    function checkTime(i) {
-	        return (i < 10) ? "0" + i : i;
-	    }
+	function checkTime(i) {
+		return (i < 10) ? "0" + i : i;
+	}
 
-	    function startTime() {
-	        var today = new Date(),
-	        	day = checkTime(today.getDay()),
-            	month = checkTime(today.getMonth() + 1),
-            	year = checkTime(today.getFullYear());
-	            hour = checkTime(today.getHours()),
-	            min = checkTime(today.getMinutes()),
-	            sec = checkTime(today.getSeconds());
-	        document.getElementById('time').innerHTML = day + "/" + month + "/" + year + " " + hour + ":" + min + ":" + sec;
-	        t = setTimeout(function () {
-	            startTime()
-	        }, 500);
-	    }
-	    startTime();
-	})();
-	
+	function startTime() {
+		var today = new Date();
+		day = checkTime(today.getDay());
+		month = checkTime(today.getMonth() + 1);
+		year = checkTime(today.getFullYear());
+		hour = checkTime(today.getHours());
+		min = checkTime(today.getMinutes());
+		sec = checkTime(today.getSeconds());
+		
+		document.getElementById('time').innerHTML = day + "/" + month + "/" + year + " " + hour + ":" + min + ":" + sec;
+		t = setTimeout(function () {
+			startTime()
+		}, 500);
+	}
+	startTime();
 });
