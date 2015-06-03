@@ -128,6 +128,32 @@ public class LecturesDAO {
 	}
 	
 	@SuppressWarnings("finally")
+    public static int findLecturesCountInSubject(String title, String subject) {
+		String query = "SELECT COUNT(*) as lecturesCount FROM practicals "
+				+ " WHERE title = ? AND subject = ?";
+
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		int lecturesCount = 0;
+
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setString(1, title);
+			stmt.setString(2, subject);
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				lecturesCount = rs.getInt("lecturesCount");
+			}
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		finally {
+			return lecturesCount;
+		}
+	}
+	
+	@SuppressWarnings("finally")
 	public static int equivalentFileCount(String fileName) {
 		String query = "SELECT COUNT(*) as filesCount FROM lectures "
 				+ " WHERE fileName LIKE ? ";
@@ -201,5 +227,36 @@ public class LecturesDAO {
 		finally {
 			return rowsAffected > 0;
 		}
+	}
+	
+	public static boolean update(LecturesBean bean) {
+		String query = "UPDATE lectures SET subject=?, title=?, body=?";
+		if (!bean.getFileName().isEmpty()) {
+			query += ", fileName=? WHERE id = ?";
+		}
+		else {
+			query += " WHERE id = ?";
+		}
+
+		ConnectionManager conM = new ConnectionManager();
+		con = conM.getConnection();
+		int rowsAffected = 0;
+		try (PreparedStatement updateStmt = con.prepareStatement(query)) {
+			updateStmt.setString(1, bean.getSubject());
+			updateStmt.setString(2, bean.getTitle());
+			updateStmt.setString(3, bean.getBody());
+			if (!bean.getFileName().isEmpty()) {
+				updateStmt.setString(4, bean.getFileName());
+				updateStmt.setInt(5, bean.getId());
+			}
+			else {
+				updateStmt.setInt(4, bean.getId());
+			}
+
+			rowsAffected = updateStmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return rowsAffected > 0;
 	}
 }
