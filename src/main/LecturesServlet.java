@@ -67,7 +67,7 @@ public class LecturesServlet extends HttpServlet {
 				request.getRequestDispatcher("lectures.jsp").forward(request, response);
 			}
 			else {
-				// Show specific practical
+				// Show specific lecture
 				LecturesBean lecturesBean = LecturesDAO.find(Integer.valueOf(id));
 				if (lecturesBean == null) {
 					session.setAttribute("status", "Warning");
