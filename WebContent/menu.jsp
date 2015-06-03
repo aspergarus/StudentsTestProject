@@ -36,6 +36,7 @@
 					</ul>
 				</li>
 				<li><a href="#" data-lang="en" class="translate-trigger"><img class="change-picture" src="<%= basePathMenu %>/imgs/ua.png"></a></li>
+				<li><p class="navbar-text" id="time"></p></li>
 			</ul>
 		</div>
 	</div>

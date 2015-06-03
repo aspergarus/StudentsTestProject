@@ -27,6 +27,14 @@ $(function () {
 	// Translate block.
 	var lang = localStorage.getItem("lang");
 	lang = lang ? lang : "en";
+	switch (lang) {
+		case "en":
+			$(".change-picture").attr('src', basePath + '/imgs/ua.png');
+			break;
+		case "ua":
+			$(".change-picture").attr('src', basePath + '/imgs/gb.png');
+			break;
+	}
 	updateTranslate(lang);
 	
 	$(".translate-trigger").click(function(e) {
@@ -58,6 +66,25 @@ $(function () {
 			});
 		});
 	}
-	// End of translate block.
+	
+	// Date & Time block.
+	function checkTime(i) {
+		return (i < 10) ? "0" + i : i;
+	}
 
+	function startTime() {
+		var today = new Date();
+		day = checkTime(today.getDay());
+		month = checkTime(today.getMonth() + 1);
+		year = checkTime(today.getFullYear());
+		hour = checkTime(today.getHours());
+		min = checkTime(today.getMinutes());
+		sec = checkTime(today.getSeconds());
+		
+		document.getElementById('time').innerHTML = day + "/" + month + "/" + year + " " + hour + ":" + min + ":" + sec;
+		t = setTimeout(function () {
+			startTime()
+		}, 500);
+	}
+	startTime();
 });

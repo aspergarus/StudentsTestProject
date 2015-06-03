@@ -71,8 +71,8 @@ public class LecturesServlet extends HttpServlet {
 			else {
 				// Show practical info, or editing form for practical/.
 				String jsp = edit ? "lecture-edit.jsp" : "lecture-view.jsp";
-				
-				// Show specific practical
+
+				//Show specific lecture
 				LecturesBean lecturesBean = LecturesDAO.find(Integer.valueOf(id));
 				if (lecturesBean == null) {
 					session.setAttribute("status", "Warning");
