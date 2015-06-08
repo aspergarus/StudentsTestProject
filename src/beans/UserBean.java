@@ -11,12 +11,25 @@ public class UserBean {
 	private byte role;
 	private String email;
 	private String avatarName = "";
+	private String group;
 	public boolean valid = false;
 
 	public UserBean(String name) {
 		this.userName = name;
 	}
 
+	public UserBean(String name, String password, String email,
+			byte role, String firstName, String lastName, String avatarName, String group) {
+		this.userName = name;
+		this.email = email;
+		this.role = role;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.avatarName = avatarName;
+		this.group = group;
+		this.setPassword(password);
+	}
+	
 	public UserBean(String name, String password, String email,
 			byte role, String firstName, String lastName, String avatarName) {
 		this.userName = name;
@@ -33,7 +46,6 @@ public class UserBean {
 	public String getFirstName() {
 		return firstName;
 	}
-
 	public void setFirstName(String newFirstName) {
 		firstName = newFirstName;
 	}
@@ -41,7 +53,6 @@ public class UserBean {
 	public String getLastName() {
 		return lastName;
 	}
-
 	public void setLastName(String newLastName) {
 		lastName = newLastName;
 	}
@@ -49,7 +60,6 @@ public class UserBean {
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String pass) {
 		password = pass;
 	}
@@ -62,7 +72,6 @@ public class UserBean {
 	public String getUsername() {
 		return userName;
 	}
-
 	public void setUserName(String name) {
 		userName = name;
 	}
@@ -70,7 +79,6 @@ public class UserBean {
 	public boolean isValid() {
 		return valid;
 	}
-
 	public void setValid(boolean newValid) {
 		valid = newValid;
 	}
@@ -78,7 +86,6 @@ public class UserBean {
 	public String getEmail() {
 		return email;
 	}
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
@@ -93,10 +100,16 @@ public class UserBean {
 	public byte getRole() {
 		return role;
 	}
-
 	public void setRole(byte role) {
 		this.role = role;
 	}
+	
+	public String getGroup() {
+	    return group;
+    }
+	public void setGroup(String group) {
+	    this.group = group;
+    }
 	
 	public String toString() {
 		return "id: " + id + ", "
@@ -105,6 +118,7 @@ public class UserBean {
 				+ "email: " + email + ", "
 				+ "first name: " + firstName + ", "
 				+ "last name: " + lastName + ", "
+				+ "Group: " + group + ", "
 				+ "file name: " + avatarName;
 	}
 
@@ -118,7 +132,6 @@ public class UserBean {
 	public void setId(int id) {
 		this.id = id;
 	}
-
 	public int getId() {
 		return id;
 	}

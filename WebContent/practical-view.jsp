@@ -1,6 +1,8 @@
 <%@page import="java.io.File"%>
 <%@page import="beans.UserBean"%>
 <%@page import="beans.PracticalsBean"%>
+<%@page import="dao.SubjectsDAO"%>
+<%@page import="java.util.Map"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
@@ -13,6 +15,7 @@
 <% String body = pBean.getBody(); %>
 <% String fileName = pBean.getFileName(); %>
 <% String fileExt = (fileName.lastIndexOf(".") > 0) ? fileName.substring(fileName.lastIndexOf(".") + 1) : "_blank"; %>
+<% Map<Integer, String> subjectsMap = SubjectsDAO.getSubjectsMap(); %>
 
 <%@ include file="header.jsp" %>
 
@@ -27,7 +30,7 @@
 </div>
 
 <div class="container">
-	<h1 class="lead"><%= pBean.getSubject() %></h1>
+	<h1 class="lead"><%= subjectsMap.get(pBean.getSubjectId()) %></h1>
 	<h2><%= pBean.getTitle() %></h2>
 	<% if (!body.isEmpty()) { %>
 		<div class="body"><%= body %></div>

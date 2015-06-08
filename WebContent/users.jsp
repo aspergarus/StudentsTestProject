@@ -25,6 +25,7 @@
 		            <th data-field="email" data-align="center" data-sortable="true">Email</th>
 		            <th data-field="firstName" data-align="center" data-sortable="true">First Name</th>
 		            <th data-field="lastName" data-align="center" data-sortable="true">Last Name</th>
+		            <th data-field="group" data-align="center" data-sortable="true">Group / Department</th>
 		            <th data-field="role" data-align="center" data-sortable="true">Role</th>
 		            <th data-field="edit" data-align="center">Edit</th>
 		        </tr>
@@ -41,6 +42,7 @@
 			        <td><% out.print(user.getEmail()); %></td>
 			        <td><% out.print(user.getFirstName()); %></td>
 			        <td><% out.print(user.getLastName()); %></td>
+			        <td><% out.print(user.getGroup()); %></td>
 			        <td><% out.print(user.getHumanRole()); %></td>
 			        <td><a href="<% out.print(basePath + "/user/" + user.getId()); %>" target="_blank">Edit</a></td>
 			    </tr>

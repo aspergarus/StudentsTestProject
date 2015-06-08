@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import util.FileUploadManager;
 import dao.PracticalsDAO;
+import dao.SubjectsDAO;
 import beans.PracticalsBean;
 import beans.UserBean;
 
@@ -127,13 +128,14 @@ public class PracticalsServlet extends HttpServlet {
 				String subject = request.getParameter("subject").trim();
 				String title = request.getParameter("title").trim();
 				String body = request.getParameter("body").trim();
+				
+				int subjectId = SubjectsDAO.findSubjectId(subject);
 
 				String errorMessage = practicalValidate(title, subject, 1);
 
 				if (errorMessage == null) {
 					PracticalsBean pBean = PracticalsDAO.find(Integer.valueOf(updateId));
 
-					
 					String filePath = request.getServletContext().getRealPath("") + File.separator + saveDir;
 					String uploadedFileName = FileUploadManager.getFileName("upload", request.getParts());
 					String fileName = "";
@@ -148,7 +150,7 @@ public class PracticalsServlet extends HttpServlet {
 					// Update fields in practical bean.
 					pBean.setTitle(title);
 					pBean.setBody(body);
-					pBean.setSubject(subject);
+					pBean.setSubjectId(subjectId);
 					pBean.setFileName(fileName);
 
 					if (PracticalsDAO.update(pBean)) {
@@ -178,12 +180,14 @@ public class PracticalsServlet extends HttpServlet {
 			String subject = request.getParameter("subject").trim();
 			String title = request.getParameter("title").trim();
 			String body = request.getParameter("body").trim();
+			
+			int subjectId = SubjectsDAO.findSubjectId(subject);
 
 			String errorMessage = practicalValidate(title, subject, 0);
 
 			if (errorMessage == null) {
 				// Create new practicals bean.
-				PracticalsBean bean = new PracticalsBean(user.getId(), subject, title, body, fileName);
+				PracticalsBean bean = new PracticalsBean(user.getId(), subjectId, title, body, fileName);
 				
 				if (PracticalsDAO.insert(bean)) {
 					session.setAttribute("status", "success");
@@ -203,12 +207,12 @@ public class PracticalsServlet extends HttpServlet {
 		}
 	}
 
-	private boolean practicalBelongSubject(String title, String subject, int numExisted) {
-		return PracticalsDAO.findPracticalsCountInSubject(title, subject) > numExisted;
+	private boolean practicalBelongSubject(String title, String subjectId, int numExisted) {
+		return PracticalsDAO.findPracticalsCountInSubject(title, subjectId) > numExisted;
 	}
 
-	private String practicalValidate(String title, String subject, int numExisted) {
-		if (practicalBelongSubject(title, subject, numExisted)) {
+	private String practicalValidate(String title, String subjectId, int numExisted) {
+		if (practicalBelongSubject(title, subjectId, numExisted)) {
 			return "Subject should not contain the same practicals";
 		}
 		return null;

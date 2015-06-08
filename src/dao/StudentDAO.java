@@ -39,9 +39,7 @@ public class StudentDAO {
 
 	@SuppressWarnings("finally")
 	public static Map<String, ArrayList<UserBean>> findAll() {
-		String query = "SELECT * FROM students s "
-				+ "INNER JOIN users u ON s.studentId = u.id "
-				+ "ORDER BY groupName";
+		String query = "SELECT * FROM users WHERE role = 0";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -54,10 +52,10 @@ public class StudentDAO {
 
 			String tmpGroupName = "", groupName = "";
 			while (rs.next()) {
-				groupName = rs.getString("groupName");
+				groupName = rs.getString("group");
 				UserBean bean = new UserBean();
 
-				bean.setId(rs.getInt("studentId"));
+				bean.setId(rs.getInt("id"));
 				bean.setFirstName(rs.getString("firstName"));
 				bean.setLastName(rs.getString("lastName"));
 

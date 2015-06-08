@@ -3,6 +3,8 @@
   "Practicals": {"ua": "Практичні", "en": "Practicals"},
   "Tests": {"ua": "Тести", "en": "Tests"},
   "Students": {"ua": "Студенти", "en": "Students"},
+  "Subjects": {"ua": "Предмети", "en": "Subjects"},
+  "Register": {"ua": "Зареєструвати юзера", "en": "Register"},
   "Home": {"ua": "Домівка", "en": "Home"},
   "Users": {"ua": "Юзерята", "en": "Users"},
   "Welcome": {"ua": "Привіт, куме ", "en": "Welcome"},

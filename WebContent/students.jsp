@@ -20,7 +20,7 @@
 		<p>${message}</p>
 	</div>
 	<% } %>
-	<h3 class="lead">Add practical</h3>
+	<h3 class="lead">Add students</h3>
 	<form action="<%= basePath %>/students" id="form" method="post"
 		class="form-horizontal">
 		<div class="form-group">

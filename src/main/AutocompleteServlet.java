@@ -13,8 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
-import dao.PracticalsDAO;
-import dao.LecturesDAO;
+import dao.SubjectsDAO;
 import dao.UserDAO;
 import beans.UserBean;
 
@@ -55,14 +54,9 @@ public class AutocompleteServlet extends HttpServlet {
 				list = UserDAO.findStudents(query);
 				out = gson.toJson(list);
 				break;
-
-			case "/practicalSubjects":
-				list = PracticalsDAO.findSubjects(query);
-				out = gson.toJson(list);
-				break;
-				
-			case "/lecturesSubjects":
-				list = LecturesDAO.findSubjects(query);
+			
+			case "/subjects":
+				list = SubjectsDAO.findSubjects(query);
 				out = gson.toJson(list);
 				break;
 
