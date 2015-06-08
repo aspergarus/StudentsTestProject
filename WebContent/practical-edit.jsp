@@ -1,6 +1,8 @@
 <%@page import="java.io.File"%>
 <%@page import="beans.UserBean"%>
 <%@page import="beans.PracticalsBean"%>
+<%@page import="dao.SubjectsDAO"%>
+<%@page import="java.util.Map"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
@@ -13,6 +15,7 @@
 <% String body = pBean.getBody(); %>
 <% String fileName = pBean.getFileName(); %>
 <% String fileExt = (fileName.lastIndexOf(".") > 0) ? fileName.substring(fileName.lastIndexOf(".") + 1) : "_blank"; %>
+<% Map<Integer, String> subjectsMap = SubjectsDAO.getSubjectsMap(); %>
 
 <%@ include file="header.jsp" %>
 
@@ -31,7 +34,7 @@
 			<label for="subject" class="col-sm-2 control-label">Subject*</label>
 			<div class="col-sm-10">
 				<input name="subject" type="text" class="form-control typeahead"
-					class="subject" required autocomplete="off" data-autocomplete-url="autocomplete/practicalSubjects" value="<%= pBean.getSubject() %>">
+					class="subject" required autocomplete="off" data-autocomplete-url="autocomplete/subjects" value="<%= subjectsMap.get(pBean.getSubjectId()) %>">
 			</div>
 		</div>
 

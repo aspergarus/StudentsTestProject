@@ -34,7 +34,7 @@
 				<label for="subject" class="col-sm-2 control-label">Subject*</label>
 				<div class="col-sm-10">
 					<input name="subject" type="text" class="form-control typeahead"
-						class="subject" required autocomplete="off" data-autocomplete-url="autocomplete/lecturesSubjects">
+						class="subject" required autocomplete="off" data-autocomplete-url="autocomplete/subjects">
 				</div>
 			</div>
 			<div class="form-group">

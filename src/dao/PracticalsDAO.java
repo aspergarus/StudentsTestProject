@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jasypt.util.password.StrongPasswordEncryptor;
-
 import beans.PracticalsBean;
 import config.ConnectionManager;
 
@@ -19,42 +17,48 @@ public class PracticalsDAO {
 
 	@SuppressWarnings("finally")
 	public static Map<String, ArrayList<PracticalsBean>> findAll(int teacherId) {
-		String query = "SELECT * FROM practicals WHERE teacherId = ? ORDER BY subject";
+		
+		String query = "SELECT * FROM practicals WHERE teacherId = ? ORDER BY subjectId";
 		
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
 
 		ArrayList<PracticalsBean> practicalList = new ArrayList<>();
 		Map<String, ArrayList<PracticalsBean>> practicalMap = new HashMap<>();
-
+		
+		Map<Integer, String> subjectsMap = SubjectsDAO.getSubjectsMap();
+		String subjectName;
+		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, teacherId);
 			rs = stmt.executeQuery();
 
-			String tmpSubject = "", subject = "";
+			int tmpSubjectId = 0, subjectId = 0;
 			while (rs.next()) {
-				subject = rs.getString("subject");
+				subjectId = rs.getInt("subjectId");
 				PracticalsBean bean = new PracticalsBean();
 				bean.setId(rs.getInt("id"));
 				bean.setTeacherId(teacherId);
 				bean.setTitle(rs.getString("title"));
-				bean.setSubject(subject);
+				bean.setSubjectId(subjectId);
 				bean.setBody(rs.getString("body"));
 				bean.setFileName(rs.getString("fileName"));
 
-				if (!tmpSubject.equals(subject) && tmpSubject.isEmpty()) {
-					tmpSubject = new String(subject);
+				if (tmpSubjectId != subjectId && tmpSubjectId == 0) {
+					tmpSubjectId = subjectId;
 				}
-				if (!tmpSubject.equals(subject)) {
-					practicalMap.put(tmpSubject, practicalList);
-
-					tmpSubject = new String(subject);
+				if (tmpSubjectId != subjectId) {
+					subjectName = subjectsMap.get(tmpSubjectId);
+					practicalMap.put(subjectName, practicalList);
+					
+					tmpSubjectId = subjectId;
 					practicalList = new ArrayList<>();
 				}
 				practicalList.add(bean);
 			}
 			if (!practicalList.isEmpty()) {
-				practicalMap.put(subject, practicalList);
+				subjectName = subjectsMap.get(subjectId);
+				practicalMap.put(subjectName, practicalList);
 			}
 		}
 		catch (SQLException e) {
@@ -68,7 +72,7 @@ public class PracticalsDAO {
 	@SuppressWarnings("finally")
 	public static boolean insert(PracticalsBean bean) {
 		String query = "INSERT INTO practicals "
-				+ "(teacherId, subject, title, body, fileName) "
+				+ "(teacherId, subjectId, title, body, fileName) "
 				+ "VALUES (?, ?, ?, ?, ?)";
 
 		ConnectionManager conM = new ConnectionManager();
@@ -78,7 +82,7 @@ public class PracticalsDAO {
 
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, bean.getTeacherId());
-			stmt.setString(2, bean.getSubject());
+			stmt.setInt(2, bean.getSubjectId());
 			stmt.setString(3, bean.getTitle());
 			stmt.setString(4, bean.getBody());
 			stmt.setString(5, bean.getFileName());
@@ -94,36 +98,9 @@ public class PracticalsDAO {
 	}
 
 	@SuppressWarnings("finally")
-	public static ArrayList<String> findSubjects(String subjectTitle) {
-		String query = "SELECT DISTINCT subject FROM practicals WHERE subject LIKE ?";
-		
-		ConnectionManager conM = new ConnectionManager();
-		con = conM.getConnection();
-
-		ArrayList<String> subjects = null;
-
-		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setString(1, "%" + subjectTitle.trim() + "%");
-			rs = stmt.executeQuery();
-
-			subjects = new ArrayList<>();
-
-			while (rs.next()) {
-				subjects.add(rs.getString("subject"));
-			}
-		}
-		catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		finally {
-			return subjects;
-		}
-	}
-
-	@SuppressWarnings("finally")
     public static int findPracticalsCountInSubject(String title, String subject) {
 		String query = "SELECT COUNT(*) as practicalsCount FROM practicals "
-				+ " WHERE title = ? AND subject = ?";
+				+ " WHERE title = ? AND subjectId = ?";
 
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -186,7 +163,7 @@ public class PracticalsDAO {
 			if (rs.next()) {
 				pBean = new PracticalsBean();
 				pBean.setId(id);
-				pBean.setSubject(rs.getString("subject"));
+				pBean.setSubjectId(rs.getInt("subjectId"));
 				pBean.setTitle(rs.getString("title"));
 				pBean.setBody(rs.getString("body"));
 				pBean.setFileName(rs.getString("fileName"));
@@ -223,7 +200,7 @@ public class PracticalsDAO {
 	}
 
 	public static boolean update(PracticalsBean bean) {
-		String query = "UPDATE practicals SET subject=?, title=?, body=?";
+		String query = "UPDATE practicals SET subjectId=?, title=?, body=?";
 		if (!bean.getFileName().isEmpty()) {
 			query += ", fileName=? WHERE id = ?";
 		}
@@ -235,7 +212,7 @@ public class PracticalsDAO {
 		con = conM.getConnection();
 		int rowsAffected = 0;
 		try (PreparedStatement updateStmt = con.prepareStatement(query)) {
-			updateStmt.setString(1, bean.getSubject());
+			updateStmt.setInt(1, bean.getSubjectId());
 			updateStmt.setString(2, bean.getTitle());
 			updateStmt.setString(3, bean.getBody());
 			if (!bean.getFileName().isEmpty()) {

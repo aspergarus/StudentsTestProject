@@ -18,14 +18,15 @@ import util.FileUploadManager;
 import beans.LecturesBean;
 import beans.UserBean;
 import dao.LecturesDAO;
+import dao.SubjectsDAO;
 
 /**
  * Servlet implementation class LecturesServlet
  */
 @WebServlet("/lectures")
 @MultipartConfig(fileSizeThreshold=1024*1024*2, // 2MB
-maxFileSize=1024*1024*10,      // 10MB
-maxRequestSize=1024*1024*50)   // 50MB
+				 maxFileSize=1024*1024*10,      // 10MB
+				 maxRequestSize=1024*1024*50)   // 50MB
 public class LecturesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public static final String saveDir = "files" + File.separator + "lecturesFiles";
@@ -137,7 +138,7 @@ public class LecturesServlet extends HttpServlet {
 				String title = request.getParameter("title").trim();
 				String body = request.getParameter("body").trim();
 				
-				int subjectId = LecturesDAO.findSubjectId(subject);
+				int subjectId = SubjectsDAO.findSubjectId(subject);
 
 				String errorMessage = lectureValidate(title, subjectId, 1);
 
@@ -189,7 +190,7 @@ public class LecturesServlet extends HttpServlet {
 			String title = request.getParameter("title").trim();
 			String body = request.getParameter("body").trim();
 			
-			int subjectId = LecturesDAO.findSubjectId(subject);
+			int subjectId = SubjectsDAO.findSubjectId(subject);
 			
 			String errorMessage = lectureValidate(title, subjectId, 0);
 			

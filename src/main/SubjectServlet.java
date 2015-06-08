@@ -109,9 +109,9 @@ public class SubjectServlet extends HttpServlet {
 				String subjectName = request.getParameter("subjectName").trim();
 				String department = request.getParameter("department").trim();
 
-				boolean errorMessage = true;
+				String errorMessage = SubjectsDAO.subjectValidate(subjectName, department);
 
-				if (errorMessage) {
+				if (errorMessage == null) {
 					SubjectsBean sBean = SubjectsDAO.find(Integer.valueOf(updateId));
 
 					// Update fields in subject bean.
@@ -140,10 +140,9 @@ public class SubjectServlet extends HttpServlet {
 			String subjectName = request.getParameter("subjectName").trim();
 			String department = request.getParameter("department").trim();
 			
-			//TODO: Check if subject is unique
-			boolean errorMessage = true;
+			String errorMessage = SubjectsDAO.subjectValidate(subjectName, department);
 			
-			if (errorMessage) {
+			if (errorMessage == null) {
 				SubjectsBean bean = new SubjectsBean(subjectName, department);
 				
 				if (SubjectsDAO.insert(bean)) {

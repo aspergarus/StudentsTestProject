@@ -107,7 +107,7 @@ public class SubjectsDAO {
 
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, id);
-			ResultSet rs = stmt.executeQuery();
+			rs = stmt.executeQuery();
 
 			if (rs.next()) {
 				sBean = new SubjectsBean();
@@ -189,6 +189,48 @@ public class SubjectsDAO {
 		finally {
 			return subjects;
 		}
+	}
+	
+	@SuppressWarnings("finally")
+    public static int findSubjectId(String subject) {
+		String query = "SELECT id FROM subjects WHERE subjectName = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		int id = 0;
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setString(1, subject);
+			rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				id = rs.getInt("id");
+			}
+		} catch (SQLException e) {
+	        System.out.println(e.getMessage());
+        } finally {
+        	return id;
+        }
+	}
+	
+	public static String subjectValidate(String subjectName, String department) {
+		String query = "SELECT * FROM subjects WHERE subjectName = ? AND department = ?";
+		String errorMessage = null;
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		
+		try (PreparedStatement updateStmt = con.prepareStatement(query)) {
+			updateStmt.setString(1, subjectName);
+			updateStmt.setString(2, department);
+
+			rs = updateStmt.executeQuery();
+			if (rs.next()) {
+				errorMessage = "This subject is already exist. Change Subject name or Department.";
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return errorMessage;
 	}
 	
 }

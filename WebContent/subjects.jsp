@@ -31,7 +31,7 @@
 				<label for="subjectName" class="col-sm-2 control-label">Subject name*</label>
 				<div class="col-sm-10">
 					<input name="subjectName" type="text" class="form-control typeahead"
-						class="subjectName" required autocomplete="off" data-autocomplete-url="autocomplete/subjects">
+						class="subjectName" required autocomplete="off">
 				</div>
 			</div>
 			<div class="form-group">
@@ -58,8 +58,8 @@
 				<% if (user.getRole() == 2) { %>
 				<th data-field="id" data-align="center" data-sortable="true">ID</th>
 				<% } %>
-				<th data-field="subjectName" data-align="center" data-sortable="true">Subject Name</th>
 				<th data-field="department" data-align="center" data-sortable="true">Department</th>
+				<th data-field="subjectName" data-align="center" data-sortable="true">Subject Name</th>
 				<th data-field="teacher" data-align="center" data-sortable="true">Teacher</th>
 				<% if (user.getRole() == 2) { %>
 				<th data-field="edit" data-align="center">Edit</th>
@@ -73,8 +73,8 @@
 					<% if (user.getRole() == 2) { %>
 			        <td><% out.print(subject.getId()); %></td>
 			        <% } %>
-			        <td><% out.print(subject.getSubjectName()); %></td>
 			        <td><% out.print(subject.getDepartment()); %></td>
+			        <td><% out.print(subject.getSubjectName()); %></td>
 			        <td><% out.print(subject.getTeacherId() == 0 ? "Викладач не призначений" : subject.getTeacherId()); %></td>	
 			        <% if (user.getRole() == 2) { %>
 			        <td><a href="subjects?edit=true&id=<%= subject.getId() %>">Edit</a></td>

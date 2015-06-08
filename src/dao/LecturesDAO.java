@@ -81,7 +81,7 @@ public class LecturesDAO {
 	@SuppressWarnings("finally")
 	public static boolean insert(LecturesBean bean) {
 		String query = "INSERT INTO lectures "
-				+ "(teacherId, subjectId, title, body, filename) "
+				+ "(teacherId, subjectId, title, body, fileName) "
 				+ "VALUES (?, ?, ?, ?, ?)";
 
 		ConnectionManager conM = new ConnectionManager();
@@ -103,33 +103,6 @@ public class LecturesDAO {
 		}
 		finally {
 			return rowsAffected > 0;
-		}
-	}
-
-	@SuppressWarnings("finally")
-	public static ArrayList<String> findSubjects(String subjectTitle) {
-		String query = "SELECT DISTINCT subject FROM lectures WHERE subject LIKE ?";
-		
-		ConnectionManager conM = new ConnectionManager();
-		con = conM.getConnection();
-
-		ArrayList<String> subjects = null;
-
-		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setString(1, "%" + subjectTitle.trim() + "%");
-			rs = stmt.executeQuery();
-
-			subjects = new ArrayList<>();
-
-			while (rs.next()) {
-				subjects.add(rs.getString("subject"));
-			}
-		}
-		catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		finally {
-			return subjects;
 		}
 	}
 	
@@ -266,26 +239,5 @@ public class LecturesDAO {
 		return rowsAffected > 0;
 	}
 	
-	@SuppressWarnings("finally")
-    public static int findSubjectId(String subject) {
-		String query = "SELECT id FROM subjects WHERE subjectName = ?";
-		
-		ConnectionManager conM = new ConnectionManager();
-		Connection con = conM.getConnection();
-		int id = 0;
-		
-		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setString(1, subject);
-			ResultSet rs = stmt.executeQuery();
-			
-			if (rs.next()) {
-				id = rs.getInt("id");
-			}
-		} catch (SQLException e) {
-	        System.out.println(e.getMessage());
-        } finally {
-        	return id;
-        }
-		
-	}
+	
 }
