@@ -12,11 +12,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
-
 import util.FileUploadManager;
+import beans.FileBean;
 import beans.LecturesBean;
 import beans.UserBean;
+import dao.FileDAO;
 import dao.LecturesDAO;
 import dao.SubjectsDAO;
 
@@ -105,17 +105,11 @@ public class LecturesServlet extends HttpServlet {
 				int id = Integer.valueOf(deleteId);
 				LecturesBean lBean = LecturesDAO.find(id);
 
-				// Delete file from file system.
-				if (!lBean.getFileName().isEmpty()) {
-					String savePath = request.getServletContext().getRealPath("") + File.separator + saveDir;
-					File file = new File(savePath + File.separator + lBean.getFileName());
-						 
-					if(file.delete()){
-						System.out.println(file.getName() + " is deleted!");
-					} else {
-						System.out.println("Delete operation is failed.");
-					}
-				}
+				// Delete file from file system and from db.
+				ArrayList<FileBean> fileBeans = FileDAO.findAll(lBean.getId());
+				String savePath = request.getServletContext().getRealPath("") + File.separator + saveDir;
+				FileUploadManager.deleteFiles(fileBeans, savePath);
+				FileDAO.deleteAll(fileBeans);
 
 				boolean deletedFlag = LecturesDAO.delete(id);
 				if (deletedFlag) {
@@ -145,22 +139,26 @@ public class LecturesServlet extends HttpServlet {
 				if (errorMessage == null) {
 					LecturesBean lBean = LecturesDAO.find(Integer.valueOf(updateId));
 
+					// Upload additional files.
 					String filePath = request.getServletContext().getRealPath("") + File.separator + saveDir;
-					String uploadedFileName = FileUploadManager.getFileName("upload", request.getParts());
-					String fileName = "";
-					if (!uploadedFileName.isEmpty()) {
-						// Save uploaded file, and retrieve his path.
-						fileName = FileUploadManager.uploadFile("upload", filePath, request.getParts());
+					ArrayList<String> fileNames = FileUploadManager.uploadFiles("upload", filePath, request.getParts());
 
-						// Delete existed file.
-						FileUploadManager.delete(filePath + File.separator + lBean.getFileName());
+					// Save uploaded files in DB.
+					if (!fileNames.isEmpty()) {
+						if (FileDAO.insert(lBean.getId(), saveDir, fileNames)) {
+							session.setAttribute("status", "success");
+							session.setAttribute("message", "Lecture has been added");
+						}
+						else {
+							session.setAttribute("status", "danger");
+							session.setAttribute("message", "Some troubles were occurred during writing file info to db");
+						}
 					}
 
 					// Update fields in lecture bean.
 					lBean.setTitle(title);
 					lBean.setBody(body);
 					lBean.setSubjectId(subjectId);
-					lBean.setFileName(fileName);
 
 					if (LecturesDAO.update(lBean)) {
 						session.setAttribute("status", "success");
@@ -181,9 +179,9 @@ public class LecturesServlet extends HttpServlet {
 			}
 			
 			// Create new lecture
-			// Save uploaded file, and retrieve his path.
-			String fileName = uploadFile("upload", request);
-			fileName = fileName == null ? "" : fileName;
+			// Save uploaded files, and retrieve their names.
+			String filePath = request.getServletContext().getRealPath("") + File.separator + saveDir;
+			ArrayList<String> fileNames = FileUploadManager.uploadFiles("upload", filePath, request.getParts());
 			
 			// Get form values.
 			String subject = request.getParameter("subject").trim();
@@ -196,11 +194,24 @@ public class LecturesServlet extends HttpServlet {
 			
 			if (errorMessage == null) {
 				// Create new lectures bean.
-				LecturesBean bean = new LecturesBean(user.getId(), subjectId, title, body, fileName);
+				LecturesBean bean = new LecturesBean(user.getId(), subjectId, title, body);
 				
 				if (LecturesDAO.insert(bean)) {
-					session.setAttribute("status", "success");
-					session.setAttribute("message", "Lecture has been added");
+					if (fileNames.isEmpty()) {
+						session.setAttribute("status", "success");
+						session.setAttribute("message", "Lecture has been added");
+					}
+					else {
+						bean = LecturesDAO.find(subjectId, title);
+						if (FileDAO.insert(bean.getId(), saveDir, fileNames)) {
+							session.setAttribute("status", "success");
+							session.setAttribute("message", "Lecture has been added");
+						}
+						else {
+							session.setAttribute("status", "danger");
+							session.setAttribute("message", "Some troubles were occurred during writing file info to db");
+						}
+					}
 				}
 				else {
 					session.setAttribute("status", "danger");
@@ -216,59 +227,6 @@ public class LecturesServlet extends HttpServlet {
 		}
 	}
 
-	private String uploadFile(String fileFieldName, HttpServletRequest request) {
-		String appPath = request.getServletContext().getRealPath("");
-		String savePath = appPath + File.separator + saveDir;
-		String fileName = null;
-
-		try {
-			for (Part part : request.getParts()) {
-				String name = part.getName();
-				if (name.equals(fileFieldName)) {
-					fileName = extractFileName(part);
-					if (!fileName.isEmpty()) {
-						fileName = checkExistingFileName(fileName);
-						part.write(savePath + File.separator + fileName);
-					}
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return fileName;
-	}
-	
-	/**
-	 * Extracts file name from HTTP header content-disposition
-	 */
-	private String extractFileName(Part part) {
-		String contentDisp = part.getHeader("content-disposition");
-		String[] items = contentDisp.split(";");
-		for (String s : items) {
-			if (s.trim().startsWith("filename")) {
-				return s.substring(s.indexOf("=") + 2, s.length()-1);
-			}
-		}
-		return "";
-	}
-	
-	private String checkExistingFileName(String fileFullName) {
-		String fileExt = null, fileName = null;
-		if (fileFullName.indexOf(".") > 0) {
-			fileExt = fileFullName.substring(fileFullName.indexOf("."));
-			fileName = fileFullName.substring(0, fileFullName.indexOf("."));
-		}
-		else {
-			fileExt = "";
-			fileName = fileFullName;
-		}
-		int count = LecturesDAO.equivalentFileCount(fileName);
-		if (count == 0) {
-			return fileFullName;
-		}
-		return fileName + "_" + (count + 1) + fileExt;
-	}
-	
 	private boolean lectureBelongSubject(String title, int subjectId, int numExisted) {
 		return LecturesDAO.findLecturesCountInSubject(title, subjectId) > numExisted;
 	}

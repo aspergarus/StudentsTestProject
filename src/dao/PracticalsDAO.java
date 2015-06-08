@@ -42,7 +42,6 @@ public class PracticalsDAO {
 				bean.setTitle(rs.getString("title"));
 				bean.setSubjectId(subjectId);
 				bean.setBody(rs.getString("body"));
-				bean.setFileName(rs.getString("fileName"));
 
 				if (tmpSubjectId != subjectId && tmpSubjectId == 0) {
 					tmpSubjectId = subjectId;
@@ -72,8 +71,8 @@ public class PracticalsDAO {
 	@SuppressWarnings("finally")
 	public static boolean insert(PracticalsBean bean) {
 		String query = "INSERT INTO practicals "
-				+ "(teacherId, subjectId, title, body, fileName) "
-				+ "VALUES (?, ?, ?, ?, ?)";
+				+ "(teacherId, subjectId, title, body) "
+				+ "VALUES (?, ?, ?, ?)";
 
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
@@ -85,7 +84,6 @@ public class PracticalsDAO {
 			stmt.setInt(2, bean.getSubjectId());
 			stmt.setString(3, bean.getTitle());
 			stmt.setString(4, bean.getBody());
-			stmt.setString(5, bean.getFileName());
 
 			rowsAffected = stmt.executeUpdate();
 		}
@@ -124,31 +122,6 @@ public class PracticalsDAO {
 	}
 
 	@SuppressWarnings("finally")
-	public static int equivalentFileCount(String fileName) {
-		String query = "SELECT COUNT(*) as filesCount FROM practicals "
-				+ " WHERE fileName LIKE ? ";
-
-		ConnectionManager conM = new ConnectionManager();
-		Connection con = conM.getConnection();
-		int filesCount = 0;
-
-		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setString(1, fileName + "%");
-			ResultSet rs = stmt.executeQuery();
-
-			if (rs.next()) {
-				filesCount = rs.getInt("filesCount");
-			}
-		}
-		catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		finally {
-			return filesCount;
-		}
-	}
-
-	@SuppressWarnings("finally")
     public static PracticalsBean find(int id) {
 		String query = "SELECT * FROM practicals WHERE id = ?";
 
@@ -166,7 +139,6 @@ public class PracticalsDAO {
 				pBean.setSubjectId(rs.getInt("subjectId"));
 				pBean.setTitle(rs.getString("title"));
 				pBean.setBody(rs.getString("body"));
-				pBean.setFileName(rs.getString("fileName"));
 			}
 		}
 		catch (SQLException e) {
@@ -200,13 +172,7 @@ public class PracticalsDAO {
 	}
 
 	public static boolean update(PracticalsBean bean) {
-		String query = "UPDATE practicals SET subjectId=?, title=?, body=?";
-		if (!bean.getFileName().isEmpty()) {
-			query += ", fileName=? WHERE id = ?";
-		}
-		else {
-			query += " WHERE id = ?";
-		}
+		String query = "UPDATE practicals SET subjectId=?, title=?, body=? WHERE id = ?";
 
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
@@ -215,13 +181,7 @@ public class PracticalsDAO {
 			updateStmt.setInt(1, bean.getSubjectId());
 			updateStmt.setString(2, bean.getTitle());
 			updateStmt.setString(3, bean.getBody());
-			if (!bean.getFileName().isEmpty()) {
-				updateStmt.setString(4, bean.getFileName());
-				updateStmt.setInt(5, bean.getId());
-			}
-			else {
-				updateStmt.setInt(4, bean.getId());
-			}
+			updateStmt.setInt(4, bean.getId());
 
 			rowsAffected = updateStmt.executeUpdate();
 		} catch (SQLException e) {
@@ -229,4 +189,31 @@ public class PracticalsDAO {
 		}
 		return rowsAffected > 0;
 	}
+
+	public static PracticalsBean find(int subjectId, String title) {
+		String query = "SELECT * FROM practicals WHERE subjectId = ? AND title = ?";
+
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		PracticalsBean pBean = null;
+
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, subjectId);
+			stmt.setString(2, title);
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				pBean = new PracticalsBean();
+				pBean.setId(rs.getInt("id"));
+				pBean.setSubjectId(rs.getInt("subjectId"));
+				pBean.setTitle(rs.getString("title"));
+				pBean.setBody(rs.getString("body"));
+			}
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return pBean;
+	}
+
 }

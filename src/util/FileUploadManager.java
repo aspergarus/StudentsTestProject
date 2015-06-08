@@ -1,9 +1,12 @@
 package util;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.servlet.http.Part;
+
+import beans.FileBean;
 
 
 public class FileUploadManager {
@@ -43,8 +46,9 @@ public class FileUploadManager {
 		return fileName;
 	}
 
-	public static String uploadFile(String fileFieldName, String savePath, Collection<Part> collection) {
-		String fileName = null, filePath = "";
+	public static ArrayList<String> uploadFiles(String fileFieldName, String savePath, Collection<Part> collection) {
+		String fileName, filePath;
+		ArrayList<String> fileNames = new ArrayList<>();
 
 		try {
 			for (Part part : collection) {
@@ -54,13 +58,14 @@ public class FileUploadManager {
 					if (!fileName.isEmpty()) {
 						filePath = createNewFileName(fileName, savePath);
 						part.write(filePath);
+						fileNames.add(filePath.substring(filePath.lastIndexOf(File.separator) + 1));
 					}
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return filePath.substring(filePath.lastIndexOf(File.separator) + 1);
+		return fileNames;
 	}
 
 	/**
@@ -85,6 +90,21 @@ public class FileUploadManager {
 				System.out.println(file.getName() + " is deleted!");
 			}else{
 				System.out.println("Delete operation is failed.");
+			}
+		}
+	}
+
+	public static void deleteFiles(ArrayList<FileBean> fileBeans, String path) {
+		if (!fileBeans.isEmpty()) {
+			for (FileBean bean : fileBeans) {
+				
+				File file = new File(path + File.separator + bean.getName());
+					 
+				if(file.delete()){
+					System.out.println(file.getName() + " is deleted!");
+				} else {
+					System.out.println("Delete operation is failed.");
+				}
 			}
 		}
 	}

@@ -10,18 +10,20 @@
 <link rel="shortcut icon" href="<%= basePathHeader %>/favicon.ico" type="image/x-icon">
 <link rel="icon" href="<%= basePathHeader %>/favicon.ico" type="image/x-icon">
 
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="<%= basePathHeader %>/css/style.css">
 <link rel="stylesheet" href="<%= basePathHeader %>/css/bootstrap.min.css">
 <link rel="stylesheet" href="<%= basePathHeader %>/css/bootstrap-theme.css">
 <link rel="stylesheet" href="<%= basePathHeader %>/css/bootstrap-table.min.css">
-<link rel="stylesheet" href="<%= basePathHeader %>/css/jasny-bootstrap.min.css">
+<link rel="stylesheet" href="<%= basePathHeader %>/css/fileinput.min.css">
 
 <!-- js libraries -->
 <script src="<%= basePathHeader %>/js/jquery.min.js"></script>
 <script src="<%= basePathHeader %>/js/bootstrap.min.js"></script>
 <script src="<%= basePathHeader %>/js/bootstrap-table.min.js"></script>
 <script src="<%= basePathHeader %>/js/bootstrap-typeahead.min.js"></script>
-<script src="<%= basePathHeader %>/js/jasny-bootstrap.min.js"></script>
+<script src="<%= basePathHeader %>/js/fileinput.js"></script>
+<script src="<%= basePathHeader %>/js/fileinput_locale_uk.js"></script>
 
 
 <!-- Custom javascripts variables -->

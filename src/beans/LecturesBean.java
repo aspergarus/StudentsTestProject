@@ -5,9 +5,7 @@ public class LecturesBean {
 	private int teacherId;
 	private int subjectId;
 	private String title;
-	private String body = "";
-	private String fileName = "";
-	
+	private String body = "";	
 	
 	public int getId() {
 		return id;
@@ -44,26 +42,17 @@ public class LecturesBean {
 		this.body = body;
 	}
 	
-	public String getFileName() {
-		return fileName;
-	}
-	
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-	
-	public LecturesBean(int teacher, int subjectId, String title, String body, String fileName) {
+	public LecturesBean(int teacher, int subjectId, String title, String body) {
 		this.teacherId = teacher;
 		this.subjectId = subjectId;
 		this.title = title;
 		this.body = body;
-		this.fileName = fileName;
 	}
 	public LecturesBean() {}
 	
 	@Override
 	public String toString() {
-		return this.title + " " + this.body + " " + this.fileName;
+		return this.title + " " + this.body;
 	}
 	
 }

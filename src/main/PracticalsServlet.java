@@ -14,8 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import util.FileUploadManager;
+import dao.FileDAO;
+import dao.LecturesDAO;
 import dao.PracticalsDAO;
 import dao.SubjectsDAO;
+import beans.FileBean;
 import beans.PracticalsBean;
 import beans.UserBean;
 
@@ -105,8 +108,10 @@ public class PracticalsServlet extends HttpServlet {
 				PracticalsBean pBean = PracticalsDAO.find(id);
 
 				// Delete file from file system.
-				String filePath = request.getServletContext().getRealPath("") + File.separator + saveDir;
-				FileUploadManager.delete(filePath + File.separator + pBean.getFileName());
+				ArrayList<FileBean> fileBeans = FileDAO.findAll(pBean.getId());
+				String savePath = request.getServletContext().getRealPath("") + File.separator + saveDir;
+				FileUploadManager.deleteFiles(fileBeans, savePath);
+				FileDAO.deleteAll(fileBeans);
 
 				boolean deletedFlag = PracticalsDAO.delete(id);
 				if (deletedFlag) {
@@ -136,22 +141,26 @@ public class PracticalsServlet extends HttpServlet {
 				if (errorMessage == null) {
 					PracticalsBean pBean = PracticalsDAO.find(Integer.valueOf(updateId));
 
+					// Upload additional files.
 					String filePath = request.getServletContext().getRealPath("") + File.separator + saveDir;
-					String uploadedFileName = FileUploadManager.getFileName("upload", request.getParts());
-					String fileName = "";
-					if (!uploadedFileName.isEmpty()) {
-						// Save uploaded file, and retrieve his path.
-						fileName = FileUploadManager.uploadFile("upload", filePath, request.getParts());
+					ArrayList<String> fileNames = FileUploadManager.uploadFiles("upload", filePath, request.getParts());
 
-						// Delete existed file.
-						FileUploadManager.delete(filePath + File.separator + pBean.getFileName());
+					// Save uploaded files in DB.
+					if (!fileNames.isEmpty()) {
+						if (FileDAO.insert(pBean.getId(), saveDir, fileNames)) {
+							session.setAttribute("status", "success");
+							session.setAttribute("message", "Lecture has been added");
+						}
+						else {
+							session.setAttribute("status", "danger");
+							session.setAttribute("message", "Some troubles were occurred during writing file info to db");
+						}
 					}
 
 					// Update fields in practical bean.
 					pBean.setTitle(title);
 					pBean.setBody(body);
 					pBean.setSubjectId(subjectId);
-					pBean.setFileName(fileName);
 
 					if (PracticalsDAO.update(pBean)) {
 						session.setAttribute("status", "success");
@@ -174,7 +183,7 @@ public class PracticalsServlet extends HttpServlet {
 			// Create new practical
 			// Save uploaded file, and retrieve his path.
 			String filePath = request.getServletContext().getRealPath("") + File.separator + saveDir;
-			String fileName = FileUploadManager.uploadFile("upload", filePath, request.getParts());
+			ArrayList<String> fileNames = FileUploadManager.uploadFiles("upload", filePath, request.getParts());
 
 			// Get form values.
 			String subject = request.getParameter("subject").trim();
@@ -187,11 +196,24 @@ public class PracticalsServlet extends HttpServlet {
 
 			if (errorMessage == null) {
 				// Create new practicals bean.
-				PracticalsBean bean = new PracticalsBean(user.getId(), subjectId, title, body, fileName);
+				PracticalsBean bean = new PracticalsBean(user.getId(), subjectId, title, body);
 				
 				if (PracticalsDAO.insert(bean)) {
-					session.setAttribute("status", "success");
-					session.setAttribute("message", "Practical has been added");
+					if (fileNames.isEmpty()) {
+						session.setAttribute("status", "success");
+						session.setAttribute("message", "Practical has been added");
+					}
+					else {
+						bean = PracticalsDAO.find(subjectId, title);
+						if (FileDAO.insert(bean.getId(), saveDir, fileNames)) {
+							session.setAttribute("status", "success");
+							session.setAttribute("message", "Practical has been added");
+						}
+						else {
+							session.setAttribute("status", "danger");
+							session.setAttribute("message", "Some troubles were occurred during writing file info to db");
+						}
+					}
 				}
 				else {
 					session.setAttribute("status", "danger");

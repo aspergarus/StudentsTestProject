@@ -6,7 +6,6 @@ public class PracticalsBean {
 	private int subjectId;
 	private String title;
 	private String body = "";
-	private String fileName = "";
 
 	public int getId() {
 		return id;
@@ -32,12 +31,6 @@ public class PracticalsBean {
 	public void setBody(String body) {
 		this.body = body;
 	}
-	public String getFileName() {
-		return fileName;
-	}
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
 
 	public int getSubjectId() {
 		return subjectId;
@@ -46,17 +39,16 @@ public class PracticalsBean {
 		this.subjectId = subjectId;
 	}
 
-	public PracticalsBean(int teacher, int subjectId, String title, String body, String fileName) {
+	public PracticalsBean(int teacher, int subjectId, String title, String body) {
 		this.teacherId = teacher;
 		this.subjectId = subjectId;
 		this.title = title;
 		this.body = body;
-		this.fileName = fileName;
 	}
 	public PracticalsBean() {}
 	
 	@Override
 	public String toString() {
-		return this.title + " " + this.body + " " + this.fileName;
+		return this.title + " " + this.body;
 	}
 }

@@ -52,7 +52,6 @@ public class LecturesDAO {
 				bean.setTitle(rs.getString("title"));
 				bean.setSubjectId(subjectId);
 				bean.setBody(rs.getString("body"));
-				bean.setFileName(rs.getString("filename"));
 
 				if (tmpSubjectId != subjectId && tmpSubjectId == 0) {
 					tmpSubjectId = subjectId;
@@ -81,8 +80,8 @@ public class LecturesDAO {
 	@SuppressWarnings("finally")
 	public static boolean insert(LecturesBean bean) {
 		String query = "INSERT INTO lectures "
-				+ "(teacherId, subjectId, title, body, fileName) "
-				+ "VALUES (?, ?, ?, ?, ?)";
+				+ "(teacherId, subjectId, title, body) "
+				+ "VALUES (?, ?, ?, ?)";
 
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
@@ -94,7 +93,6 @@ public class LecturesDAO {
 			stmt.setInt(2, bean.getSubjectId());
 			stmt.setString(3, bean.getTitle());
 			stmt.setString(4, bean.getBody());
-			stmt.setString(5, bean.getFileName());
 
 			rowsAffected = stmt.executeUpdate();
 		}
@@ -131,34 +129,9 @@ public class LecturesDAO {
 			return lecturesCount;
 		}
 	}
-	
+
 	@SuppressWarnings("finally")
-	public static int equivalentFileCount(String fileName) {
-		String query = "SELECT COUNT(*) as filesCount FROM lectures "
-				+ " WHERE fileName LIKE ? ";
-
-		ConnectionManager conM = new ConnectionManager();
-		Connection con = conM.getConnection();
-		int filesCount = 0;
-
-		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setString(1, fileName + "%");
-			ResultSet rs = stmt.executeQuery();
-
-			if (rs.next()) {
-				filesCount = rs.getInt("filesCount");
-			}
-		}
-		catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		finally {
-			return filesCount;
-		}
-	}
-	
-	@SuppressWarnings("finally")
-    public static LecturesBean find(int id) {
+	public static LecturesBean find(int id) {
 		String query = "SELECT * FROM lectures WHERE id = ?";
 
 		ConnectionManager conM = new ConnectionManager();
@@ -175,7 +148,6 @@ public class LecturesDAO {
 				lBean.setSubjectId(rs.getInt("subjectId"));
 				lBean.setTitle(rs.getString("title"));
 				lBean.setBody(rs.getString("body"));
-				lBean.setFileName(rs.getString("fileName"));
 			}
 		}
 		catch (SQLException e) {
@@ -209,13 +181,7 @@ public class LecturesDAO {
 	}
 	
 	public static boolean update(LecturesBean bean) {
-		String query = "UPDATE lectures SET subjectId=?, title=?, body=?";
-		if (!bean.getFileName().isEmpty()) {
-			query += ", fileName=? WHERE id = ?";
-		}
-		else {
-			query += " WHERE id = ?";
-		}
+		String query = "UPDATE lectures SET subjectId=?, title=?, body=? WHERE id = ?";
 
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
@@ -224,19 +190,39 @@ public class LecturesDAO {
 			updateStmt.setInt(1, bean.getSubjectId());
 			updateStmt.setString(2, bean.getTitle());
 			updateStmt.setString(3, bean.getBody());
-			if (!bean.getFileName().isEmpty()) {
-				updateStmt.setString(4, bean.getFileName());
-				updateStmt.setInt(5, bean.getId());
-			}
-			else {
-				updateStmt.setInt(4, bean.getId());
-			}
+			updateStmt.setInt(4, bean.getId());
 
 			rowsAffected = updateStmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
 		return rowsAffected > 0;
+	}
+
+	public static LecturesBean find(int subjectId, String title) {
+		String query = "SELECT * FROM lectures WHERE subjectId = ? and title = ?";
+
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		LecturesBean lBean = null;
+
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, subjectId);
+			stmt.setString(2, title);
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				lBean = new LecturesBean();
+				lBean.setId(rs.getInt("id"));
+				lBean.setSubjectId(rs.getInt("subjectId"));
+				lBean.setTitle(rs.getString("title"));
+				lBean.setBody(rs.getString("body"));
+			}
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return lBean;
 	}
 	
 	

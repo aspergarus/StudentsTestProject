@@ -87,4 +87,20 @@ $(function () {
 		}, 500);
 	}
 	startTime();
+
+	multipleFileUploadConfiguration();
+
+	function multipleFileUploadConfiguration() {
+		$("#upload").fileinput({
+			'showUpload': false,
+			'showPreview': false,
+			'showCaption': false,
+			'showCancel': false,
+			'showUploadedThumbs': false,
+			'language': 'uk',
+			'allowedFileExtensions': ['jpg', 'gif', 'png', 'txt', 'pdf', 'doc', 'docx'],
+			'allowedPreviewTypes': ['image', 'html', 'text', 'video', 'audio', 'flash', 'object'],
+			'previewFileType': 'text'
+			});
+	}
 });
