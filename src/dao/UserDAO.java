@@ -45,6 +45,7 @@ public class UserDAO {
 				bean.setUserName(rs.getString("userName"));
 				bean.setFirstName(rs.getString("firstName"));
 				bean.setLastName(rs.getString("lastName"));
+				bean.setGroup(rs.getString("group"));
 				bean.setEmail(rs.getString("email"));
 				bean.setRole(rs.getByte("role"));
 				bean.setPassword(rs.getString("password"));
@@ -78,6 +79,7 @@ public class UserDAO {
 				bean.setUserName(rs.getString("userName"));
 				bean.setFirstName(rs.getString("firstName"));
 				bean.setLastName(rs.getString("lastName"));
+				bean.setGroup(rs.getString("group"));
 				bean.setEmail(rs.getString("email"));
 				bean.setRole(rs.getByte("role"));
 				bean.setPassword(rs.getString("password"));
@@ -101,12 +103,13 @@ public class UserDAO {
 		byte role = bean.getRole();
 		String firstName = bean.getFirstName();
 		String lastName = bean.getLastName();
+		String group = bean.getGroup();
 		
 		
 
 		String query = "INSERT INTO users "
-				+ "(username, password, email, role, firstName, lastName) "
-				+ "VALUES (?,?,?,?,?,?)";
+				+ "(username, password, email, role, firstName, lastName, group) "
+				+ "VALUES (?,?,?,?,?,?,?)";
 
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
@@ -118,11 +121,12 @@ public class UserDAO {
 	        insertUser.setByte(4, role);
 	        insertUser.setString(5, firstName);
 	        insertUser.setString(6, lastName);
+	        insertUser.setString(7, group);
 	        rowsAffected = insertUser.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-
+		
         bean.setValid(rowsAffected > 0);
 		return bean;
 	}
@@ -146,6 +150,7 @@ public class UserDAO {
 				bean.setEmail(rs.getString("email"));
 				bean.setRole(rs.getByte("role"));
 				bean.setAvatar(rs.getString("avatarName"));
+				bean.setGroup(rs.getString("group"));
 				users.add(bean);
 			}
 		}
@@ -219,7 +224,7 @@ public class UserDAO {
 	}
 
 	public static ArrayList<String> findStudentGroups(String namePart) {
-		String query = "SELECT distinct groupName FROM students WHERE groupName LIKE ?";
+		String query = "SELECT distinct group FROM users WHERE role = 0 AND groupName LIKE ?";
 
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
@@ -231,7 +236,7 @@ public class UserDAO {
 			rs = stmt.executeQuery();
 
 			while (rs.next()) {
-				list.add(rs.getString("groupName"));
+				list.add(rs.getString("group"));
 			}
 		}
 		catch (SQLException e) {

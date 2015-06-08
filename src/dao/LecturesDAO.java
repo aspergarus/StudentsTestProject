@@ -24,7 +24,7 @@ public class LecturesDAO {
 		if (role == 0){
 			query = "SELECT * FROM lectures";
 		} else {
-			query = "SELECT * FROM lectures WHERE teacherId = ? ORDER BY subject";
+			query = "SELECT * FROM lectures WHERE teacherId = ? ORDER BY subjectId";
 		}
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -33,36 +33,42 @@ public class LecturesDAO {
 		ArrayList<LecturesBean> lecturesList = new ArrayList<>();
 		Map<String, ArrayList<LecturesBean>> lecturesMap = new HashMap<>();
 		
+		Map<Integer, String> subjectsMap = SubjectsDAO.getSubjectsMap();
+		String subjectName;
+		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			if (role != 0){
 				stmt.setInt(1, teacherId);
 			}
 			rs = stmt.executeQuery();
 			
-			String tmpSubject = "", subject = "";
+			int tmpSubjectId = 0, subjectId = 0;
+			
 			while (rs.next()) {
-				subject = rs.getString("subject");
+				subjectId = rs.getInt("subjectId");
 				LecturesBean bean = new LecturesBean();
 				bean.setId(rs.getInt("id"));
 				bean.setTeacherId(teacherId);
 				bean.setTitle(rs.getString("title"));
-				bean.setSubject(subject);
+				bean.setSubjectId(subjectId);
 				bean.setBody(rs.getString("body"));
 				bean.setFileName(rs.getString("filename"));
 
-				if (!tmpSubject.equals(subject) && tmpSubject.isEmpty()) {
-					tmpSubject = new String(subject);
+				if (tmpSubjectId != subjectId && tmpSubjectId == 0) {
+					tmpSubjectId = subjectId;
 				}
-				if (!tmpSubject.equals(subject)) {
-					lecturesMap.put(tmpSubject, lecturesList);
-
-					tmpSubject = new String(subject);
+				if (tmpSubjectId != subjectId) {
+					subjectName = subjectsMap.get(tmpSubjectId);
+					lecturesMap.put(subjectName, lecturesList);
+					
+					tmpSubjectId = subjectId;
 					lecturesList = new ArrayList<>();
 				}
 				lecturesList.add(bean);
 			}
 			if (!lecturesList.isEmpty()) {
-				lecturesMap.put(subject, lecturesList);
+				subjectName = subjectsMap.get(subjectId);
+				lecturesMap.put(subjectName, lecturesList);
 			}
 		} catch(SQLException e) {
 			System.out.println(e.getMessage());
@@ -75,7 +81,7 @@ public class LecturesDAO {
 	@SuppressWarnings("finally")
 	public static boolean insert(LecturesBean bean) {
 		String query = "INSERT INTO lectures "
-				+ "(teacherId, subject, title, body, filename) "
+				+ "(teacherId, subjectId, title, body, filename) "
 				+ "VALUES (?, ?, ?, ?, ?)";
 
 		ConnectionManager conM = new ConnectionManager();
@@ -85,7 +91,7 @@ public class LecturesDAO {
 
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, bean.getTeacherId());
-			stmt.setString(2, bean.getSubject());
+			stmt.setInt(2, bean.getSubjectId());
 			stmt.setString(3, bean.getTitle());
 			stmt.setString(4, bean.getBody());
 			stmt.setString(5, bean.getFileName());
@@ -128,9 +134,9 @@ public class LecturesDAO {
 	}
 	
 	@SuppressWarnings("finally")
-    public static int findLecturesCountInSubject(String title, String subject) {
+    public static int findLecturesCountInSubject(String title, int subjectId) {
 		String query = "SELECT COUNT(*) as lecturesCount FROM practicals "
-				+ " WHERE title = ? AND subject = ?";
+				+ " WHERE title = ? AND subjectId = ?";
 
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -138,7 +144,7 @@ public class LecturesDAO {
 
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setString(1, title);
-			stmt.setString(2, subject);
+			stmt.setInt(2, subjectId);
 			ResultSet rs = stmt.executeQuery();
 
 			if (rs.next()) {
@@ -193,7 +199,7 @@ public class LecturesDAO {
 			if (rs.next()) {
 				lBean = new LecturesBean();
 				lBean.setId(id);
-				lBean.setSubject(rs.getString("subject"));
+				lBean.setSubjectId(rs.getInt("subjectId"));
 				lBean.setTitle(rs.getString("title"));
 				lBean.setBody(rs.getString("body"));
 				lBean.setFileName(rs.getString("fileName"));
@@ -230,7 +236,7 @@ public class LecturesDAO {
 	}
 	
 	public static boolean update(LecturesBean bean) {
-		String query = "UPDATE lectures SET subject=?, title=?, body=?";
+		String query = "UPDATE lectures SET subjectId=?, title=?, body=?";
 		if (!bean.getFileName().isEmpty()) {
 			query += ", fileName=? WHERE id = ?";
 		}
@@ -242,7 +248,7 @@ public class LecturesDAO {
 		con = conM.getConnection();
 		int rowsAffected = 0;
 		try (PreparedStatement updateStmt = con.prepareStatement(query)) {
-			updateStmt.setString(1, bean.getSubject());
+			updateStmt.setInt(1, bean.getSubjectId());
 			updateStmt.setString(2, bean.getTitle());
 			updateStmt.setString(3, bean.getBody());
 			if (!bean.getFileName().isEmpty()) {
@@ -258,5 +264,28 @@ public class LecturesDAO {
 			System.out.println(e.getMessage());
 		}
 		return rowsAffected > 0;
+	}
+	
+	@SuppressWarnings("finally")
+    public static int findSubjectId(String subject) {
+		String query = "SELECT id FROM subjects WHERE subjectName = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		int id = 0;
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setString(1, subject);
+			ResultSet rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				id = rs.getInt("id");
+			}
+		} catch (SQLException e) {
+	        System.out.println(e.getMessage());
+        } finally {
+        	return id;
+        }
+		
 	}
 }

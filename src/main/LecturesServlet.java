@@ -69,10 +69,10 @@ public class LecturesServlet extends HttpServlet {
 				request.getRequestDispatcher("lectures.jsp").forward(request, response);
 			}
 			else {
-				// Show practical info, or editing form for practical/.
+				// Show lecture info, or editing form for lecture/.
 				String jsp = edit ? "lecture-edit.jsp" : "lecture-view.jsp";
 
-				//Show specific lecture
+				//Show or edit specific lecture
 				LecturesBean lecturesBean = LecturesDAO.find(Integer.valueOf(id));
 				if (lecturesBean == null) {
 					session.setAttribute("status", "Warning");
@@ -129,15 +129,17 @@ public class LecturesServlet extends HttpServlet {
 				return;
 			}
 			
-			// Update existed practical
+			// Update existed lecture
 			String updateId = request.getParameter("update-id");
 			if (updateId != null) {
 				// Get form values.
 				String subject = request.getParameter("subject").trim();
 				String title = request.getParameter("title").trim();
 				String body = request.getParameter("body").trim();
+				
+				int subjectId = LecturesDAO.findSubjectId(subject);
 
-				String errorMessage = lectureValidate(title, subject, 1);
+				String errorMessage = lectureValidate(title, subjectId, 1);
 
 				if (errorMessage == null) {
 					LecturesBean lBean = LecturesDAO.find(Integer.valueOf(updateId));
@@ -156,7 +158,7 @@ public class LecturesServlet extends HttpServlet {
 					// Update fields in lecture bean.
 					lBean.setTitle(title);
 					lBean.setBody(body);
-					lBean.setSubject(subject);
+					lBean.setSubjectId(subjectId);
 					lBean.setFileName(fileName);
 
 					if (LecturesDAO.update(lBean)) {
@@ -177,7 +179,7 @@ public class LecturesServlet extends HttpServlet {
 				return;
 			}
 			
-			// Create new practical
+			// Create new lecture
 			// Save uploaded file, and retrieve his path.
 			String fileName = uploadFile("upload", request);
 			fileName = fileName == null ? "" : fileName;
@@ -187,11 +189,13 @@ public class LecturesServlet extends HttpServlet {
 			String title = request.getParameter("title").trim();
 			String body = request.getParameter("body").trim();
 			
-			String errorMessage = lectureValidate(title, subject, 0);
+			int subjectId = LecturesDAO.findSubjectId(subject);
+			
+			String errorMessage = lectureValidate(title, subjectId, 0);
 			
 			if (errorMessage == null) {
 				// Create new lectures bean.
-				LecturesBean bean = new LecturesBean(user.getId(), subject, title, body, fileName);
+				LecturesBean bean = new LecturesBean(user.getId(), subjectId, title, body, fileName);
 				
 				if (LecturesDAO.insert(bean)) {
 					session.setAttribute("status", "success");
@@ -264,12 +268,12 @@ public class LecturesServlet extends HttpServlet {
 		return fileName + "_" + (count + 1) + fileExt;
 	}
 	
-	private boolean lectureBelongSubject(String title, String subject, int numExisted) {
-		return LecturesDAO.findLecturesCountInSubject(title, subject) > numExisted;
+	private boolean lectureBelongSubject(String title, int subjectId, int numExisted) {
+		return LecturesDAO.findLecturesCountInSubject(title, subjectId) > numExisted;
 	}
 
-	private String lectureValidate(String title, String subject, int numExisted) {
-		if (lectureBelongSubject(title, subject, numExisted)) {
+	private String lectureValidate(String title, int subjectId, int numExisted) {
+		if (lectureBelongSubject(title, subjectId, numExisted)) {
 			return "Subject should not contain the same lecture";
 		}
 		return null;

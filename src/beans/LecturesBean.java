@@ -3,7 +3,7 @@ package beans;
 public class LecturesBean {
 	private int id;
 	private int teacherId;
-	private String subject;
+	private int subjectId;
 	private String title;
 	private String body = "";
 	private String fileName = "";
@@ -23,11 +23,11 @@ public class LecturesBean {
 		this.teacherId = teacherId;
 	}
 	
-	public String getSubject() {
-		return subject;
+	public int getSubjectId() {
+		return subjectId;
 	}
-	public void setSubject(String subject) {
-		this.subject = subject;
+	public void setSubjectId(int subjectId) {
+		this.subjectId = subjectId;
 	}
 	
 	public String getTitle() {
@@ -52,15 +52,16 @@ public class LecturesBean {
 		this.fileName = fileName;
 	}
 	
-	public LecturesBean(int teacher, String subject, String title, String body, String fileName) {
+	public LecturesBean(int teacher, int subjectId, String title, String body, String fileName) {
 		this.teacherId = teacher;
-		this.subject = subject;
+		this.subjectId = subjectId;
 		this.title = title;
 		this.body = body;
 		this.fileName = fileName;
 	}
 	public LecturesBean() {}
-
+	
+	@Override
 	public String toString() {
 		return this.title + " " + this.body + " " + this.fileName;
 	}

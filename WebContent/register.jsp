@@ -82,6 +82,14 @@
 					id="lastname" placeholder="Last Name" required>
 			</div>
 		</div>
+		
+		<div class="form-group">
+			<label for="group" class="col-sm-2 control-label required">Group / Department</label>
+			<div class="col-sm-10">
+				<input name="group" type="text" class="form-control"
+					id="group" placeholder="Group or Department" required>
+			</div>
+		</div>
 
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">

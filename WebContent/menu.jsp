@@ -22,6 +22,9 @@
 					<li><a href="<%= basePathMenu %>/users"><span class="translate" data-lang-key="Users"></span></a></li>
 					<li><a href="<%= basePathMenu %>/register"><span class="translate" data-lang-key="Register"></span></a></li>
 				<% } %>
+				<% if (currentUserMenu.getRole() != 0) {%>
+					<li><a href="<%= basePathMenu %>/subjects"><span class="translate" data-lang-key="Subjects"></span></a></li>
+				<% } %>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li></li>

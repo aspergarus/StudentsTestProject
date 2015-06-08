@@ -54,7 +54,8 @@ public class PracticalsBean {
 		this.fileName = fileName;
 	}
 	public PracticalsBean() {}
-
+	
+	@Override
 	public String toString() {
 		return this.title + " " + this.body + " " + this.fileName;
 	}
