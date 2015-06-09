@@ -90,7 +90,6 @@ public class LecturesServlet extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		HttpSession session = request.getSession(false);
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
 		
@@ -106,7 +105,7 @@ public class LecturesServlet extends HttpServlet {
 				LecturesBean lBean = LecturesDAO.find(id);
 
 				// Delete file from file system and from db.
-				ArrayList<FileBean> fileBeans = FileDAO.findAll(lBean.getId());
+				ArrayList<FileBean> fileBeans = FileDAO.findAll(lBean.getId(), "lectures");
 				String savePath = request.getServletContext().getRealPath("") + File.separator + saveDir;
 				FileUploadManager.deleteFiles(fileBeans, savePath);
 				FileDAO.deleteAll(fileBeans);
@@ -145,7 +144,7 @@ public class LecturesServlet extends HttpServlet {
 
 					// Save uploaded files in DB.
 					if (!fileNames.isEmpty()) {
-						if (FileDAO.insert(lBean.getId(), saveDir, fileNames)) {
+						if (FileDAO.insert(lBean.getId(), "lectures", fileNames)) {
 							session.setAttribute("status", "success");
 							session.setAttribute("message", "Lecture has been added");
 						}
@@ -203,7 +202,7 @@ public class LecturesServlet extends HttpServlet {
 					}
 					else {
 						bean = LecturesDAO.find(subjectId, title);
-						if (FileDAO.insert(bean.getId(), saveDir, fileNames)) {
+						if (FileDAO.insert(bean.getId(), "lectures", fileNames)) {
 							session.setAttribute("status", "success");
 							session.setAttribute("message", "Lecture has been added");
 						}

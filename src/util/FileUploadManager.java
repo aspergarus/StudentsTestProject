@@ -82,6 +82,16 @@ public class FileUploadManager {
 		return "";
 	}
 
+	/**
+	 * Extracts file extension from file name.
+	 */
+	public static String extractFileExt(String fileName) {
+		if (fileName.lastIndexOf(".") > 0) {
+			return fileName.substring(fileName.lastIndexOf(".") + 1);
+		}
+		return "_blank";
+	}
+
 	public static void delete(String fullFilePath) {
 		if (fullFilePath != null && !fullFilePath.isEmpty()) {
 			File file = new File(fullFilePath);

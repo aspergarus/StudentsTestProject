@@ -108,7 +108,7 @@ public class PracticalsServlet extends HttpServlet {
 				PracticalsBean pBean = PracticalsDAO.find(id);
 
 				// Delete file from file system.
-				ArrayList<FileBean> fileBeans = FileDAO.findAll(pBean.getId());
+				ArrayList<FileBean> fileBeans = FileDAO.findAll(pBean.getId(), "practicals");
 				String savePath = request.getServletContext().getRealPath("") + File.separator + saveDir;
 				FileUploadManager.deleteFiles(fileBeans, savePath);
 				FileDAO.deleteAll(fileBeans);
@@ -147,7 +147,7 @@ public class PracticalsServlet extends HttpServlet {
 
 					// Save uploaded files in DB.
 					if (!fileNames.isEmpty()) {
-						if (FileDAO.insert(pBean.getId(), saveDir, fileNames)) {
+						if (FileDAO.insert(pBean.getId(), "practicals", fileNames)) {
 							session.setAttribute("status", "success");
 							session.setAttribute("message", "Lecture has been added");
 						}
@@ -205,7 +205,7 @@ public class PracticalsServlet extends HttpServlet {
 					}
 					else {
 						bean = PracticalsDAO.find(subjectId, title);
-						if (FileDAO.insert(bean.getId(), saveDir, fileNames)) {
+						if (FileDAO.insert(bean.getId(), "practicals", fileNames)) {
 							session.setAttribute("status", "success");
 							session.setAttribute("message", "Practical has been added");
 						}

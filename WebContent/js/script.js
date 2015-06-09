@@ -89,6 +89,7 @@ $(function () {
 	startTime();
 
 	multipleFileUploadConfiguration();
+	fileDeleteOperation();
 
 	function multipleFileUploadConfiguration() {
 		$("#upload").fileinput({
@@ -101,6 +102,35 @@ $(function () {
 			'allowedFileExtensions': ['jpg', 'gif', 'png', 'txt', 'pdf', 'doc', 'docx'],
 			'allowedPreviewTypes': ['image', 'html', 'text', 'video', 'audio', 'flash', 'object'],
 			'previewFileType': 'text'
+		});
+	}
+
+	function fileDeleteOperation() {
+		$('.delete-file-btn').click(function(e) {
+			e.preventDefault();
+
+			var $this = $(this);
+			var $parent = $this.parent();
+
+			// Show animation
+			var $animationBlock = $('<div></div>').addClass('ajax-loader').append($('<img></img>').attr({ src : "imgs/ajax-loader.gif" }));
+			$parent.append($animationBlock);
+			$this.remove();
+
+			var fid = $this.data('fid');
+			$.ajax(basePath + "/files", {
+				headers: {fid : fid },
+				method: "DELETE",
+				success: function(result) {
+					var $fileDiv = $parent.closest(".file");
+					$fileDiv.find("div").remove();
+					$fileDiv.append($('<span></span>').addClass('span-alert alert-success').text(result));
+				},
+				error: function() {
+					$parent.find('div').remove();
+					$parent.append($('<span></span>').addClass('span-alert alert-danger').text("Could not delete this file"));
+				}
 			});
+		});
 	}
 });

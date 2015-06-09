@@ -2,7 +2,7 @@ package beans;
 
 public class FileBean {
 	int fid;
-	String path;
+	String type;
 	String name;
 	int ownerId;
 
@@ -12,11 +12,11 @@ public class FileBean {
 	public void setFid(int fid) {
 		this.fid = fid;
 	}
-	public String getPath() {
-		return path;
+	public String getType() {
+		return type;
 	}
-	public void setPath(String path) {
-		this.path = path;
+	public void setType(String type) {
+		this.type = type;
 	}
 	public String getName() {
 		return name;

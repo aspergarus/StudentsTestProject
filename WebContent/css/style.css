@@ -103,3 +103,15 @@ body {
 .add-subject {
 	margin-top: 1em;
 }
+
+.file {
+	margin: 1em 0;
+}
+.file-info, .file-delete-button {
+	width: 400px;
+	display: inline-block;
+}
+.span-alert {
+	padding: 5px;
+	border-radius: 5px;
+}

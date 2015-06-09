@@ -1,8 +1,11 @@
 <%@page import="java.io.File"%>
-<%@page import="beans.UserBean"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Map"%><%@page import="beans.UserBean"%>
 <%@page import="beans.PracticalsBean"%>
+<%@page import="beans.FileBean"%>
 <%@page import="dao.SubjectsDAO"%>
-<%@page import="java.util.Map"%>
+<%@page import="dao.FileDAO"%>
+<%@page import="util.FileUploadManager"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
@@ -13,8 +16,7 @@
 <% saveDir = saveDir.replaceAll("\\\\", "/");; %>
 <% PracticalsBean pBean = (PracticalsBean) request.getAttribute("practicalBean"); %>
 <% String body = pBean.getBody(); %>
-<% String fileName = pBean.getFileName(); %>
-<% String fileExt = (fileName.lastIndexOf(".") > 0) ? fileName.substring(fileName.lastIndexOf(".") + 1) : "_blank"; %>
+<% ArrayList<FileBean> fileBeans = FileDAO.findAll(pBean.getId(), "practicals"); %>
 <% Map<Integer, String> subjectsMap = SubjectsDAO.getSubjectsMap(); %>
 
 <%@ include file="header.jsp" %>
@@ -55,15 +57,21 @@
 		<div class="form-group">
 			<label for="upload" class="col-sm-2 control-label required">Upload files</label>
 			<div class="col-sm-10">
-				<% if (!fileName.isEmpty()) { %>
+				<% for (FileBean fileBean : fileBeans) { %>
 					<div class="file">
-						<a href="<%= saveDir + "/" + fileName %>">
-						<img src="imgs/icons/<%= fileExt %>.png" alt="<%= fileName %>" />
-						<%= fileName %>
-						</a>
+						<div class="file-info">
+							<a href="<%= saveDir + File.separator + fileBean.getName() %>" download>
+								<img src="imgs/icons/<%= FileUploadManager.extractFileExt(fileBean.getName()) %>.png" alt="<%= fileBean.getName() %>" />
+								<%= fileBean.getName() %>
+							</a>
+						</div>
+						<div class="file-delete-button">
+							<button type="button" class="btn btn-danger delete-file-btn" data-fid=<%= fileBean.getFid() %>>Delete</button>
+						</div>
+						
 					</div>
 				<% } %>
-				<input type="file" value="<%= fileName %>" name="upload" id="upload" class="form-control" accept="application/msword, application/pdf">
+				<input id="upload" type="file" class="file" name="upload" data-preview-file-type="text" multiple accept="application/msword, application/pdf">
 				<p class="help-block">File size not more then 10 MB. Allowed formats: pdf, doc, docx.</p>
 			</div>
 		</div>
