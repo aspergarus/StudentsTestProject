@@ -74,7 +74,7 @@ $(function () {
 
 	function startTime() {
 		var today = new Date();
-		day = checkTime(today.getDay());
+		day = checkTime(today.getDate());
 		month = checkTime(today.getMonth() + 1);
 		year = checkTime(today.getFullYear());
 		hour = checkTime(today.getHours());
