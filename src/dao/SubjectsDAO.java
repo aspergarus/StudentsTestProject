@@ -125,7 +125,7 @@ public class SubjectsDAO {
 	}
 	
 	public static boolean update(SubjectsBean bean) {
-		String query = "UPDATE subjects SET subjectName=?, department=?";
+		String query = "UPDATE subjects SET subjectName=?, department=? WHERE id = ?";
 
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
@@ -133,6 +133,7 @@ public class SubjectsDAO {
 		try (PreparedStatement updateStmt = con.prepareStatement(query)) {
 			updateStmt.setString(1, bean.getSubjectName());
 			updateStmt.setString(2, bean.getDepartment());
+			updateStmt.setInt(3, bean.getId());
 
 			rowsAffected = updateStmt.executeUpdate();
 		} catch (SQLException e) {
