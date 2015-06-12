@@ -13,7 +13,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="<%= request.getContextPath() %>"><span class="translate" data-lang-key="Students Test Project"></span></a>
+			<a class="navbar-brand" href="<%= request.getContextPath() %>"><span class="translate" data-lang-key="Students Project"></span></a>
 		</div>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="nav navbar-nav top-menu">
