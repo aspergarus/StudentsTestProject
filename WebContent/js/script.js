@@ -121,7 +121,8 @@ $(function () {
 			$.ajax(basePath + "/files", {
 				headers: {fid : fid },
 				method: "DELETE",
-				success: function(result) {
+				done: function(result) {
+					console.log("Success");
 					var $fileDiv = $parent.closest(".file");
 					$fileDiv.find("div").remove();
 					$fileDiv.append($('<span></span>').addClass('span-alert alert-success').text(result));
@@ -129,6 +130,80 @@ $(function () {
 				error: function() {
 					$parent.find('div').remove();
 					$parent.append($('<span></span>').addClass('span-alert alert-danger').text("Could not delete this file"));
+				}
+			});
+		});
+	}
+	
+	departmentDeleteOperation();
+	
+	function departmentDeleteOperation() {
+		$('.delete-department-btn').click(function(e) {
+			e.preventDefault();
+
+			var $this = $(this);
+			var $parent = $this.parent();
+			
+			// Show animation
+			var $animationBlock = $('<div></div>').addClass('ajax-loader').append($('<img></img>').attr({ src : "imgs/ajax-loader.gif" }));
+			$parent.append($animationBlock);
+			$this.remove();
+
+			var id = $this.data('id');
+			$.ajax(basePath + "/department", {
+				headers: {id : id },
+				method: "DELETE",
+				success: function(result) {
+					//var $departmentRecord = $parent.closest(".department-record"); 
+					$parent.find("div").remove();
+					$parent.append($('<span></span>').addClass('span-alert alert-success').text(result));
+				},
+				error: function() {
+					$parent.append($('<span></span>').addClass('span-alert alert-danger').text("Could not delete this departmnet"));
+				}
+			});
+		});
+	}
+	
+	transformer();
+	
+	function transformer() {
+		$('.transformer-text').click(function(e) {
+			e.preventDefault();
+			
+			var $this = $(this);
+			var text = $this.text();
+			var did = $this.data('did');
+			console.log(did);
+			var $parent = $this.parent();
+			var $input = $parent.find('input');
+			
+			$this.hide();
+			$input.show();
+			$input.val(text);
+			
+			$input.focus();
+			$input.focusout(function () {
+				$this.show();
+				$input.hide();
+			}); 
+				
+			$input.change(function() {
+				if ($input.val().trim() != "") {
+					var newText = $input.val();
+					$.ajax(basePath + "/department", {
+						headers: {'did': did, 'name' : encodeURIComponent(newText) },
+						method: "PUT",
+						success: function(result) {
+							$this.text(newText);
+							$this.show();
+							$input.hide();
+						},
+						error: function(result) {
+							$this.show();
+							$input.hide();
+						}
+					});
 				}
 			});
 		});
