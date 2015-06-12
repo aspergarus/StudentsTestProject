@@ -1,6 +1,7 @@
 <%@page import="java.io.File"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="java.util.Map"%><%@page import="beans.UserBean"%>
+<%@page import="java.util.Map"%>
+<%@page import="beans.UserBean"%>
 <%@page import="beans.PracticalsBean"%>
 <%@page import="beans.FileBean"%>
 <%@page import="dao.SubjectsDAO"%>

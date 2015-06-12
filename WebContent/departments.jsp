@@ -58,17 +58,17 @@
 		</thead>
 		<tbody>
 		    <% for (DepartmentBean department: departments) { %>
-				<tr>
+				<tr class="department-record">
 					<% if (user.getRole() == 2) { %>
 			        <td><% out.print(department.getId()); %></td>
 			        <% } %>
-			        <td><% out.print(department.getDepartmentName()); %></td>
+			        <td class="transformer">
+			        	<span class="transformer-text" data-did=<%= department.getId() %>><% out.print(department.getDepartmentName()); %></span>
+			        	<input type="text" style="display: none">
+			        </td>
 			        <% if (user.getRole() == 2) { %>
 			        <td>
-			        	<form action="<%= basePath %>/department" method="delete">
-							<button type="submit" class="btn btn-danger">Delete</button>
-							<input type="hidden" name="delete-id" value="<%= department.getId() %>">
-						</form>
+						<button type="button" class="btn btn-danger delete-department-btn" data-id=<%= department.getId() %>>Delete</button>
 			        </td>
 			        <% } %>
 			    </tr>

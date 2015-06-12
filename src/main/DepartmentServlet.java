@@ -58,21 +58,71 @@ public class DepartmentServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		HttpSession session = request.getSession(false);
+		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+		
+		if (user == null) {
+			response.sendError(403);
+		}
+		else {
+			// Add new department
+			String departmentName = request.getParameter("departmentName");
+			String errorMessage = DepartmentsDAO.departmentValidate(departmentName);
+			
+			if (errorMessage == null) {
+				if (DepartmentsDAO.insert(departmentName)) {
+					session.setAttribute("status", "success");
+					session.setAttribute("message", "Department has been added");
+				}
+				else {
+					session.setAttribute("status", "danger");
+					session.setAttribute("message", "Some troubles were occurred during adding a department");
+				}
+			}
+			else {
+				session.setAttribute("status", "danger");
+				session.setAttribute("message", errorMessage);
+			}
+			response.sendRedirect(request.getContextPath() + "/department");
+		}
 	}
 
 	/**
 	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		HttpSession session = request.getSession(false);
+		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+
+		if (user == null) {
+			response.sendError(403);
+		}
+		else {
+			//Update in DB
+			int id = Integer.valueOf(request.getHeader("did"));
+			String newDepartmentName = java.net.URLDecoder.decode(request.getHeader("name"), "UTF-8");
+			DepartmentBean department = new DepartmentBean(id, newDepartmentName);
+			DepartmentsDAO.update(department);
+			response.getOutputStream().println("Department has been updated successfully.");
+		}
 	}
 
 	/**
 	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		HttpSession session = request.getSession(false);
+		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+
+		if (user == null) {
+			response.sendError(403);
+		}
+		else {
+			//Delete from DB
+			int id = Integer.valueOf(request.getHeader("id"));
+			DepartmentsDAO.delete(id);
+			response.getOutputStream().println("Department has been deleted successfully.");
+		}
 	}
 
 }

@@ -16,5 +16,6 @@
   "Student name": {"ua": "Імя студента", "en": "Student name"},
   "You can find students by first or last name": {"ua": "Ви можете знайти студентів по імені або прізвищу", "en": "You can find students by first or last name"},
   "Add to the list": {"ua": "Добавити в список", "en": "Add to the list"},
-  "Students Project": {"ua": "Студентський проект", "en": "Students Project"}
+  "Students Project": {"ua": "Студентський проект", "en": "Students Project"},
+  "Departments": {"ua": "Кафедри", "en": "Departments"}
 }
