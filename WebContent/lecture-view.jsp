@@ -1,11 +1,15 @@
 <%@page import="java.io.File"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Map"%>
+<%@page import="java.text.SimpleDateFormat" %>
 <%@page import="beans.UserBean"%>
 <%@page import="beans.FileBean"%>
 <%@page import="beans.LecturesBean"%>
+<%@page import="beans.CommentsBean"%>
 <%@page import="dao.SubjectsDAO"%>
 <%@page import="dao.FileDAO"%>
+<%@page import="dao.UserDAO"%>
+<%@page import="dao.CommentsDAO"%>
 <%@page import="util.FileUploadManager"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -18,6 +22,8 @@
 <% String body = lBean.getBody(); %>
 <% ArrayList<FileBean> fileBeans = FileDAO.findAll(lBean.getId(), "lectures"); %>
 <% Map<Integer, String> subjectsMap = SubjectsDAO.getSubjectsMap(); %>
+<% ArrayList<CommentsBean> comments = CommentsDAO.findByOwner(lBean.getId(), "lectures"); %>
+<% UserBean user = (UserBean) session.getAttribute("user"); %>
 
 <%@ include file="header.jsp" %>
 
@@ -45,6 +51,58 @@
 			</a>
 		</div>
 	<% } %>
+
+	<% if (!comments.isEmpty()) { %>
+		<div class="comment-list clearfix" id="comments">
+		<h2>Comments</h2>
+			<ol>
+				<% for (CommentsBean comment : comments) { %>
+					<% UserBean commentAuthor = UserDAO.find(comment.getAuthor()); %>
+					<li class="comment">
+						<div class="comment-top"><span></span></div>
+						<div class="comment-body">
+							<div class="comment-avatar">
+								<div class="avatar">
+									<img src="<%= uploadAvatarPath + commentAuthor.getAvatar() %>">
+								</div>
+							</div>
+							<div class="comment-text">
+								<div class="comment-author clearfix">
+									<p class="link-author"><%= commentAuthor.getReadableName() %></p>
+									<span class="comment-date">
+										<% SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy HH:mm"); %>
+										<%= dateFormat.format(comment.getDate()) %></span>
+								</div>
+								<div class="comment-entry">
+									<h4><div class="comment-title"><%= comment.getTitle() %></div></h4>
+									<div class="comment-msg"><%= comment.getBody() %></div>
+								</div>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</li>
+				<% } %>
+			</ol>
+		</div>
+	<% } %>
+
+	<div class="comment-form">
+		<h2 class="lead">Leave your comment</h2>
+		<form class="form" method="post" action="<%= basePath %>/comments">
+			<div class="form-group">
+				<input class="form-control" type="text" name="title" id="title" required placeholder="Comment title...">
+			</div>
+			<div class="form-group">
+				<textarea class="form-control" rows="7" cols="150" name="body" id="body" required placeholder="Comment message..."></textarea>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Submit" class="btn btn-primary btn-lg">
+			</div>
+			<input name="ownerId" type="hidden" value="<%= lBean.getId() %>" />
+			<input name="author" type="hidden" value="<%= user.getId() %>" />
+			<input name="ownerType" type="hidden" value="lectures" />
+		</form>
+	</div>
 </div>
 
 <%@ include file="footer.jsp" %>
