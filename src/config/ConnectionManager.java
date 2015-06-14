@@ -1,12 +1,8 @@
 package config;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.FileInputStream;
 import java.sql.*;
-
-import org.ini4j.Ini;
-import org.ini4j.InvalidFileFormatException;
+import java.util.Properties;
 
 public class ConnectionManager {
 
@@ -20,26 +16,13 @@ public class ConnectionManager {
 		try {
 			ClassLoader classLoader = getClass().getClassLoader();
 			String filePath = classLoader.getResource("resources/config_project.ini").getPath();
-			
-			Ini ini = new Ini(new FileReader(filePath));
-			Ini.Section config = ini.get("database");
+			Properties p = new Properties();
+			p.load(new FileInputStream(filePath));
 
-			url = config.get("url");
-			admin = config.get("admin");
-			password = config.get("password");
+			url = p.getProperty("url");
+			admin = p.getProperty("admin");
+			password = p.getProperty("password");
 
-
-		} catch (InvalidFileFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			System.out.println("File not found.");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		try {
 			Class.forName("com.mysql.jdbc.Driver"); 
 			con = DriverManager.getConnection(url, admin, password);
 		} catch (Exception ex) {

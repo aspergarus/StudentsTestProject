@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import beans.CommentsBean;
+import beans.UserBean;
 import config.ConnectionManager;
 
 public class CommentsDAO {
@@ -14,9 +14,12 @@ public class CommentsDAO {
 	/**
 	 * Return commets which are related to some practical or lecture
 	 */
-	public static ArrayList<CommentsBean> findByOwner(int ownerId, String type) {
-		String query = "SELECT * FROM comments WHERE ownerId = ? AND ownerType = ?";
-		ArrayList<CommentsBean> comments = new ArrayList<>();
+	public static ArrayList<Object[]> findByOwner(int ownerId, String type) {
+		String query = "SELECT * FROM comments c "
+				+ "INNER JOIN users u ON u.id = c.author "
+				+ "WHERE ownerId = ? AND ownerType = ? "
+				+ "ORDER BY date";
+		ArrayList<Object[]> comments = new ArrayList<>();
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -34,8 +37,15 @@ public class CommentsDAO {
 				comment.setTitle(rs.getString("title"));
 				comment.setBody(rs.getString("body"));
 				comment.setOwnerType(rs.getString("ownerType"));
+				
+				UserBean author = new UserBean();
+				author.setAvatar(rs.getString("avatarName"));
+				author.setFirstName(rs.getString("firstname"));
+				author.setLastName(rs.getString("lastname"));
+				author.setUserName(rs.getString("username"));
 
-				comments.add(comment);
+				Object[] pack = {author, comment};
+				comments.add(pack);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());

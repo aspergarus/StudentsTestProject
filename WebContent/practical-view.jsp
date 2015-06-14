@@ -1,7 +1,8 @@
 <%@page import="java.io.File"%>
 <%@page import="java.util.Map"%>
+<%@page import="java.util.HashMap"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="java.text.SimpleDateFormat" %>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="beans.UserBean"%>
 <%@page import="beans.PracticalsBean"%>
 <%@page import="beans.FileBean"%>
@@ -23,7 +24,7 @@
 <% String body = pBean.getBody(); %>
 <% ArrayList<FileBean> fileBeans = FileDAO.findAll(pBean.getId(), "practicals"); %>
 <% Map<Integer, String> subjectsMap = SubjectsDAO.getSubjectsMap(); %>
-<% ArrayList<CommentsBean> comments = CommentsDAO.findByOwner(pBean.getId(), "practicals"); %>
+<% ArrayList<Object[]> comments = CommentsDAO.findByOwner(pBean.getId(), "practicals"); %>
 <% UserBean user = (UserBean) session.getAttribute("user"); %>
 
 <%@ include file="header.jsp" %>
@@ -57,8 +58,9 @@
 		<div class="comment-list clearfix" id="comments">
 		<h2>Comments</h2>
 			<ol>
-				<% for (CommentsBean comment : comments) { %>
-					<% UserBean commentAuthor = UserDAO.find(comment.getAuthor()); %>
+				<% for (Object[] pack : comments) { %>
+					<% UserBean commentAuthor = (UserBean) pack[0]; %>
+					<% CommentsBean comment = (CommentsBean) pack[1]; %>
 					<li class="comment">
 						<div class="comment-top"><span></span></div>
 						<div class="comment-body">
