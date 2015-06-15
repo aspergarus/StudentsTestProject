@@ -2,6 +2,7 @@ package main;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dao.DepartmentsDAO;
 import dao.SubjectsDAO;
 import beans.SubjectsBean;
 import beans.UserBean;
@@ -50,6 +52,7 @@ public class SubjectServlet extends HttpServlet {
 			
 			String id = request.getParameter("id");
 			boolean edit = request.getParameter("edit") == null ? false : Boolean.valueOf(request.getParameter("edit"));
+			HashMap<Integer, String> departmentsMap = DepartmentsDAO.getDepartmentsMap();
 			
 			if (edit) {
 				SubjectsBean subjectsBean = SubjectsDAO.find(Integer.valueOf(id));
@@ -60,6 +63,7 @@ public class SubjectServlet extends HttpServlet {
 				}
 				else {
 					request.setAttribute("subjectsBean", subjectsBean);
+					request.setAttribute("departmentsMap", departmentsMap);
 					request.getRequestDispatcher("subject-edit.jsp").forward(request, response);
 				}
 			}
@@ -67,6 +71,7 @@ public class SubjectServlet extends HttpServlet {
 			else {
 				ArrayList<SubjectsBean> subjectsList = SubjectsDAO.findAll(user);
 				request.setAttribute("subjectsList", subjectsList);
+				request.setAttribute("departmentsMap", departmentsMap);
 				request.getRequestDispatcher("subjects.jsp").forward(request, response);
 			}
 		}
@@ -107,16 +112,17 @@ public class SubjectServlet extends HttpServlet {
 			if (updateId != null) {
 				// Get form values.
 				String subjectName = request.getParameter("subjectName").trim();
-				String department = request.getParameter("department").trim();
+				String department = request.getParameter("departmentName").trim();
+				int departmentId = DepartmentsDAO.findDepartmentId(department);
 
-				String errorMessage = SubjectsDAO.subjectValidate(subjectName, department);
+				String errorMessage = SubjectsDAO.subjectValidate(subjectName, departmentId);
 
 				if (errorMessage == null) {
 					SubjectsBean sBean = SubjectsDAO.find(Integer.valueOf(updateId));
 
 					// Update fields in subject bean.
 					sBean.setSubjectName(subjectName);
-					sBean.setDepartment(department);
+					sBean.setDepartmentId(departmentId);
 					
 					if (SubjectsDAO.update(sBean)) {
 						session.setAttribute("status", "success");
@@ -138,12 +144,13 @@ public class SubjectServlet extends HttpServlet {
 			// Add new subject
 			// Get form values.
 			String subjectName = request.getParameter("subjectName").trim();
-			String department = request.getParameter("department").trim();
+			String department = request.getParameter("departmentName").trim();
+			int departmentId = DepartmentsDAO.findDepartmentId(department);
 			
-			String errorMessage = SubjectsDAO.subjectValidate(subjectName, department);
+			String errorMessage = SubjectsDAO.subjectValidate(subjectName, departmentId);
 			
 			if (errorMessage == null) {
-				SubjectsBean bean = new SubjectsBean(subjectName, department);
+				SubjectsBean bean = new SubjectsBean(subjectName, departmentId);
 				
 				if (SubjectsDAO.insert(bean)) {
 					session.setAttribute("status", "success");

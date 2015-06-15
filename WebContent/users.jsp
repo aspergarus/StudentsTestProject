@@ -1,12 +1,16 @@
 <%@page import="beans.UserBean"%>
 <%@page import="java.io.File"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.HashMap"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
 <% String basePath = request.getContextPath(); %>
 <% ArrayList<UserBean> users = (ArrayList<UserBean>) request.getAttribute("usersList"); %>
+<% HashMap<Integer, String> departmentsMap = (HashMap<Integer, String>) request.getAttribute("departmentsMap"); %>
+<% HashMap<Integer, String> groupsMap = (HashMap<Integer, String>) request.getAttribute("groupsMap"); %>
 <% String usersJson = (String) request.getAttribute("usersJson"); %>
+
 
 <%@ include file="header.jsp" %>
 
@@ -25,7 +29,7 @@
 		            <th data-field="email" data-align="center" data-sortable="true">Email</th>
 		            <th data-field="firstName" data-align="center" data-sortable="true">First Name</th>
 		            <th data-field="lastName" data-align="center" data-sortable="true">Last Name</th>
-		            <th data-field="group" data-align="center" data-sortable="true">Group / Department</th>
+		            <th data-field="groupId" data-align="center" data-sortable="true">Group / Department</th>
 		            <th data-field="role" data-align="center" data-sortable="true">Role</th>
 		            <th data-field="edit" data-align="center">Edit</th>
 		        </tr>
@@ -42,7 +46,13 @@
 			        <td><% out.print(user.getEmail()); %></td>
 			        <td><% out.print(user.getFirstName()); %></td>
 			        <td><% out.print(user.getLastName()); %></td>
-			        <td><% out.print(user.getGroup()); %></td>
+			        <% if (user.getRole() == 0) { %>
+			        	<td><% out.print(groupsMap.get(user.getGroupId())); %></td>
+			        <% } else if (user.getRole() == 1) { %>
+			        	<td><% out.print(departmentsMap.get(user.getGroupId())); %></td>
+			        <% } else { %>
+			        	<td><% out.print("Administration"); %></td>
+			        <% } %>
 			        <td><% out.print(user.getHumanRole()); %></td>
 			        <td><a href="<% out.print(basePath + "/user/" + user.getId()); %>" target="_blank">Edit</a></td>
 			    </tr>

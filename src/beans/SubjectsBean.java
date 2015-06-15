@@ -3,14 +3,13 @@ package beans;
 public class SubjectsBean {
 	private int id;
 	private String subjectName;
-	private String department;
-	private int teacherId = 0;
+	private int departmentId;
 	
 	public SubjectsBean() {}
 	
-	public SubjectsBean(String subjectName, String department) {
+	public SubjectsBean(String subjectName, int departmentId) {
 		this.subjectName = subjectName;
-		this.department = department;
+		this.departmentId = departmentId;
 	}
 	
 	public int getId() {
@@ -27,24 +26,15 @@ public class SubjectsBean {
 	    this.subjectName = subjectName;
     }
 	
-	public String getDepartment() {
-	    return department;
+	public int getDepartmentId() {
+	    return departmentId;
     }
-	public void setDepartment(String department) {
-	    this.department = department;
-    }
-	
-	public int getTeacherId() {
-	    return teacherId;
-    }
-	public void setTeacherId(int teacherId) {
-	    this.teacherId = teacherId;
+	public void setDepartmentId(int departmentId) {
+	    this.departmentId = departmentId;
     }
 	
 	@Override
 	public String toString() {
-		return "ID: " + id + " Subject: " + subjectName + " Department: " + department;
+		return "ID: " + id + " Subject: " + subjectName + " Department ID: " + departmentId;
 	}
-
-	
 }

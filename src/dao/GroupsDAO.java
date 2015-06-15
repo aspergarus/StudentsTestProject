@@ -8,14 +8,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import beans.DepartmentBean;
+import beans.GroupBean;
 import config.ConnectionManager;
 
-public class DepartmentsDAO {
+public class GroupsDAO {
 	
-	public static ArrayList<DepartmentBean> findAll() {
-		String query = "SELECT * FROM departments";
-		ArrayList<DepartmentBean> departments = new ArrayList<>();
+	public static ArrayList<GroupBean> findAll() {
+		String query = "SELECT * FROM groups";
+		ArrayList<GroupBean> groups = new ArrayList<>();
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -24,43 +24,42 @@ public class DepartmentsDAO {
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				int id = rs.getInt("id");
-				String departmentName = rs.getString("departmentName");
-				DepartmentBean department = new DepartmentBean(id, departmentName);
-				departments.add(department);
+				String groupName = rs.getString("groupName");
+				GroupBean group = new GroupBean(id, groupName);
+				groups.add(group);
 			}
         } catch (SQLException e) {
 	        System.out.println(e.getMessage());
         }
-		return departments;
+		return groups;
 	}
 	
 	@SuppressWarnings("finally")
-    public static DepartmentBean find(int id) {
-		String query = "SELECT * FROM departments WHERE id = ?";
+    public static GroupBean find(int id) {
+		String query = "SELECT * FROM groups WHERE id = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		
-		DepartmentBean department = null;
+		GroupBean group = null;
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
 			
 			while (rs.next()) {
-				String departmentName = rs.getString("departmentName");
-				department = new DepartmentBean(id, departmentName);
+				String groupName = rs.getString("groupName");
+				group = new GroupBean(id, groupName);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
         } finally {
-        	return department;
+        	return group;
         }
-		
 	}
 	
-	public static String departmentValidate (String departmentName) {
-		String query = "SELECT * FROM departments WHERE departmentName = ?";
+	public static String groupValidate (String groupName) {
+		String query = "SELECT * FROM groups WHERE groupName = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -68,11 +67,11 @@ public class DepartmentsDAO {
 		String errorMessage = null;
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setString(1, departmentName);
+			stmt.setString(1, groupName);
 			rs = stmt.executeQuery();
 			
 			if (rs.next()) {
-				errorMessage = "This department is already exist!";
+				errorMessage = "This group is already exist!";
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -81,9 +80,9 @@ public class DepartmentsDAO {
 	}
 	
 	@SuppressWarnings("finally")
-    public static boolean insert (String departmentName) {
-		String query = "INSERT INTO departments " 
-					+ "(departmentName) "
+    public static boolean insert (String groupName) {
+		String query = "INSERT INTO groups " 
+					+ "(groupName) "
 					+ "VALUES (?)";
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -91,7 +90,7 @@ public class DepartmentsDAO {
 		int rowsAffected = 0;
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setString(1, departmentName);
+			stmt.setString(1, groupName);
 			rowsAffected = stmt.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -103,7 +102,7 @@ public class DepartmentsDAO {
 	
 	@SuppressWarnings("finally")
     public static boolean delete (int id) {
-		String query = "DELETE FROM departments WHERE id = ?";
+		String query = "DELETE FROM groups WHERE id = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -121,16 +120,16 @@ public class DepartmentsDAO {
 	}
 	
 	@SuppressWarnings("finally")
-    public static boolean update (DepartmentBean department) {
-		String query = "UPDATE departments SET departmentName = ? WHERE id = ?";
+    public static boolean update (GroupBean group) {
+		String query = "UPDATE groups SET groupName = ? WHERE id = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		int rowsAffected = 0;
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setString(1, department.getDepartmentName());
-			stmt.setInt(2, department.getId());
+			stmt.setString(1, group.getGroupName());
+			stmt.setInt(2, group.getId());
 			rowsAffected = stmt.executeUpdate();
 		
 		} catch (SQLException e) {
@@ -140,33 +139,10 @@ public class DepartmentsDAO {
 		}
 	}
 	
-	@SuppressWarnings("finally")
-    public static int findDepartmentId(String departmentName) {
-		String query = "SELECT id FROM departments WHERE departmentName = ?";
+	public static HashMap<Integer, String> getGroupsMap () {
+		String query = "SELECT * FROM groups";
 		
-		ConnectionManager conM = new ConnectionManager();
-		Connection con = conM.getConnection();
-		ResultSet rs = null;
-		int id = 0;
-		
-		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setString(1, departmentName);
-			rs = stmt.executeQuery();
-			
-			if (rs.next()) {
-				id = rs.getInt("id");
-			}
-		} catch (SQLException e) {
-	        System.out.println(e.getMessage());
-        } finally {
-        	return id;
-        }
-	}
-	
-	public static HashMap<Integer, String> getDepartmentsMap () {
-		String query = "SELECT * FROM departments";
-		
-		HashMap<Integer, String> departmentsMap = null;
+		HashMap<Integer, String> groupsMap = null;
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -175,15 +151,16 @@ public class DepartmentsDAO {
 		try (Statement stmnt = con.createStatement()) {
 	        rs = stmnt.executeQuery(query);
 	        while (rs.next()) {
-	        	departmentsMap = new HashMap<>();
-	        	int departmentId = rs.getInt("id");
-	        	String departmentName = rs.getString("departmentName");
-	        	departmentsMap.put(departmentId, departmentName);
+	        	groupsMap = new HashMap<>();
+	        	int groupId = rs.getInt("id");
+	        	String groupName = rs.getString("groupName");
+	        	groupsMap.put(groupId, groupName);
 	        }
 		} catch (SQLException e) {
         	System.out.println(e.getMessage());
         }
 		
-		return departmentsMap;
+		return groupsMap;
 	}
+
 }

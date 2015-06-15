@@ -68,7 +68,7 @@ public class RegisterServlet extends HttpServlet {
 		byte role = Byte.valueOf(request.getParameter("role"));
 		String firstName = request.getParameter("firstname").trim();
 		String lastName = request.getParameter("lastname").trim();
-		String group = request.getParameter("group").trim();
+		int groupId = Integer.valueOf(request.getParameter("groupId"));
 		String avatarName = "";
 		String message = formValidate(userName, password, email);
 
@@ -78,7 +78,7 @@ public class RegisterServlet extends HttpServlet {
 			UserBean user = null;
 
 			try {
-				user = new UserBean(userName, password, email, role, firstName, lastName, avatarName, group);
+				user = new UserBean(userName, password, email, role, firstName, lastName, avatarName, groupId);
 			    user = UserDAO.register(user);
 			    
 			    

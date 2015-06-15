@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import config.ConnectionManager;
 import beans.SubjectsBean;
@@ -25,7 +24,7 @@ public class SubjectsDAO {
 			query = "SELECT * FROM subjects";
 		}
 		else {
-			query = "SELECT * FROM subjects WHERE department = ?";
+			query = "SELECT * FROM subjects WHERE departmentId = ?";
 		}
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -34,14 +33,14 @@ public class SubjectsDAO {
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 	        
 			if (user.getRole() == 1) {
-				stmt.setString(1, user.getGroup());
+				stmt.setInt(1, user.getGroupId());
 			}
 			rs = stmt.executeQuery();
 	        while (rs.next()) {
 	        	SubjectsBean subject = new SubjectsBean();
 	        	subject.setId(rs.getInt("id"));
 	        	subject.setSubjectName(rs.getString("subjectName"));
-	        	subject.setDepartment(rs.getString("department"));
+	        	subject.setDepartmentId(rs.getInt("departmentId"));
 	        	allSubjects.add(subject);
 	        }
 		} catch (SQLException e) {
@@ -54,7 +53,7 @@ public class SubjectsDAO {
 	@SuppressWarnings("finally")
 	public static boolean insert(SubjectsBean bean) {
 		String query = "INSERT INTO subjects "
-				+ "(subjectName, department) "
+				+ "(subjectName, departmentId) "
 				+ "VALUES (?, ?)";
 
 		ConnectionManager conM = new ConnectionManager();
@@ -64,7 +63,7 @@ public class SubjectsDAO {
 
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setString(1, bean.getSubjectName());
-			stmt.setString(2, bean.getDepartment());
+			stmt.setInt(2, bean.getDepartmentId());
 
 			rowsAffected = stmt.executeUpdate();
 		}
@@ -113,7 +112,7 @@ public class SubjectsDAO {
 				sBean = new SubjectsBean();
 				sBean.setId(id);
 				sBean.setSubjectName(rs.getString("subjectName"));
-				sBean.setDepartment(rs.getString("department"));
+				sBean.setDepartmentId(rs.getInt("departmentId"));
 			}
 		}
 		catch (SQLException e) {
@@ -125,14 +124,15 @@ public class SubjectsDAO {
 	}
 	
 	public static boolean update(SubjectsBean bean) {
-		String query = "UPDATE subjects SET subjectName=?, department=? WHERE id = ?";
+		String query = "UPDATE subjects SET subjectName=?, departmentId=? WHERE id = ?";
 
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
 		int rowsAffected = 0;
+		
 		try (PreparedStatement updateStmt = con.prepareStatement(query)) {
 			updateStmt.setString(1, bean.getSubjectName());
-			updateStmt.setString(2, bean.getDepartment());
+			updateStmt.setInt(2, bean.getDepartmentId());
 			updateStmt.setInt(3, bean.getId());
 
 			rowsAffected = updateStmt.executeUpdate();
@@ -142,10 +142,10 @@ public class SubjectsDAO {
 		return rowsAffected > 0;
 	}
 	
-	public static Map<Integer, String> getSubjectsMap () {
+	public static HashMap<Integer, String> getSubjectsMap () {
 		String query = "SELECT * FROM subjects";
 		
-		Map<Integer, String> subjectsMap = null;
+		HashMap<Integer, String> subjectsMap = null;
 		
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
@@ -214,15 +214,15 @@ public class SubjectsDAO {
         }
 	}
 	
-	public static String subjectValidate(String subjectName, String department) {
-		String query = "SELECT * FROM subjects WHERE subjectName = ? AND department = ?";
+	public static String subjectValidate(String subjectName, int departmentId) {
+		String query = "SELECT * FROM subjects WHERE subjectName = ? AND departmentId = ?";
 		String errorMessage = null;
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		
 		try (PreparedStatement updateStmt = con.prepareStatement(query)) {
 			updateStmt.setString(1, subjectName);
-			updateStmt.setString(2, department);
+			updateStmt.setInt(2, departmentId);
 
 			rs = updateStmt.executeQuery();
 			if (rs.next()) {
@@ -233,5 +233,4 @@ public class SubjectsDAO {
 		}
 		return errorMessage;
 	}
-	
 }

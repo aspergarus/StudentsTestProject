@@ -25,6 +25,7 @@
 				<% if (currentUserMenu.getRole() != 0) {%>
 					<li><a href="<%= basePathMenu %>/department"><span class="translate" data-lang-key="Departments"></span></a></li>
 					<li><a href="<%= basePathMenu %>/subjects"><span class="translate" data-lang-key="Subjects"></span></a></li>
+					<li><a href="<%= basePathMenu %>/groups"><span class="translate" data-lang-key="Groups"></span></a></li>
 				<% } %>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
