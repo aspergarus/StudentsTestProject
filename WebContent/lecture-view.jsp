@@ -60,12 +60,17 @@
 				<% for(Object[] pack : comments) { %>
 					<% UserBean commentAuthor = (UserBean) pack[0]; %>
 					<% CommentsBean comment = (CommentsBean) pack[1]; %>
-					<li class="comment">
+					<li class="comment <%= commentAuthor.getId() == user.getId() ? "comment-editable" : user.getRole() == 2 ? "comment-editable" : "" %>">
+						<div class='comment-config' data-comment-id="<%= comment.getCid() %>"><span class='glyphicon glyphicon-remove'></span></div>
 						<div class="comment-top"><span></span></div>
 						<div class="comment-body">
 							<div class="comment-avatar">
 								<div class="avatar">
-									<img src="<%= uploadAvatarPath + commentAuthor.getAvatar() %>">
+									<%  if (commentAuthor.getAvatar().isEmpty()) { %>
+										<img src="<%= defaultAvatar %>" class="img-circle avatar-table">
+									<% } else { %>
+										<img src="<%= uploadAvatarPath + commentAuthor.getAvatar() %>" class="img-circle avatar-table">
+									<% } %>
 								</div>
 							</div>
 							<div class="comment-text">

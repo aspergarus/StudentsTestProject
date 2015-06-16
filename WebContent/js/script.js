@@ -134,9 +134,9 @@ $(function () {
 			});
 		});
 	}
-	
+
 	departmentDeleteOperation();
-	
+
 	function departmentDeleteOperation() {
 		$('.delete-department-btn').click(function(e) {
 			e.preventDefault();
@@ -154,7 +154,6 @@ $(function () {
 				headers: {id : id },
 				method: "DELETE",
 				success: function(result) {
-					//var $departmentRecord = $parent.closest(".department-record"); 
 					$parent.find("div").remove();
 					$parent.append($('<span></span>').addClass('span-alert alert-success').text(result));
 				},
@@ -164,9 +163,9 @@ $(function () {
 			});
 		});
 	}
-	
+
 	transformer();
-	
+
 	function transformer() {
 		$('.transformer-text').click(function(e) {
 			e.preventDefault();
@@ -204,6 +203,30 @@ $(function () {
 							$input.hide();
 						}
 					});
+				}
+			});
+		});
+	}
+
+	commentDeleteOperation();
+
+	function commentDeleteOperation() {
+		$('.comment-config').click(function() {
+			var $this = $(this);
+			var cid = $this.data('comment-id')
+			var $comment = $this.parent();
+			console.log(cid);
+			var $animationBlock = $('<div></div>').addClass('ajax-loader').append($('<img></img>').attr({ src : "imgs/ajax-loader.gif" }));
+			$comment.html($animationBlock);
+
+			$.ajax(basePath + "/comments", {
+				headers: {'cid': cid },
+				method: "DELETE",
+				success: function(result) {
+					$comment.html($('<span></span>').addClass('span-alert alert-success').text(result));
+				},
+				error: function(result, status, statusText) {
+					$comment.html($('<span></span>').addClass('span-alert alert-danger').text("Some troubles happened with deleting comment: " + statusText));
 				}
 			});
 		});

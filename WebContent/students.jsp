@@ -75,9 +75,11 @@
 						<tbody>
 						<% for (UserBean student : studentMap.get(groupName)) { %>
 							<tr>
-							<td><%  if (student.getAvatar().isEmpty()) { %>
-								<img src="<%= defaultAvatar %>" class="img-circle avatar-table"><% } else { %>
-								<img src="<%= uploadAvatarPath + File.separator + student.getAvatar() %>" class="img-circle avatar-table">
+							<td>
+								<%  if (student.getAvatar().isEmpty()) { %>
+									<img src="<%= defaultAvatar %>" class="img-circle avatar-table">
+								<% } else { %>
+									<img src="<%= uploadAvatarPath + File.separator + student.getAvatar() %>" class="img-circle avatar-table">
 								<% } %>
 							</td>
 							<td><% out.print(student.getFirstName()); %></td>
