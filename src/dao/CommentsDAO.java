@@ -39,6 +39,7 @@ public class CommentsDAO {
 				comment.setOwnerType(rs.getString("ownerType"));
 				
 				UserBean author = new UserBean();
+				author.setId(rs.getInt("id"));
 				author.setAvatar(rs.getString("avatarName"));
 				author.setFirstName(rs.getString("firstname"));
 				author.setLastName(rs.getString("lastname"));
@@ -51,6 +52,32 @@ public class CommentsDAO {
 			System.out.println(e.getMessage());
 		}
 		return comments;
+	}
+
+	/**
+	 * Check if exists comment with provided cid and uid
+	 */
+	public static boolean checkByCidAuthor(int cid, int uid) {
+		String query = "SELECT cid FROM comments c "
+				+ "INNER JOIN users u ON u.id = c.author "
+				+ "WHERE cid = ? AND author = ? "
+				+ "ORDER BY date";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+
+		boolean result = false;
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, cid);
+			stmt.setInt(2, uid);
+			ResultSet rs = stmt.executeQuery();
+
+			result = rs.next();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return result;
 	}
 
 	/**

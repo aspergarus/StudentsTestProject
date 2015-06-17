@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import beans.CommentsBean;
 import beans.UserBean;
 import dao.CommentsDAO;
+import dao.DepartmentsDAO;
 
 /**
  * Servlet implementation class CommentsServlet
@@ -60,6 +61,43 @@ public class CommentsServlet extends HttpServlet {
 			}
 			response.sendRedirect(request.getContextPath() + "/" + comment.getOwnerType() + "?id=" + comment.getOwnerId());
 		}
+	}
+
+	/**
+	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
+	 */
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+
+		if (user == null) {
+			response.sendError(403);
+		}
+		else {
+			// Get params
+			int cid = Integer.valueOf(request.getHeader("cid"));
+
+			// Validation
+			if (user.getRole() != 2 && !deleteValidate(cid, user.getId())) {
+				response.getOutputStream().print("User does not have access");
+				response.sendError(403, "User does not have access");
+				return;
+			}
+
+			//Delete from DB
+			CommentsDAO.delete(cid);
+			response.getOutputStream().println("Comment has been deleted successfully.");
+		}
+	}
+
+	/**
+	 * Validate whether current user has access to delete this comment.
+	 */
+	private boolean deleteValidate(int cid, int uid) {
+		if (!CommentsDAO.checkByCidAuthor(cid, uid)) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
