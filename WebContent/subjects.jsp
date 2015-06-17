@@ -1,6 +1,7 @@
 <%@page import="beans.SubjectsBean"%>
 <%@page import="java.io.File"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.HashMap"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
@@ -9,6 +10,7 @@
 <% String status = (String) request.getAttribute("status"); %>
 <% String message = (String) request.getAttribute("message"); %>
 <% ArrayList<SubjectsBean> subjects = (ArrayList<SubjectsBean>) request.getAttribute("subjectsList"); %>
+<% HashMap<Integer, String> departmentsMap = (HashMap<Integer, String>) request.getAttribute("departmentsMap"); %>
 
 <%@ include file="header.jsp" %>
 
@@ -35,9 +37,9 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="department" class="col-sm-2 control-label">Department*</label>
+				<label for="departmentName" class="col-sm-2 control-label">Department*</label>
 				<div class="col-sm-10">
-					<input name="department" type="text" class="form-control" id="department" required>
+					<input name="departmentName" type="text" class="form-control" id="departmentName" required>
 				</div>
 			</div>	
 			<div class="form-group">
@@ -58,9 +60,8 @@
 				<% if (user.getRole() == 2) { %>
 				<th data-field="id" data-align="center" data-sortable="true">ID</th>
 				<% } %>
-				<th data-field="department" data-align="center" data-sortable="true">Department</th>
 				<th data-field="subjectName" data-align="center" data-sortable="true">Subject Name</th>
-				<th data-field="teacher" data-align="center" data-sortable="true">Teacher</th>
+				<th data-field="department" data-align="center" data-sortable="true">Department</th>
 				<% if (user.getRole() == 2) { %>
 				<th data-field="edit" data-align="center">Edit</th>
 				<th data-field="delete" data-align="center">Delete</th>
@@ -73,9 +74,8 @@
 					<% if (user.getRole() == 2) { %>
 			        <td><% out.print(subject.getId()); %></td>
 			        <% } %>
-			        <td><% out.print(subject.getDepartment()); %></td>
 			        <td><% out.print(subject.getSubjectName()); %></td>
-			        <td><% out.print(subject.getTeacherId() == 0 ? "Викладач не призначений" : subject.getTeacherId()); %></td>	
+			        <td><% out.print (departmentsMap.get(subject.getDepartmentId())); %></td>
 			        <% if (user.getRole() == 2) { %>
 			        <td><a href="subjects?edit=true&id=<%= subject.getId() %>">Edit</a></td>
 			        <td>

@@ -2,6 +2,7 @@ package main;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dao.DepartmentsDAO;
+import dao.GroupsDAO;
 import dao.UserDAO;
 import beans.UserBean;
 
@@ -37,8 +40,12 @@ public class UsersServlet extends HttpServlet {
 		else {
 			// Select all users here.
 			ArrayList<UserBean> users = UserDAO.findAll();
+			HashMap<Integer, String> departmentsMap = DepartmentsDAO.getDepartmentsMap();
+			HashMap<Integer, String> groupsMap = GroupsDAO.getGroupsMap();
+			
 			request.setAttribute("usersList", users);
-			request.setAttribute("currentUser", user);
+			request.setAttribute("departmentsMap", departmentsMap);
+			request.setAttribute("groupsMap", groupsMap);
 			request.getRequestDispatcher("users.jsp").forward(request, response);
 		}
 	}

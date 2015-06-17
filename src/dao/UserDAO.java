@@ -45,7 +45,7 @@ public class UserDAO {
 				bean.setUserName(rs.getString("userName"));
 				bean.setFirstName(rs.getString("firstName"));
 				bean.setLastName(rs.getString("lastName"));
-				bean.setGroup(rs.getString("group"));
+				bean.setGroupId(rs.getInt("groupId"));
 				bean.setEmail(rs.getString("email"));
 				bean.setRole(rs.getByte("role"));
 				bean.setPassword(rs.getString("password"));
@@ -79,7 +79,7 @@ public class UserDAO {
 				bean.setUserName(rs.getString("userName"));
 				bean.setFirstName(rs.getString("firstName"));
 				bean.setLastName(rs.getString("lastName"));
-				bean.setGroup(rs.getString("group"));
+				bean.setGroupId(rs.getInt("groupId"));
 				bean.setEmail(rs.getString("email"));
 				bean.setRole(rs.getByte("role"));
 				bean.setPassword(rs.getString("password"));
@@ -103,12 +103,12 @@ public class UserDAO {
 		byte role = bean.getRole();
 		String firstName = bean.getFirstName();
 		String lastName = bean.getLastName();
-		String group = bean.getGroup();
+		int groupId = bean.getGroupId();
 		
 		
 
 		String query = "INSERT INTO users "
-				+ "(username, password, email, role, firstName, lastName, group) "
+				+ "(username, password, email, role, firstName, lastName, groupId) "
 				+ "VALUES (?,?,?,?,?,?,?)";
 
 		ConnectionManager conM = new ConnectionManager();
@@ -121,7 +121,7 @@ public class UserDAO {
 	        insertUser.setByte(4, role);
 	        insertUser.setString(5, firstName);
 	        insertUser.setString(6, lastName);
-	        insertUser.setString(7, group);
+	        insertUser.setInt(7, groupId);
 	        rowsAffected = insertUser.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -150,7 +150,7 @@ public class UserDAO {
 				bean.setEmail(rs.getString("email"));
 				bean.setRole(rs.getByte("role"));
 				bean.setAvatar(rs.getString("avatarName"));
-				bean.setGroup(rs.getString("group"));
+				bean.setGroupId(rs.getInt("groupId"));
 				users.add(bean);
 			}
 		}

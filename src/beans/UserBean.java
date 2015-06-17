@@ -11,7 +11,7 @@ public class UserBean {
 	private byte role;
 	private String email;
 	private String avatarName = "";
-	private String group;
+	private int groupId;
 	public boolean valid = false;
 
 	public UserBean(String name) {
@@ -19,14 +19,14 @@ public class UserBean {
 	}
 
 	public UserBean(String name, String password, String email,
-			byte role, String firstName, String lastName, String avatarName, String group) {
+			byte role, String firstName, String lastName, String avatarName, int groupId) {
 		this.userName = name;
 		this.email = email;
 		this.role = role;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.avatarName = avatarName;
-		this.group = group;
+		this.groupId = groupId;
 		this.setPassword(password);
 	}
 	
@@ -104,11 +104,11 @@ public class UserBean {
 		this.role = role;
 	}
 	
-	public String getGroup() {
-	    return group;
+	public int getGroupId() {
+	    return groupId;
     }
-	public void setGroup(String group) {
-	    this.group = group;
+	public void setGroupId(int groupId) {
+	    this.groupId = groupId;
     }
 	
 	public String toString() {
@@ -118,7 +118,7 @@ public class UserBean {
 				+ "email: " + email + ", "
 				+ "first name: " + firstName + ", "
 				+ "last name: " + lastName + ", "
-				+ "Group: " + group + ", "
+				+ "Group: " + groupId + ", "
 				+ "file name: " + avatarName;
 	}
 

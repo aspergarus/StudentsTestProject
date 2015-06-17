@@ -1,6 +1,7 @@
 <%@page import="java.io.File"%>
 <%@page import="beans.UserBean"%>
 <%@page import="beans.SubjectsBean"%>
+<%@page import="java.util.HashMap"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
@@ -8,8 +9,9 @@
 <% String status = (String) request.getAttribute("status"); %>
 <% String message = (String) request.getAttribute("message"); %>
 <% SubjectsBean sBean = (SubjectsBean) request.getAttribute("subjectsBean"); %>
+<% HashMap<Integer, String> departmentsMap = (HashMap<Integer, String>) request.getAttribute("departmentsMap"); %>
 <% String subjectName = sBean.getSubjectName(); %>
-<% String department = sBean.getDepartment(); %>
+<% String department = departmentsMap.get(sBean.getDepartmentId()); %>
 
 <%@ include file="header.jsp" %>
 
@@ -28,14 +30,14 @@
 			<label for="subject" class="col-sm-2 control-label">Subject Name*</label>
 			<div class="col-sm-10">
 				<input name="subjectName" type="text" class="form-control typeahead"
-					class="subject" required autocomplete="off" data-autocomplete-url="autocomplete/subjects" value="<%= sBean.getSubjectName() %>">
+					class="subject" required autocomplete="off" data-autocomplete-url="autocomplete/subjects" value="<%= subjectName %>">
 			</div>
 		</div>
 
 		<div class="form-group">
 			<label for="title" class="col-sm-2 control-label">Department*</label>
 			<div class="col-sm-10">
-				<input name="department" type="text" class="form-control" id="title" required value="<%= sBean.getDepartment() %>">
+				<input name="departmentName" type="text" class="form-control" id="title" required value="<%= department %>">
 			</div>
 		</div>
 

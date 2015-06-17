@@ -164,10 +164,10 @@ $(function () {
 		});
 	}
 
-	transformer();
+	departmentTransformer();
 
-	function transformer() {
-		$('.transformer-text').click(function(e) {
+	function departmentTransformer() {
+		$('.transformer-text-department').click(function(e) {
 			e.preventDefault();
 			
 			var $this = $(this);
@@ -192,6 +192,79 @@ $(function () {
 					var newText = $input.val();
 					$.ajax(basePath + "/department", {
 						headers: {'did': did, 'name' : encodeURIComponent(newText) },
+						method: "PUT",
+						success: function(result) {
+							$this.text(newText);
+							$this.show();
+							$input.hide();
+						},
+						error: function(result) {
+							$this.show();
+							$input.hide();
+						}
+					});
+				}
+			});
+		});
+	}
+	
+	groupDeleteOperation();
+	
+	function groupDeleteOperation() {
+		$('.delete-group-btn').click(function(e) {
+			e.preventDefault();
+
+			var $this = $(this);
+			var $parent = $this.parent();
+			
+			// Show animation
+			var $animationBlock = $('<div></div>').addClass('ajax-loader').append($('<img></img>').attr({ src : "imgs/ajax-loader.gif" }));
+			$parent.append($animationBlock);
+			$this.remove();
+
+			var id = $this.data('id');
+			$.ajax(basePath + "/groups", {
+				headers: {id : id },
+				method: "DELETE",
+				success: function(result) {
+					$parent.find("div").remove();
+					$parent.append($('<span></span>').addClass('span-alert alert-success').text(result));
+				},
+				error: function() {
+					$parent.append($('<span></span>').addClass('span-alert alert-danger').text("Could not delete this group"));
+				}
+			});
+		});
+	}
+	
+	groupTransformer();
+	
+	function groupTransformer() {
+		$('.transformer-text-group').click(function(e) {
+			e.preventDefault();
+			
+			var $this = $(this);
+			var text = $this.text();
+			var id = $this.data('id');
+			console.log(id);
+			var $parent = $this.parent();
+			var $input = $parent.find('input');
+			
+			$this.hide();
+			$input.show();
+			$input.val(text);
+			
+			$input.focus();
+			$input.focusout(function () {
+				$this.show();
+				$input.hide();
+			}); 
+				
+			$input.change(function() {
+				if ($input.val().trim() != "") {
+					var newText = $input.val();
+					$.ajax(basePath + "/groups", {
+						headers: {'id': id, 'name' : encodeURIComponent(newText) },
 						method: "PUT",
 						success: function(result) {
 							$this.text(newText);
