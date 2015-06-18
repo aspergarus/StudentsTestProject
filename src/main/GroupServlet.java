@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.GroupsDAO;
+import dao.SubjectsDAO;
 import beans.GroupBean;
 import beans.UserBean;
 
@@ -65,25 +66,37 @@ public class GroupServlet extends HttpServlet {
 			response.sendError(403);
 		}
 		else {
-			// Add new group
-			String groupName = request.getParameter("groupName");
-			String errorMessage = GroupsDAO.groupValidate(groupName);
+			String subject = "";
+			String groups = "";
+			subject = java.net.URLDecoder.decode(request.getHeader("subject"), "UTF-8").trim();
+			groups = java.net.URLDecoder.decode(request.getHeader("groups"), "UTF-8").trim();
 			
-			if (errorMessage == null) {
-				if (GroupsDAO.insert(groupName)) {
-					session.setAttribute("status", "success");
-					session.setAttribute("message", "Group has been added");
+			if (!subject.equals("") || !groups.equals("")) {
+				int subjectId = SubjectsDAO.findSubjectId(subject);
+				GroupsDAO.shareSubject(user.getId(), subjectId, groups);
+				response.getOutputStream().println("Subject has been shared successfully.");
+			}
+			else {
+				// Add new group
+				String groupName = request.getParameter("groupName");
+				String errorMessage = GroupsDAO.groupValidate(groupName);
+				
+				if (errorMessage == null) {
+					if (GroupsDAO.insert(groupName)) {
+						session.setAttribute("status", "success");
+						session.setAttribute("message", "Group has been added");
+					}
+					else {
+						session.setAttribute("status", "danger");
+						session.setAttribute("message", "Some troubles were occurred during adding a group");
+					}
 				}
 				else {
 					session.setAttribute("status", "danger");
-					session.setAttribute("message", "Some troubles were occurred during adding a group");
+					session.setAttribute("message", errorMessage);
 				}
+				response.sendRedirect(request.getContextPath() + "/groups");
 			}
-			else {
-				session.setAttribute("status", "danger");
-				session.setAttribute("message", errorMessage);
-			}
-			response.sendRedirect(request.getContextPath() + "/groups");
 		}
 	}
 

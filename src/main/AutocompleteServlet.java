@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
+import dao.GroupsDAO;
 import dao.SubjectsDAO;
 import dao.UserDAO;
 import beans.UserBean;
@@ -62,6 +63,11 @@ public class AutocompleteServlet extends HttpServlet {
 
 			case "/group":
 				list = UserDAO.findStudentGroups(query);
+				out = gson.toJson(list);
+				break;
+				
+			case "/groups":
+				list = GroupsDAO.findGroups(query);
 				out = gson.toJson(list);
 				break;
 		}

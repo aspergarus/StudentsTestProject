@@ -162,5 +162,89 @@ public class GroupsDAO {
 		
 		return groupsMap;
 	}
+	
+	@SuppressWarnings("finally")
+	public static ArrayList<String> findGroups(String groupName) {
+		String query = "SELECT DISTINCT groupName FROM groups WHERE groupName LIKE ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		ResultSet rs = null;
 
+		ArrayList<String> groups = null;
+
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setString(1, "%" + groupName.trim() + "%");
+			rs = stmt.executeQuery();
+
+			groups = new ArrayList<>();
+
+			while (rs.next()) {
+				groups.add(rs.getString("groupName"));
+			}
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		finally {
+			return groups;
+		}
+	}
+	
+	public static boolean shareSubject(int userId, int subjectId, String groups) {
+		String query = "INSERT INTO courses "
+				+ "(teacherId, subjectId, groupId) VALUES";
+		
+		String[] groupsArray = groups.split(",");
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		int rowsAffected = 0;
+		
+		for (int i = 0; i < groupsArray.length; i++) {
+			query += " (?,?,?)";
+			if (i != groupsArray.length - 1) {
+				query += ",";
+			}
+		}
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			int i = 0;
+			for (String groupName : groupsArray) {
+				stmt.setInt(i + 1, userId);
+				stmt.setInt(i + 2, subjectId);
+				
+				int groupId = findGroupId(groupName);
+				stmt.setInt(i + 3, groupId);
+				i += 3;
+			}
+			rowsAffected = stmt.executeUpdate();
+		} catch (SQLException e) {
+	        System.out.println(e.getMessage());
+        }
+		return rowsAffected > 0;
+	}
+	
+	@SuppressWarnings("finally")
+    public static int findGroupId(String groupName) {
+		String query = "SELECT id FROM groups WHERE groupName = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		ResultSet rs = null;
+		int groupId = 0;
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setString(1, groupName);
+			rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				groupId = rs.getInt("id");
+			}
+		} catch (SQLException e) {
+	        System.out.println(e.getMessage());
+        } finally {
+        	return groupId;
+        }
+	}
 }

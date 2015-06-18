@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="<%= basePathHeader %>/css/bootstrap-theme.css">
 <link rel="stylesheet" href="<%= basePathHeader %>/css/bootstrap-table.min.css">
 <link rel="stylesheet" href="<%= basePathHeader %>/css/fileinput.min.css">
+<link rel="stylesheet" href="<%= basePathHeader %>/css/bootstrap-tagsinput.css">
 
 <!-- js libraries -->
 <script src="<%= basePathHeader %>/js/jquery.min.js"></script>
@@ -24,6 +25,7 @@
 <script src="<%= basePathHeader %>/js/bootstrap-typeahead.min.js"></script>
 <script src="<%= basePathHeader %>/js/fileinput.js"></script>
 <script src="<%= basePathHeader %>/js/fileinput_locale_uk.js"></script>
+<script src="<%= basePathHeader %>/js/bootstrap-tagsinput.js"></script>
 
 
 <!-- Custom javascripts variables -->

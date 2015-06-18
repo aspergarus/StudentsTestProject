@@ -34,7 +34,7 @@
 				<label for="subject" class="col-sm-2 control-label">Subject*</label>
 				<div class="col-sm-10">
 					<input name="subject" type="text" class="form-control typeahead"
-						class="subject" required autocomplete="off" data-autocomplete-url="autocomplete/subjects">
+						required autocomplete="off" data-autocomplete-url="autocomplete/subjects">
 				</div>
 			</div>
 			<div class="form-group">
@@ -76,7 +76,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading" role="tab" id="heading-<%= i %>">
 				<h4 class="panel-title">
-					<a data-toggle="collapse" data-parent="#accordion" href="#collapse-<%= i %>" aria-controls="collapse-<%= i %>">
+					<a id="subject-"<%= i %> data-toggle="collapse" data-parent="#accordion" href="#collapse-<%= i %>" aria-controls="collapse-<%= i %>">
 					  <%= subject %>
 					</a>
 				</h4>
@@ -84,6 +84,13 @@
 
 			<div id="collapse-<%= i %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-<%= i %>">
 				<div class="panel-body">
+						<p class="help-block">Share this subject to groups:
+							<input name="groupName" type="text" data-role="tagsinput" class="group-input"
+								required autocomplete="off">
+							<input type="submit" value="Share" class="btn btn-info btn-share">
+							<span id="subject-id" style="visibility:hidden"><%= i %></span>
+						</p>
+					
 					<table class="table">
 						<thead>
 					        <tr>
