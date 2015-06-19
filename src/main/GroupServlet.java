@@ -68,16 +68,18 @@ public class GroupServlet extends HttpServlet {
 		else {
 			String subject = "";
 			String groups = "";
-			subject = java.net.URLDecoder.decode(request.getHeader("subject"), "UTF-8").trim();
-			groups = java.net.URLDecoder.decode(request.getHeader("groups"), "UTF-8").trim();
-			
-			if (!subject.equals("") || !groups.equals("")) {
+			try {
+				subject =  java.net.URLDecoder.decode(request.getHeader("subject"), "UTF-8").trim();
+				groups = java.net.URLDecoder.decode(request.getHeader("groups"), "UTF-8").trim();
+				
 				int subjectId = SubjectsDAO.findSubjectId(subject);
 				GroupsDAO.shareSubject(user.getId(), subjectId, groups);
 				response.getOutputStream().println("Subject has been shared successfully.");
+			} catch (NullPointerException e) {
+				// Nothing
 			}
-			else {
-				// Add new group
+			if (subject.equals("") && groups.equals("")) {
+			// Add new group
 				String groupName = request.getParameter("groupName");
 				String errorMessage = GroupsDAO.groupValidate(groupName);
 				
@@ -98,6 +100,7 @@ public class GroupServlet extends HttpServlet {
 				response.sendRedirect(request.getContextPath() + "/groups");
 			}
 		}
+		
 	}
 
 	/**

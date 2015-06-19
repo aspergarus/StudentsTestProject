@@ -311,22 +311,22 @@ $(function () {
 			var $this = $(this);
 			var $parent = $this.parent();
 			var $input = $parent.find('.group-input');
-			var id = $parent.find('subject-id').text();
-			var subject = $('#subject-' + id).text();
+			var id = $parent.find('.subject-id').text();
+			var subject = $('.subject-' + id).text();
 			var groups = $input.tagsinput('items');
 			
-			console.log(groups);
-			
-			$.ajax(basePath + "/groups", {
-				headers: {'subject': encodeURIComponent(subject), 'groups' : encodeURIComponent(groups) },
-				method: "POST",
-				success: function(result) {
-					$parent.html($('<span></span>').addClass('span-alert alert-success').text("Subject was shared."));
-				},
-				error: function() {
-					$parent.html($('<span></span>').addClass('span-alert alert-danger').text("Subject already shared or something else trouble."));
-				}
-			});
+			if (groups.length != 0) {
+				$.ajax(basePath + "/groups", {
+					headers: {'subject': encodeURIComponent(subject), 'groups' : encodeURIComponent(groups) },
+					method: "POST",
+					success: function(result) {
+						
+					},
+					error: function() {
+						$parent.html($('<span></span>').addClass('span-alert alert-danger').text("Subject already shared or something else trouble."));
+					}
+				});
+			}
 		});
 	}
 	

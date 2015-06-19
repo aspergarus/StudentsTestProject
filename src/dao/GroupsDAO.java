@@ -192,59 +192,109 @@ public class GroupsDAO {
 	}
 	
 	public static boolean shareSubject(int userId, int subjectId, String groups) {
-		String query = "INSERT INTO courses "
-				+ "(teacherId, subjectId, groupId) VALUES";
+		String[] groupNames = groups.split(",");
 		
-		String[] groupsArray = groups.split(",");
+		ArrayList<Integer> groupsId = findGroupId(groupNames);
 		
-		ConnectionManager conM = new ConnectionManager();
-		Connection con = conM.getConnection();
-		int rowsAffected = 0;
+		ArrayList<Integer> unsharedGroupIds = findUnsharedGroups(userId, subjectId, groupsId);
+		if (!unsharedGroupIds.isEmpty()) {
+			String insertQuery = "INSERT INTO courses "
+					+ "(teacherId, subjectId, groupId) VALUES";
 		
-		for (int i = 0; i < groupsArray.length; i++) {
-			query += " (?,?,?)";
-			if (i != groupsArray.length - 1) {
-				query += ",";
+			ConnectionManager conM = new ConnectionManager();
+			Connection con = conM.getConnection();
+			int rowsAffected = 0;
+			
+			for (int i = 0; i < unsharedGroupIds.size(); i++) {
+				insertQuery += " (?,?,?)";
+				if (i != unsharedGroupIds.size() - 1) {
+					insertQuery += ",";
+				}
 			}
+			
+			try (PreparedStatement stmt = con.prepareStatement(insertQuery)) {
+				int i = 0;
+				for (int groupId : unsharedGroupIds) {
+					stmt.setInt(i + 1, userId);
+					stmt.setInt(i + 2, subjectId);
+					stmt.setInt(i + 3, groupId);
+					i += 3;
+				}
+				rowsAffected = stmt.executeUpdate();
+			} catch (SQLException e) {
+		        System.out.println(e.getMessage());
+	        }
+			return rowsAffected > 0;
 		}
-		
-		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			int i = 0;
-			for (String groupName : groupsArray) {
-				stmt.setInt(i + 1, userId);
-				stmt.setInt(i + 2, subjectId);
-				
-				int groupId = findGroupId(groupName);
-				stmt.setInt(i + 3, groupId);
-				i += 3;
-			}
-			rowsAffected = stmt.executeUpdate();
-		} catch (SQLException e) {
-	        System.out.println(e.getMessage());
-        }
-		return rowsAffected > 0;
+		return false;
 	}
 	
 	@SuppressWarnings("finally")
-    public static int findGroupId(String groupName) {
-		String query = "SELECT id FROM groups WHERE groupName = ?";
+    public static ArrayList<Integer> findGroupId(String[] groupsName) {
+		String query = "SELECT id FROM groups WHERE groupName IN (";
+
+		ArrayList<Integer> groupIds = new ArrayList<>();
+		int length = groupsName.length;
+		
+		for (int i = 0; i < length; i++) {
+			query += "?,";
+		}
+		query = query.substring(0, query.length() - 1) + ")";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		ResultSet rs = null;	
+			
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			for (int i = 0; i < length; i++) {
+				stmt.setString(i + 1, groupsName[i]);
+			}
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				groupIds.add(rs.getInt("id"));
+			}
+			
+		} catch (SQLException e) {
+	        System.out.println(e.getMessage());
+        } finally {
+        	return groupIds;
+        }
+	}
+	
+	public static ArrayList<Integer> findUnsharedGroups(int userId, int subjectId, ArrayList<Integer> groupsId) {
+		String selectQuery = "SELECT groupId FROM courses WHERE teacherId=? AND subjectId=? AND groupId IN (";
+		
+		int size = groupsId.size();
+		for (int i = 0; i < size; i++) {
+			selectQuery += "?,";
+		}
+		selectQuery = selectQuery.substring(0, selectQuery.length() - 1) + ")";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		ResultSet rs = null;
-		int groupId = 0;
 		
-		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setString(1, groupName);
+		try (PreparedStatement stmt = con.prepareStatement(selectQuery)) {
+			stmt.setInt(1, userId);
+			stmt.setInt(2, subjectId);
+			
+			int i = 3;
+			for (int id: groupsId) {
+				stmt.setInt(i, id);
+				i++;
+			}
+			
 			rs = stmt.executeQuery();
 			
-			if (rs.next()) {
-				groupId = rs.getInt("id");
+			while (rs.next()) {
+				groupsId.remove(new Integer(rs.getInt("groupId")));
 			}
+			
 		} catch (SQLException e) {
-	        System.out.println(e.getMessage());
-        } finally {
-        	return groupId;
-        }
+			System.out.println(e.getMessage());
+        } 
+		
+		return groupsId;
 	}
 }

@@ -145,7 +145,7 @@ public class SubjectsDAO {
 	public static HashMap<Integer, String> getSubjectsMap () {
 		String query = "SELECT * FROM subjects";
 		
-		HashMap<Integer, String> subjectsMap = null;
+		HashMap<Integer, String> subjectsMap = new HashMap<>();;
 		
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
@@ -153,7 +153,6 @@ public class SubjectsDAO {
 		try (Statement stmnt = con.createStatement()) {
 	        rs = stmnt.executeQuery(query);
 	        while (rs.next()) {
-	        	subjectsMap = new HashMap<>();
 	        	int subjectId = rs.getInt("id");
 	        	String subjectName = rs.getString("subjectName");
 	        	subjectsMap.put(subjectId, subjectName);
