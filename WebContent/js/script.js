@@ -288,7 +288,6 @@ $(function () {
 			var $this = $(this);
 			var cid = $this.data('comment-id')
 			var $comment = $this.parent();
-			console.log(cid);
 			var $animationBlock = $('<div></div>').addClass('ajax-loader').append($('<img></img>').attr({ src : "imgs/ajax-loader.gif" }));
 			$comment.html($animationBlock);
 
@@ -304,4 +303,57 @@ $(function () {
 			});
 		});
 	}
+	
+	shareSubjects();
+	
+	function shareSubjects() {
+		$('.btn-share').click(function() {
+			var $this = $(this);
+			var $parent = $this.parent();
+			var $input = $parent.find('.group-input');
+			var id = $parent.find('.subject-id').text();
+			var subject = $('.subject-' + id).text();
+			var groups = $input.tagsinput('items');
+			
+			if (groups.length != 0) {
+				$.ajax(basePath + "/groups", {
+					headers: {'subject': encodeURIComponent(subject), 'groups' : encodeURIComponent(groups) },
+					method: "POST",
+					success: function(result) {
+						
+					},
+					error: function() {
+						$parent.html($('<span></span>').addClass('span-alert alert-danger').text("Subject already shared or something else trouble."));
+					}
+				});
+			}
+		});
+	}
+	
+	putGroups();
+	start();
+	
+	function putGroups() {
+		$('div h4 a').click(function() {
+			var $this = $(this);
+			var subject = $this.text();
+			var aClass = $this.attr('class');
+			
+			for (i = 0; i < aClass.length; i++) {
+				if (aClass[i] === ' ') {
+					var end = i;
+					break;
+				}
+				else {
+					end = aClass.length;
+				}
+			}
+			var id = aClass.substring(8, end);
+			
+			// Не працює
+			$('.input-' + id).attr('value', 'АВ-41,АВ-51, АВ-42');
+			
+		});
+	}
+	
 });

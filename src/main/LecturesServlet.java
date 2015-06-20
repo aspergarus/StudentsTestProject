@@ -64,9 +64,13 @@ public class LecturesServlet extends HttpServlet {
 			if (id == null) {
 				// Show all lectures
 				Map<String, ArrayList<LecturesBean>> lecturesMap = LecturesDAO.findAll(user.getId(), user.getRole());
-
+				
+				// @TODO: function for return arrayList of groups that are selected for subject
+				ArrayList<String> groupsList = null;
+				
 				request.setAttribute("lecturesMap", lecturesMap);
 				request.setAttribute("currentUser", user);
+				request.setAttribute("groupsList", groupsList);
 				request.getRequestDispatcher("lectures.jsp").forward(request, response);
 			}
 			else {
