@@ -257,3 +257,9 @@ ol {
 	margin: 16px 0;
 	display: block;
 }
+.bootstrap-tagsinput {
+	vertical-align: top!important;
+}
+.btn-share {
+	height: 32px;
+}

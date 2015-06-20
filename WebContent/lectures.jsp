@@ -85,7 +85,7 @@
 			<div id="collapse-<%= i %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-<%= i %>">
 				<div class="panel-body">
 					<p class="help-block">Share this subject to groups:
-						<input name="groupName" type="text" data-role="tagsinput" class="group-input"
+						<input name="groupName" type="text" data-role="tagsinput" class="group-input input-<%= i %>"
 							required autocomplete="off">
 						<input type="submit" value="Share" class="btn btn-info btn-share">
 						<span class="subject-id" style="visibility:hidden"><%= i %></span>

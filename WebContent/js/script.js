@@ -330,4 +330,30 @@ $(function () {
 		});
 	}
 	
+	putGroups();
+	start();
+	
+	function putGroups() {
+		$('div h4 a').click(function() {
+			var $this = $(this);
+			var subject = $this.text();
+			var aClass = $this.attr('class');
+			
+			for (i = 0; i < aClass.length; i++) {
+				if (aClass[i] === ' ') {
+					var end = i;
+					break;
+				}
+				else {
+					end = aClass.length;
+				}
+			}
+			var id = aClass.substring(8, end);
+			
+			// Не працює
+			$('.input-' + id).attr('value', 'АВ-41,АВ-51, АВ-42');
+			
+		});
+	}
+	
 });
