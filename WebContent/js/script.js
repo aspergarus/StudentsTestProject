@@ -303,57 +303,37 @@ $(function () {
 			});
 		});
 	}
-	
-	shareSubjects();
-	
-	function shareSubjects() {
-		$('.btn-share').click(function() {
-			var $this = $(this);
-			var $parent = $this.parent();
-			var $input = $parent.find('.group-input');
-			var id = $parent.find('.subject-id').text();
-			var subject = $('.subject-' + id).text();
-			var groups = $input.tagsinput('items');
-			
-			if (groups.length != 0) {
+
+	assigningGroups();
+
+	function assigningGroups() {
+		var $tokenField = $('#tokenfield');
+		$tokenField.tokenfield({
+			autocomplete: {
+				source: "autocomplete/groups",
+				delay: 100
+			}
+		});
+
+		var $btn = $('.assign-subject-group');
+		$btn.click(function() {
+			var groups = $tokenField.tokenfield('getTokens').map(function(el) { return el.value; }).join();
+
+			if (groups.length > 0) {
+				var subject = $btn.data('subject');
+
 				$.ajax(basePath + "/groups", {
 					headers: {'subject': encodeURIComponent(subject), 'groups' : encodeURIComponent(groups) },
 					method: "POST",
 					success: function(result) {
-						
+						console.log(result);
 					},
 					error: function() {
-						$parent.html($('<span></span>').addClass('span-alert alert-danger').text("Subject already shared or something else trouble."));
+						$parent.html($('<span></span>').addClass('span-alert alert-danger').text("Subject already shared or something else troubles."));
 					}
 				});
 			}
 		});
 	}
-	
-	putGroups();
-	start();
-	
-	function putGroups() {
-		$('div h4 a').click(function() {
-			var $this = $(this);
-			var subject = $this.text();
-			var aClass = $this.attr('class');
-			
-			for (i = 0; i < aClass.length; i++) {
-				if (aClass[i] === ' ') {
-					var end = i;
-					break;
-				}
-				else {
-					end = aClass.length;
-				}
-			}
-			var id = aClass.substring(8, end);
-			
-			// Не працює
-			$('.input-' + id).attr('value', 'АВ-41,АВ-51, АВ-42');
-			
-		});
-	}
-	
+
 });

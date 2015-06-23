@@ -66,20 +66,24 @@ public class GroupServlet extends HttpServlet {
 			response.sendError(403);
 		}
 		else {
-			String subject = "";
-			String groups = "";
-			try {
-				subject =  java.net.URLDecoder.decode(request.getHeader("subject"), "UTF-8").trim();
-				groups = java.net.URLDecoder.decode(request.getHeader("groups"), "UTF-8").trim();
-				
-				int subjectId = SubjectsDAO.findSubjectId(subject);
-				GroupsDAO.shareSubject(user.getId(), subjectId, groups);
-				response.getOutputStream().println("Subject has been shared successfully.");
-			} catch (NullPointerException e) {
-				// Nothing
+			String subjectHeader = request.getHeader("subject");
+			String groupsHeader = request.getHeader("groups");
+			
+			
+			if (subjectHeader != null && subjectHeader != null) {
+				try {
+					String subject = java.net.URLDecoder.decode(subjectHeader, "UTF-8").trim();
+					String groups = java.net.URLDecoder.decode(groupsHeader, "UTF-8").trim();
+
+					int subjectId = SubjectsDAO.findSubjectId(subject);
+					GroupsDAO.shareSubject(user.getId(), subjectId, groups);
+					response.getOutputStream().println("Subject has been shared successfully.");
+				} catch (NullPointerException e) {
+					// Nothing
+				}
 			}
-			if (subject.equals("") && groups.equals("")) {
-			// Add new group
+			else {
+				// Add new group
 				String groupName = request.getParameter("groupName");
 				String errorMessage = GroupsDAO.groupValidate(groupName);
 				

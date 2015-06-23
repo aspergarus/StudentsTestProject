@@ -3,6 +3,7 @@ package main;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -12,11 +13,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import util.FileUploadManager;
 import beans.FileBean;
 import beans.LecturesBean;
 import beans.UserBean;
 import dao.FileDAO;
+import dao.GroupsDAO;
 import dao.LecturesDAO;
 import dao.SubjectsDAO;
 
@@ -66,11 +69,11 @@ public class LecturesServlet extends HttpServlet {
 				Map<String, ArrayList<LecturesBean>> lecturesMap = LecturesDAO.findAll(user.getId(), user.getRole());
 				
 				// @TODO: function for return arrayList of groups that are selected for subject
-				ArrayList<String> groupsList = null;
+				HashMap<String, String> groups = GroupsDAO.getGroupsByTeacher(user.getId());
 				
 				request.setAttribute("lecturesMap", lecturesMap);
 				request.setAttribute("currentUser", user);
-				request.setAttribute("groupsList", groupsList);
+				request.setAttribute("groupsMap", groups);
 				request.getRequestDispatcher("lectures.jsp").forward(request, response);
 			}
 			else {

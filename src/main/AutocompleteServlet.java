@@ -38,6 +38,9 @@ public class AutocompleteServlet extends HttpServlet {
 		}
 		else {
 			String query = request.getParameter("query");
+			if (query == null) {
+				query = request.getParameter("term");
+			}
 
 			String output = getAutocompleteData(request.getPathInfo(), query);
 

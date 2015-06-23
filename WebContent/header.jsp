@@ -11,21 +11,23 @@
 <link rel="icon" href="<%= basePathHeader %>/favicon.ico" type="image/x-icon">
 
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="<%= basePathHeader %>/css/style.css">
 <link rel="stylesheet" href="<%= basePathHeader %>/css/bootstrap.min.css">
 <link rel="stylesheet" href="<%= basePathHeader %>/css/bootstrap-theme.css">
 <link rel="stylesheet" href="<%= basePathHeader %>/css/bootstrap-table.min.css">
 <link rel="stylesheet" href="<%= basePathHeader %>/css/fileinput.min.css">
-<link rel="stylesheet" href="<%= basePathHeader %>/css/bootstrap-tagsinput.css">
+<link rel="stylesheet" href="<%= basePathHeader %>/css/bootstrap-tokenfield.css">
+<link rel="stylesheet" href="<%= basePathHeader %>/css/jquery-ui.min.css">
+<link rel="stylesheet" href="<%= basePathHeader %>/css/style.css">
 
 <!-- js libraries -->
 <script src="<%= basePathHeader %>/js/jquery.min.js"></script>
+<script src="<%= basePathHeader %>/js/jquery-ui.min.js"></script>
 <script src="<%= basePathHeader %>/js/bootstrap.min.js"></script>
 <script src="<%= basePathHeader %>/js/bootstrap-table.min.js"></script>
-<script src="<%= basePathHeader %>/js/bootstrap-typeahead.min.js"></script>
+<script src="<%= basePathHeader %>/js/bootstrap-typeahead.js"></script>
 <script src="<%= basePathHeader %>/js/fileinput.js"></script>
 <script src="<%= basePathHeader %>/js/fileinput_locale_uk.js"></script>
-<script src="<%= basePathHeader %>/js/bootstrap-tagsinput.js"></script>
+<script src="<%= basePathHeader %>/js/bootstrap-tokenfield.js"></script>
 
 
 <!-- Custom javascripts variables -->

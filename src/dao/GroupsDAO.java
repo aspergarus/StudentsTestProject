@@ -198,7 +198,7 @@ public class GroupsDAO {
 		
 		ArrayList<Integer> unsharedGroupIds = findUnsharedGroups(userId, subjectId, groupsId);
 		if (!unsharedGroupIds.isEmpty()) {
-			String insertQuery = "INSERT INTO courses "
+			String insertQuery = "INSERT INTO stgrelations "
 					+ "(teacherId, subjectId, groupId) VALUES";
 		
 			ConnectionManager conM = new ConnectionManager();
@@ -263,7 +263,7 @@ public class GroupsDAO {
 	}
 	
 	public static ArrayList<Integer> findUnsharedGroups(int userId, int subjectId, ArrayList<Integer> groupsId) {
-		String selectQuery = "SELECT groupId FROM courses WHERE teacherId=? AND subjectId=? AND groupId IN (";
+		String selectQuery = "SELECT groupId FROM stgrelations WHERE teacherId=? AND subjectId=? AND groupId IN (";
 		
 		int size = groupsId.size();
 		for (int i = 0; i < size; i++) {
@@ -293,8 +293,45 @@ public class GroupsDAO {
 			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-        } 
+		} 
 		
 		return groupsId;
+	}
+
+	/**
+	 * Get all groups attached to teacherId and showed relations between groups as String and subjectId as Integer in HashMap.
+	 * 
+	 * @param teacherId
+	 * @return
+	 */
+	public static HashMap<String, String> getGroupsByTeacher(int teacherId) {
+		String selectQuery = "SELECT subjectName, GROUP_CONCAT(groupName) as groupsStr "
+				+ "FROM stgrelations r "
+				+ "INNER JOIN subjects s ON s.id = r.subjectId "
+				+ "INNER JOIN groups g ON g.id = r.groupId "
+				+ "WHERE teacherId=? "
+				+ "GROUP BY subjectId ";
+
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		ResultSet rs = null;
+
+		HashMap<String, String> groups = new HashMap<>();
+
+		try (PreparedStatement stmt = con.prepareStatement(selectQuery)) {
+			stmt.setInt(1, teacherId);
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				String subjectName = rs.getString("subjectName");
+				String groupsStr = rs.getString("groupsStr");
+				groups.put(subjectName, groupsStr);
+			}
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} 
+		
+		return groups;
 	}
 }

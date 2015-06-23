@@ -12,7 +12,7 @@
 <% String status = (String) request.getAttribute("status"); %>
 <% String message = (String) request.getAttribute("message"); %>
 <% Map<String, ArrayList<LecturesBean>> lecturesMap = (HashMap<String, ArrayList<LecturesBean>>) request.getAttribute("lecturesMap"); %>
-
+<% HashMap<String, String> groups = (HashMap<String, String>) request.getAttribute("groupsMap"); %>
 <%@ include file="header.jsp"%>
 
 <%@ include file="menu.jsp"%>
@@ -85,38 +85,36 @@
 			<div id="collapse-<%= i %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-<%= i %>">
 				<div class="panel-body">
 					<p class="help-block">Share this subject to groups:
-						<input name="groupName" type="text" data-role="tagsinput" class="group-input input-<%= i %>"
-							required autocomplete="off">
-						<input type="submit" value="Share" class="btn btn-info btn-share">
-						<span class="subject-id" style="visibility:hidden"><%= i %></span>
+						<input type="text" class="form-control" id="tokenfield" value="<%= groups.get(subject) %>" name="groupName" required autocomplete="off" />
+						<input type="submit" value="Share" class="btn btn-info btn-share assign-subject-group" data-subject="<%= subject %>">
 					</p>
 					
 					<table class="table">
 						<thead>
-					        <tr>
-					            <th data-field="title" data-align="center" data-sortable="true">Title</th>
-					            <th data-field="view" data-align="center">View</th>
-					            <% if (currentUser.getRole() > 0) { %>
-					            <th data-field="edit" data-align="center">Edit</th>
-					            <th data-field="delete" data-align="center">Delete</th>
-					            <%} %>
-					        </tr>
-					    </thead>
-					    <tbody>
-					    <% for (LecturesBean lecture : lecturesMap.get(subject)) { %>
-					    	<tr>
+							<tr>
+								<th data-field="title" data-align="center" data-sortable="true">Title</th>
+								<th data-field="view" data-align="center">View</th>
+								<% if (currentUser.getRole() > 0) { %>
+								<th data-field="edit" data-align="center">Edit</th>
+								<th data-field="delete" data-align="center">Delete</th>
+								<%} %>
+							</tr>
+						</thead>
+						<tbody>
+						<% for (LecturesBean lecture : lecturesMap.get(subject)) { %>
+							<tr>
 								<td><%= lecture.getTitle() %></td>
-						        <td><a href="lectures?id=<%= lecture.getId() %>">View</a></td>
-						        <% if (currentUser.getRole() > 0) { %>
-						        <td><a href="lectures?edit=true&id=<%= lecture.getId() %>">Edit</a></td>
-						        <td>
-						        	<form action="<%= basePath %>/lectures" method="post">
+								<td><a href="lectures?id=<%= lecture.getId() %>">View</a></td>
+								<% if (currentUser.getRole() > 0) { %>
+								<td><a href="lectures?edit=true&id=<%= lecture.getId() %>">Edit</a></td>
+								<td>
+									<form action="<%= basePath %>/lectures" method="post">
 										<button type="submit" class="btn btn-danger">Delete</button>
 										<input type="hidden" name="delete-id" value="<%= lecture.getId() %>">
 									</form>
 								</td>
-						        <% } %>
-					        </tr>
+								<% } %>
+							</tr>
 						<% } %>
 						</tbody>
 					</table>
