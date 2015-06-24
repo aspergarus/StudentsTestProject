@@ -69,8 +69,7 @@ public class GroupServlet extends HttpServlet {
 			String subjectHeader = request.getHeader("subject");
 			String groupsHeader = request.getHeader("groups");
 			
-			
-			if (subjectHeader != null && subjectHeader != null) {
+			if (subjectHeader != null && groupsHeader != null) {
 				try {
 					String subject = java.net.URLDecoder.decode(subjectHeader, "UTF-8").trim();
 					String groups = java.net.URLDecoder.decode(groupsHeader, "UTF-8").trim();

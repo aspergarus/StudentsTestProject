@@ -194,27 +194,26 @@ public class GroupsDAO {
 	public static boolean shareSubject(int userId, int subjectId, String groups) {
 		String[] groupNames = groups.split(",");
 		
-		ArrayList<Integer> groupsId = findGroupId(groupNames);
+		ArrayList<Integer> groupsId = findGroupsId(groupNames);
+		deleteRelations(userId, subjectId);
 		
-		ArrayList<Integer> unsharedGroupIds = findUnsharedGroups(userId, subjectId, groupsId);
-		if (!unsharedGroupIds.isEmpty()) {
-			String insertQuery = "INSERT INTO stgrelations "
-					+ "(teacherId, subjectId, groupId) VALUES";
+		String insertQuery = "INSERT INTO stgrelations "
+				+ "(teacherId, subjectId, groupId) VALUES";
 		
-			ConnectionManager conM = new ConnectionManager();
-			Connection con = conM.getConnection();
-			int rowsAffected = 0;
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		int rowsAffected = 0;
 			
-			for (int i = 0; i < unsharedGroupIds.size(); i++) {
-				insertQuery += " (?,?,?)";
-				if (i != unsharedGroupIds.size() - 1) {
-					insertQuery += ",";
-				}
+		for (int i = 0; i < groupsId.size(); i++) {
+			insertQuery += " (?,?,?)";
+			if (i != groupsId.size() - 1) {
+				insertQuery += ",";
 			}
+		}
 			
 			try (PreparedStatement stmt = con.prepareStatement(insertQuery)) {
 				int i = 0;
-				for (int groupId : unsharedGroupIds) {
+				for (int groupId : groupsId) {
 					stmt.setInt(i + 1, userId);
 					stmt.setInt(i + 2, subjectId);
 					stmt.setInt(i + 3, groupId);
@@ -225,12 +224,10 @@ public class GroupsDAO {
 		        System.out.println(e.getMessage());
 	        }
 			return rowsAffected > 0;
-		}
-		return false;
 	}
 	
 	@SuppressWarnings("finally")
-    public static ArrayList<Integer> findGroupId(String[] groupsName) {
+    public static ArrayList<Integer> findGroupsId(String[] groupsName) {
 		String query = "SELECT id FROM groups WHERE groupName IN (";
 
 		ArrayList<Integer> groupIds = new ArrayList<>();
@@ -262,40 +259,26 @@ public class GroupsDAO {
         }
 	}
 	
-	public static ArrayList<Integer> findUnsharedGroups(int userId, int subjectId, ArrayList<Integer> groupsId) {
-		String selectQuery = "SELECT groupId FROM stgrelations WHERE teacherId=? AND subjectId=? AND groupId IN (";
-		
-		int size = groupsId.size();
-		for (int i = 0; i < size; i++) {
-			selectQuery += "?,";
-		}
-		selectQuery = selectQuery.substring(0, selectQuery.length() - 1) + ")";
+	@SuppressWarnings("finally")
+    public static boolean deleteRelations(int userId, int subjectId) {
+		String selectQuery = "DELETE FROM stgrelations WHERE teacherId=? AND subjectId=?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
-		ResultSet rs = null;
+		int rowsAffected = 0;
 		
 		try (PreparedStatement stmt = con.prepareStatement(selectQuery)) {
 			stmt.setInt(1, userId);
 			stmt.setInt(2, subjectId);
 			
-			int i = 3;
-			for (int id: groupsId) {
-				stmt.setInt(i, id);
-				i++;
-			}
-			
-			rs = stmt.executeQuery();
-			
-			while (rs.next()) {
-				groupsId.remove(new Integer(rs.getInt("groupId")));
-			}
+			rowsAffected = stmt.executeUpdate();
 			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-		} 
+		} finally {
+			return rowsAffected > 0;
+		}
 		
-		return groupsId;
 	}
 
 	/**

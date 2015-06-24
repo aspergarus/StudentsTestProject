@@ -18,6 +18,7 @@
 <link rel="stylesheet" href="<%= basePathHeader %>/css/bootstrap-tokenfield.css">
 <link rel="stylesheet" href="<%= basePathHeader %>/css/jquery-ui.min.css">
 <link rel="stylesheet" href="<%= basePathHeader %>/css/style.css">
+<link rel="stylesheet" href="<%= basePathHeader %>/css/bootstrap-dialog.min.css">
 
 <!-- js libraries -->
 <script src="<%= basePathHeader %>/js/jquery.min.js"></script>
@@ -28,6 +29,7 @@
 <script src="<%= basePathHeader %>/js/fileinput.js"></script>
 <script src="<%= basePathHeader %>/js/fileinput_locale_uk.js"></script>
 <script src="<%= basePathHeader %>/js/bootstrap-tokenfield.js"></script>
+<script src="<%= basePathHeader %>/js/bootstrap-dialog.min.js"></script>
 
 
 <!-- Custom javascripts variables -->

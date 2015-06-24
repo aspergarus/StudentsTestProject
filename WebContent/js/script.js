@@ -74,15 +74,15 @@ $(function () {
 
 	function startTime() {
 		var today = new Date();
-		day = checkTime(today.getDate());
-		month = checkTime(today.getMonth() + 1);
-		year = checkTime(today.getFullYear());
-		hour = checkTime(today.getHours());
-		min = checkTime(today.getMinutes());
-		sec = checkTime(today.getSeconds());
+		var day = checkTime(today.getDate());
+		var month = checkTime(today.getMonth() + 1);
+		var year = checkTime(today.getFullYear());
+		var hour = checkTime(today.getHours());
+		var min = checkTime(today.getMinutes());
+		var sec = checkTime(today.getSeconds());
 		
 		document.getElementById('time').innerHTML = day + "/" + month + "/" + year + " " + hour + ":" + min + ":" + sec;
-		t = setTimeout(function () {
+		var t = setTimeout(function () {
 			startTime()
 		}, 500);
 	}
@@ -307,7 +307,7 @@ $(function () {
 	assigningGroups();
 
 	function assigningGroups() {
-		var $tokenField = $('#tokenfield');
+		var $tokenField = $('.tokenfield');
 		$tokenField.tokenfield({
 			autocomplete: {
 				source: "autocomplete/groups",
@@ -326,7 +326,15 @@ $(function () {
 					headers: {'subject': encodeURIComponent(subject), 'groups' : encodeURIComponent(groups) },
 					method: "POST",
 					success: function(result) {
-						console.log(result);
+						BootstrapDialog.show({
+							title: 'Success!',
+							message: 'Subject was shared to groups: ' + groups,
+							onshow: function (dialogRef){
+								setTimeout(function(){
+									dialogRef.close();
+								}, 4000);
+							}
+						});
 					},
 					error: function() {
 						$parent.html($('<span></span>').addClass('span-alert alert-danger').text("Subject already shared or something else troubles."));

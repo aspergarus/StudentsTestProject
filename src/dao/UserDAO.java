@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import org.jasypt.util.password.StrongPasswordEncryptor;
 
-import config.ConnectionManager;
+import config.SingletonConnectionManager;
 import beans.UserBean;
 
 public class UserDAO {
@@ -31,7 +31,7 @@ public class UserDAO {
 			query = "SELECT * FROM users WHERE username = ?";
 		}
 		
-		ConnectionManager conM = new ConnectionManager();
+		SingletonConnectionManager conM = SingletonConnectionManager.getSingletonConnectionManager();
 		con = conM.getConnection();
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setString(1, username);
@@ -65,7 +65,7 @@ public class UserDAO {
 
 		String query = "SELECT * FROM users WHERE id = ?";
 		
-		ConnectionManager conM = new ConnectionManager();
+		SingletonConnectionManager conM = SingletonConnectionManager.getSingletonConnectionManager();
 		con = conM.getConnection();
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, id);
@@ -105,13 +105,11 @@ public class UserDAO {
 		String lastName = bean.getLastName();
 		int groupId = bean.getGroupId();
 		
-		
-
 		String query = "INSERT INTO users "
 				+ "(username, password, email, role, firstName, lastName, groupId) "
 				+ "VALUES (?,?,?,?,?,?,?)";
 
-		ConnectionManager conM = new ConnectionManager();
+		SingletonConnectionManager conM = SingletonConnectionManager.getSingletonConnectionManager();
 		con = conM.getConnection();
         int rowsAffected = 0;
 		try (PreparedStatement insertUser = con.prepareStatement(query)) {
@@ -135,7 +133,7 @@ public class UserDAO {
 		ArrayList<UserBean> users = new ArrayList<UserBean>();;
 		UserBean bean = null;
 
-		ConnectionManager conM = new ConnectionManager();
+		SingletonConnectionManager conM = SingletonConnectionManager.getSingletonConnectionManager();
 		con = conM.getConnection();
 		try (Statement stmt = con.createStatement()) {
 			String query = "SELECT * FROM users";
@@ -174,7 +172,7 @@ public class UserDAO {
 		}
 		query += "WHERE id = ?";
 
-		ConnectionManager conM = new ConnectionManager();
+		SingletonConnectionManager conM = SingletonConnectionManager.getSingletonConnectionManager();
 		con = conM.getConnection();
         int rowsAffected = 0;
 		try (PreparedStatement updateUser = con.prepareStatement(query)) {
@@ -203,7 +201,7 @@ public class UserDAO {
 		String query = "SELECT id, firstName, lastName FROM users "
 				+ "WHERE role = 0 AND (firstName LIKE ? OR lastName LIKE ?)";
 
-		ConnectionManager conM = new ConnectionManager();
+		SingletonConnectionManager conM = SingletonConnectionManager.getSingletonConnectionManager();
 		con = conM.getConnection();
 
 		ArrayList<String> list = new ArrayList<>();
@@ -226,7 +224,7 @@ public class UserDAO {
 	public static ArrayList<String> findStudentGroups(String namePart) {
 		String query = "SELECT distinct group FROM users WHERE role = 0 AND groupName LIKE ?";
 
-		ConnectionManager conM = new ConnectionManager();
+		SingletonConnectionManager conM = SingletonConnectionManager.getSingletonConnectionManager();
 		con = conM.getConnection();
 
 		ArrayList<String> list = new ArrayList<>();
