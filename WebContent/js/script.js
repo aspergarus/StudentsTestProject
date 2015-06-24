@@ -317,10 +317,11 @@ $(function () {
 
 		var $btn = $('.assign-subject-group');
 		$btn.click(function() {
-			var groups = $tokenField.tokenfield('getTokens').map(function(el) { return el.value; }).join();
+			var num = this.getAttribute('data-num');
+			var groups = $tokenField.eq(num - 1).tokenfield('getTokens').map(function(el) { return el.value; }).join();
 
 			if (groups.length > 0) {
-				var subject = $btn.data('subject');
+				var subject = this.getAttribute('data-subject');
 
 				$.ajax(basePath + "/groups", {
 					headers: {'subject': encodeURIComponent(subject), 'groups' : encodeURIComponent(groups) },
