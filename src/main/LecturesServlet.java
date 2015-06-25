@@ -66,7 +66,7 @@ public class LecturesServlet extends HttpServlet {
 			
 			if (id == null) {
 				// Show all lectures
-				Map<String, ArrayList<LecturesBean>> lecturesMap = LecturesDAO.findAll(user.getId(), user.getRole());
+				Map<String, ArrayList<LecturesBean>> lecturesMap = LecturesDAO.findAll(user);
 				
 				HashMap<String, String> groups = GroupsDAO.getGroupsByTeacher(user.getId());
 				

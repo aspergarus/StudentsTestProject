@@ -8,6 +8,7 @@
 	pageEncoding="UTF-8"%>
 
 <% String basePath = request.getContextPath(); %>
+<% String basePathEditor = basePath + "/ckeditor/"; %>
 <% UserBean currentUser = (UserBean) request.getAttribute("currentUser"); %>
 <% String status = (String) request.getAttribute("status"); %>
 <% String message = (String) request.getAttribute("message"); %>
@@ -47,9 +48,10 @@
 			<div class="form-group">
 				<label for="body" class="col-sm-2 control-label required">Body</label>
 				<div class="col-sm-10">
-					<textarea name="body" class="form-control" rows="3"></textarea>
+					<textarea id="editor1" name="body" class="form-control text-area" rows="3"></textarea>
 				</div>
 			</div>
+			
 	
 			<div class="form-group">
 				<label for="upload" class="col-sm-2 control-label required">Upload files</label>
@@ -85,10 +87,13 @@
 
 			<div id="collapse-<%= i %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-<%= i %>">
 				<div class="panel-body">
+				
+				<% if (currentUser.getRole() > 0) { %>
 					<p class="help-block">Share this subject to groups:
 						<input type="text" class="tokenfield" value="<%= groups.get(subject) == null ? "" :  groups.get(subject) %>" name="groupName" required autocomplete="off" />
 						<input type="submit" value="Share" class="btn btn-info btn-share assign-subject-group" data-num="<%= i %>" data-subject="<%= subject %>">
 					</p>
+				<% } %>
 					
 					<table class="table">
 						<thead>
@@ -125,5 +130,5 @@
 		<% } %>
 	</div>
 </div>
-
+<ckeditor:replace replace="editor1" basePath="<%= basePathEditor %>" />
 <%@ include file="footer.jsp"%>

@@ -10,6 +10,7 @@ import java.util.Map;
 
 import config.ConnectionManager;
 import beans.LecturesBean;
+import beans.UserBean;
 
 public class LecturesDAO {
 	
@@ -17,14 +18,21 @@ public class LecturesDAO {
 	private static ResultSet rs;
 	
 	@SuppressWarnings("finally")
-	public static Map<String, ArrayList<LecturesBean>> findAll(int teacherId, byte role){
+	public static Map<String, ArrayList<LecturesBean>> findAll(UserBean user){
 		
 		String query;
 		
-		if (role == 0){
-			query = "SELECT * FROM lectures";
-		} else {
+		if (user.getRole() == 0){
+			query = "SELECT * FROM lectures l "
+				+ "INNER JOIN stgrelations s ON l.teacherId = s.teacherId AND l.subjectId = s.subjectId "
+				+ "WHERE s.groupId = ?";
+			
+		} 
+		else if (user.getRole() == 1) {
 			query = "SELECT * FROM lectures WHERE teacherId = ? ORDER BY subjectId";
+		}
+		else {
+			query = "SELECT * FROM lectures ORDER BY subjectId";
 		}
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -37,8 +45,11 @@ public class LecturesDAO {
 		String subjectName;
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			if (role != 0){
-				stmt.setInt(1, teacherId);
+			if (user.getRole() == 1){
+				stmt.setInt(1, user.getId());
+			}
+			else if (user.getRole() == 0) {
+				stmt.setInt(1, user.getGroupId());
 			}
 			rs = stmt.executeQuery();
 			
@@ -48,7 +59,7 @@ public class LecturesDAO {
 				subjectId = rs.getInt("subjectId");
 				LecturesBean bean = new LecturesBean();
 				bean.setId(rs.getInt("id"));
-				bean.setTeacherId(teacherId);
+				bean.setTeacherId(user.getId());
 				bean.setTitle(rs.getString("title"));
 				bean.setSubjectId(subjectId);
 				bean.setBody(rs.getString("body"));

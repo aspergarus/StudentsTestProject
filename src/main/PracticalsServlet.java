@@ -63,7 +63,7 @@ public class PracticalsServlet extends HttpServlet {
 
 			if (id == null) {
 				// Show all practicals
-				Map<String, ArrayList<PracticalsBean>> practicalsMap = PracticalsDAO.findAll(user.getId());
+				Map<String, ArrayList<PracticalsBean>> practicalsMap = PracticalsDAO.findAll(user);
 				HashMap<String, String> groups = GroupsDAO.getGroupsByTeacher(user.getId());
 
 				request.setAttribute("practicalsMap", practicalsMap);
