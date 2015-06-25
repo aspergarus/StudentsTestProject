@@ -37,5 +37,7 @@
 <!-- Custom javascripts -->
 <script src="<%= basePathHeader %>/js/script.js"></script>
 
+<%@ taglib uri="http://ckeditor.com" prefix="ckeditor" %>
+
 </head>
 <body>
