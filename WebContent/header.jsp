@@ -10,7 +10,6 @@
 <link rel="shortcut icon" href="<%= basePathHeader %>/favicon.ico" type="image/x-icon">
 <link rel="icon" href="<%= basePathHeader %>/favicon.ico" type="image/x-icon">
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="<%= basePathHeader %>/css/bootstrap.min.css">
 <link rel="stylesheet" href="<%= basePathHeader %>/css/bootstrap-theme.css">
 <link rel="stylesheet" href="<%= basePathHeader %>/css/bootstrap-table.min.css">
@@ -30,14 +29,12 @@
 <script src="<%= basePathHeader %>/js/fileinput_locale_uk.js"></script>
 <script src="<%= basePathHeader %>/js/bootstrap-tokenfield.js"></script>
 <script src="<%= basePathHeader %>/js/bootstrap-dialog.min.js"></script>
-
+<script src="<%= basePathHeader %>/js/lib/ck/ckeditor.js"></script>
 
 <!-- Custom javascripts variables -->
 <script>var basePath = "<%= basePathHeader %>";</script>
 <!-- Custom javascripts -->
 <script src="<%= basePathHeader %>/js/script.js"></script>
-
-<%@ taglib uri="http://ckeditor.com" prefix="ckeditor" %>
 
 </head>
 <body>

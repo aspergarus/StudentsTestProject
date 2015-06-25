@@ -48,7 +48,7 @@
 			<div class="form-group">
 				<label for="body" class="col-sm-2 control-label required">Body</label>
 				<div class="col-sm-10">
-					<textarea id="editor1" name="body" class="form-control text-area" rows="3"></textarea>
+					<textarea class="ckeditor" id="editor1" name="body" class="form-control text-area" rows="3"></textarea>
 				</div>
 			</div>
 			
