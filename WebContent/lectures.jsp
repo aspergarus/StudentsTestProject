@@ -13,6 +13,7 @@
 <% String message = (String) request.getAttribute("message"); %>
 <% Map<String, ArrayList<LecturesBean>> lecturesMap = (HashMap<String, ArrayList<LecturesBean>>) request.getAttribute("lecturesMap"); %>
 <% HashMap<String, String> groups = (HashMap<String, String>) request.getAttribute("groupsMap"); %>
+
 <%@ include file="header.jsp"%>
 
 <%@ include file="menu.jsp"%>

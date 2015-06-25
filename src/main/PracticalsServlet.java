@@ -3,6 +3,7 @@ package main;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -15,7 +16,7 @@ import javax.servlet.http.HttpSession;
 
 import util.FileUploadManager;
 import dao.FileDAO;
-import dao.LecturesDAO;
+import dao.GroupsDAO;
 import dao.PracticalsDAO;
 import dao.SubjectsDAO;
 import beans.FileBean;
@@ -63,9 +64,11 @@ public class PracticalsServlet extends HttpServlet {
 			if (id == null) {
 				// Show all practicals
 				Map<String, ArrayList<PracticalsBean>> practicalsMap = PracticalsDAO.findAll(user.getId());
+				HashMap<String, String> groups = GroupsDAO.getGroupsByTeacher(user.getId());
 
 				request.setAttribute("practicalsMap", practicalsMap);
 				request.setAttribute("currentUser", user);
+				request.setAttribute("groupsMap", groups);
 				request.getRequestDispatcher("practicals.jsp").forward(request, response);
 			}
 			else {

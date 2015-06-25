@@ -194,36 +194,38 @@ public class GroupsDAO {
 	public static boolean shareSubject(int userId, int subjectId, String groups) {
 		String[] groupNames = groups.split(",");
 		
-		ArrayList<Integer> groupsId = findGroupsId(groupNames);
-		deleteRelations(userId, subjectId);
-		
-		String insertQuery = "INSERT INTO stgrelations "
-				+ "(teacherId, subjectId, groupId) VALUES";
-		
-		ConnectionManager conM = new ConnectionManager();
-		Connection con = conM.getConnection();
-		int rowsAffected = 0;
+		if (!groupNames[0].equals("")) {
+			ArrayList<Integer> groupsId = findGroupsId(groupNames);
+			deleteRelations(userId, subjectId);
+			String insertQuery = "INSERT INTO stgrelations "
+					+ "(teacherId, subjectId, groupId) VALUES";
 			
-		for (int i = 0; i < groupsId.size(); i++) {
-			insertQuery += " (?,?,?)";
-			if (i != groupsId.size() - 1) {
-				insertQuery += ",";
-			}
-		}
-			
-			try (PreparedStatement stmt = con.prepareStatement(insertQuery)) {
-				int i = 0;
-				for (int groupId : groupsId) {
-					stmt.setInt(i + 1, userId);
-					stmt.setInt(i + 2, subjectId);
-					stmt.setInt(i + 3, groupId);
-					i += 3;
+			ConnectionManager conM = new ConnectionManager();
+			Connection con = conM.getConnection();
+			int rowsAffected = 0;
+				
+			for (int i = 0; i < groupsId.size(); i++) {
+				insertQuery += " (?,?,?)";
+				if (i != groupsId.size() - 1) {
+					insertQuery += ",";
 				}
-				rowsAffected = stmt.executeUpdate();
-			} catch (SQLException e) {
-		        System.out.println(e.getMessage());
-	        }
-			return rowsAffected > 0;
+			}
+				
+				try (PreparedStatement stmt = con.prepareStatement(insertQuery)) {
+					int i = 0;
+					for (int groupId : groupsId) {
+						stmt.setInt(i + 1, userId);
+						stmt.setInt(i + 2, subjectId);
+						stmt.setInt(i + 3, groupId);
+						i += 3;
+					}
+					rowsAffected = stmt.executeUpdate();
+				} catch (SQLException e) {
+			        System.out.println(e.getMessage());
+		        }
+				return rowsAffected > 0;
+		}
+		return false;
 	}
 	
 	@SuppressWarnings("finally")

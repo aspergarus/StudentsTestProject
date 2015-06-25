@@ -320,7 +320,7 @@ $(function () {
 			var num = this.getAttribute('data-num');
 			var groups = $tokenField.eq(num - 1).tokenfield('getTokens').map(function(el) { return el.value; }).join();
 
-			if (groups.length > 0) {
+			if (groups.length >= 0) {
 				var subject = this.getAttribute('data-subject');
 
 				$.ajax(basePath + "/groups", {
@@ -329,7 +329,7 @@ $(function () {
 					success: function(result) {
 						BootstrapDialog.show({
 							title: 'Success!',
-							message: 'Subject was shared to groups: ' + groups,
+							message: 'Subject <' + subject + '> was shared to groups: ' + groups,
 							onshow: function (dialogRef){
 								setTimeout(function(){
 									dialogRef.close();
