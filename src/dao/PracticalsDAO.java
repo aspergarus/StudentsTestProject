@@ -9,16 +9,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 import beans.PracticalsBean;
+import beans.UserBean;
 import config.ConnectionManager;
 
 public class PracticalsDAO {
+	
 	static Connection con = null;
 	static ResultSet rs = null;
 
 	@SuppressWarnings("finally")
-	public static Map<String, ArrayList<PracticalsBean>> findAll(int teacherId) {
+	public static Map<String, ArrayList<PracticalsBean>> findAll(UserBean user) {
 		
-		String query = "SELECT * FROM practicals WHERE teacherId = ? ORDER BY subjectId";
+		String query;
+		
+		if (user.getRole() == 0) {
+			query = "SELECT * FROM practicals p "
+					+ "INNER JOIN stgrelations s ON p.teacherId = s.teacherId AND p.subjectId = s.subjectId "
+					+ "WHERE s.groupId = ?";
+		}
+		else if (user.getRole() == 1) {
+			query = "SELECT * FROM practicals WHERE teacherId = ? ORDER BY subjectId";
+		}
+		else {
+			query = "SELECT * FROM practicals ORDER BY subjectId";
+		}
 		
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
@@ -30,7 +44,13 @@ public class PracticalsDAO {
 		String subjectName;
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setInt(1, teacherId);
+			if (user.getRole() == 0) {
+				stmt.setInt(1, user.getGroupId());
+			}
+			else if (user.getRole() == 1) {
+				stmt.setInt(1, user.getId());
+			}
+			
 			rs = stmt.executeQuery();
 
 			int tmpSubjectId = 0, subjectId = 0;
@@ -38,7 +58,7 @@ public class PracticalsDAO {
 				subjectId = rs.getInt("subjectId");
 				PracticalsBean bean = new PracticalsBean();
 				bean.setId(rs.getInt("id"));
-				bean.setTeacherId(teacherId);
+				bean.setTeacherId(user.getId());
 				bean.setTitle(rs.getString("title"));
 				bean.setSubjectId(subjectId);
 				bean.setBody(rs.getString("body"));

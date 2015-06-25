@@ -81,10 +81,14 @@
 			</div>
 			<div id="collapse-<%= i %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-<%= i %>">
 				<div class="panel-body">
+				
+				<% if (currentUser.getRole() > 0) { %>
 					<p class="help-block">Share this subject to groups:
 						<input type="text" class="tokenfield" value="<%= groups.get(subject) == null ? "" :  groups.get(subject) %>" name="groupName" required autocomplete="off" />
 						<input type="submit" value="Share" class="btn btn-info btn-share assign-subject-group" data-num="<%= i %>" data-subject="<%= subject %>">
 					</p>
+				<% } %>
+					
 					<table class="table">
 						<thead>
 							<tr>
