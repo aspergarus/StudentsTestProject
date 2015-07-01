@@ -126,5 +126,4 @@ public class CommentsDAO {
 		}
 		return rowsAffected > 0;
 	}
-
 }
