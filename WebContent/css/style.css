@@ -260,3 +260,13 @@ ol {
 	margin: 16px 0;
 	display: block;
 }
+.comment-config .glyphicon {
+	top: -1px;
+}
+.comment-config .glyphicon-cog {
+	display: none;
+}
+.comment-entry .error-msg {
+	color: red;
+	margin-left: 1em;
+}

@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import beans.CommentsBean;
 import beans.UserBean;
 import config.ConnectionManager;
@@ -121,6 +122,27 @@ public class CommentsDAO {
 			stmt.setInt(1, cid);
 			rowsAffected = stmt.executeUpdate();
 		
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return rowsAffected > 0;
+	}
+
+	/**
+	 * Edit comment.
+	 */
+	public static boolean update(CommentsBean bean) {
+		String query = "UPDATE comments SET title=?, body=? WHERE cid = ?";
+
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		int rowsAffected = 0;
+		try (PreparedStatement updateStmt = con.prepareStatement(query)) {
+			updateStmt.setString(1, bean.getTitle());
+			updateStmt.setString(2, bean.getBody());
+			updateStmt.setInt(3, bean.getCid());
+
+			rowsAffected = updateStmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}

@@ -51,7 +51,7 @@
 		<div class="form-group">
 			<label for="body" class="col-sm-2 control-label required">Body</label>
 			<div class="col-sm-10">
-				<textarea name="body" class="form-control" rows="3"><%= lBean.getBody() %></textarea>
+				<textarea class="ckeditor" name="body" class="form-control" rows="3"><%= lBean.getBody() %></textarea>
 			</div>
 		</div>
 

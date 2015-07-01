@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 import beans.CommentsBean;
 import beans.UserBean;
 import dao.CommentsDAO;
-import dao.DepartmentsDAO;
 
 /**
  * Servlet implementation class CommentsServlet
@@ -87,6 +86,35 @@ public class CommentsServlet extends HttpServlet {
 			//Delete from DB
 			CommentsDAO.delete(cid);
 			response.getOutputStream().println("Comment has been deleted successfully.");
+		}
+	}
+
+	/**
+	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
+	 */
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+
+		if (user == null) {
+			response.sendError(403);
+		}
+		else {
+			// Check if current user is author of this comment and update comment if it is.
+			int cid = Integer.valueOf(request.getHeader("cid"));
+			String title = java.net.URLDecoder.decode(request.getHeader("title"), "UTF-8");
+			String msg = java.net.URLDecoder.decode(request.getHeader("msg"), "UTF-8");
+			if (deleteValidate(cid, user.getId())) {
+				CommentsBean comment = new CommentsBean();
+				comment.setCid(cid);
+				comment.setTitle(title);
+				comment.setBody(msg);
+
+				CommentsDAO.update(comment);
+				response.getOutputStream().println("Comment has been updated successfully.");
+				return;
+			}
+			response.sendError(403);
 		}
 	}
 

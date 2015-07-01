@@ -284,10 +284,10 @@ $(function () {
 	commentDeleteOperation();
 
 	function commentDeleteOperation() {
-		$('.comment-config').click(function() {
+		$('.comment-config .glyphicon-remove').click(function() {
 			var $this = $(this);
-			var cid = $this.data('comment-id')
-			var $comment = $this.parent();
+			var $comment = $this.closest('.comment');
+			var cid = $comment.data('comment-id');
 			var $animationBlock = $('<div></div>').addClass('ajax-loader').append($('<img></img>').attr({ src : "imgs/ajax-loader.gif" }));
 			$comment.html($animationBlock);
 
@@ -301,6 +301,71 @@ $(function () {
 					$comment.html($('<span></span>').addClass('span-alert alert-danger').text("Some troubles happened with deleting comment: " + statusText));
 				}
 			});
+		});
+	}
+
+	commentEditOperation();
+
+	function commentEditOperation() {
+		var $editBtns = $('.comment[data-author="' + userId + '"]').find('.glyphicon-cog').show();
+
+		$editBtns.click(function() {
+			var $this = $(this);
+			$this.hide();
+			var $comment = $this.closest('.comment');
+
+			var commentTitle = $comment.find('.comment-title');
+			commentTitle.html($('<input type="text" class="form-control" name="title" id="title" required />').val(commentTitle.text()));
+
+			var commentBody = $comment.find('.comment-msg');
+			commentBody.html($('<textarea class="form-control" rows="7" cols="150" name="body" id="body" required></textarea>').val(commentBody.text()));
+
+			$comment.find('.comment-entry').append(
+					$('<input type="submit" />')
+						.attr("value", "Save changes")
+						.addClass('btn btn-primary btn-lg edit-comment-btn')
+						.data('comment-id', $comment.data('comment-id'))
+			);
+
+			$comment.addClass('comment-has-form');
+		});
+
+		$('.comment').on('click', '.edit-comment-btn', function(e) {
+			e.preventDefault();
+			var $this = $(this);
+			var $parent = $this.parent();
+			var cid = $this.data('comment-id');
+			var title = $parent.find('input[type=text]').val();
+			var msg = $parent.find('textarea').val();
+
+			if (cid && title.length != 0 && msg.length != 0) {
+				$.ajax(basePath + "/comments", {
+					headers: {'cid': cid, 'title': title, 'msg': msg },
+					method: "PUT",
+					success: function(result) {
+						// $comment.html($('<span></span>').addClass('span-alert alert-success').text(result));
+						var commentTitle = $parent.find('.comment-title');
+						commentTitle.html(commentTitle.find('input').val());
+
+						var commentBody = $parent.find('.comment-msg');
+						commentBody.html(commentBody.find('textarea').val());
+
+						var $comment = $this.closest('.comment');
+						$comment.removeClass('comment-has-form');
+						$comment.find('.glyphicon-cog').show();
+						$comment.find('span.error-msg').remove();
+						$this.hide();
+					},
+					error: function(result, status, statusText) {
+						console.log(statusText);
+					}
+				});
+			}
+			else {
+				if ($parent.find('span.error-msg').length == 0) {
+					$parent.append($('<span></span>').addClass('error-msg').text('Title and message should not be empty!'));
+				}
+			}
 		});
 	}
 

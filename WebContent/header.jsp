@@ -1,4 +1,7 @@
+<%@page import="beans.UserBean"%>
 <% String basePathHeader = request.getContextPath(); %>
+<% UserBean userBean = (UserBean) session.getAttribute("user"); %>
+<% int uid = userBean != null ? userBean.getId() : 0; %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -33,6 +36,7 @@
 
 <!-- Custom javascripts variables -->
 <script>var basePath = "<%= basePathHeader %>";</script>
+<script>var userId = "<%= uid %>";</script>
 <!-- Custom javascripts -->
 <script src="<%= basePathHeader %>/js/script.js"></script>
 

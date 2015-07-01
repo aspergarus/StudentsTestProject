@@ -60,8 +60,12 @@
 				<% for(Object[] pack : comments) { %>
 					<% UserBean commentAuthor = (UserBean) pack[0]; %>
 					<% CommentsBean comment = (CommentsBean) pack[1]; %>
-					<li class="comment <%= commentAuthor.getId() == user.getId() ? "comment-editable" : user.getRole() == 2 ? "comment-editable" : "" %>">
-						<div class='comment-config' data-comment-id="<%= comment.getCid() %>"><span class='glyphicon glyphicon-remove'></span></div>
+					<li class="comment <%= commentAuthor.getId() == user.getId() ? "comment-editable" : user.getRole() == 2 ? "comment-editable" : "" %>"
+						data-author="<%= commentAuthor.getId() %>" data-comment-id="<%= comment.getCid() %>">
+						<div class='comment-config'>
+							<span class='glyphicon glyphicon-cog'></span>
+							<span class='glyphicon glyphicon-remove'></span>
+						</div>
 						<div class="comment-top"><span></span></div>
 						<div class="comment-body">
 							<div class="comment-avatar">
