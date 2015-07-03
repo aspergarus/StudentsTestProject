@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import config.ConnectionManager;
+import dao.DepartmentsDAO;
+import dao.GroupsDAO;
 import dao.UserDAO;
 import beans.UserBean;
 
@@ -68,7 +70,15 @@ public class RegisterServlet extends HttpServlet {
 		byte role = Byte.valueOf(request.getParameter("role"));
 		String firstName = request.getParameter("firstname").trim();
 		String lastName = request.getParameter("lastname").trim();
-		int groupId = Integer.valueOf(request.getParameter("groupId"));
+		String groupName = request.getParameter("group").trim();
+		int groupId = 0;
+		
+		if (role == 1) {
+			groupId = DepartmentsDAO.find(groupName).getId();
+		}
+		else if (role == 0) {
+			groupId = GroupsDAO.find(groupName).getId();
+		}
 		String avatarName = "";
 		String message = formValidate(userName, password, email);
 

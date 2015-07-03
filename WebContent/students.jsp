@@ -20,30 +20,7 @@
 		<p>${message}</p>
 	</div>
 	<% } %>
-	<h3 class="lead">Add students</h3>
-	<form action="<%= basePath %>/students" id="form" method="post"
-		class="form-horizontal">
-		<div class="form-group">
-			<label for="group" class="col-sm-2 control-label"><span class="translate" data-lang-key="Group"></span></label>
-			<div class="col-sm-10">
-				<input name="group" type="text" class="form-control typeahead"
-					id="group" required autocomplete="off" data-autocomplete-url="autocomplete/group">
-				<p class="help-block"><span class="translate" data-lang-key="Search group using autocomplete or create new"></span></p>
-			</div>
-			<label for="name" class="col-sm-2 control-label"><span class="translate" data-lang-key="Student name"></span></label>
-			<div class="col-sm-10">
-				<input name="name" type="text" class="form-control typeahead"
-					id="name" required autocomplete="off" data-autocomplete-url="autocomplete/students">
-				<p class="help-block"><span class="translate" data-lang-key="You can find students by first or last name"></span></p>
-			</div>
-		</div>
-
-		<div class="form-group">
-			<div class="col-sm-offset-2 col-sm-10">
-				<button type="submit" class="btn btn-primary"><span class="translate" data-lang-key="Add to the list"></span></button>
-			</div>
-		</div>
-	</form>
+	
 </div>
 
 <div class="container">

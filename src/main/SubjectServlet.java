@@ -113,7 +113,7 @@ public class SubjectServlet extends HttpServlet {
 				// Get form values.
 				String subjectName = request.getParameter("subjectName").trim();
 				String department = request.getParameter("departmentName").trim();
-				int departmentId = DepartmentsDAO.findDepartmentId(department);
+				int departmentId = DepartmentsDAO.find(department).getId();
 
 				String errorMessage = SubjectsDAO.subjectValidate(subjectName, departmentId);
 
@@ -145,7 +145,7 @@ public class SubjectServlet extends HttpServlet {
 			// Get form values.
 			String subjectName = request.getParameter("subjectName").trim();
 			String department = request.getParameter("departmentName").trim();
-			int departmentId = DepartmentsDAO.findDepartmentId(department);
+			int departmentId = DepartmentsDAO.find(department).getId();
 			
 			String errorMessage = SubjectsDAO.subjectValidate(subjectName, departmentId);
 			

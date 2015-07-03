@@ -38,8 +38,9 @@ public class StudentDAO {
 	}
 
 	@SuppressWarnings("finally")
-	public static Map<String, ArrayList<UserBean>> findAll() {
-		String query = "SELECT * FROM users WHERE role = 0";
+	public static Map<String, ArrayList<UserBean>> findAll(UserBean user) {
+		String query = "SELECT * FROM users u "
+				+ "INNER JOIN stgrelations s ON u.groupId = s.groupId WHERE (u.role = 0 AND s.teacherId = ?)";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -48,11 +49,14 @@ public class StudentDAO {
 		Map<String, ArrayList<UserBean>> studentMap = new HashMap<>();
 
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, user.getId());
 			ResultSet rs = stmt.executeQuery();
 
 			String tmpGroupName = "", groupName = "";
+			int groupId;
 			while (rs.next()) {
-				groupName = rs.getString("group");
+				groupId = rs.getInt("groupId");
+				groupName = GroupsDAO.find(groupId).getGroupName();
 				UserBean bean = new UserBean();
 
 				bean.setId(rs.getInt("id"));

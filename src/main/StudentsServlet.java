@@ -45,8 +45,8 @@ public class StudentsServlet extends HttpServlet {
 				session.setAttribute("message", null);
 			}
 
-			// Select all users here.
-			Map <String, ArrayList<UserBean>> studentMap = StudentDAO.findAll();
+			// Select all students here.
+			Map <String, ArrayList<UserBean>> studentMap = StudentDAO.findAll(user);
 			request.setAttribute("studentMap", studentMap);
 			request.setAttribute("currentUser", user);
 			request.getRequestDispatcher("students.jsp").forward(request, response);

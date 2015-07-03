@@ -40,12 +40,13 @@ public class DepartmentsDAO {
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
+		ResultSet rs = null;
 		
 		DepartmentBean department = null;
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, id);
-			ResultSet rs = stmt.executeQuery();
+			rs = stmt.executeQuery();
 			
 			while (rs.next()) {
 				String departmentName = rs.getString("departmentName");
@@ -57,6 +58,31 @@ public class DepartmentsDAO {
         	return department;
         }
 		
+	}
+	
+	@SuppressWarnings("finally")
+    public static DepartmentBean find(String departmentName) {
+		String query = "SELECT id FROM departments WHERE departmentName = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		ResultSet rs = null;
+		
+		DepartmentBean department = null;
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setString(1, departmentName);
+			rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				int id = rs.getInt("id");
+				department = new DepartmentBean(id, departmentName);
+			}
+		} catch (SQLException e) {
+	        System.out.println(e.getMessage());
+        } finally {
+        	return department;
+        }
 	}
 	
 	public static String departmentValidate (String departmentName) {
@@ -140,28 +166,7 @@ public class DepartmentsDAO {
 		}
 	}
 	
-	@SuppressWarnings("finally")
-    public static int findDepartmentId(String departmentName) {
-		String query = "SELECT id FROM departments WHERE departmentName = ?";
-		
-		ConnectionManager conM = new ConnectionManager();
-		Connection con = conM.getConnection();
-		ResultSet rs = null;
-		int id = 0;
-		
-		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setString(1, departmentName);
-			rs = stmt.executeQuery();
-			
-			if (rs.next()) {
-				id = rs.getInt("id");
-			}
-		} catch (SQLException e) {
-	        System.out.println(e.getMessage());
-        } finally {
-        	return id;
-        }
-	}
+	
 	
 	public static HashMap<Integer, String> getDepartmentsMap () {
 		String query = "SELECT * FROM departments";
