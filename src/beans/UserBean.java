@@ -123,7 +123,7 @@ public class UserBean {
 	}
 
 	public String getReadableName() {
-		if (!firstName.isEmpty() && !lastName.isEmpty() && firstName != null && lastName != null) {
+		if (firstName != null && lastName != null && !firstName.isEmpty() && !lastName.isEmpty()) {
 			return firstName + " " + lastName;
 		}
 		return userName;

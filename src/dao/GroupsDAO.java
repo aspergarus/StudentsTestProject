@@ -58,6 +58,31 @@ public class GroupsDAO {
         }
 	}
 	
+	@SuppressWarnings("finally")
+    public static GroupBean find(String groupName) {
+		
+		String query = "SELECT * FROM groups WHERE groupName = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		
+		GroupBean group = null;
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setString(1, groupName);
+			ResultSet rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				group = new GroupBean(id, groupName);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+        } finally {
+        	return group;
+        }
+	}
+	
 	public static String groupValidate (String groupName) {
 		String query = "SELECT * FROM groups WHERE groupName = ?";
 		
