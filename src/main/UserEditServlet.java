@@ -42,12 +42,6 @@ public class UserEditServlet extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
 
-//		System.out.println("getPathInfo :" + request.getPathInfo());
-//		System.out.println("getRequestURI : " + request.getRequestURI());
-//		System.out.println("getServletPath : " + request.getServletPath());
-//		System.out.println("getContextPath : " + request.getContextPath());
-//		System.out.println("getRequestURL : " + request.getRequestURL());
-
 		if (user == null) {
 			response.sendRedirect(request.getContextPath() + "/login");
 		}
@@ -127,7 +121,9 @@ public class UserEditServlet extends HttpServlet {
 				UserBean updatedUser = new UserBean(userName, password, email, role, firstName, lastName, avatarName);
 			    if (UserDAO.update(editedUser, updatedUser)) {
 			    	session.setAttribute("status", "success");
-			    	session.setAttribute("user", updatedUser);
+			    	if (user.getId() == updatedUser.getId()) {
+			    		session.setAttribute("user", updatedUser);
+			    	}
 					session.setAttribute("message", "User '" + userName + "' was updated successfully");
 			    }
 			    else {
