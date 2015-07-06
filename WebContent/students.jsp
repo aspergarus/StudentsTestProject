@@ -46,7 +46,6 @@
 								<th data-field="avatar" data-align="center" data-sortable="false">Avatar</th>
 								<th data-field="firstName" data-align="center" data-sortable="true">First Name</th>
 								<th data-field="lastName" data-align="center" data-sortable="true">Last Name</th>
-								<th data-field="delete" data-align="center">Delete from list</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -61,12 +60,6 @@
 							</td>
 							<td><% out.print(student.getFirstName()); %></td>
 							<td><% out.print(student.getLastName()); %></td>
-							<td>
-								<form action="<%= basePath %>/students" method="post">
-									<button type="submit" class="btn btn-danger">Delete</button>
-									<input type="hidden" name="delete-id" value="<%= student.getId() %>">
-								</form>
-							</td>
 						</tr>
 						<% } %>
 						</tbody>

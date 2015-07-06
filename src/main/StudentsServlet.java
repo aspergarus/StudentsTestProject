@@ -66,7 +66,7 @@ public class StudentsServlet extends HttpServlet {
 			// Get form values.
 			String name = request.getParameter("name");
 			String group = request.getParameter("group");
-			String studentDeleteId = request.getParameter("delete-id");
+			
 			if (name != null && !name.isEmpty()) {
 				group = group.isEmpty() ? "" : group;
 
@@ -89,18 +89,6 @@ public class StudentsServlet extends HttpServlet {
 				}
 
 			}
-			else if (studentDeleteId != null && !studentDeleteId.isEmpty()) {
-				// Delete student from list
-				if (StudentDAO.delete(Integer.valueOf(studentDeleteId))) {
-					session.setAttribute("status", "success");
-					session.setAttribute("message", "Student has been deleted successfully from your list");
-				}
-				else {
-					session.setAttribute("status", "danger");
-					session.setAttribute("message", "Some troubles were occurred during deleting a student");
-				}
-			}
-
 			response.sendRedirect("students");
 		}
 	}

@@ -96,29 +96,6 @@ public class StudentDAO {
 	}
 
 	@SuppressWarnings("finally")
-	public static boolean delete(int studentId) {
-		String query = "DELETE FROM students "
-				+ "WHERE studentId = ?";
-
-		ConnectionManager conM = new ConnectionManager();
-		Connection con = conM.getConnection();
-
-		int rowsAffected = 0;
-
-		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setInt(1, studentId);
-
-			rowsAffected = stmt.executeUpdate();
-		}
-		catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		finally {
-			return rowsAffected > 0;
-		}
-	}
-
-	@SuppressWarnings("finally")
 	public static int findStudentCount(int studentId) {
 		String query = "SELECT COUNT(*) as countStudents FROM students s "
 				+ " WHERE studentId = ?";
