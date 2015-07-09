@@ -123,6 +123,28 @@ public class SubjectsDAO {
 		}
 	}
 	
+	@SuppressWarnings("finally")
+    public static int find(String subject) {
+		String query = "SELECT id FROM subjects WHERE subjectName = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		int id = 0;
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setString(1, subject);
+			rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				id = rs.getInt("id");
+			}
+		} catch (SQLException e) {
+	        System.out.println(e.getMessage());
+        } finally {
+        	return id;
+        }
+	}
+	
 	public static boolean update(SubjectsBean bean) {
 		String query = "UPDATE subjects SET subjectName=?, departmentId=? WHERE id = ?";
 
@@ -191,27 +213,7 @@ public class SubjectsDAO {
 		}
 	}
 	
-	@SuppressWarnings("finally")
-    public static int findSubjectId(String subject) {
-		String query = "SELECT id FROM subjects WHERE subjectName = ?";
-		
-		ConnectionManager conM = new ConnectionManager();
-		Connection con = conM.getConnection();
-		int id = 0;
-		
-		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setString(1, subject);
-			rs = stmt.executeQuery();
-			
-			if (rs.next()) {
-				id = rs.getInt("id");
-			}
-		} catch (SQLException e) {
-	        System.out.println(e.getMessage());
-        } finally {
-        	return id;
-        }
-	}
+	
 	
 	public static String subjectValidate(String subjectName, int departmentId) {
 		String query = "SELECT * FROM subjects WHERE subjectName = ? AND departmentId = ?";
