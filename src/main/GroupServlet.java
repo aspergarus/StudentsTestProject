@@ -74,7 +74,7 @@ public class GroupServlet extends HttpServlet {
 					String subject = java.net.URLDecoder.decode(subjectHeader, "UTF-8").trim();
 					String groups = java.net.URLDecoder.decode(groupsHeader, "UTF-8").trim();
 
-					int subjectId = SubjectsDAO.findSubjectId(subject);
+					int subjectId = SubjectsDAO.find(subject);
 					GroupsDAO.shareSubject(user.getId(), subjectId, groups);
 					response.getOutputStream().println("Subject has been shared successfully.");
 				} catch (NullPointerException e) {

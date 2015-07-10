@@ -137,7 +137,7 @@ public class LecturesServlet extends HttpServlet {
 				String title = request.getParameter("title").trim();
 				String body = request.getParameter("body").trim();
 				
-				int subjectId = SubjectsDAO.findSubjectId(subject);
+				int subjectId = SubjectsDAO.find(subject);
 
 				String errorMessage = lectureValidate(title, subjectId, 1);
 
@@ -193,7 +193,7 @@ public class LecturesServlet extends HttpServlet {
 			String title = request.getParameter("title").trim();
 			String body = request.getParameter("body").trim();
 			
-			int subjectId = SubjectsDAO.findSubjectId(subject);
+			int subjectId = SubjectsDAO.find(subject);
 			
 			String errorMessage = lectureValidate(title, subjectId, 0);
 			
