@@ -99,5 +99,36 @@ public class TestsDAO {
 			return rowsAffected > 0;
 		}
 	}
+	
+	
+	@SuppressWarnings("finally")
+    public static TestBean find(int id) {
+		String query = "SELECT * FROM tests WHERE id = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		ResultSet rs = null;
+		TestBean test = null;
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, id);
+			
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				test = new TestBean();
+				test.setId(rs.getInt("id"));
+				test.setTeacherId(rs.getInt("teacherId"));
+				test.setSubjectId(rs.getInt("subjectId"));
+				test.setModule(rs.getByte("module"));
+				test.setNote(rs.getString("note"));
+			}
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+        } finally {
+        	return test;
+        }
+	}
 
 }

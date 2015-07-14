@@ -94,9 +94,9 @@
 		<% } else { %>
 		
 			<h3 class="lead">You don't have <%= statusDB %> tables in your DB. Do you want to create them?</h3>
-			<h4 class="lead"><small>We can do it for you. Just click on the button.</small></h4>
-			
-			<h4 class="lead"><small>If you don't have account fill the form below.</small></h4>
+			<h4 class="lead"><small>We can do it for you.</small></h4>
+			<br>
+			<h5 class="lead"><small>If you don't have account fill the form below.</small></h5>
 			<label for="name" class="col-sm-2 control-label">Username*</label>
 			<div class="col-sm-10">
 				<input name="name" id="name" type="text" class="form-control typeahead"
@@ -107,7 +107,7 @@
 				<input name="pass" id="pass" type="password" class="form-control typeahead"
 					class="pass">
 			</div>
-			
+			<hr>
 			<div class="col-sm-offset-2 col-sm-10 add-subject">
 				<button type="submit" class="btn btn-primary create-tables">Create tables</button>
 			</div>

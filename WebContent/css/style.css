@@ -270,3 +270,9 @@ ol {
 	color: red;
 	margin-left: 1em;
 }
+.true-answer {
+	margin-top: 5px;
+}
+#delete-answer {
+	float: right;
+}
