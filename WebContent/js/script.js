@@ -409,5 +409,39 @@ $(function () {
 			}
 		});
 	}
-
+	
+	addAnswer();
+	
+	function addAnswer() {
+		$('#add-answer').click(function(e) {
+			e.preventDefault();
+			
+			var count = $('.answer').length;
+			
+			var $newAnswerArea = $('.answer:first').clone().appendTo(".answers");
+			count++;
+			var $newAnswer = $newAnswerArea.find($(':text'));
+			var $newCorrectAnswer = $newAnswerArea.find($(':checkbox'));
+			
+			$newAnswer.attr('name', 'answer-' + count);
+			$newCorrectAnswer.attr('name', 'correct-answer-' + count);
+			
+			$('#count').attr('value', count);
+		});
+	}
+	
+	deleteAnswer();
+	
+	function deleteAnswer() {
+		$('#delete-answer').click(function(e) {
+			e.preventDefault();
+			
+			var count = $('.answer').length;
+			if (count > 2) {
+				var lastAnswerArea = $('.answer:last');
+				lastAnswerArea.remove();
+			}
+		});
+	}
+	
 });
