@@ -416,10 +416,9 @@ $(function () {
 		$('#add-answer').click(function(e) {
 			e.preventDefault();
 			
-			var count = $('.answer').length;
+			var count = $('.answer').length +1;
 			
 			var $newAnswerArea = $('.answer:first').clone().appendTo(".answers");
-			count++;
 			var $newAnswer = $newAnswerArea.find($(':text'));
 			var $newCorrectAnswer = $newAnswerArea.find($(':checkbox'));
 			

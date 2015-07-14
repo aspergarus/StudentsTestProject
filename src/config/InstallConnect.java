@@ -19,7 +19,9 @@ import java.util.Properties;
 public class InstallConnect {
 	
 	// Required tables
-	private static String[] requiredTables = {"comments", "departments", "files", "groups", "lectures", "practicals", "stgrelations", "subjects", "users"};
+	private static String[] requiredTables = {"comments", "departments", "files", "groups",
+											"lectures", "practicals", "stgrelations", "subjects",
+											"users", "tests", "questions", "answers"};
 	
 	public static int testConnect() {
 		
@@ -159,8 +161,35 @@ public class InstallConnect {
 						+ "status tinyint(1) DEFAULT '1', "
 						+ "avatarName varchar(128) DEFAULT '', "
 						+ "groupId int(11) NOT NULL, "
-						+ "PRIMARY KEY (id))";
+						+ "PRIMARY KEY (id));";
 		tablesQuery.put("users", usersQuery);
+		
+		//tests
+		String testsQuery = "CREATE TABLE tests "
+						+ "(id INT(11) NOT NULL AUTO_INCREMENT, "
+						+ "teacherId INT(11) NOT NULL, "
+						+ "subjectId INT(11) NOT NULL, "
+						+ "module TINYINT(4) NOT NULL, "
+						+ "note VARCHAR(128) NULL DEFAULT NULL, "
+						+ "PRIMARY KEY (id));";
+		tablesQuery.put("tests", testsQuery);
+		
+		//questions
+		String questionsQuery = "CREATE TABLE questions "
+				+ "(questionId INT(11) NOT NULL AUTO_INCREMENT, "
+				+ "testId INT(11) NOT NULL DEFAULT '0', "
+				+ "questionText VARCHAR(128) NOT NULL DEFAULT '0', "
+				+ "PRIMARY KEY (questionId));";
+		tablesQuery.put("questions", questionsQuery);
+		
+		//answers
+		String answersQuery = "CREATE TABLE answers "
+				+ "(answerId INT(11) NOT NULL AUTO_INCREMENT, "
+				+ "questionId INT(11) NOT NULL DEFAULT '0', "
+				+ "answerText VARCHAR(64) NOT NULL DEFAULT '0', "
+				+ "correct TINYTEXT NOT NULL, "
+				+ "PRIMARY KEY (answerId))";
+		tablesQuery.put("answers", answersQuery);
 		
 		ArrayList<String> existTables = selectExistTables();
 		
