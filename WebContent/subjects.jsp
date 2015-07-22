@@ -32,14 +32,15 @@
 			<div class="form-group">
 				<label for="subjectName" class="col-sm-2 control-label">Subject name*</label>
 				<div class="col-sm-10">
-					<input name="subjectName" type="text" class="form-control typeahead"
-						class="subjectName" required autocomplete="off">
+					<input name="subjectName" type="text" class="form-control typeahead subjectName"
+						required autocomplete="off">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="departmentName" class="col-sm-2 control-label">Department*</label>
 				<div class="col-sm-10">
-					<input name="departmentName" type="text" class="form-control" id="departmentName" required>
+					<input name="departmentName" type="text" class="form-control typeahead" id="departmentName" required
+						autocomplete="off" data-autocomplete-url="autocomplete/departments">
 				</div>
 			</div>	
 			<div class="form-group">

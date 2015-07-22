@@ -33,6 +33,26 @@ public class DepartmentsDAO {
         }
 		return departments;
 	}
+
+	public static ArrayList<String> findAllByName(String searchString) {
+		String query = "SELECT * FROM departments WHERE departmentName LIKE ?";
+		ArrayList<String> departments = new ArrayList<>();
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setString(1, "%" + searchString + "%");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				String departmentName = rs.getString("departmentName");
+				departments.add(departmentName);
+			}
+        } catch (SQLException e) {
+	        System.out.println(e.getMessage());
+        }
+		return departments;
+	}
 	
 	@SuppressWarnings("finally")
     public static DepartmentBean find(int id) {
