@@ -32,37 +32,45 @@
 			</div>
  			
  			<div class="answers">
- 			
+
 	 			<div class="form-group answer">
 					<label for="answer" class="col-sm-2 control-label required">Answer*</label>
-					<div class="col-sm-9">
+					<div class="col-sm-8">
 						<input name="answer-1" type="text" class="form-control"
-							placeholder="Answer*" required >
+							placeholder="Answer*" required>
 					</div>
+					<div class="col-sm-1">
 						<label>
 							<input type="checkbox" name="correct-answer-1" class="true-answer">
 							True
 						</label>
+					</div>
+					<div class="col-sm-1">
+						<input type="button" class="delete-answer btn btn-danger btn-xs" value="Delete an answer">
+					</div>
 				</div>
 				
 				<div class="form-group answer">
 					<label for="answer" class="col-sm-2 control-label required">Answer*</label>
-					<div class="col-sm-9">
+					<div class="col-sm-8">
 						<input name="answer-2" type="text" class="form-control"
-							placeholder="Answer*" required >
+							placeholder="Answer*" required>
 					</div>
-						<label >
+					<div class="col-sm-1">
+						<label>
 							<input type="checkbox" name="correct-answer-2" class="true-answer">
 							True
 						</label>
+					</div>
+					<div class="col-sm-1">
+						<input type="button" class="delete-answer btn btn-danger btn-xs" value="Delete an answer">
+					</div>
 				</div>
-				
 			</div>	
 				
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
 					<input type="button" id="add-answer" class="btn btn-primary btn-xs" value="Add an answer">
-					<input type="button" id="delete-answer" class="btn btn-danger btn-xs" value="Delete an answer">
 				</div>
 			</div>
 				

@@ -416,12 +416,14 @@ $(function () {
 		$('#add-answer').click(function(e) {
 			e.preventDefault();
 			
-			var count = $('.answer').length +1;
+			var count = $('.answer').length + 1;
 			
 			var $newAnswerArea = $('.answer:first').clone().appendTo(".answers");
-			var $newAnswer = $newAnswerArea.find($(':text'));
-			var $newCorrectAnswer = $newAnswerArea.find($(':checkbox'));
-			
+			var $newAnswer = $newAnswerArea.find('input[type=text]');
+			$newAnswer.val('');
+			var $newCorrectAnswer = $newAnswerArea.find('input[type=checkbox]');
+			$newCorrectAnswer.attr('checked', false);
+
 			$newAnswer.attr('name', 'answer-' + count);
 			$newCorrectAnswer.attr('name', 'correct-answer-' + count);
 			
@@ -432,13 +434,13 @@ $(function () {
 	deleteAnswer();
 	
 	function deleteAnswer() {
-		$('#delete-answer').click(function(e) {
+		$('#question-form').on('click', '.delete-answer', function(e) {
 			e.preventDefault();
-			
+			$this = $(this);
 			var count = $('.answer').length;
-			if (count > 2) {
-				var lastAnswerArea = $('.answer:last');
-				lastAnswerArea.remove();
+			if (count > 1) {
+				var $answer = $this.closest('.answer');
+				$answer.remove();
 			}
 		});
 	}
