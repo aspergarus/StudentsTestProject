@@ -6,10 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.jasypt.util.password.StrongPasswordEncryptor;
 
-import config.SingletonConnectionManager;
+import config.ConnectionManager;
 import beans.UserBean;
 
 public class UserDAO {
@@ -31,7 +32,7 @@ public class UserDAO {
 			query = "SELECT * FROM users WHERE username = ?";
 		}
 		
-		SingletonConnectionManager conM = SingletonConnectionManager.getSingletonConnectionManager();
+		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setString(1, username);
@@ -65,7 +66,7 @@ public class UserDAO {
 
 		String query = "SELECT * FROM users WHERE id = ?";
 		
-		SingletonConnectionManager conM = SingletonConnectionManager.getSingletonConnectionManager();
+		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, id);
@@ -109,7 +110,7 @@ public class UserDAO {
 				+ "(username, password, email, role, firstName, lastName, groupId) "
 				+ "VALUES (?,?,?,?,?,?,?)";
 
-		SingletonConnectionManager conM = SingletonConnectionManager.getSingletonConnectionManager();
+		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
         int rowsAffected = 0;
 		try (PreparedStatement insertUser = con.prepareStatement(query)) {
@@ -133,7 +134,7 @@ public class UserDAO {
 		ArrayList<UserBean> users = new ArrayList<UserBean>();;
 		UserBean bean = null;
 
-		SingletonConnectionManager conM = SingletonConnectionManager.getSingletonConnectionManager();
+		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
 		try (Statement stmt = con.createStatement()) {
 			String query = "SELECT * FROM users";
@@ -172,7 +173,7 @@ public class UserDAO {
 		}
 		query += "WHERE id = ?";
 
-		SingletonConnectionManager conM = SingletonConnectionManager.getSingletonConnectionManager();
+		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
         int rowsAffected = 0;
 		try (PreparedStatement updateUser = con.prepareStatement(query)) {
@@ -201,7 +202,7 @@ public class UserDAO {
 		String query = "SELECT id, firstName, lastName FROM users "
 				+ "WHERE role = 0 AND (firstName LIKE ? OR lastName LIKE ?)";
 
-		SingletonConnectionManager conM = SingletonConnectionManager.getSingletonConnectionManager();
+		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
 
 		ArrayList<String> list = new ArrayList<>();
@@ -224,7 +225,7 @@ public class UserDAO {
 	public static ArrayList<String> findStudentGroups(String namePart) {
 		String query = "SELECT distinct group FROM users WHERE role = 0 AND groupName LIKE ?";
 
-		SingletonConnectionManager conM = SingletonConnectionManager.getSingletonConnectionManager();
+		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
 
 		ArrayList<String> list = new ArrayList<>();
@@ -236,10 +237,61 @@ public class UserDAO {
 			while (rs.next()) {
 				list.add(rs.getString("group"));
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
 		return list;
     }
+	
+	public static ArrayList<String> findTeachers(String namePart) {
+		String query = "SELECT id, firstName, lastName FROM users "
+				+ "WHERE role = 1 AND (firstName LIKE ? OR lastName LIKE ?)";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		ResultSet rs = null;
+		
+		ArrayList<String> nameList = new ArrayList<>();
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setString(1, "%" + namePart.trim() + "%");
+			stmt.setString(2, "%" + namePart.trim() + "%");
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				nameList.add(rs.getString("firstName") + " " + rs.getString("lastName") + " [" + rs.getInt("id") + "]");
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return nameList;
+	}
+	
+	public static HashMap<Integer, String> getTeachersMap() {
+		String query = "SELECT id, firstName, lastName FROM users "
+				+ "WHERE role = 1";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		ResultSet rs = null;
+		
+		HashMap<Integer, String> teacherMap = new HashMap<>();
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				int teacherId = rs.getInt("id");
+				String firstName = rs.getString("firstName");
+				String lastName = rs.getString("lastName");
+				
+				teacherMap.put(teacherId, firstName + " " + lastName);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+        }
+		
+		return teacherMap;
+	}
 }

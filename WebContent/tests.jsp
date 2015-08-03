@@ -11,8 +11,9 @@
 <% String status = (String) request.getAttribute("status"); %>
 <% String message = (String) request.getAttribute("message"); %>
 <% HashMap<String, ArrayList<TestBean>> tests = (HashMap<String, ArrayList<TestBean>>) request.getAttribute("testsMap"); %>
-<% HashMap<String, String> groups = (HashMap<String, String>) request.getAttribute("groups"); %>
 <% HashMap<Integer, String> subjects = (HashMap<Integer, String>) request.getAttribute("subjects");  %>
+<% HashMap<Integer, String> teachers = (HashMap<Integer, String>) request.getAttribute("teachers"); %>
+<% HashMap<String, String> groups = (HashMap<String, String>) request.getAttribute("groupsMap"); %>
 
 <%@ include file="header.jsp"%>
 
@@ -41,9 +42,10 @@
 			
 			<% if (currentUser.getRole() == 2) { %>
 				<div class="form-group">
-					<label for="teacherId" class="col-sm-2 control-label">Teacher ID*</label>
+					<label for="teacher" class="col-sm-2 control-label">Teacher*</label>
 					<div class="col-sm-10">
-						<input name="teacherId" type="number" class="form-control" required>
+						<input name="teacher" type="text" class="form-control typeahead"
+							required autocomplete="off" data-autocomplete-url="autocomplete/teachers">
 					</div>
 				</div>
 			<% } %>
@@ -100,11 +102,7 @@
 						<thead>
 							<tr>
 								<th data-field="title" data-align="center" data-sortable="true">Subject</th>
-								<% if (currentUser.getRole() == 0) { %>
-									<th data-field="teacher" data-align="center" data-sortable="true">Teacher</th>
-								<% } else if (currentUser.getRole() == 2) { %>
-									<th data-field="teacherId" data-align="center" data-sortable="true">Teacher ID</th>
-								<% } %>
+								<th data-field="teacher" data-align="center" data-sortable="true">Teacher</th>
 								<th data-field="module" data-align="center" data-sortable="true">Module</th>
 								<th data-field="note" data-align="center" data-sortable="true">Note</th>
 								<% if (currentUser.getRole() > 0) { %>
@@ -118,12 +116,7 @@
 						<% for (TestBean test : tests.get(subject)) { %>
 							<tr>
 								<td><%= subjects.get(test.getSubjectId()) %></td>
-								<% if (currentUser.getRole() == 0) { %>
-									<td><%= test.getTeacherId() %></td>
-								<% } else if (currentUser.getRole() == 2) { %>
-									<td><%= test.getTeacherId() %></td>
-								<% } %>
-								
+								<td><%= teachers.get(test.getTeacherId()) %></td>
 								<td><%= test.getModule() %></td>
 								<td><%= test.getNote() %></td>
 								<% if (currentUser.getRole() > 0) { %>

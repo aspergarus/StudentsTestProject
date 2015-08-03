@@ -79,6 +79,11 @@ public class AutocompleteServlet extends HttpServlet {
 				list = DepartmentsDAO.findAllByName(query);
 				out = gson.toJson(list);
 				break;
+			
+			case "/teachers":
+				list = UserDAO.findTeachers(query);
+				out = gson.toJson(list);
+				break;
 		}
 
 		return out;
