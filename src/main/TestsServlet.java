@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dao.GroupsDAO;
 import dao.SubjectsDAO;
 import dao.TestsDAO;
+import dao.UserDAO;
 import beans.TestBean;
 import beans.UserBean;
 
@@ -53,13 +55,16 @@ public class TestsServlet extends HttpServlet {
 			
 			// Show exists tests
 			HashMap<String, ArrayList<TestBean>> testsMap = TestsDAO.findAll(user);
-			HashMap<String, String> groups = new HashMap<>(); // TODO: method for select groups
 			HashMap<Integer, String> subjects = SubjectsDAO.getSubjectsMap();
+			HashMap<Integer, String> teachers = UserDAO.getTeachersMap();
+			HashMap<String, String> groupsMap = GroupsDAO.getGroupsByTeacher(user.getId());
 			
 			request.setAttribute("subjects", subjects);
-			request.setAttribute("groups", groups);
+			request.setAttribute("teachers", teachers);
 			request.setAttribute("currentUser", user);
 			request.setAttribute("testsMap", testsMap);
+			request.setAttribute("groupsMap", groupsMap);
+			
 			request.getRequestDispatcher("tests.jsp").forward(request, response);
 		}
 	}
@@ -85,7 +90,8 @@ public class TestsServlet extends HttpServlet {
 			int id;
 			
 			if (user.getRole() == 2) {
-				id = Integer.valueOf(request.getParameter("teacherId"));
+				String name = request.getParameter("teacher");
+				id = Integer.parseInt(name.substring(name.indexOf("[") + 1, name.indexOf("]")));
 			}
 			else {
 				id = user.getId();

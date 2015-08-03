@@ -11,7 +11,7 @@
 <% UserBean currentUser = (UserBean) request.getAttribute("currentUser"); %>
 <% String status = (String) request.getAttribute("status"); %>
 <% String message = (String) request.getAttribute("message"); %>
-<% Map<String, ArrayList<PracticalsBean>> practicalsMap = (HashMap<String, ArrayList<PracticalsBean>>) request.getAttribute("practicalsMap"); %>
+<% HashMap<String, ArrayList<PracticalsBean>> practicalsMap = (HashMap<String, ArrayList<PracticalsBean>>) request.getAttribute("practicalsMap"); %>
 <% HashMap<String, String> groups = (HashMap<String, String>) request.getAttribute("groupsMap"); %>
 
 <%@ include file="header.jsp" %>
