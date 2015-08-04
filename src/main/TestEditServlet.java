@@ -60,14 +60,17 @@ public class TestEditServlet extends HttpServlet {
 			request.setAttribute("status", status);
 			request.setAttribute("message", message);
 			
-			TestBean editedTest = null;
-			
 			// Get test id from path.
 			String[] pathParts = request.getPathInfo().split("/");
 			int id = Integer.valueOf(pathParts[1]);
 			
-			editedTest = TestsDAO.find(id);
-			// questions = questionsDAO.find(id);
+			TestBean editedTest = TestsDAO.find(id);
+			ArrayList<QuestionBean> questions = QuestionDAO.getQuestions(id);
+			
+			for (QuestionBean question: questions) {
+				System.out.println(question);
+			}
+			
 			
 			if (editedTest != null) {
 				request.setAttribute("editedTest", editedTest);
@@ -132,10 +135,6 @@ public class TestEditServlet extends HttpServlet {
 			}
 			
 			response.sendRedirect(request.getRequestURI());
-			
 		}
-		
-		
 	}
-
 }

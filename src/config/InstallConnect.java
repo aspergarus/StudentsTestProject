@@ -176,7 +176,7 @@ public class InstallConnect {
 		
 		//questions
 		String questionsQuery = "CREATE TABLE questions "
-				+ "(questionId INT(11) NOT NULL AUTO_INCREMENT, "
+				+ "(id INT(11) NOT NULL AUTO_INCREMENT, "
 				+ "testId INT(11) NOT NULL DEFAULT '0', "
 				+ "questionText VARCHAR(128) NOT NULL DEFAULT '0', "
 				+ "PRIMARY KEY (questionId));";
@@ -184,7 +184,7 @@ public class InstallConnect {
 		
 		//answers
 		String answersQuery = "CREATE TABLE answers "
-				+ "(answerId INT(11) NOT NULL AUTO_INCREMENT, "
+				+ "(id INT(11) NOT NULL AUTO_INCREMENT, "
 				+ "questionId INT(11) NOT NULL DEFAULT '0', "
 				+ "answerText VARCHAR(64) NOT NULL DEFAULT '0', "
 				+ "correct TINYTEXT NOT NULL, "
