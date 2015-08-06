@@ -63,7 +63,7 @@
 			        <td><% out.print(department.getId()); %></td>
 			        <% } %>
 			        <td>
-			        	<span class="transformer-text-department" data-did=<%= department.getId() %>><% out.print(department.getDepartmentName()); %></span>
+			        	<span class="transformer-text" data-path="department" data-id=<%= department.getId() %>><% out.print(department.getDepartmentName()); %></span>
 			        	<input type="text" style="display: none">
 			        </td>
 			        <% if (user.getRole() == 2) { %>

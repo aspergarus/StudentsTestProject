@@ -39,6 +39,7 @@
 <script>var userId = "<%= uid %>";</script>
 <!-- Custom javascripts -->
 <script src="<%= basePathHeader %>/js/script.js"></script>
+<script src="<%= basePathHeader %>/js/text-transformer.js"></script>
 
 </head>
 <body>

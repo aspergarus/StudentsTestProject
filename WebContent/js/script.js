@@ -134,6 +134,51 @@ $(function () {
 			});
 		});
 	}
+	/* Function for transfom Text element to <input type="text"> */
+	transformer();
+	
+	function transformer() {
+		$('.transformer-text').click(function(e) {
+			e.preventDefault();
+			
+			var $this = $(this);
+			var text = $this.text().trim();
+			var id = $this.data('id');
+			var path = $this.attr('data-path');
+			
+			var $parent = $this.parent();
+			var $input = $parent.find('input');
+			
+			$this.hide();
+			$input.show();
+			$input.val(text);
+			
+			$input.focus();
+			$input.focusout(function () {
+				$this.show();
+				$input.hide();
+			}); 
+				
+			$input.change(function() {
+				if ($input.val().trim() != "") {
+					var newText = $input.val();
+					$.ajax(basePath + "/" + path, {
+						headers: {'id': id, 'name' : encodeURIComponent(newText) },
+						method: "PUT",
+						success: function(result) {
+							$this.text(newText);
+							$this.show();
+							$input.hide();
+						},
+						error: function(result) {
+							$this.show();
+							$input.hide();
+						}
+					});
+				}
+			});
+		});
+	}
 
 	departmentDeleteOperation();
 
@@ -159,50 +204,6 @@ $(function () {
 				},
 				error: function() {
 					$parent.append($('<span></span>').addClass('span-alert alert-danger').text("Could not delete this departmnet"));
-				}
-			});
-		});
-	}
-
-	departmentTransformer();
-
-	function departmentTransformer() {
-		$('.transformer-text-department').click(function(e) {
-			e.preventDefault();
-			
-			var $this = $(this);
-			var text = $this.text();
-			var did = $this.data('did');
-			console.log(did);
-			var $parent = $this.parent();
-			var $input = $parent.find('input');
-			
-			$this.hide();
-			$input.show();
-			$input.val(text);
-			
-			$input.focus();
-			$input.focusout(function () {
-				$this.show();
-				$input.hide();
-			}); 
-				
-			$input.change(function() {
-				if ($input.val().trim() != "") {
-					var newText = $input.val();
-					$.ajax(basePath + "/department", {
-						headers: {'did': did, 'name' : encodeURIComponent(newText) },
-						method: "PUT",
-						success: function(result) {
-							$this.text(newText);
-							$this.show();
-							$input.hide();
-						},
-						error: function(result) {
-							$this.show();
-							$input.hide();
-						}
-					});
 				}
 			});
 		});
@@ -237,49 +238,7 @@ $(function () {
 		});
 	}
 	
-	groupTransformer();
 	
-	function groupTransformer() {
-		$('.transformer-text-group').click(function(e) {
-			e.preventDefault();
-			
-			var $this = $(this);
-			var text = $this.text();
-			var id = $this.data('id');
-			console.log(id);
-			var $parent = $this.parent();
-			var $input = $parent.find('input');
-			
-			$this.hide();
-			$input.show();
-			$input.val(text);
-			
-			$input.focus();
-			$input.focusout(function () {
-				$this.show();
-				$input.hide();
-			}); 
-				
-			$input.change(function() {
-				if ($input.val().trim() != "") {
-					var newText = $input.val();
-					$.ajax(basePath + "/groups", {
-						headers: {'id': id, 'name' : encodeURIComponent(newText) },
-						method: "PUT",
-						success: function(result) {
-							$this.text(newText);
-							$this.show();
-							$input.hide();
-						},
-						error: function(result) {
-							$this.show();
-							$input.hide();
-						}
-					});
-				}
-			});
-		});
-	}
 
 	commentDeleteOperation();
 

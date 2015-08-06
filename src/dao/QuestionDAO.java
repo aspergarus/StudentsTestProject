@@ -38,12 +38,9 @@ public class QuestionDAO {
 			if (rs.next()){
 			    result = rs.getInt(1);
 			}
-			
-
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-
 		return result;
 	}
     
@@ -83,7 +80,7 @@ public class QuestionDAO {
 		int listSize = questions.size();
 		
 		for (int i = 0; i < listSize; i++) {
-			query += questions.get(i).getId();
+			query += "?";
 			
 			if (i != listSize - 1) {
 				query += ", ";
@@ -95,6 +92,9 @@ public class QuestionDAO {
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			
+			for (int i = 0; i < listSize; i++) {
+				stmt.setInt(i + 1, questions.get(i).getId());
+			}
 			rs = stmt.executeQuery();
 			
 			while(rs.next()) {
@@ -104,7 +104,6 @@ public class QuestionDAO {
 				AnswerBean answer = new AnswerBean(questionId, answerText, isCorrect);
 				answers.add(answer);
 			}
-			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -116,7 +115,6 @@ public class QuestionDAO {
 				}
 			}
 		}
-		
 		return questions;
 	}
 }
