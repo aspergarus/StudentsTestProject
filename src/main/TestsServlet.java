@@ -82,33 +82,75 @@ public class TestsServlet extends HttpServlet {
 		
 		else {
 			
-			// Add new test
-			String subject = request.getParameter("subject");
-			int subjectId = SubjectsDAO.find(subject);
-			byte module = Byte.valueOf(request.getParameter("module"));
-			String note = request.getParameter("note");
-			int id;
+			// Delete test
+			String deleteId = request.getParameter("delete-id");
+			if (deleteId != null && !deleteId.equals("")) {
+				int id = Integer.parseInt(deleteId);
+				
+				if (TestsDAO.delete(id)) {
+					session.setAttribute("status", "success");
+					session.setAttribute("message", "Test has been deleted successfully");
+				}
+				else {
+					session.setAttribute("status", "danger");
+					session.setAttribute("message", "Some troubles were occurred during deleting a test");
+				}
+				
+			} else {
+				// Add new test
+				String subject = request.getParameter("subject");
+				int subjectId = SubjectsDAO.find(subject);
+				byte module = Byte.valueOf(request.getParameter("module"));
+				String note = request.getParameter("note");
+				int id;
+				
+				if (user.getRole() == 2) {
+					String name = request.getParameter("teacher");
+					id = Integer.parseInt(name.substring(name.indexOf("[") + 1, name.indexOf("]")));
+				}
+				else {
+					id = user.getId();
+				}
+				
+				TestBean newTest = new TestBean(id, subjectId, module, note);
+				
+				if (TestsDAO.insert(newTest)) {
+					session.setAttribute("status", "success");
+					session.setAttribute("message", "Test has been added successfully");
+				}
+				else {
+					session.setAttribute("status", "danger");
+					session.setAttribute("message", "Some troubles were occurred during addition a test");
+				}
+			}
 			
-			if (user.getRole() == 2) {
-				String name = request.getParameter("teacher");
-				id = Integer.parseInt(name.substring(name.indexOf("[") + 1, name.indexOf("]")));
-			}
-			else {
-				id = user.getId();
-			}
-			
-			TestBean newTest = new TestBean(id, subjectId, module, note);
-			
-			if (TestsDAO.insert(newTest)) {
-				session.setAttribute("status", "success");
-				session.setAttribute("message", "Test has been added successfully");
-			}
-			else {
-				session.setAttribute("status", "danger");
-				session.setAttribute("message", "Some troubles were occurred during addition a test");
-			}
 			response.sendRedirect(request.getContextPath() + "/tests");
 			return;
+		}
+	}
+	
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+
+		if (user == null) {
+			response.sendError(403);
+		}
+		else {
+			//Update in DB
+			int id = Integer.valueOf(request.getHeader("id"));
+			String newData = java.net.URLDecoder.decode(request.getHeader("name"), "UTF-8");
+			
+			try {
+				int module = Integer.parseInt(newData);
+				// Update Module
+				TestsDAO.update(id, module);
+			} catch (Exception e) {
+				// Update Note
+				TestsDAO.update(id, newData);
+			}
+			
+			response.getOutputStream().println("Test has been updated successfully.");
 		}
 	}
 }

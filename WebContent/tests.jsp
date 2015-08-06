@@ -117,8 +117,16 @@
 							<tr>
 								<td><%= subjects.get(test.getSubjectId()) %></td>
 								<td><%= teachers.get(test.getTeacherId()) %></td>
-								<td><%= test.getModule() %></td>
-								<td><%= test.getNote() %></td>
+								<td>
+									<span class="transformer-text" data-path="tests" data-id=<%= test.getId() %>><%= test.getModule() %></span>
+									<input type="text" style="display: none">
+								</td>
+								<td>
+									<span class="transformer-text" data-path="tests" data-id=<%= test.getId() %>>
+										<%= (!test.getNote().equals("")) ? test.getNote() : "-" %>
+									</span>
+									<input type="text" style="display: none">
+								</td>
 								<% if (currentUser.getRole() > 0) { %>
 									<td><a href="tests?id=<%= test.getId() %>">View</a></td>
 									<td><a href="test/<%= test.getId() %>">Edit</a></td>

@@ -63,7 +63,7 @@
 			        <td><% out.print(group.getId()); %></td>
 			        <% } %>
 			        <td>
-			        	<span class="transformer-text-group" data-id=<%= group.getId() %>><% out.print(group.getGroupName()); %></span>
+			        	<span class="transformer-text" data-path="groups" data-id=<%= group.getId() %>><% out.print(group.getGroupName()); %></span>
 			        	<input type="text" style="display: none">
 			        </td>
 			        <% if (user.getRole() == 2) { %>

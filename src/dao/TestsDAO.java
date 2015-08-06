@@ -130,5 +130,64 @@ public class TestsDAO {
         	return test;
         }
 	}
+	
+	@SuppressWarnings("finally")
+    public static boolean update(int id, int module) {
+		String query = "UPDATE tests SET module = ? WHERE id = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		int rowsAffected = 0;
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, module);
+			stmt.setInt(2, id);
+			rowsAffected = stmt.executeUpdate();
+			
+		} catch (SQLException e) {
+	        System.out.println(e.getMessage());
+        } finally {
+        	return rowsAffected > 0;
+        }
+	}
+	
+	@SuppressWarnings("finally")
+    public static boolean update(int id, String note) {
+		String query = "UPDATE tests SET note = ? WHERE id = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		int rowsAffected = 0;
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setString(1, note);
+			stmt.setInt(2, id);
+			rowsAffected = stmt.executeUpdate();
+			
+		} catch (SQLException e) {
+	        System.out.println(e.getMessage());
+        } finally {
+        	return rowsAffected > 0;
+        }
+	}
+	
+	@SuppressWarnings("finally")
+    public static boolean delete(int id) {
+		String query ="DELETE FROM tests WHERE id = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		int rowsAffected = 0;
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, id);
+			rowsAffected = stmt.executeUpdate();
+			
+		} catch (SQLException e) {
+	        System.out.println(e.getMessage());
+        } finally {
+        	return rowsAffected > 0;
+        }
+	}
 
 }

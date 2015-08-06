@@ -99,7 +99,7 @@ public class DepartmentServlet extends HttpServlet {
 		}
 		else {
 			//Update in DB
-			int id = Integer.valueOf(request.getHeader("did"));
+			int id = Integer.valueOf(request.getHeader("id"));
 			String newDepartmentName = java.net.URLDecoder.decode(request.getHeader("name"), "UTF-8");
 			DepartmentBean department = new DepartmentBean(id, newDepartmentName);
 			DepartmentsDAO.update(department);
