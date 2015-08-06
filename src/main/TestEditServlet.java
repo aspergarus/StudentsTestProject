@@ -67,14 +67,10 @@ public class TestEditServlet extends HttpServlet {
 			TestBean editedTest = TestsDAO.find(id);
 			ArrayList<QuestionBean> questions = QuestionDAO.getQuestions(id);
 			
-			for (QuestionBean question: questions) {
-				System.out.println(question);
-			}
-			
-			
 			if (editedTest != null) {
 				request.setAttribute("editedTest", editedTest);
-				request.getRequestDispatcher("/questions.jsp").forward(request, response);
+				request.setAttribute("questions", questions);
+				request.getRequestDispatcher("/test-edit.jsp").forward(request, response);
 			}
 			else {
 				response.sendError(404);
