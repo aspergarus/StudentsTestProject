@@ -221,27 +221,6 @@ public class UserDAO {
 		}
 		return list;
 	}
-
-	public static ArrayList<String> findStudentGroups(String namePart) {
-		String query = "SELECT distinct group FROM users WHERE role = 0 AND groupName LIKE ?";
-
-		ConnectionManager conM = new ConnectionManager();
-		con = conM.getConnection();
-
-		ArrayList<String> list = new ArrayList<>();
-
-		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setString(1, "%" + namePart.trim() + "%");
-			rs = stmt.executeQuery();
-
-			while (rs.next()) {
-				list.add(rs.getString("group"));
-			}
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		return list;
-    }
 	
 	public static ArrayList<String> findTeachers(String namePart) {
 		String query = "SELECT id, firstName, lastName FROM users "

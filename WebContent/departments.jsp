@@ -28,7 +28,7 @@
 			<div class="form-group">
 				<label for="departmentName" class="col-sm-2 control-label">Department name*</label>
 				<div class="col-sm-10">
-					<input name="departmentName" type="text" class="form-control typeahead"
+					<input name="departmentName" type="text" class="form-control"
 						class="departmentName" required autocomplete="off">
 				</div>
 			</div>
