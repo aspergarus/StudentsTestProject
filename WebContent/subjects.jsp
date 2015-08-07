@@ -32,7 +32,7 @@
 			<div class="form-group">
 				<label for="subjectName" class="col-sm-2 control-label">Subject name*</label>
 				<div class="col-sm-10">
-					<input name="subjectName" type="text" class="form-control typeahead subjectName"
+					<input name="subjectName" type="text" class="form-control subjectName"
 						required autocomplete="off">
 				</div>
 			</div>

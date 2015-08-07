@@ -189,5 +189,105 @@ public class TestsDAO {
         	return rowsAffected > 0;
         }
 	}
+	
+	@SuppressWarnings("finally")
+    public static boolean openTest(int testId, int groupId) {
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		ResultSet rs = null;
+		int rowsAffected = 0;
+		
+		ArrayList<Integer> studentsId = new ArrayList<>();
+		
+		String selectQuery = "SELECT id FROM users WHERE role = 0 AND groupId = ?";
+		
+		try (PreparedStatement stmt = con.prepareStatement(selectQuery)) {
+			stmt.setInt(1, groupId);
+			
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				studentsId.add(rs.getInt("id"));
+			}
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+        }
+		
+		String insertQuery = "INSERT INTO open_tests (testId, studentId, groupId) "
+				+ "VALUES ";
+		
+		int listSize = studentsId.size();
+		
+		for (int i = 0; i < listSize; i++) {
+			insertQuery += "(?, ?, ?)";
+			if (i != listSize - 1) {
+				insertQuery += ", ";
+			}
+		}
+		
+		try (PreparedStatement stmt = con.prepareStatement(insertQuery)) {
+			int k = 1;
+			for (int i = 0; i < listSize; i++) {
+				stmt.setInt(k, testId);
+				stmt.setInt(k + 1, studentsId.get(i));
+				stmt.setInt(k + 2, groupId);
+				k += 3;
+			}
+			rowsAffected = stmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			return rowsAffected > 0;
+		}
+	}
+	
+	public static ArrayList<UserBean> getTestStudents(int testId) {
+		String query = "SELECT firstname, lastname FROM users u INNER JOIN open_tests ot ON ot.studentId = u.id WHERE testId = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		ResultSet rs = null;
+		
+		ArrayList<UserBean> students = new ArrayList<>();
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, testId);
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				String firstName = rs.getString("firstname");
+				String lastName = rs.getString("lastname");
+				UserBean student = new UserBean(firstName, lastName);
+				students.add(student);
+			}
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+        }
+		return students;
+	}
+	
+	public static boolean alreadyOpen(int testId, int groupId) {
+		String query = "SELECT * FROM open_tests WHERE testId = ? AND groupId = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		ResultSet rs = null;
+		boolean ifOpened = false;
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, testId);
+			stmt.setInt(2, groupId);
+			rs = stmt.executeQuery();
+			
+			ifOpened = rs.next();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+        }
+		return ifOpened;
+		
+	}
 
 }

@@ -108,8 +108,9 @@
 								<% if (currentUser.getRole() > 0) { %>
 									<th data-field="view" data-align="center">View</th>
 									<th data-field="edit" data-align="center">Edit</th>
+									<th data-field="open" data-align="center">Open</th>
 									<th data-field="delete" data-align="center">Delete</th>
-								<%} %>
+								<% } %>
 							</tr>
 						</thead>
 						<tbody>
@@ -130,12 +131,14 @@
 								<% if (currentUser.getRole() > 0) { %>
 									<td><a href="tests?id=<%= test.getId() %>">View</a></td>
 									<td><a href="test/<%= test.getId() %>">Edit</a></td>
+									<td><a href="openTest?id=<%= test.getId() %>">Open</a></td>
 									<td>
 										<form action="<%= basePath %>/tests" method="post">
 											<button type="submit" class="btn btn-danger">Delete</button>
 											<input type="hidden" name="delete-id" value="<%= test.getId() %>">
 										</form>
 									</td>
+									
 								<% } %>
 							</tr>
 						<% } %>

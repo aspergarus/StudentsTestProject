@@ -64,12 +64,7 @@ public class AutocompleteServlet extends HttpServlet {
 				list = SubjectsDAO.findSubjects(query);
 				out = gson.toJson(list);
 				break;
-
-			case "/group":
-				list = UserDAO.findStudentGroups(query);
-				out = gson.toJson(list);
-				break;
-				
+	
 			case "/groups":
 				list = GroupsDAO.findGroups(query);
 				out = gson.toJson(list);

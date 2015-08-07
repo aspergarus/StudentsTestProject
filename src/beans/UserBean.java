@@ -40,6 +40,11 @@ public class UserBean {
 		this.avatarName = avatarName;
 		this.setPassword(password);
 	}
+	
+	public UserBean(String firstName, String lastName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
 
 	public UserBean() {}
 
