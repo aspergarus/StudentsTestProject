@@ -92,23 +92,17 @@
 	</div>
 	
 	<div class="container">
-	<h1>Available questions</h1>
-	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+	<h1>Available questions: <%= questions.size() %></h1>
+	
+	<div class="panel panel-default">
 		<% int i = 0; %>
 		<% for (QuestionBean question : questions) { %>
 		<% i++; %>
-		<div class="panel panel-default">
-			<div class="panel-heading" role="tab" id="heading-<%= i %>">
-				<h4 class="panel-title">
-					<a class="subject-<%= i %>" data-toggle="collapse" data-parent="#accordion" href="#collapse-<%= i %>" aria-controls="collapse-<%= i %>">
-					  <%= i + ". " + question.getQuestionText() %>
-					</a>
-				</h4>
-			</div>
-
-			<div id="collapse-<%= i %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-<%= i %>">
-				<div class="panel-body">
-					<table class="table">
+  			<div class="panel-heading">
+    			<h3 class="panel-title"><%=i + ". " + question.getQuestionText() %></h3>
+  			</div>
+  			<div class="panel-body">
+    			<table class="table">
 						<thead>
 							<tr>
 								<th data-field="title" data-align="center" data-sortable="true">№</th>
@@ -130,13 +124,9 @@
 						<% } %>
 						</tbody>
 					</table>
-				</div>
-			</div>
+  				</div>
+			<% } %>
 		</div>
-		<% } %>
 	</div>
-</div>
 	
-	
-
 <%@ include file="footer.jsp" %>
