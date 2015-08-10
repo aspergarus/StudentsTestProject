@@ -230,8 +230,9 @@ public class GroupsDAO {
 		
 		try (Statement stmnt = con.createStatement()) {
 	        rs = stmnt.executeQuery(query);
+	        groupsMap = new HashMap<>();
+	        
 	        while (rs.next()) {
-	        	groupsMap = new HashMap<>();
 	        	int groupId = rs.getInt("id");
 	        	String groupName = rs.getString("groupName");
 	        	groupsMap.put(groupId, groupName);

@@ -113,10 +113,11 @@
 						<% int j = 1; %>
 						<% for (AnswerBean answer : question.getAnswers()) { %>
 							<tr>
-								<td><%= j %></td>
 								<% if (answer.isCorrect()) { %>
+									<td class="success"><%= j %></td>
 									<td class="success"><%= answer.getAnswerText() %></td>
 								<% } else { %>
+									<td class="warning"><%= j %></td>
 									<td class="warning"><%= answer.getAnswerText() %></td>
 								<% } %>
 							</tr>

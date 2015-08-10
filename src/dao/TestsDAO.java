@@ -245,7 +245,7 @@ public class TestsDAO {
 	}
 	
 	public static ArrayList<UserBean> getTestStudents(int testId) {
-		String query = "SELECT firstname, lastname FROM users u INNER JOIN open_tests ot ON ot.studentId = u.id WHERE testId = ?";
+		String query = "SELECT firstname, lastname, u.groupId FROM users u INNER JOIN open_tests ot ON ot.studentId = u.id WHERE testId = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -260,7 +260,8 @@ public class TestsDAO {
 			while (rs.next()) {
 				String firstName = rs.getString("firstname");
 				String lastName = rs.getString("lastname");
-				UserBean student = new UserBean(firstName, lastName);
+				int groupId = rs.getInt("groupId");
+				UserBean student = new UserBean(firstName, lastName, groupId);
 				students.add(student);
 			}
 			
