@@ -411,5 +411,23 @@ $(function () {
 			$('.submit-delete-question').click();
 		});
 	}
+
+	validateQuestionsForm();
+	
+	function validateQuestionsForm() {
+		$('#question-form').on('change', '.true-answer', function() {
+			var trueQuestions = $('#question-form .true-answer').toArray().filter(function(el) {
+			  return el.checked;
+			});
+			if (trueQuestions.length < 1) {
+				$('#question-form #add-question').prop('disabled', true);
+			}
+			else {
+				$('#question-form #add-question').prop('disabled', false);
+			}
+		});
+
+		$('#question-form .true-answer').trigger('change');
+	}
 	
 });
