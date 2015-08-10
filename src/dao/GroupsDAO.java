@@ -35,6 +35,61 @@ public class GroupsDAO {
 	}
 	
 	@SuppressWarnings("finally")
+	public static ArrayList<String> findGroups(String groupName) {
+		String query = "SELECT DISTINCT groupName FROM groups WHERE groupName LIKE ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		ResultSet rs = null;
+
+		ArrayList<String> groups = null;
+
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setString(1, "%" + groupName.trim() + "%");
+			rs = stmt.executeQuery();
+
+			groups = new ArrayList<>();
+
+			while (rs.next()) {
+				groups.add(rs.getString("groupName"));
+			}
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		finally {
+			return groups;
+		}
+	}
+	
+	public static ArrayList<String> findAssignedGroups(String groupName, int subjectId) {
+		String query = "SELECT DISTINCT groupName FROM groups g INNER JOIN stgrelations s ON g.id = s.groupId"
+				+ " WHERE s.subjectId = ? AND g.groupName LIKE ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		ResultSet rs = null;
+		ArrayList<String> groups = null;
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, subjectId);
+			stmt.setString(2, "%" + groupName.trim() + "%");
+			
+			rs = stmt.executeQuery();
+			
+			groups = new ArrayList<>();
+
+			while (rs.next()) {
+				groups.add(rs.getString("groupName"));
+			}
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+        }
+		return groups;
+	}
+	
+	@SuppressWarnings("finally")
     public static GroupBean find(int id) {
 		String query = "SELECT * FROM groups WHERE id = ?";
 		
@@ -175,8 +230,9 @@ public class GroupsDAO {
 		
 		try (Statement stmnt = con.createStatement()) {
 	        rs = stmnt.executeQuery(query);
+	        groupsMap = new HashMap<>();
+	        
 	        while (rs.next()) {
-	        	groupsMap = new HashMap<>();
 	        	int groupId = rs.getInt("id");
 	        	String groupName = rs.getString("groupName");
 	        	groupsMap.put(groupId, groupName);
@@ -186,34 +242,6 @@ public class GroupsDAO {
         }
 		
 		return groupsMap;
-	}
-	
-	@SuppressWarnings("finally")
-	public static ArrayList<String> findGroups(String groupName) {
-		String query = "SELECT DISTINCT groupName FROM groups WHERE groupName LIKE ?";
-		
-		ConnectionManager conM = new ConnectionManager();
-		Connection con = conM.getConnection();
-		ResultSet rs = null;
-
-		ArrayList<String> groups = null;
-
-		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setString(1, "%" + groupName.trim() + "%");
-			rs = stmt.executeQuery();
-
-			groups = new ArrayList<>();
-
-			while (rs.next()) {
-				groups.add(rs.getString("groupName"));
-			}
-		}
-		catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		finally {
-			return groups;
-		}
 	}
 	
 	public static boolean shareSubject(int userId, int subjectId, String groups) {
@@ -344,4 +372,6 @@ public class GroupsDAO {
 		
 		return groups;
 	}
+	
+	
 }

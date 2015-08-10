@@ -41,9 +41,10 @@ public class UserBean {
 		this.setPassword(password);
 	}
 	
-	public UserBean(String firstName, String lastName) {
+	public UserBean(String firstName, String lastName, int groupId) {
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.groupId = groupId;
 	}
 
 	public UserBean() {}

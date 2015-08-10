@@ -53,34 +53,46 @@ public class AutocompleteServlet extends HttpServlet {
 		Gson gson = new Gson();
 		ArrayList<String> list = new ArrayList<>();
 		String out = "";
-
-		switch (pathInfo) {
-			case "/students":
-				list = UserDAO.findStudents(query);
-				out = gson.toJson(list);
-				break;
+		String[] pathParts = pathInfo.split("/");
+		
+		if (pathParts.length == 2) {
+			switch (pathInfo) {
+				case "/students":
+					list = UserDAO.findStudents(query);
+					out = gson.toJson(list);
+					break;
+				
+				case "/subjects":
+					list = SubjectsDAO.findSubjects(query);
+					out = gson.toJson(list);
+					break;
+		
+				case "/groups":
+					list = GroupsDAO.findGroups(query);
+					out = gson.toJson(list);
+					break;
+					
+				case "/departments":
+					list = DepartmentsDAO.findAllByName(query);
+					out = gson.toJson(list);
+					break;
+				
+				case "/teachers":
+					list = UserDAO.findTeachers(query);
+					out = gson.toJson(list);
+					break;
+			}
+		} else {
+			int subjectId = Integer.parseInt(pathParts[2]);
 			
-			case "/subjects":
-				list = SubjectsDAO.findSubjects(query);
-				out = gson.toJson(list);
-				break;
-	
-			case "/groups":
-				list = GroupsDAO.findGroups(query);
-				out = gson.toJson(list);
-				break;
-
-			case "/departments":
-				list = DepartmentsDAO.findAllByName(query);
-				out = gson.toJson(list);
-				break;
-			
-			case "/teachers":
-				list = UserDAO.findTeachers(query);
-				out = gson.toJson(list);
-				break;
+			switch ("/" + pathParts[1]) {
+				case "/assignedGroups":
+					list = GroupsDAO.findAssignedGroups(query, subjectId);
+					out = gson.toJson(list);
+					break;
+			}
 		}
-
+		
 		return out;
 	}
 

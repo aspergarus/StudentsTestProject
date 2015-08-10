@@ -2,6 +2,7 @@
 <%@page import="beans.QuestionBean"%>
 <%@page import="beans.AnswerBean"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.HashMap"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
@@ -9,8 +10,9 @@
 <% String status = (String) request.getAttribute("status"); %>
 <% String message = (String) request.getAttribute("message"); %>
 <% TestBean currentTest = (TestBean) request.getAttribute("currentTest"); %>
+<% int subjectId = (Integer) request.getAttribute("subjectId"); %>
 <% ArrayList<UserBean> students = (ArrayList<UserBean>) request.getAttribute("students"); %>
-
+<% HashMap<Integer, String> groupsMap = (HashMap<Integer, String>) request.getAttribute("groupsMap"); %>
 
 <%@ include file="header.jsp" %>
 
@@ -33,7 +35,7 @@
 				<div class="col-sm-10">
 					<input type="text" name="group" class="form-control typeahead"
 						placeholder="Group" required autocomplete="off"
-							data-autocomplete-url="autocomplete/groups">
+							data-autocomplete-url="autocomplete/assignedGroups/<%= subjectId %>">
 				</div>
 			</div>
 				
@@ -51,6 +53,7 @@
 		    <thead>
 		        <tr>
 		        	<th data-field="number" data-align="center" data-sortable="true">№</th>
+		        	<th data-field="group" data-align="center" data-sortable="true">Group</th>
 		            <th data-field="firstName" data-align="center" data-sortable="true">First Name</th>
 		            <th data-field="lastName" data-align="center" data-sortable="true">Last Name</th>
 		            <th data-field="delete" data-align="center">Delete</th>
@@ -61,6 +64,7 @@
 		    <% for (UserBean student: students) { %>
 				<tr>
 					<td><%= i %></td>
+					<td><% out.print(groupsMap.get(student.getGroupId())); %></td>
 			        <td><% out.print(student.getFirstName()); %></td>
 			        <td><% out.print(student.getLastName()); %></td>
 			        <td><input type="button" class="delete-answer btn btn-danger" value="Delete"></td>
