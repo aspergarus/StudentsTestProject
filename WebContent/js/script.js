@@ -395,7 +395,7 @@ $(function () {
 	function deleteAnswer() {
 		$('#question-form').on('click', '.delete-answer', function(e) {
 			e.preventDefault();
-			$this = $(this);
+			var $this = $(this);
 			var count = $('.answer').length;
 			if (count > 1) {
 				var $answer = $this.closest('.answer');
