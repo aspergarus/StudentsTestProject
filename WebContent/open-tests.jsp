@@ -9,6 +9,7 @@
 <% String status = (String) request.getAttribute("status"); %>
 <% String message = (String) request.getAttribute("message"); %>
 <% TestBean currentTest = (TestBean) request.getAttribute("currentTest"); %>
+<% int subjectId = (Integer) request.getAttribute("subjectId"); %>
 <% ArrayList<UserBean> students = (ArrayList<UserBean>) request.getAttribute("students"); %>
 
 
@@ -33,7 +34,7 @@
 				<div class="col-sm-10">
 					<input type="text" name="group" class="form-control typeahead"
 						placeholder="Group" required autocomplete="off"
-							data-autocomplete-url="autocomplete/groups">
+							data-autocomplete-url="autocomplete/assignedGroups/<%= subjectId %>">
 				</div>
 			</div>
 				

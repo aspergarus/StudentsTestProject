@@ -131,7 +131,7 @@
 								<% if (currentUser.getRole() > 0) { %>
 									<td><a href="tests?id=<%= test.getId() %>">View</a></td>
 									<td><a href="test/<%= test.getId() %>">Edit</a></td>
-									<td><a href="openTest?id=<%= test.getId() %>">Open</a></td>
+									<td><a href="openTest?subject=<%= test.getSubjectId() %>&id=<%= test.getId() %>">Open</a></td>
 									<td>
 										<form action="<%= basePath %>/tests" method="post">
 											<button type="submit" class="btn btn-danger">Delete</button>
