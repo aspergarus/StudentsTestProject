@@ -276,3 +276,6 @@ ol {
 #delete-answer {
 	float: right;
 }
+.delete-question {
+	float: right;
+}

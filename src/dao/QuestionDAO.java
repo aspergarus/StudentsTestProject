@@ -68,7 +68,11 @@ public class QuestionDAO {
 			System.out.println(e.getMessage());
 		}
 		
-		return addAnswersToQuestions(questions);
+		if (questions.size() > 0) {
+			return addAnswersToQuestions(questions);
+		} else {
+			return questions;
+		}
 	}
 	
 	public static ArrayList<QuestionBean> addAnswersToQuestions(ArrayList<QuestionBean> questions) {
@@ -116,5 +120,44 @@ public class QuestionDAO {
 			}
 		}
 		return questions;
+	}
+	
+	public static boolean delete(int questionId) {
+		String query = "DELETE FROM questions WHERE id = ?";
+		
+		if(deleteAnswers(questionId)) {
+			
+			ConnectionManager conM = new ConnectionManager();
+			Connection con = conM.getConnection();
+			int rowsAffected = 0;
+			
+			try (PreparedStatement stmt = con.prepareStatement(query)) {
+				stmt.setInt(1, questionId);
+				
+				rowsAffected = stmt.executeUpdate();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+			return rowsAffected > 0;
+		} else {
+			return false;
+		}
+	}
+	
+	public static boolean deleteAnswers(int questionId) {
+		String query = "DELETE FROM answers WHERE questionId = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		int rowsAffected = 0;
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, questionId);
+			
+			rowsAffected = stmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return rowsAffected > 0;
 	}
 }

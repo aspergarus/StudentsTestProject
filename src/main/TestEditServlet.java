@@ -96,38 +96,55 @@ public class TestEditServlet extends HttpServlet {
 			request.getRequestDispatcher(request.getContextPath() + "/error-access.jsp").forward(request, response);
 		}
 		else {
+			String deleteQuestionId = request.getParameter("delete-question-id");
 			
-			int testId = Integer.valueOf(request.getParameter("id"));
-			String questionText = request.getParameter("question");
-			
-			int answersCount = Integer.valueOf(request.getParameter("count"));
-			ArrayList<AnswerBean> answers = new ArrayList<>();
-			
-			QuestionBean question = new QuestionBean(testId, questionText);
-			
-			int questionId = QuestionDAO.add(question);
-			
-			if (questionId == 0) {
-				session.setAttribute("status", "danger");
-				session.setAttribute("message", "Some troubles during adding a question.");
-				response.sendRedirect(request.getRequestURI());
-			}
-			
-			for (int i = 1; i <= answersCount; i++) {
-				String answerText = request.getParameter("answer-" + i);
-				String correctAnswer = request.getParameter("correct-answer-" + i);
-				boolean isCorrect = (correctAnswer != null) ? true : false;
-				AnswerBean answer = new AnswerBean(questionId, answerText, isCorrect);
-				answers.add(answer);
-			}
-			
-			if (AnswersDAO.add(answers)) {
-				session.setAttribute("status", "success");
-				session.setAttribute("message", "Question and answers was added successfully!");
-			}
-			else {
-				session.setAttribute("status", "danger");
-				session.setAttribute("message", "Question was added, but we have some troubles during adding answers.");
+			// Deleting question
+			if (deleteQuestionId != null && !deleteQuestionId.equals("")) {
+				int questionId = Integer.parseInt(deleteQuestionId);
+				
+				if (QuestionDAO.delete(questionId)) {
+					session.setAttribute("status", "success");
+					session.setAttribute("message", "Question was deleted successfully!");
+				}
+				else {
+					session.setAttribute("status", "danger");
+					session.setAttribute("message", "Some troubles during deleting question.");
+				}
+				
+			} else {
+				// Adding new question
+				int testId = Integer.valueOf(request.getParameter("id"));
+				String questionText = request.getParameter("question");
+				
+				int answersCount = Integer.valueOf(request.getParameter("count"));
+				ArrayList<AnswerBean> answers = new ArrayList<>();
+				
+				QuestionBean question = new QuestionBean(testId, questionText);
+				
+				int questionId = QuestionDAO.add(question);
+				
+				if (questionId == 0) {
+					session.setAttribute("status", "danger");
+					session.setAttribute("message", "Some troubles during adding a question.");
+					response.sendRedirect(request.getRequestURI());
+				}
+				
+				for (int i = 1; i <= answersCount; i++) {
+					String answerText = request.getParameter("answer-" + i);
+					String correctAnswer = request.getParameter("correct-answer-" + i);
+					boolean isCorrect = (correctAnswer != null) ? true : false;
+					AnswerBean answer = new AnswerBean(questionId, answerText, isCorrect);
+					answers.add(answer);
+				}
+				
+				if (AnswersDAO.add(answers)) {
+					session.setAttribute("status", "success");
+					session.setAttribute("message", "Question and answers was added successfully!");
+				}
+				else {
+					session.setAttribute("status", "danger");
+					session.setAttribute("message", "Question was added, but we have some troubles during adding answers.");
+				}
 			}
 			
 			response.sendRedirect(request.getRequestURI());
