@@ -106,7 +106,6 @@
 								<th data-field="module" data-align="center" data-sortable="true">Module</th>
 								<th data-field="note" data-align="center" data-sortable="true">Note</th>
 								<% if (currentUser.getRole() > 0) { %>
-									<th data-field="view" data-align="center">View</th>
 									<th data-field="edit" data-align="center">Edit</th>
 									<th data-field="open" data-align="center">Open</th>
 									<th data-field="delete" data-align="center">Delete</th>
@@ -129,7 +128,6 @@
 									<input type="text" style="display: none">
 								</td>
 								<% if (currentUser.getRole() > 0) { %>
-									<td><a href="tests?id=<%= test.getId() %>">View</a></td>
 									<td><a href="test/<%= test.getId() %>">Edit</a></td>
 									<td><a href="openTest?subject=<%= test.getSubjectId() %>&id=<%= test.getId() %>">Open</a></td>
 									<td>

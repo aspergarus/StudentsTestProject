@@ -99,7 +99,13 @@
 		<% for (QuestionBean question : questions) { %>
 		<% i++; %>
   			<div class="panel-heading">
-    			<h3 class="panel-title"><%=i + ". " + question.getQuestionText() %></h3>
+  			<form action="<%= basePath %>/test/<%= editedTest.getId() %>" method="post">
+    			<h3 class="panel-title"><%= i + ". " + question.getQuestionText() %>
+    				<input type="hidden" name="delete-question-id" value="<%= question.getId() %>">
+    				<input class="submit-delete-question hidden" type="submit">
+    				<a class="delete-question" href="#"><span class="glyphicon glyphicon-remove-circle delete-question" aria-hidden="true"></span></a>
+    			</h3>
+    		</form>
   			</div>
   			<div class="panel-body">
     			<table class="table">

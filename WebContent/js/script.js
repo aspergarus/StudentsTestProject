@@ -404,4 +404,12 @@ $(function () {
 		});
 	}
 	
+	submitForm();
+	
+	function submitForm() {
+		$('.delete-question').click(function() {
+			$('.submit-delete-question').click();
+		});
+	}
+	
 });
