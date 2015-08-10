@@ -408,7 +408,7 @@ $(function () {
 	
 	function submitForm() {
 		$('.delete-question').click(function() {
-			$('.submit-delete-question').click();
+			$(this).parent().find('.submit-delete-question').click();
 		});
 	}
 
