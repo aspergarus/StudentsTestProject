@@ -121,7 +121,7 @@ public class UserEditServlet extends HttpServlet {
 				UserBean updatedUser = new UserBean(userName, password, email, role, firstName, lastName, avatarName);
 			    if (UserDAO.update(editedUser, updatedUser)) {
 			    	session.setAttribute("status", "success");
-			    	if (user.getId() == updatedUser.getId()) {
+			    	if (user.getId() == editedUser.getId()) {
 			    		session.setAttribute("user", updatedUser);
 			    	}
 					session.setAttribute("message", "User '" + userName + "' was updated successfully");

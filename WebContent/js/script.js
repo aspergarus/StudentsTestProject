@@ -340,11 +340,12 @@ $(function () {
 		});
 
 		var $btn = $('.assign-subject-group');
+		var $parent = $btn.parent();
 		$btn.click(function() {
 			var num = this.getAttribute('data-num');
 			var groups = $tokenField.eq(num - 1).tokenfield('getTokens').map(function(el) { return el.value; }).join();
 
-			if (groups.length >= 0) {
+			if (groups.length > 0) {
 				var subject = this.getAttribute('data-subject');
 
 				$.ajax(basePath + "/groups", {
@@ -365,6 +366,9 @@ $(function () {
 						$parent.html($('<span></span>').addClass('span-alert alert-danger').text("Subject already shared or something else troubles."));
 					}
 				});
+			} else {
+				$parent.append($('<span></span>').addClass('span-alert alert-warning').text("Please, select at least one group"));
+				$('.span-alert').fadeOut(3000);
 			}
 		});
 	}
