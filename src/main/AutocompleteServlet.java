@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 
 import dao.DepartmentsDAO;
 import dao.GroupsDAO;
+import dao.StudentDAO;
 import dao.SubjectsDAO;
 import dao.UserDAO;
 import beans.UserBean;
@@ -88,6 +89,11 @@ public class AutocompleteServlet extends HttpServlet {
 			switch ("/" + pathParts[1]) {
 				case "/assignedGroups":
 					list = GroupsDAO.findAssignedGroups(query, subjectId);
+					out = gson.toJson(list);
+					break;
+					
+				case "/assignedStudents":
+					list = StudentDAO.findAssignedStudents(query, subjectId);
 					out = gson.toJson(list);
 					break;
 			}

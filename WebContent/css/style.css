@@ -279,3 +279,9 @@ ol {
 .delete-question {
 	float: right;
 }
+#select-all-students, #cancel-all-students {
+	float: right;
+}
+#open-test-to-students, #select-all-students, #cancel-all-students {
+	margin: 10px 0px 10px 5px;
+}

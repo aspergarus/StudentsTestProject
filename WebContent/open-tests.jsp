@@ -10,7 +10,6 @@
 <% String status = (String) request.getAttribute("status"); %>
 <% String message = (String) request.getAttribute("message"); %>
 <% TestBean currentTest = (TestBean) request.getAttribute("currentTest"); %>
-<% int subjectId = (Integer) request.getAttribute("subjectId"); %>
 <% ArrayList<UserBean> students = (ArrayList<UserBean>) request.getAttribute("students"); %>
 <% HashMap<Integer, String> groupsMap = (HashMap<Integer, String>) request.getAttribute("groupsMap"); %>
 
@@ -26,7 +25,7 @@
 		</div>
 		<% } %>
 		<div class="page-header">
-			<h1>Open the Test</h1>
+			<h2>Add students to list</h2>
 		</div>
 
 		<form action="<%= basePath %>/openTest" method="post" class="form-horizontal" >
@@ -35,14 +34,32 @@
 				<div class="col-sm-10">
 					<input type="text" name="group" class="form-control typeahead"
 						placeholder="Group" required autocomplete="off"
-							data-autocomplete-url="autocomplete/assignedGroups/<%= subjectId %>">
+							data-autocomplete-url="autocomplete/assignedGroups/<%= currentTest.getSubjectId() %>">
 				</div>
 			</div>
 				
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
 					<input type="hidden" name="id" value="<%= currentTest.getId() %>">
-					<input type="submit" class="btn btn-primary" value="Open a test">
+					<input type="submit" class="btn btn-primary" value="Add Group">
+				</div>
+			</div>
+		</form>
+		
+		<form action="<%= basePath %>/openTest" method="post" class="form-horizontal" >
+			<div class="form-group">
+				<label for="student" class="col-sm-2 control-label required">Student</label>
+				<div class="col-sm-10">
+					<input type="text" name="student" class="form-control typeahead"
+						placeholder="Students first or last name" required autocomplete="off"
+							data-autocomplete-url="autocomplete/assignedStudents/<%= currentTest.getSubjectId() %>">
+				</div>
+			</div>
+				
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<input type="hidden" name="id" value="<%= currentTest.getId() %>">
+					<input type="submit" class="btn btn-primary" value="Add Student">
 				</div>
 			</div>
 		</form>
@@ -56,7 +73,7 @@
 		        	<th data-field="group" data-align="center" data-sortable="true">Group</th>
 		            <th data-field="firstName" data-align="center" data-sortable="true">First Name</th>
 		            <th data-field="lastName" data-align="center" data-sortable="true">Last Name</th>
-		            <th data-field="delete" data-align="center">Delete</th>
+		            <th data-field="select" data-align="center">Select</th>
 		        </tr>
 		    </thead>
 		    <tbody>
@@ -67,12 +84,17 @@
 					<td><% out.print(groupsMap.get(student.getGroupId())); %></td>
 			        <td><% out.print(student.getFirstName()); %></td>
 			        <td><% out.print(student.getLastName()); %></td>
-			        <td><input type="button" class="delete-answer btn btn-danger" value="Delete"></td>
+			        <td><input type="checkbox" class="selected-student"><input type="hidden" value="<%= student.getId() %>"></td>
 			    </tr>
 				<% i++; %>
 			<% } %>
 			</tbody>
 		</table>
+		<div class="col-sm-12">
+			<input id="open-test-to-students" type="button" class="btn btn-info btn-lg" value="Apply">
+			<input id="cancel-all-students" type="button" class="btn btn-warning" value="Cancel all">
+			<input id="select-all-students" type="button" class="btn btn-success" value="Select all">
+		</div>
 	</div>
 	
 	

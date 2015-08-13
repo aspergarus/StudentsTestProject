@@ -434,4 +434,46 @@ $(function () {
 		$('#question-form .true-answer').trigger('change');
 	}
 	
+	selectStudents();
+	
+	function selectStudents() {
+		$('body').on('click', '#select-all-students', function() {
+			$('.selected-student').prop('checked', true);
+		});
+		
+		$('body').on('click', '#cancel-all-students', function() {
+			$('.selected-student').prop('checked', false);
+		});
+	}
+	
+	openTest();
+	
+	function openTest() {
+		$('#open-test-to-students').click(function() {
+			var studentsId = "";
+			var testId = $('input[name=id]').attr('value');
+			$('.selected-student').each(function() {
+				$this = $(this);
+				var i = 0;
+				if ($this.prop('checked')) {
+					$parent = $this.parent();
+					var id = $parent.find('input[type=hidden]').attr('value');
+					studentsId += id;
+					studentsId += ",";
+				}
+			});
+			
+			$.ajax(basePath + "/openTest", {
+				headers: {testId : testId, studentsId : studentsId },
+				method: "PUT",
+				success: function(result) {
+					
+				},
+				error: function() {
+					$parent.append($('<span></span>').addClass('span-alert alert-danger').text("Could not open the test"));
+				}
+			});
+			
+		});
+	}
 });

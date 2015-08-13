@@ -21,7 +21,7 @@ public class InstallConnect {
 	// Required tables
 	private static String[] requiredTables = {"comments", "departments", "files", "groups",
 											"lectures", "practicals", "stgrelations", "subjects",
-											"users", "tests", "questions", "answers", "open_tests"};
+											"users", "tests", "questions", "answers", "open_tests", "ready_students"};
 	
 	public static int testConnect() {
 		
@@ -197,6 +197,13 @@ public class InstallConnect {
 				+ "studentId INT(11) NOT NULL, "
 				+ "groupId INT(11) NOT NULL)";
 		tablesQuery.put("open_tests", openTestsQuery);
+		
+		//ready_students
+				String readyStudentsQuery = "CREATE TABLE ready_students "
+						+ "(testId INT(11) NOT NULL, "
+						+ "studentId INT(11) NOT NULL, "
+						+ "groupId INT(11) NOT NULL)";
+				tablesQuery.put("ready_students", readyStudentsQuery);
 		
 		ArrayList<String> existTables = selectExistTables();
 		
