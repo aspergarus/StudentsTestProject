@@ -273,4 +273,26 @@ public class UserDAO {
 		
 		return teacherMap;
 	}
+	
+	public static int getGroupId(int id) {
+		String query = "SELECT groupId FROM users WHERE id = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		ResultSet rs = null;
+		int groupId = 0;
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, id);
+			
+			rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				groupId = rs.getInt("groupId");
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+        }
+		return groupId;
+	}
 }

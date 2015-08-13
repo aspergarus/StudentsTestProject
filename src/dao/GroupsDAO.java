@@ -373,5 +373,59 @@ public class GroupsDAO {
 		return groups;
 	}
 	
+	@SuppressWarnings("finally")
+    public static boolean appendToReady(int testId, int groupId) {
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		ResultSet rs = null;
+		int rowsAffected = 0;
+		
+		ArrayList<Integer> studentsId = new ArrayList<>();
+		
+		String selectQuery = "SELECT id FROM users WHERE role = 0 AND groupId = ?";
+		
+		try (PreparedStatement stmt = con.prepareStatement(selectQuery)) {
+			stmt.setInt(1, groupId);
+			
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				studentsId.add(rs.getInt("id"));
+			}
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+        }
+		
+		String insertQuery = "INSERT INTO ready_students (testId, studentId, groupId) "
+				+ "VALUES ";
+		
+		int listSize = studentsId.size();
+		
+		for (int i = 0; i < listSize; i++) {
+			insertQuery += "(?, ?, ?)";
+			if (i != listSize - 1) {
+				insertQuery += ", ";
+			}
+		}
+		
+		try (PreparedStatement stmt = con.prepareStatement(insertQuery)) {
+			int k = 1;
+			for (int i = 0; i < listSize; i++) {
+				stmt.setInt(k, testId);
+				stmt.setInt(k + 1, studentsId.get(i));
+				stmt.setInt(k + 2, groupId);
+				k += 3;
+			}
+			rowsAffected = stmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			return rowsAffected > 0;
+		}
+	}
+	
 	
 }

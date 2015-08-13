@@ -190,62 +190,8 @@ public class TestsDAO {
         }
 	}
 	
-	@SuppressWarnings("finally")
-    public static boolean openTest(int testId, int groupId) {
-		
-		ConnectionManager conM = new ConnectionManager();
-		Connection con = conM.getConnection();
-		ResultSet rs = null;
-		int rowsAffected = 0;
-		
-		ArrayList<Integer> studentsId = new ArrayList<>();
-		
-		String selectQuery = "SELECT id FROM users WHERE role = 0 AND groupId = ?";
-		
-		try (PreparedStatement stmt = con.prepareStatement(selectQuery)) {
-			stmt.setInt(1, groupId);
-			
-			rs = stmt.executeQuery();
-			
-			while (rs.next()) {
-				studentsId.add(rs.getInt("id"));
-			}
-			
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-        }
-		
-		String insertQuery = "INSERT INTO open_tests (testId, studentId, groupId) "
-				+ "VALUES ";
-		
-		int listSize = studentsId.size();
-		
-		for (int i = 0; i < listSize; i++) {
-			insertQuery += "(?, ?, ?)";
-			if (i != listSize - 1) {
-				insertQuery += ", ";
-			}
-		}
-		
-		try (PreparedStatement stmt = con.prepareStatement(insertQuery)) {
-			int k = 1;
-			for (int i = 0; i < listSize; i++) {
-				stmt.setInt(k, testId);
-				stmt.setInt(k + 1, studentsId.get(i));
-				stmt.setInt(k + 2, groupId);
-				k += 3;
-			}
-			rowsAffected = stmt.executeUpdate();
-			
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		} finally {
-			return rowsAffected > 0;
-		}
-	}
-	
 	public static ArrayList<UserBean> getTestStudents(int testId) {
-		String query = "SELECT firstname, lastname, u.groupId FROM users u INNER JOIN open_tests ot ON ot.studentId = u.id WHERE testId = ?";
+		String query = "SELECT u.id, firstname, lastname, u.groupId FROM users u INNER JOIN ready_students ot ON ot.studentId = u.id WHERE testId = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -258,10 +204,11 @@ public class TestsDAO {
 			rs = stmt.executeQuery();
 			
 			while (rs.next()) {
+				int id = rs.getInt("id");
 				String firstName = rs.getString("firstname");
 				String lastName = rs.getString("lastname");
 				int groupId = rs.getInt("groupId");
-				UserBean student = new UserBean(firstName, lastName, groupId);
+				UserBean student = new UserBean(id, firstName, lastName, groupId);
 				students.add(student);
 			}
 			
@@ -271,24 +218,98 @@ public class TestsDAO {
 		return students;
 	}
 	
-	public static boolean alreadyOpen(int testId, int groupId) {
-		String query = "SELECT * FROM open_tests WHERE testId = ? AND groupId = ?";
+	public static boolean openTest(int[] studentsId, int testId) {
+		ArrayList<UserBean> newStudents = getNewStudents(studentsId, testId);
+		int listSize = newStudents.size();
+		
+		if (listSize > 0) {
+			String query = "INSERT INTO open_tests (testId, studentId, groupId)"
+					+ " VALUES ";
+			
+			ConnectionManager conM = new ConnectionManager();
+			Connection con = conM.getConnection();
+			int rowsAffected = 0;
+			
+			for (int i = 0; i < listSize; i++) {
+				query += "(?, ?, ?)";
+				if (i != listSize - 1) {
+					query += ", ";
+				}
+			}
+					
+			try (PreparedStatement stmt = con.prepareStatement(query)) {
+				int i = 0;
+				for (UserBean student : newStudents) {
+					stmt.setInt(i + 1, testId);
+					stmt.setInt(i + 2, student.getId());
+					stmt.setInt(i + 3, student.getGroupId());
+					i +=3;
+				}
+				rowsAffected = stmt.executeUpdate();
+				
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+	        }
+			return rowsAffected > 0;
+		} else {
+			return false;
+		}
+	}
+	
+	public static ArrayList<UserBean> getNewStudents(int[] studentsId, int testId) {
+		
+		ArrayList<Integer> ids = new ArrayList<>();
+		for (int i = 0; i < studentsId.length; i++) {
+			ids.add(studentsId[i]);
+		}
+		ArrayList<UserBean> newStudents = new ArrayList<>();
+		
+		String query = "SELECT studentId FROM open_tests";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		ResultSet rs = null;
-		boolean ifOpened = false;
+		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setInt(1, testId);
-			stmt.setInt(2, groupId);
 			rs = stmt.executeQuery();
-			
-			ifOpened = rs.next();
+			while(rs.next()) {
+				int id = rs.getInt("studentId");
+				ids.remove(id);
+			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
         }
-		return ifOpened;
 		
+		query = "SELECT id, firstName, lastName, groupId FROM users WHERE id IN (";
+		int listSize = ids.size();
+		
+		for (int i = 0; i < listSize; i++) {
+			query += "?";
+			if (i != listSize - 1) {
+				query += ", ";
+			}
+		}
+		query += ")";
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			for (int i = 0; i < listSize; i++) {
+				stmt.setInt(i + 1, ids.get(i));
+			}
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				int id = rs.getInt("id");
+				String firstName = rs.getString("firstName");
+				String lastName = rs.getString("lastName");
+				int groupId = rs.getInt("groupId");
+				
+				UserBean student = new UserBean(id, firstName, lastName, groupId);
+				newStudents.add(student);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+        }
+		return newStudents;
 	}
-
+	
 }
