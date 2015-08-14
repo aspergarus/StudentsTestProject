@@ -452,6 +452,7 @@ $(function () {
 		$('#open-test-to-students').click(function() {
 			var studentsId = "";
 			var testId = $('input[name=id]').attr('value');
+			var count = 0;
 			$('.selected-student').each(function() {
 				$this = $(this);
 				var i = 0;
@@ -460,20 +461,24 @@ $(function () {
 					var id = $parent.find('input[type=hidden]').attr('value');
 					studentsId += id;
 					studentsId += ",";
+					count++;
 				}
 			});
 			
-			$.ajax(basePath + "/openTest", {
-				headers: {testId : testId, studentsId : studentsId },
-				method: "PUT",
-				success: function(result) {
-					
-				},
-				error: function() {
-					$parent.append($('<span></span>').addClass('span-alert alert-danger').text("Could not open the test"));
-				}
-			});
-			
+			if (count > 0) {
+				$.ajax(basePath + "/openTest", {
+					headers: {testId : testId, studentsId : studentsId },
+					method: "PUT",
+					success: function(result) {
+						$('.alert').remove();
+						$('.page-header').before('<div class="alert alert-success"><p>Test has been opened</p></div>');
+					},
+					error: function() {
+						$('.alert').remove();
+						$('.page-header').before('<div class="alert alert-danger"><p>Some troubles</p></div>');
+					}
+				});
+			}
 		});
 	}
 });
