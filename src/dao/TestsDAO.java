@@ -274,41 +274,45 @@ public class TestsDAO {
 			rs = stmt.executeQuery();
 			while(rs.next()) {
 				int id = rs.getInt("studentId");
-				ids.remove(id);
+				ids.remove(new Integer(id));
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
         }
 		
-		query = "SELECT id, firstName, lastName, groupId FROM users WHERE id IN (";
+		
 		int listSize = ids.size();
 		
-		for (int i = 0; i < listSize; i++) {
-			query += "?";
-			if (i != listSize - 1) {
-				query += ", ";
-			}
-		}
-		query += ")";
-		
-		try (PreparedStatement stmt = con.prepareStatement(query)) {
+		if (listSize > 0) {
+			query = "SELECT id, firstName, lastName, groupId FROM users WHERE id IN (";
 			for (int i = 0; i < listSize; i++) {
-				stmt.setInt(i + 1, ids.get(i));
+				query += "?";
+				if (i != listSize - 1) {
+					query += ", ";
+				}
 			}
-			rs = stmt.executeQuery();
+			query += ")";
 			
-			while(rs.next()) {
-				int id = rs.getInt("id");
-				String firstName = rs.getString("firstName");
-				String lastName = rs.getString("lastName");
-				int groupId = rs.getInt("groupId");
+			try (PreparedStatement stmt = con.prepareStatement(query)) {
+				for (int i = 0; i < listSize; i++) {
+					stmt.setInt(i + 1, ids.get(i));
+				}
+				rs = stmt.executeQuery();
 				
-				UserBean student = new UserBean(id, firstName, lastName, groupId);
-				newStudents.add(student);
-			}
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-        }
+				while(rs.next()) {
+					int id = rs.getInt("id");
+					String firstName = rs.getString("firstName");
+					String lastName = rs.getString("lastName");
+					int groupId = rs.getInt("groupId");
+					
+					UserBean student = new UserBean(id, firstName, lastName, groupId);
+					newStudents.add(student);
+				}
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+	        }
+		}
+		
 		return newStudents;
 	}
 	
