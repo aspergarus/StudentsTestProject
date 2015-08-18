@@ -71,7 +71,16 @@
 </div>
 
 <div class="container">
-	<h1>Lectures</h1>
+	<% if (lecturesMap.size() == 0) { %>
+		<% if (currentUser.getRole() == 0) { %>
+			<h1>We don't have lectures for you.</h1>
+		<% } else if (currentUser.getRole() == 1) { %>
+			<h1>You don't have lectures.</h1>
+			<h2><small>You can add them on the form over this message.</small></h2>
+		<% } %>
+	<% } else { %>
+		<h1>Lectures</h1>
+	<% } %>
 	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 		<% int i = 0; %>
 		<% for (String subject : lecturesMap.keySet()) { %>
