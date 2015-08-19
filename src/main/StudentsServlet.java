@@ -2,7 +2,6 @@ package main;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import beans.StudentGroupBean;
 import beans.UserBean;
 import dao.StudentDAO;
 
@@ -46,8 +46,8 @@ public class StudentsServlet extends HttpServlet {
 			}
 
 			// Select all students here.
-			Map <String, ArrayList<UserBean>> studentMap = StudentDAO.findAll(user);
-			request.setAttribute("studentMap", studentMap);
+			ArrayList<StudentGroupBean> studentList = StudentDAO.findAll(user);
+			request.setAttribute("studentList", studentList);
 			request.setAttribute("currentUser", user);
 			request.getRequestDispatcher("students.jsp").forward(request, response);
 		}

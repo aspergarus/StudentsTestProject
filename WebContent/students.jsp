@@ -1,4 +1,5 @@
 <%@page import="beans.UserBean"%>
+<%@page import="beans.StudentGroupBean"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
@@ -7,7 +8,7 @@
 	pageEncoding="UTF-8"%>
 
 <% String basePath = request.getContextPath(); %>
-<% Map<String, ArrayList<UserBean>> studentMap = (HashMap<String, ArrayList<UserBean>>) request.getAttribute("studentMap"); %>
+<% ArrayList<StudentGroupBean> studentList = (ArrayList<StudentGroupBean>) request.getAttribute("studentList"); %>
 <% String status = (String) request.getAttribute("status"); %>
 <% String message = (String) request.getAttribute("message"); %>
 
@@ -26,15 +27,15 @@
 <div class="container">
 
 	<h1>Students</h1>
-		<% out.print(studentMap.isEmpty() ? "You don't have any students" : ""); %>
+		<% out.print(studentList.isEmpty() ? "You don't have any students" : ""); %>
 		<% int i = 0; %>
-		<% for (String groupName : studentMap.keySet()) { %>
+		<% for (StudentGroupBean group : studentList) { %>
 		<% i++; %>
 		<div class="panel panel-default">
 			<div class="panel-heading" role="tab" id="heading-<%= i %>">
 				<h4 class="panel-title">
 					<a data-toggle="collapse" data-parent="#accordion" href="#collapse-<%= i %>" aria-controls="collapse-<%= i %>">
-					  <%= groupName %>
+					  <%= group.getGroupName() %>
 					</a>
 				</h4>
 			</div>
@@ -49,19 +50,19 @@
 							</tr>
 						</thead>
 						<tbody>
-						<% for (UserBean student : studentMap.get(groupName)) { %>
-							<tr>
-							<td>
-								<%  if (student.getAvatar().isEmpty()) { %>
-									<img src="<%= defaultAvatar %>" class="img-circle avatar-table">
-								<% } else { %>
-									<img src="<%= uploadAvatarPath + File.separator + student.getAvatar() %>" class="img-circle avatar-table">
-								<% } %>
-							</td>
-							<td><% out.print(student.getFirstName()); %></td>
-							<td><% out.print(student.getLastName()); %></td>
-						</tr>
-						<% } %>
+							<% for (UserBean student : group.getStudents()) { %>
+								<tr>
+									<td>
+										<%  if (student.getAvatar().isEmpty()) { %>
+											<img src="<%= defaultAvatar %>" class="img-circle avatar-table">
+										<% } else { %>
+											<img src="<%= uploadAvatarPath + File.separator + student.getAvatar() %>" class="img-circle avatar-table">
+										<% } %>
+									</td>
+									<td><% out.print(student.getFirstName()); %></td>
+									<td><% out.print(student.getLastName()); %></td>
+								</tr>
+							<% } %>
 						</tbody>
 					</table>
 				</div>

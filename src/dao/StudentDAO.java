@@ -5,9 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
+import beans.StudentGroupBean;
 import beans.UserBean;
 import config.ConnectionManager;
 
@@ -37,62 +36,62 @@ public class StudentDAO {
 		}
 	}
 
-	@SuppressWarnings("finally")
-	public static Map<String, ArrayList<UserBean>> findAll(UserBean user) {
+	public static ArrayList<StudentGroupBean> findAll(UserBean user) {
 		String query;
 		
 		if (user.getRole() == 1) {
-			query = "SELECT * FROM users u "
-					+ "INNER JOIN stgrelations s ON u.groupId = s.groupId WHERE (u.role = 0 AND s.teacherId = ?)";
+			query = "SELECT * FROM users u"
+					+ " INNER JOIN stgrelations s ON u.groupId = s.groupId"
+					+ " INNER JOIN groups g ON u.groupId = g.id"
+					+ " WHERE (u.role = 0 AND s.teacherId = ?)"
+					+ " ORDER BY g.groupName";
 		}
 		else {
-			query = "SELECT * FROM users WHERE role = 0";
+			query = "SELECT firstName, lastName, avatarName, groupId, g.groupName FROM users u"
+					+ " INNER JOIN groups g ON u.groupId = g.id"
+					+ " WHERE u.role = 0"
+					+ " ORDER BY g.groupName";
 		}
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
-
-		ArrayList<UserBean> studentList = new ArrayList<>();
-		Map<String, ArrayList<UserBean>> studentMap = new HashMap<>();
+		
+		ArrayList<StudentGroupBean> groupsList = new ArrayList<>();
 
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			if (user.getRole() == 1) {
 				stmt.setInt(1, user.getId());
 			}
 			ResultSet rs = stmt.executeQuery();
-
-			String tmpGroupName = "", groupName = "";
-			int groupId;
+			StudentGroupBean group = new StudentGroupBean();
+			String prevGroupName = "";
+			
 			while (rs.next()) {
-				groupId = rs.getInt("groupId");
-				groupName = GroupsDAO.find(groupId).getGroupName();
-				UserBean bean = new UserBean();
-
-				bean.setId(rs.getInt("id"));
-				bean.setFirstName(rs.getString("firstName"));
-				bean.setLastName(rs.getString("lastName"));
-
-				if (!tmpGroupName.equals(groupName) && tmpGroupName.isEmpty()) {
-					tmpGroupName = new String(groupName);
+				String groupName = rs.getString("groupName");
+				
+				UserBean student = new UserBean();
+				student.setFirstName(rs.getString("firstName"));
+				student.setLastName(rs.getString("lastName"));
+				student.setGroupName(groupName);
+				student.setAvatar(rs.getString("avatarName"));
+				
+				if (!groupName.equals(prevGroupName)) {
+					if (group.size() > 0) {
+						groupsList.add(group);
+						group = new StudentGroupBean(groupName);
+					}
 				}
-				if (!tmpGroupName.equals(groupName)) {
-					studentMap.put(tmpGroupName, studentList);
-
-					tmpGroupName = new String(groupName);
-					studentList = new ArrayList<>();
-				}
-				studentList.add(bean);
+				group.setGroupName(groupName);
+				group.add(student);
+				prevGroupName = groupName;
 			}
-			if (!studentList.isEmpty()) {
-				studentMap.put(groupName, studentList);
-			}
+			groupsList.add(group);
+			
 		}
 		catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-		finally {
-			return studentMap;
-		}
+			return groupsList;
 	}
 
 	@SuppressWarnings("finally")

@@ -12,6 +12,7 @@ public class UserBean {
 	private String email;
 	private String avatarName = "";
 	private int groupId;
+	private String groupName;
 	public boolean valid = false;
 
 	public UserBean(String name) {
@@ -118,6 +119,13 @@ public class UserBean {
 	    this.groupId = groupId;
     }
 	
+	public String getGroupName() {
+	    return groupName;
+    }
+	public void setGroupName(String groupName) {
+	    this.groupName = groupName;
+    }
+	
 	public String toString() {
 		return "id: " + id + ", "
 				+ "username: " + userName + ", "
@@ -179,4 +187,5 @@ public class UserBean {
 		}
 		return false;
 	}
+
 }
