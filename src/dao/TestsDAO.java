@@ -191,7 +191,10 @@ public class TestsDAO {
 	}
 	
 	public static ArrayList<UserBean> getTestStudents(int testId) {
-		String query = "SELECT u.id, firstname, lastname, u.groupId FROM users u INNER JOIN ready_students ot ON ot.studentId = u.id WHERE testId = ?";
+		String query = "SELECT u.id, firstname, lastname, u.groupId FROM users u"
+				+ " INNER JOIN stgrelations stg ON u.groupId = stg.groupId"
+				+ "	INNER JOIN ready_students ot ON ot.studentId = u.id"
+				+ " WHERE testId = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
