@@ -76,6 +76,8 @@
 		<% } else if (currentUser.getRole() == 1) { %>
 			<h1>You don't have practicals.</h1>
 			<h2><small>You can add them on the form over this message.</small></h2>
+		<% } else { %>
+			<h1>There are no any practicals</h1>
 		<% } %>
 	<% } else { %>
 		<h1>Practicals</h1>
