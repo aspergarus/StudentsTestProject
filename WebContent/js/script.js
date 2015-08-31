@@ -475,7 +475,7 @@ $(function () {
 					method: "PUT",
 					success: function(result) {
 						$('.alert').remove();
-						if (result.localeCompare("Success") == 0) {
+						if (result.trim().localeCompare("Success") == 0) {
 							$('.page-header').before('<div class="alert alert-success"><p>Test has been opened</p></div>');
 						} else {
 							$('.page-header').before('<div class="alert alert-danger"><p>Some troubles were occurred during opening the test</p></div>');

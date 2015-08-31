@@ -19,9 +19,12 @@ public class TestsDAO {
 		String query = "";
 		if (user.getRole() == 2) {
 			query = "SELECT * FROM tests";
-		}
-		else if (user.getRole() == 1) {
+		} else if (user.getRole() == 1) {
 			query = "SELECT * FROM tests WHERE teacherId = ?";
+		} else {
+			query = "SELECT * FROM tests t INNER JOIN open_tests ot"
+					+ " ON t.id = ot.testId"
+					+ " WHERE ot.studentId = ?";
 		}
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -34,7 +37,7 @@ public class TestsDAO {
 		String subjectName;
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
-	        if (user.getRole() == 1) {
+	        if (user.getRole() < 2) {
 	        	stmt.setInt(1, user.getId());
 	        }
 	        rs = stmt.executeQuery();

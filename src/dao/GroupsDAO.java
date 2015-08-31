@@ -14,7 +14,10 @@ import config.ConnectionManager;
 public class GroupsDAO {
 	
 	public static ArrayList<GroupBean> findAll() {
-		String query = "SELECT * FROM groups";
+		String query = "SELECT g.id, g.groupName, COUNT(u.groupId) as countStudents FROM groups g"
+				+ " INNER JOIN users u ON g.id = u.groupId"
+				+ " WHERE u.role = 0"
+				+ " GROUP BY u.groupId";
 		ArrayList<GroupBean> groups = new ArrayList<>();
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -24,8 +27,9 @@ public class GroupsDAO {
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				int id = rs.getInt("id");
+				int countStudents = rs.getInt("countStudents");
 				String groupName = rs.getString("groupName");
-				GroupBean group = new GroupBean(id, groupName);
+				GroupBean group = new GroupBean(id, groupName, countStudents);
 				groups.add(group);
 			}
         } catch (SQLException e) {
@@ -383,21 +387,25 @@ public class GroupsDAO {
 		
 		ArrayList<Integer> studentsId = new ArrayList<>();
 		
-		String selectQuery = "SELECT id FROM users WHERE role = 0 AND groupId = ?";
+		String selectQuery = "SELECT id FROM users"
+				+ " WHERE role = 0 AND groupId = ?"
+				+ " AND id NOT IN (SELECT studentId FROM ready_students)";
 		
 		try (PreparedStatement stmt = con.prepareStatement(selectQuery)) {
 			stmt.setInt(1, groupId);
 			
 			rs = stmt.executeQuery();
-			
+	
 			while (rs.next()) {
 				studentsId.add(rs.getInt("id"));
 			}
-			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
         }
 		
+		if (studentsId.size() == 0) {
+			return false;
+		}
 		String insertQuery = "INSERT INTO ready_students (testId, studentId, groupId) "
 				+ "VALUES ";
 		

@@ -4,6 +4,13 @@ public class GroupBean {
 	
 	private int id;
 	private String groupName;
+	private int countStudents;
+	
+	public GroupBean(int id, String groupName, int countStudents) {
+		this.id = id;
+		this.groupName = groupName;
+		this.countStudents = countStudents;
+	}
 	
 	public GroupBean(int id, String groupName) {
 		this.id = id;
@@ -24,9 +31,16 @@ public class GroupBean {
 	    this.groupName = groupName;
     }
 	
+	public int getCountStudents() {
+	    return countStudents;
+    }
+	public void setCountStudents(int countStudents) {
+	    this.countStudents = countStudents;
+    }
+	
 	@Override
 	public String toString() {
-		return "Group: " + groupName + ". ID: " + id;
+		return "Group: " + groupName + ". ID: " + id + ". Students: " + countStudents;
 	}
 
 }

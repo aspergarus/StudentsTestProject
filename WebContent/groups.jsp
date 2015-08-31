@@ -51,6 +51,7 @@
 				<th data-field="id" data-align="center" data-sortable="true">ID</th>
 				<% } %>
 				<th data-field="group" data-align="center" data-sortable="true">Group</th>
+				<th data-field="studentsCount" data-align="center" data-sortable="true">Number of Students</th>
 				<% if (user.getRole() == 2) { %>
 				<th data-field="delete" data-align="center">Delete</th>
 				<% } %>
@@ -66,6 +67,7 @@
 			        	<span class="transformer-text" data-path="groups" data-id=<%= group.getId() %>><% out.print(group.getGroupName()); %></span>
 			        	<input type="text" style="display: none">
 			        </td>
+			        <td><%= group.getCountStudents() %></td>
 			        <% if (user.getRole() == 2) { %>
 			        <td>
 						<button type="button" class="btn btn-danger delete-group-btn" data-id=<%= group.getId() %>>Delete</button>
