@@ -47,19 +47,19 @@
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				<div class="radiobutton">
-					<label> <input type="radio" name="role" value="0" checked>Student
+					<label> <input class="radio-user-status" type="radio" name="role" value="0" checked>Student
 					</label>
 				</div>
 			</div>
 			<div class="col-sm-offset-2 col-sm-10">
 				<div class="radiobutton">
-					<label> <input type="radio" name="role" value="1">Teacher
+					<label> <input class="radio-user-status" type="radio" name="role" value="1">Teacher
 					</label>
 				</div>
 			</div>
 			<div class="col-sm-offset-2 col-sm-10">
 				<div class="radiobutton">
-					<label> <input type="radio" name="role" value="2">Admin
+					<label> <input class="radio-user-status" type="radio" name="role" value="2">Admin
 					</label>
 				</div>
 			</div>
@@ -86,8 +86,12 @@
 		<div class="form-group">
 			<label for="group" class="col-sm-2 control-label required">Group / Department</label>
 			<div class="col-sm-10">
-				<input name="group" type="text" class="form-control"
-					id="group" placeholder="Group or Department" required>
+				<input name="group" type="text" class="form-control typeahead"
+					id="group" placeholder="Group" required
+						autocomplete="off" data-autocomplete-url="autocomplete/groups">
+				<input name="department" type="text" class="form-control typeahead hidden"
+					id="department-autocomplete" placeholder="Department" required
+						autocomplete="off" data-autocomplete-url="autocomplete/departments">
 			</div>
 		</div>
 

@@ -3,16 +3,20 @@ $(function () {
 		alert("Use modern browser like Chrome or Mozilla");
 	}
 	$('.table').bootstrapTable();
-
-	$('input.typeahead').each(function() {
-		var $this = $(this);
-
-		var autocompleteUrl = $this.data("autocomplete-url");
-		$this.typeahead({
-			ajax: autocompleteUrl
+	
+	setAutocomplete();
+	
+	function setAutocomplete() {
+		$('input.typeahead').each(function() {
+			var $this = $(this);
+			var autocompleteUrl = $this.data("autocomplete-url");
+			
+			$this.typeahead({
+				ajax: autocompleteUrl
+			});
 		});
-	});
-
+	}
+	
 	var $menu_li = $(".top-menu li");
 	$menu_li.removeClass("active");
 	$menu_li.each(function() {
@@ -471,13 +475,37 @@ $(function () {
 					method: "PUT",
 					success: function(result) {
 						$('.alert').remove();
-						$('.page-header').before('<div class="alert alert-success"><p>Test has been opened</p></div>');
+						if (result.trim().localeCompare("Success") == 0) {
+							$('.page-header').before('<div class="alert alert-success"><p>Test has been opened</p></div>');
+						} else {
+							$('.page-header').before('<div class="alert alert-danger"><p>Some troubles were occurred during opening the test</p></div>');
+						}
 					},
 					error: function() {
 						$('.alert').remove();
-						$('.page-header').before('<div class="alert alert-danger"><p>Some troubles</p></div>');
+						$('.page-header').before('<div class="alert alert-danger"><p>Some troubles were occurred during opening the test</p></div>');
 					}
 				});
+			}
+		});
+	}
+	
+	changeAutocomplete();
+	
+	function changeAutocomplete () {
+		$('.radio-user-status').change(function() {
+			$radio = $(this);
+			var status = parseInt($radio.val());
+			
+			if (status == 2) {
+				$('#group').addClass('hidden');
+				$('#department-autocomplete').addClass('hidden');
+			} else if (status == 1) {
+				$('#group').addClass('hidden');
+				$('#department-autocomplete').removeClass('hidden');
+			} else {
+				$('#group').removeClass('hidden');
+				$('#department-autocomplete').addClass('hidden');
 			}
 		});
 	}
