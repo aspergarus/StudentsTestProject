@@ -77,6 +77,8 @@
 		<% } else if (currentUser.getRole() == 1) { %>
 			<h1>You don't have lectures.</h1>
 			<h2><small>You can add them on the form over this message.</small></h2>
+		<% } else { %>
+			<h1>There are no any lectures</h1>
 		<% } %>
 	<% } else { %>
 		<h1>Lectures</h1>
@@ -97,7 +99,7 @@
 			<div id="collapse-<%= i %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-<%= i %>">
 				<div class="panel-body">
 				
-				<% if (currentUser.getRole() > 0) { %>
+				<% if (currentUser.getRole() == 1) { %>
 					<p class="help-block">Share this subject to groups:
 						<input type="text" class="tokenfield" value="<%= groups.get(subject) == null ? "" :  groups.get(subject) %>" name="groupName" required autocomplete="off" />
 						<input type="submit" value="Share" class="btn btn-info btn-share assign-subject-group" data-num="<%= i %>" data-subject="<%= subject %>">
