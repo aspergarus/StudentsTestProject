@@ -24,14 +24,14 @@ public class PracticalsDAO {
 		
 		if (user.getRole() == 0) {
 			query = "SELECT * FROM practicals p "
-					+ "INNER JOIN stgrelations s ON p.teacherId = s.teacherId AND p.subjectId = s.subjectId "
-					+ "WHERE s.groupId = ?";
+					+ "INNER JOIN stgrelations s ON p.teacher_id = s.teacher_id AND p.subject_id = s.subject_id "
+					+ "WHERE s.group_id = ?";
 		}
 		else if (user.getRole() == 1) {
-			query = "SELECT * FROM practicals WHERE teacherId = ? ORDER BY subjectId";
+			query = "SELECT * FROM practicals WHERE teacher_id = ? ORDER BY subject_id";
 		}
 		else {
-			query = "SELECT * FROM practicals ORDER BY subjectId";
+			query = "SELECT * FROM practicals ORDER BY subject_id";
 		}
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -55,7 +55,7 @@ public class PracticalsDAO {
 
 			int tmpSubjectId = 0, subjectId = 0;
 			while (rs.next()) {
-				subjectId = rs.getInt("subjectId");
+				subjectId = rs.getInt("subject_id");
 				PracticalsBean bean = new PracticalsBean();
 				bean.setId(rs.getInt("id"));
 				bean.setTeacherId(user.getId());
@@ -91,7 +91,7 @@ public class PracticalsDAO {
 	@SuppressWarnings("finally")
 	public static boolean insert(PracticalsBean bean) {
 		String query = "INSERT INTO practicals "
-				+ "(teacherId, subjectId, title, body) "
+				+ "(teacher_id, subject_id, title, body) "
 				+ "VALUES (?, ?, ?, ?)";
 
 		ConnectionManager conM = new ConnectionManager();
@@ -117,8 +117,8 @@ public class PracticalsDAO {
 
 	@SuppressWarnings("finally")
     public static int findPracticalsCountInSubject(String title, String subject) {
-		String query = "SELECT COUNT(*) as practicalsCount FROM practicals "
-				+ " WHERE title = ? AND subjectId = ?";
+		String query = "SELECT COUNT(*) as practicals_count FROM practicals "
+				+ " WHERE title = ? AND subject_id = ?";
 
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -130,7 +130,7 @@ public class PracticalsDAO {
 			ResultSet rs = stmt.executeQuery();
 
 			if (rs.next()) {
-				practicalsCount = rs.getInt("practicalsCount");
+				practicalsCount = rs.getInt("practicals_count");
 			}
 		}
 		catch (SQLException e) {
@@ -156,7 +156,7 @@ public class PracticalsDAO {
 			if (rs.next()) {
 				pBean = new PracticalsBean();
 				pBean.setId(id);
-				pBean.setSubjectId(rs.getInt("subjectId"));
+				pBean.setSubjectId(rs.getInt("subject_id"));
 				pBean.setTitle(rs.getString("title"));
 				pBean.setBody(rs.getString("body"));
 			}
@@ -192,7 +192,7 @@ public class PracticalsDAO {
 	}
 
 	public static boolean update(PracticalsBean bean) {
-		String query = "UPDATE practicals SET subjectId=?, title=?, body=? WHERE id = ?";
+		String query = "UPDATE practicals SET subject_id=?, title=?, body=? WHERE id = ?";
 
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
@@ -211,7 +211,7 @@ public class PracticalsDAO {
 	}
 
 	public static PracticalsBean find(int subjectId, String title) {
-		String query = "SELECT * FROM practicals WHERE subjectId = ? AND title = ?";
+		String query = "SELECT * FROM practicals WHERE subject_id = ? AND title = ?";
 
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -225,7 +225,7 @@ public class PracticalsDAO {
 			if (rs.next()) {
 				pBean = new PracticalsBean();
 				pBean.setId(rs.getInt("id"));
-				pBean.setSubjectId(rs.getInt("subjectId"));
+				pBean.setSubjectId(rs.getInt("subject_id"));
 				pBean.setTitle(rs.getString("title"));
 				pBean.setBody(rs.getString("body"));
 			}

@@ -24,8 +24,7 @@
 	</div>
 	<% } %>
 	<h3 class="lead">Edit subject</h3>
-	<form action="<%= basePath %>/subjects" class="form" method="post"
-		class="form-horizontal">
+	
 		<div class="form-group">
 			<label for="subject" class="col-sm-2 control-label">Subject Name*</label>
 			<div class="col-sm-10">
@@ -43,11 +42,9 @@
 
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				<button type="submit" class="btn btn-primary">Update</button>
+				<button class="btn btn-primary update-subject" data-id="<%= sBean.getId() %>">Update</button>
 			</div>
 		</div>
-		<input type="hidden" name="update-id" value="<%= sBean.getId() %>">
-	</form>
 </div>
 
 <%@ include file="footer.jsp" %>

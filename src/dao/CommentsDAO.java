@@ -18,7 +18,7 @@ public class CommentsDAO {
 	public static ArrayList<Object[]> findByOwner(int ownerId, String type) {
 		String query = "SELECT * FROM comments c "
 				+ "INNER JOIN users u ON u.id = c.author "
-				+ "WHERE ownerId = ? AND ownerType = ? "
+				+ "WHERE owner_id = ? AND owner_type = ? "
 				+ "ORDER BY date";
 		ArrayList<Object[]> comments = new ArrayList<>();
 		
@@ -33,18 +33,18 @@ public class CommentsDAO {
 				CommentsBean comment = new CommentsBean();
 				comment.setCid(rs.getInt("cid"));
 				comment.setAuthor(rs.getInt("author"));
-				comment.setOwnerId(rs.getInt("ownerId"));
+				comment.setOwnerId(rs.getInt("owner_id"));
 				comment.setDate(rs.getLong("date"));
 				comment.setTitle(rs.getString("title"));
 				comment.setBody(rs.getString("body"));
-				comment.setOwnerType(rs.getString("ownerType"));
+				comment.setOwnerType(rs.getString("owner_type"));
 				
 				UserBean author = new UserBean();
 				author.setId(rs.getInt("id"));
-				author.setAvatar(rs.getString("avatarName"));
-				author.setFirstName(rs.getString("firstname"));
-				author.setLastName(rs.getString("lastname"));
-				author.setUserName(rs.getString("username"));
+				author.setAvatar(rs.getString("avatar_name"));
+				author.setFirstName(rs.getString("first_name"));
+				author.setLastName(rs.getString("last_name"));
+				author.setUserName(rs.getString("user_name"));
 
 				Object[] pack = {author, comment};
 				comments.add(pack);
@@ -86,7 +86,7 @@ public class CommentsDAO {
 	 */
 	public static boolean insert (CommentsBean comment) {
 		String query = "INSERT INTO comments " 
-					+ "(author, ownerId, date, title, body, ownerType) "
+					+ "(author, owner_id, date, title, body, owner_type) "
 					+ "VALUES (?, ?, ?, ?, ?, ?)";
 
 		ConnectionManager conM = new ConnectionManager();

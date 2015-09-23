@@ -15,7 +15,7 @@ public class FileDAO {
 
 	public static boolean insert(int ownerId, String type, ArrayList<String> fileNames) {
 		String query = "INSERT INTO files "
-				+ "(ownerId, type, name) "
+				+ "(owner_id, type, name) "
 				+ "VALUES (?, ?, ?)";
 
 		ConnectionManager conM = new ConnectionManager();
@@ -39,7 +39,7 @@ public class FileDAO {
 	}
 
 	public static ArrayList<FileBean> findAll(int ownerId, String type) {
-		String query = "SELECT * FROM files WHERE ownerId = ? AND type = ?";
+		String query = "SELECT * FROM files WHERE owner_id = ? AND type = ?";
 
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -53,7 +53,7 @@ public class FileDAO {
 			while (rs.next()) {
 				FileBean bean = new FileBean();
 				bean.setFid(rs.getInt("fid"));
-				bean.setOwnerId(rs.getInt("ownerId"));
+				bean.setOwnerId(rs.getInt("owner_id"));
 				bean.setType(rs.getString("type"));
 				bean.setName(rs.getString("name"));
 
@@ -104,7 +104,7 @@ public class FileDAO {
 			while (rs.next()) {
 				bean = new FileBean();
 				bean.setFid(rs.getInt("fid"));
-				bean.setOwnerId(rs.getInt("ownerId"));
+				bean.setOwnerId(rs.getInt("owner_id"));
 				bean.setType(rs.getString("type"));
 				bean.setName(rs.getString("name"));
 			}

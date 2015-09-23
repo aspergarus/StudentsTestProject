@@ -104,31 +104,7 @@ public class PracticalsServlet extends HttpServlet {
 			response.sendError(403);
 		}
 		else {
-			// Delete practical
-			String deleteId = request.getParameter("delete-id");
-			if (deleteId != null) {
-				int id = Integer.valueOf(deleteId);
-				PracticalsBean pBean = PracticalsDAO.find(id);
-
-				// Delete file from file system.
-				ArrayList<FileBean> fileBeans = FileDAO.findAll(pBean.getId(), "practicals");
-				String savePath = request.getServletContext().getRealPath("") + File.separator + saveDir;
-				FileUploadManager.deleteFiles(fileBeans, savePath);
-				FileDAO.deleteAll(fileBeans);
-
-				boolean deletedFlag = PracticalsDAO.delete(id);
-				if (deletedFlag) {
-					session.setAttribute("status", "success");
-					session.setAttribute("message", "Practical has been deleted successfully");
-				}
-				else {
-					session.setAttribute("status", "danger");
-					session.setAttribute("message", "Some troubles were occurred during deleting a practical");
-				}
-				response.sendRedirect(request.getContextPath() + "/practicals");
-				return;
-			}
-
+			
 			// Update existed practical
 			String updateId = request.getParameter("update-id");
 			if (updateId != null) {
@@ -241,6 +217,40 @@ public class PracticalsServlet extends HttpServlet {
 			return "Subject should not contain the same practicals";
 		}
 		return null;
+	}
+	
+	
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+		
+		if (user == null) {
+			response.sendError(403);
+			
+		} else {
+			
+			String deleteId = request.getHeader("id");
+			if (deleteId != null) {
+				int id = Integer.valueOf(deleteId);
+				PracticalsBean pBean = PracticalsDAO.find(id);
+
+				// Delete file from file system.
+				ArrayList<FileBean> fileBeans = FileDAO.findAll(pBean.getId(), "practicals");
+				String savePath = request.getServletContext().getRealPath("") + File.separator + saveDir;
+				
+				if (!fileBeans.isEmpty()) {
+					FileUploadManager.deleteFiles(fileBeans, savePath);
+					FileDAO.deleteAll(fileBeans);
+				}
+
+				boolean deletedFlag = PracticalsDAO.delete(id);
+				if (deletedFlag) {
+					response.getOutputStream().println("Lecture has been deleted successfully.");
+				} else {
+					response.getOutputStream().println("Some troubles during deleting a lecture.");
+				}
+			}
+		}
 	}
 
 }

@@ -123,10 +123,8 @@
 								<% if (currentUser.getRole() > 0) { %>
 									<td><a href="practicals?edit=true&id=<%= practical.getId() %>">Edit</a></td>
 									<td>
-										<form action="<%= basePath %>/practicals" method="post">
-											<button type="submit" class="btn btn-danger">Delete</button>
-											<input type="hidden" name="delete-id" value="<%= practical.getId() %>">
-										</form>
+										<button class="btn btn-danger delete-item" data-id="<%= practical.getId() %>" 
+											data-path="/practicals">Delete</button>
 									</td>
 								<% } %>
 							</tr>

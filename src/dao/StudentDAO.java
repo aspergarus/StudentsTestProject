@@ -14,7 +14,7 @@ public class StudentDAO {
 	@SuppressWarnings("finally")
 	public static boolean insert(String group, int studentId) {
 		String query = "INSERT INTO students "
-				+ "(groupName, studentId) "
+				+ "(group_name, student_id) "
 				+ "VALUES (?, ?)";
 
 		ConnectionManager conM = new ConnectionManager();
@@ -41,16 +41,16 @@ public class StudentDAO {
 		
 		if (user.getRole() == 1) {
 			query = "SELECT * FROM users u"
-					+ " INNER JOIN stgrelations s ON u.groupId = s.groupId"
-					+ " INNER JOIN groups g ON u.groupId = g.id"
-					+ " WHERE (u.role = 0 AND s.teacherId = ?)"
-					+ " ORDER BY g.groupName";
+					+ " INNER JOIN stgrelations s ON u.group_id = s.group_id"
+					+ " INNER JOIN groups g ON u.group_id = g.id"
+					+ " WHERE (u.role = 0 AND s.teacher_id = ?)"
+					+ " ORDER BY g.group_name";
 		}
 		else {
-			query = "SELECT firstName, lastName, avatarName, groupId, g.groupName FROM users u"
-					+ " INNER JOIN groups g ON u.groupId = g.id"
+			query = "SELECT first_name, last_name, avatar_name, group_id, g.group_name FROM users u"
+					+ " INNER JOIN groups g ON u.group_id = g.id"
 					+ " WHERE u.role = 0"
-					+ " ORDER BY g.groupName";
+					+ " ORDER BY g.group_name";
 		}
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -67,13 +67,13 @@ public class StudentDAO {
 			String prevGroupName = "";
 			
 			while (rs.next()) {
-				String groupName = rs.getString("groupName");
+				String groupName = rs.getString("group_name");
 				
 				UserBean student = new UserBean();
-				student.setFirstName(rs.getString("firstName"));
-				student.setLastName(rs.getString("lastName"));
+				student.setFirstName(rs.getString("first_name"));
+				student.setLastName(rs.getString("last_name"));
 				student.setGroupName(groupName);
-				student.setAvatar(rs.getString("avatarName"));
+				student.setAvatar(rs.getString("avatar_name"));
 				
 				if (!groupName.equals(prevGroupName)) {
 					if (group.size() > 0) {
@@ -96,8 +96,8 @@ public class StudentDAO {
 
 	@SuppressWarnings("finally")
 	public static int findStudentCount(int studentId) {
-		String query = "SELECT COUNT(*) as countStudents FROM students s "
-				+ " WHERE studentId = ?";
+		String query = "SELECT COUNT(*) as count_students FROM students s "
+				+ " WHERE student_id = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -108,7 +108,7 @@ public class StudentDAO {
 			ResultSet rs = stmt.executeQuery();
 
 			if (rs.next()) {
-				studentsCount = rs.getInt("countStudents");
+				studentsCount = rs.getInt("count_students");
 			}
 		}
 		catch (SQLException e) {
@@ -120,10 +120,10 @@ public class StudentDAO {
 	}
 	
 	public static ArrayList<String> findAssignedStudents(String studentName, int subjectId) {
-		String query = "SELECT u.id, firstName, lastName, groupName FROM users u INNER JOIN stgrelations s ON u.groupId = s.groupId"
-				+ " INNER JOIN groups g ON u.groupId = g.id"
-				+ " WHERE s.subjectId = ? AND u.role = 0 AND u.id NOT IN (SELECT studentId FROM ready_students)"
-				+ " AND (u.firstName LIKE ? OR u.lastName LIKE ?)";
+		String query = "SELECT u.id, first_name, last_name, group_name FROM users u INNER JOIN stgrelations s ON u.group_id = s.group_id"
+				+ " INNER JOIN groups g ON u.group_id = g.id"
+				+ " WHERE s.subject_id = ? AND u.role = 0 AND u.id NOT IN (SELECT student_id FROM ready_students)"
+				+ " AND (u.first_name LIKE ? OR u.last_name LIKE ?)";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -141,9 +141,9 @@ public class StudentDAO {
 
 			while (rs.next()) {
 				int id = rs.getInt("id");
-				String firstName = rs.getString("firstName");
-				String lastName = rs.getString("lastName");
-				String groupName = rs.getString("groupName");
+				String firstName = rs.getString("first_name");
+				String lastName = rs.getString("last_name");
+				String groupName = rs.getString("group_name");
 				students.add("[" + id + "] " + firstName + " " + lastName + " [" + groupName + "]");
 			}
 			
@@ -155,7 +155,7 @@ public class StudentDAO {
 	
 	public static boolean appendToReady(int testId, int studentId) {
 		int groupId = UserDAO.getGroupId(studentId);
-		String query = "INSERT INTO ready_students (testId, studentId, groupId)"
+		String query = "INSERT INTO ready_students (test_id, student_id, group_id)"
 				+ " VALUES (?, ?, ?)";
 		
 		ConnectionManager conM = new ConnectionManager();

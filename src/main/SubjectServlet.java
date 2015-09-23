@@ -39,10 +39,10 @@ public class SubjectServlet extends HttpServlet {
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
 		if (user == null) {
 			response.sendRedirect(request.getContextPath() + "/login");
-		}
-		else {
+		} else {
 			String status = (String) session.getAttribute("status");
 			String message = (String) session.getAttribute("message");
+			
 			if (status != null && message != null) {
 				request.setAttribute("status", status);
 				request.setAttribute("message", message);
@@ -60,8 +60,7 @@ public class SubjectServlet extends HttpServlet {
 					session.setAttribute("status", "Warning");
 					session.setAttribute("message", "Such subject does not exist");
 					response.sendRedirect(request.getContextPath() + "/subjects");
-				}
-				else {
+				} else {
 					request.setAttribute("subjectsBean", subjectsBean);
 					request.setAttribute("departmentsMap", departmentsMap);
 					request.getRequestDispatcher("subject-edit.jsp").forward(request, response);
@@ -87,62 +86,8 @@ public class SubjectServlet extends HttpServlet {
 		if (user == null) {
 			response.sendError(403);
 			
-		} 
-		else {
-			// Delete subject
-			String deleteId = request.getParameter("delete-id");
-			if (deleteId != null) {
-				int id = Integer.parseInt(deleteId);
-				
-				boolean deletedFlag = SubjectsDAO.delete(id);
-				if (deletedFlag) {
-					session.setAttribute("status", "success");
-					session.setAttribute("message", "Subject has been deleted successfully");
-				}
-				else {
-					session.setAttribute("status", "danger");
-					session.setAttribute("message", "Some troubles were occurred during deleting a subject");
-				}
-				response.sendRedirect(request.getContextPath() + "/subjects");
-				return;
-			}
-			
-			// Update existed subject
-			String updateId = request.getParameter("update-id");
-			if (updateId != null) {
-				// Get form values.
-				String subjectName = request.getParameter("subjectName").trim();
-				String department = request.getParameter("departmentName").trim();
-				int departmentId = DepartmentsDAO.find(department).getId();
-
-				String errorMessage = SubjectsDAO.subjectValidate(subjectName, departmentId);
-
-				if (errorMessage == null) {
-					SubjectsBean sBean = SubjectsDAO.find(Integer.valueOf(updateId));
-
-					// Update fields in subject bean.
-					sBean.setSubjectName(subjectName);
-					sBean.setDepartmentId(departmentId);
-					
-					if (SubjectsDAO.update(sBean)) {
-						session.setAttribute("status", "success");
-						session.setAttribute("message", "Subject has been updated");
-					}
-					else {
-						session.setAttribute("status", "danger");
-						session.setAttribute("message", "Some troubles were occurred during updating a subject");
-					}
-				}
-				else {
-					session.setAttribute("status", "danger");
-					session.setAttribute("message", errorMessage);
-				}
-				response.sendRedirect(request.getContextPath() + "/subjects");
-				return;
-			}
-			
-			// Add new subject
-			// Get form values.
+		} else {
+		
 			String subjectName = request.getParameter("subjectName").trim();
 			String department = request.getParameter("departmentName").trim();
 			int departmentId = DepartmentsDAO.find(department).getId();
@@ -155,13 +100,11 @@ public class SubjectServlet extends HttpServlet {
 				if (SubjectsDAO.insert(bean)) {
 					session.setAttribute("status", "success");
 					session.setAttribute("message", "Subject has been added");
-				}
-				else {
+				} else {
 					session.setAttribute("status", "danger");
 					session.setAttribute("message", "Some troubles were occurred during adding a subject");
 				}
-			} 
-			else {
+			} else {
 				session.setAttribute("status", "danger");
 				session.setAttribute("message", errorMessage);
 			}
@@ -169,4 +112,68 @@ public class SubjectServlet extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/subjects");
 		}
 	}
+	
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+		
+		if (user == null) {
+			response.sendError(403);
+		} else {
+			
+			int subjectId = Integer.parseInt(request.getHeader("id"));
+			String subjectHeader = request.getHeader("subject");
+			String departmentHeader = request.getHeader("department");
+			
+			if (subjectHeader != null && departmentHeader != null) {
+				try {
+					
+					String subjectName = java.net.URLDecoder.decode(subjectHeader, "UTF-8").trim();
+					String department = java.net.URLDecoder.decode(departmentHeader, "UTF-8").trim();
+					
+					int departmentId = DepartmentsDAO.find(department).getId();
+					String errorMessage = SubjectsDAO.subjectValidate(subjectName, departmentId);
+
+					if (errorMessage == null) {
+						SubjectsBean sBean = new SubjectsBean(subjectId, subjectName, departmentId);
+						
+						if (SubjectsDAO.update(sBean)) {
+							response.getOutputStream().println("Subject has been updated successfully.");
+						} else {
+							response.getOutputStream().println("Some troubles were occurred during updating a subject.");
+						}
+					} else {
+						response.getOutputStream().println(errorMessage);
+					}
+					
+				} catch (NullPointerException e) {
+					System.out.println(e.getMessage());
+				}
+			}
+			
+		}
+	}
+	
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+		
+		if (user == null) {
+			response.sendError(403);
+		} else {
+			// Delete subject
+			String deleteId = request.getHeader("id");
+			
+			if (deleteId != null) {
+				int id = Integer.parseInt(deleteId);
+				
+				if (SubjectsDAO.delete(id)) {
+					response.getOutputStream().println("Department has been deleted successfully.");
+				} else {
+					response.getOutputStream().println("Some troubles were occured during deleting a subject.");
+				}
+			}
+		}
+	}
+	
 }

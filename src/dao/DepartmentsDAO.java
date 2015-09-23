@@ -24,7 +24,7 @@ public class DepartmentsDAO {
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				int id = rs.getInt("id");
-				String departmentName = rs.getString("departmentName");
+				String departmentName = rs.getString("department_name");
 				DepartmentBean department = new DepartmentBean(id, departmentName);
 				departments.add(department);
 			}
@@ -35,7 +35,7 @@ public class DepartmentsDAO {
 	}
 
 	public static ArrayList<String> findAllByName(String searchString) {
-		String query = "SELECT * FROM departments WHERE departmentName LIKE ?";
+		String query = "SELECT * FROM departments WHERE department_name LIKE ?";
 		ArrayList<String> departments = new ArrayList<>();
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -45,7 +45,7 @@ public class DepartmentsDAO {
 			stmt.setString(1, "%" + searchString + "%");
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				String departmentName = rs.getString("departmentName");
+				String departmentName = rs.getString("department_name");
 				departments.add(departmentName);
 			}
         } catch (SQLException e) {
@@ -69,7 +69,7 @@ public class DepartmentsDAO {
 			rs = stmt.executeQuery();
 			
 			while (rs.next()) {
-				String departmentName = rs.getString("departmentName");
+				String departmentName = rs.getString("department_name");
 				department = new DepartmentBean(id, departmentName);
 			}
 		} catch (SQLException e) {
@@ -82,7 +82,7 @@ public class DepartmentsDAO {
 	
 	@SuppressWarnings("finally")
     public static DepartmentBean find(String departmentName) {
-		String query = "SELECT id FROM departments WHERE departmentName = ?";
+		String query = "SELECT id FROM departments WHERE department_name = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -106,7 +106,7 @@ public class DepartmentsDAO {
 	}
 	
 	public static String departmentValidate (String departmentName) {
-		String query = "SELECT * FROM departments WHERE departmentName = ?";
+		String query = "SELECT * FROM departments WHERE department_name = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -129,7 +129,7 @@ public class DepartmentsDAO {
 	@SuppressWarnings("finally")
     public static boolean insert (String departmentName) {
 		String query = "INSERT INTO departments " 
-					+ "(departmentName) "
+					+ "(department_name) "
 					+ "VALUES (?)";
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -168,7 +168,7 @@ public class DepartmentsDAO {
 	
 	@SuppressWarnings("finally")
     public static boolean update (DepartmentBean department) {
-		String query = "UPDATE departments SET departmentName = ? WHERE id = ?";
+		String query = "UPDATE departments SET department_name = ? WHERE id = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -202,7 +202,7 @@ public class DepartmentsDAO {
 	        while (rs.next()) {
 	        	departmentsMap = new HashMap<>();
 	        	int departmentId = rs.getInt("id");
-	        	String departmentName = rs.getString("departmentName");
+	        	String departmentName = rs.getString("department_name");
 	        	departmentsMap.put(departmentId, departmentName);
 	        }
 		} catch (SQLException e) {

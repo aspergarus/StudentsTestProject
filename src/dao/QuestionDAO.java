@@ -15,7 +15,7 @@ public class QuestionDAO {
 	
     public static int add(QuestionBean question) {
 		String query = "INSERT INTO questions "
-				+ "(testId, questionText) VALUES "
+				+ "(test_id, question_text) VALUES "
 				+ "(?, ?)";
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -45,7 +45,7 @@ public class QuestionDAO {
 	}
     
     public static ArrayList<QuestionBean> getQuestions(int testId) {
-		String query = "SELECT * FROM questions WHERE testId = ?";
+		String query = "SELECT * FROM questions WHERE test_id = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -59,7 +59,7 @@ public class QuestionDAO {
 			
 			while(rs.next()) {
 				int id = rs.getInt("id");
-				String questionText = rs.getString("questionText");
+				String questionText = rs.getString("question_text");
 				
 				QuestionBean question = new QuestionBean(id, testId, questionText);
 				questions.add(question);
@@ -76,7 +76,7 @@ public class QuestionDAO {
 	}
 	
 	public static ArrayList<QuestionBean> addAnswersToQuestions(ArrayList<QuestionBean> questions) {
-		String query = "SELECT * FROM answers WHERE questionId IN (";
+		String query = "SELECT * FROM answers WHERE question_id IN (";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -102,8 +102,8 @@ public class QuestionDAO {
 			rs = stmt.executeQuery();
 			
 			while(rs.next()) {
-				int questionId = rs.getInt("questionId");
-				String answerText = rs.getString("answerText");
+				int questionId = rs.getInt("question_id");
+				String answerText = rs.getString("answer_text");
 				boolean isCorrect = rs.getBoolean("correct");
 				AnswerBean answer = new AnswerBean(questionId, answerText, isCorrect);
 				answers.add(answer);
@@ -145,7 +145,7 @@ public class QuestionDAO {
 	}
 	
 	public static boolean deleteAnswers(int questionId) {
-		String query = "DELETE FROM answers WHERE questionId = ?";
+		String query = "DELETE FROM answers WHERE question_id = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();

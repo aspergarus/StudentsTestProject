@@ -80,10 +80,8 @@
 			        <% if (user.getRole() == 2) { %>
 			        <td><a href="subjects?edit=true&id=<%= subject.getId() %>">Edit</a></td>
 			        <td>
-			        	<form action="<%= basePath %>/subjects" method="post">
-							<button type="submit" class="btn btn-danger">Delete</button>
-							<input type="hidden" name="delete-id" value="<%= subject.getId() %>">
-						</form>
+						<button class="btn btn-danger" data-id="<%= subject.getId() %>"
+							data-path="/subjects">Delete</button>
 			        </td>
 			        <% } %>
 			    </tr>

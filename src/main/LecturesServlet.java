@@ -104,31 +104,6 @@ public class LecturesServlet extends HttpServlet {
 			
 		} else {
 			
-			// Delete lecture
-			String deleteId = request.getParameter("delete-id");
-			if (deleteId != null) {
-				int id = Integer.valueOf(deleteId);
-				LecturesBean lBean = LecturesDAO.find(id);
-
-				// Delete file from file system and from db.
-				ArrayList<FileBean> fileBeans = FileDAO.findAll(lBean.getId(), "lectures");
-				String savePath = request.getServletContext().getRealPath("") + File.separator + saveDir;
-				FileUploadManager.deleteFiles(fileBeans, savePath);
-				FileDAO.deleteAll(fileBeans);
-
-				boolean deletedFlag = LecturesDAO.delete(id);
-				if (deletedFlag) {
-					session.setAttribute("status", "success");
-					session.setAttribute("message", "Lecture has been deleted successfully");
-				}
-				else {
-					session.setAttribute("status", "danger");
-					session.setAttribute("message", "Some troubles were occurred during deleting a lecture");
-				}
-				response.sendRedirect(request.getContextPath() + "/lectures");
-				return;
-			}
-			
 			// Update existed lecture
 			String updateId = request.getParameter("update-id");
 			if (updateId != null) {
@@ -160,7 +135,7 @@ public class LecturesServlet extends HttpServlet {
 						}
 					}
 
-					// Update fields in lecture bean.
+					// Update fields in practical bean.
 					lBean.setTitle(title);
 					lBean.setBody(body);
 					lBean.setSubjectId(subjectId);
@@ -173,8 +148,7 @@ public class LecturesServlet extends HttpServlet {
 						session.setAttribute("status", "danger");
 						session.setAttribute("message", "Some troubles were occurred during updating a lecture");
 					}
-				}
-				else {
+				} else {
 					session.setAttribute("status", "danger");
 					session.setAttribute("message", errorMessage);
 				}
@@ -243,4 +217,38 @@ public class LecturesServlet extends HttpServlet {
 		return null;
 	}
 	
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+		
+		if (user == null) {
+			response.sendError(403);
+			
+		} else {
+			
+			String deleteId = request.getHeader("id");
+			if (deleteId != null) {
+				int id = Integer.valueOf(deleteId);
+				LecturesBean lBean = LecturesDAO.find(id);
+
+				// Delete file from file system and from db.
+				ArrayList<FileBean> fileBeans = FileDAO.findAll(lBean.getId(), "lectures");
+				String savePath = request.getServletContext().getRealPath("") + File.separator + saveDir;
+				
+				if (!fileBeans.isEmpty()) {
+					FileUploadManager.deleteFiles(fileBeans, savePath);
+					FileDAO.deleteAll(fileBeans);
+				}
+				
+				boolean deletedFlag = LecturesDAO.delete(id);
+				if (deletedFlag) {
+					response.getOutputStream().println("Lecture has been deleted successfully.");
+				} else {
+					response.getOutputStream().println("Some troubles during deleting a lecture.");
+				}
+			}
+		}
+	}
+	
+
 }

@@ -509,4 +509,58 @@ $(function () {
 			}
 		});
 	}
+	
+	deleteItem();
+	
+	function deleteItem() {
+		$('.delete-item').on('click', function(e) {
+			e.preventDefault();
+			
+			var $button = $(this);
+			var itemId = $button.data('id');
+			var morePath = $button.data('path');
+			var $parent = $button.closest('tr');
+			
+			$.ajax(basePath + morePath, {
+				headers: {id : itemId},
+				method: "DELETE",
+				success: function(result) {
+					$parent.remove();
+				},
+				error: function () {
+					$button.parent().append($('<span></span>').addClass('span-alert alert-warning').text("Error"));
+				}
+			});
+		});
+	}
+	
+	updateItem();
+	
+	function updateItem() {
+		$('.update-subject').on('click', function(e) {
+			e.preventDefault();
+			
+			var $button = $(this);
+			var itemId = $button.data('id');
+			
+			var subject = $('input[name=subjectName]').val();
+			var department = $('input[name=departmentName]').val();
+			
+			$.ajax(basePath + "/subjects", {
+				headers: {id : itemId, subject : encodeURIComponent(subject), department : encodeURIComponent(department)},
+				method: "PUT",
+				success: function(result) {
+					if (result.indexOf('troubles') > -1) {
+						$('body > .container').prepend($('<div></div>').addClass('alert alert-warning').text(result));
+					} else {
+						$('body > .container').prepend($('<div></div>').addClass('alert alert-success').text(result));
+					}
+				},
+				error: function () {
+					$('body > .container').prepend($('<div></div>').addClass('alert alert-warning').text("Some errors."));
+				}
+			});
+		});
+	}
+	
 });
