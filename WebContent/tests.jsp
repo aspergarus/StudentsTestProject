@@ -142,12 +142,9 @@
 										<td><a href="test/<%= test.getId() %>">Edit</a></td>
 										<td><a href="openTest?id=<%= test.getId() %>">Open</a></td>
 										<td>
-											<form action="<%= basePath %>/tests" method="post">
-												<button type="submit" class="btn btn-danger">Delete</button>
-												<input type="hidden" name="delete-id" value="<%= test.getId() %>">
-											</form>
+											<button class="btn btn-danger delete-item" data-id="<%= test.getId() %>" 
+												data-path="/tests">Delete</button>
 										</td>
-										
 									<% } %>
 								</tr>
 							<% } %>

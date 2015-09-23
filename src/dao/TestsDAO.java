@@ -20,11 +20,11 @@ public class TestsDAO {
 		if (user.getRole() == 2) {
 			query = "SELECT * FROM tests";
 		} else if (user.getRole() == 1) {
-			query = "SELECT * FROM tests WHERE teacherId = ?";
+			query = "SELECT * FROM tests WHERE teacher_id = ?";
 		} else {
 			query = "SELECT * FROM tests t INNER JOIN open_tests ot"
-					+ " ON t.id = ot.testId"
-					+ " WHERE ot.studentId = ?";
+					+ " ON t.id = ot.test_id"
+					+ " WHERE ot.student_id = ?";
 		}
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -45,10 +45,10 @@ public class TestsDAO {
 	        int tmpSubjectId = 0, subjectId = 0;
 	        
 	        while (rs.next()) {
-	        	subjectId = rs.getInt("subjectId");
+	        	subjectId = rs.getInt("subject_id");
 	        	TestBean test = new TestBean();
 	        	test.setId(rs.getInt("id"));
-	        	test.setTeacherId(rs.getInt("teacherId"));
+	        	test.setTeacherId(rs.getInt("teacher_id"));
 	        	test.setSubjectId(subjectId);
 	        	test.setModule(rs.getByte("module"));
 	        	test.setNote(rs.getString("note"));
@@ -79,7 +79,7 @@ public class TestsDAO {
 	@SuppressWarnings("finally")
     public static boolean insert(TestBean newTest) {
 		String query = "INSERT INTO tests "
-				+ "(teacherId, subjectId, module, note) "
+				+ "(teacher_id, subject_id, module, note) "
 				+ "VALUES (?, ?, ?, ?)";
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -121,8 +121,8 @@ public class TestsDAO {
 			while (rs.next()) {
 				test = new TestBean();
 				test.setId(rs.getInt("id"));
-				test.setTeacherId(rs.getInt("teacherId"));
-				test.setSubjectId(rs.getInt("subjectId"));
+				test.setTeacherId(rs.getInt("teacher_id"));
+				test.setSubjectId(rs.getInt("subject_id"));
 				test.setModule(rs.getByte("module"));
 				test.setNote(rs.getString("note"));
 			}
@@ -194,10 +194,10 @@ public class TestsDAO {
 	}
 	
 	public static ArrayList<UserBean> getTestStudents(int testId) {
-		String query = "SELECT u.id, firstname, lastname, u.groupId FROM users u"
-				+ " INNER JOIN stgrelations stg ON u.groupId = stg.groupId"
-				+ "	INNER JOIN ready_students ot ON ot.studentId = u.id"
-				+ " WHERE testId = ?";
+		String query = "SELECT u.id, first_name, last_name, u.group_id FROM users u"
+				+ " INNER JOIN stgrelations stg ON u.group_id = stg.group_id"
+				+ "	INNER JOIN ready_students ot ON ot.student_id = u.id"
+				+ " WHERE test_id = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -211,9 +211,9 @@ public class TestsDAO {
 			
 			while (rs.next()) {
 				int id = rs.getInt("id");
-				String firstName = rs.getString("firstname");
-				String lastName = rs.getString("lastname");
-				int groupId = rs.getInt("groupId");
+				String firstName = rs.getString("first_name");
+				String lastName = rs.getString("last_name");
+				int groupId = rs.getInt("group_id");
 				UserBean student = new UserBean(id, firstName, lastName, groupId);
 				students.add(student);
 			}
@@ -229,7 +229,7 @@ public class TestsDAO {
 		int listSize = newStudents.size();
 		
 		if (listSize > 0) {
-			String query = "INSERT INTO open_tests (testId, studentId, groupId)"
+			String query = "INSERT INTO open_tests (test_id, student_id, group_id)"
 					+ " VALUES ";
 			
 			ConnectionManager conM = new ConnectionManager();
@@ -270,7 +270,7 @@ public class TestsDAO {
 		}
 		ArrayList<UserBean> newStudents = new ArrayList<>();
 		
-		String query = "SELECT studentId FROM open_tests";
+		String query = "SELECT student_id FROM open_tests";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -279,7 +279,7 @@ public class TestsDAO {
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			rs = stmt.executeQuery();
 			while(rs.next()) {
-				int id = rs.getInt("studentId");
+				int id = rs.getInt("student_id");
 				ids.remove(new Integer(id));
 			}
 		} catch (SQLException e) {
@@ -290,7 +290,7 @@ public class TestsDAO {
 		int listSize = ids.size();
 		
 		if (listSize > 0) {
-			query = "SELECT id, firstName, lastName, groupId FROM users WHERE id IN (";
+			query = "SELECT id, first_name, last_name, group_id FROM users WHERE id IN (";
 			for (int i = 0; i < listSize; i++) {
 				query += "?";
 				if (i != listSize - 1) {
@@ -307,9 +307,9 @@ public class TestsDAO {
 				
 				while(rs.next()) {
 					int id = rs.getInt("id");
-					String firstName = rs.getString("firstName");
-					String lastName = rs.getString("lastName");
-					int groupId = rs.getInt("groupId");
+					String firstName = rs.getString("first_name");
+					String lastName = rs.getString("last_name");
+					int groupId = rs.getInt("group_id");
 					
 					UserBean student = new UserBean(id, firstName, lastName, groupId);
 					newStudents.add(student);

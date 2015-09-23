@@ -13,7 +13,7 @@ public class AnswersDAO {
 	@SuppressWarnings("finally")
     public static boolean add(ArrayList<AnswerBean> answers) {
 		String query = "INSERT INTO answers "
-				+ "(questionId, answerText, correct) "
+				+ "(question_id, answer_text, correct) "
 				+ "VALUES";
 		
 		for (int i = 0; i < answers.size(); i++) {

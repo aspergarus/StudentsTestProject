@@ -37,17 +37,16 @@ public class DepartmentServlet extends HttpServlet {
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
 		if (user == null) {
 			response.sendRedirect(request.getContextPath() + "/login");
-		}
-		else {
+		} else {
 			String status = (String) session.getAttribute("status");
 			String message = (String) session.getAttribute("message");
+			
 			if (status != null && message != null) {
 				request.setAttribute("status", status);
 				request.setAttribute("message", message);
 				session.setAttribute("status", null);
 				session.setAttribute("message", null);
 			}
-			
 			ArrayList<DepartmentBean> departments = DepartmentsDAO.findAll();
 			request.setAttribute("departmentsList", departments);
 			request.getRequestDispatcher("departments.jsp").forward(request, response);
@@ -63,8 +62,7 @@ public class DepartmentServlet extends HttpServlet {
 		
 		if (user == null) {
 			response.sendError(403);
-		}
-		else {
+		} else {
 			// Add new department
 			String departmentName = request.getParameter("departmentName");
 			String errorMessage = DepartmentsDAO.departmentValidate(departmentName);
@@ -73,13 +71,11 @@ public class DepartmentServlet extends HttpServlet {
 				if (DepartmentsDAO.insert(departmentName)) {
 					session.setAttribute("status", "success");
 					session.setAttribute("message", "Department has been added");
-				}
-				else {
+				} else {
 					session.setAttribute("status", "danger");
 					session.setAttribute("message", "Some troubles were occurred during adding a department");
 				}
-			}
-			else {
+			} else {
 				session.setAttribute("status", "danger");
 				session.setAttribute("message", errorMessage);
 			}
@@ -96,14 +92,17 @@ public class DepartmentServlet extends HttpServlet {
 
 		if (user == null) {
 			response.sendError(403);
-		}
-		else {
+		} else {
 			//Update in DB
 			int id = Integer.valueOf(request.getHeader("id"));
 			String newDepartmentName = java.net.URLDecoder.decode(request.getHeader("name"), "UTF-8");
 			DepartmentBean department = new DepartmentBean(id, newDepartmentName);
-			DepartmentsDAO.update(department);
-			response.getOutputStream().println("Department has been updated successfully.");
+			
+			if (DepartmentsDAO.update(department)) {
+				response.getOutputStream().println("Department has been updated successfully.");
+			} else {
+				response.getOutputStream().println("Some troubles were occurred during updating a department.");
+			}
 		}
 	}
 
@@ -116,8 +115,7 @@ public class DepartmentServlet extends HttpServlet {
 
 		if (user == null) {
 			response.sendError(403);
-		}
-		else {
+		} else {
 			//Delete from DB
 			int id = Integer.valueOf(request.getHeader("id"));
 			DepartmentsDAO.delete(id);

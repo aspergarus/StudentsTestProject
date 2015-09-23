@@ -24,7 +24,7 @@ public class SubjectsDAO {
 			query = "SELECT * FROM subjects";
 		}
 		else {
-			query = "SELECT * FROM subjects WHERE departmentId = ?";
+			query = "SELECT * FROM subjects WHERE department_id = ?";
 		}
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -39,8 +39,8 @@ public class SubjectsDAO {
 	        while (rs.next()) {
 	        	SubjectsBean subject = new SubjectsBean();
 	        	subject.setId(rs.getInt("id"));
-	        	subject.setSubjectName(rs.getString("subjectName"));
-	        	subject.setDepartmentId(rs.getInt("departmentId"));
+	        	subject.setSubjectName(rs.getString("subject_name"));
+	        	subject.setDepartmentId(rs.getInt("department_id"));
 	        	allSubjects.add(subject);
 	        }
 		} catch (SQLException e) {
@@ -53,7 +53,7 @@ public class SubjectsDAO {
 	@SuppressWarnings("finally")
 	public static boolean insert(SubjectsBean bean) {
 		String query = "INSERT INTO subjects "
-				+ "(subjectName, departmentId) "
+				+ "(subject_name, department_id) "
 				+ "VALUES (?, ?)";
 
 		ConnectionManager conM = new ConnectionManager();
@@ -111,8 +111,8 @@ public class SubjectsDAO {
 			if (rs.next()) {
 				sBean = new SubjectsBean();
 				sBean.setId(id);
-				sBean.setSubjectName(rs.getString("subjectName"));
-				sBean.setDepartmentId(rs.getInt("departmentId"));
+				sBean.setSubjectName(rs.getString("subject_name"));
+				sBean.setDepartmentId(rs.getInt("department_id"));
 			}
 		}
 		catch (SQLException e) {
@@ -125,7 +125,7 @@ public class SubjectsDAO {
 	
 	@SuppressWarnings("finally")
     public static int find(String subject) {
-		String query = "SELECT id FROM subjects WHERE subjectName = ?";
+		String query = "SELECT id FROM subjects WHERE subject_name = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -146,7 +146,7 @@ public class SubjectsDAO {
 	}
 	
 	public static boolean update(SubjectsBean bean) {
-		String query = "UPDATE subjects SET subjectName=?, departmentId=? WHERE id = ?";
+		String query = "UPDATE subjects SET subject_name=?, department_id=? WHERE id = ?";
 
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
@@ -176,7 +176,7 @@ public class SubjectsDAO {
 	        rs = stmnt.executeQuery(query);
 	        while (rs.next()) {
 	        	int subjectId = rs.getInt("id");
-	        	String subjectName = rs.getString("subjectName");
+	        	String subjectName = rs.getString("subject_name");
 	        	subjectsMap.put(subjectId, subjectName);
 	        }
 		} catch (SQLException e) {
@@ -188,7 +188,7 @@ public class SubjectsDAO {
 	
 	@SuppressWarnings("finally")
 	public static ArrayList<String> findSubjects(String subjectTitle) {
-		String query = "SELECT DISTINCT subjectName FROM subjects WHERE subjectName LIKE ?";
+		String query = "SELECT DISTINCT subject_name FROM subjects WHERE subject_name LIKE ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
@@ -202,7 +202,7 @@ public class SubjectsDAO {
 			subjects = new ArrayList<>();
 
 			while (rs.next()) {
-				subjects.add(rs.getString("subjectName"));
+				subjects.add(rs.getString("subject_name"));
 			}
 		}
 		catch (SQLException e) {
@@ -216,7 +216,7 @@ public class SubjectsDAO {
 	
 	
 	public static String subjectValidate(String subjectName, int departmentId) {
-		String query = "SELECT * FROM subjects WHERE subjectName = ? AND departmentId = ?";
+		String query = "SELECT * FROM subjects WHERE subject_name = ? AND department_id = ?";
 		String errorMessage = null;
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();

@@ -12,6 +12,12 @@ public class SubjectsBean {
 		this.departmentId = departmentId;
 	}
 	
+	public SubjectsBean(int id, String subjectName, int departmentId) {
+		this.id = id;
+		this.subjectName = subjectName;
+		this.departmentId = departmentId;
+	}
+	
 	public int getId() {
 	    return id;
     }

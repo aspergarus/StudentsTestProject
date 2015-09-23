@@ -78,7 +78,7 @@ public class GroupServlet extends HttpServlet {
 					GroupsDAO.shareSubject(user.getId(), subjectId, groups);
 					response.getOutputStream().println("Subject has been shared successfully.");
 				} catch (NullPointerException e) {
-					// Nothing
+					System.out.println(e.getMessage());
 				}
 			}
 			else {

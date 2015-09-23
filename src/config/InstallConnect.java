@@ -83,8 +83,8 @@ public class InstallConnect {
 				+ "title varchar(45) NOT NULL, "
 				+ "body mediumtext NOT NULL, "
 				+ "author int(11) NOT NULL, "
-				+ "ownerId int(11) NOT NULL, "
-				+ "ownerType varchar(45) NOT NULL, "
+				+ "owner_id int(11) NOT NULL, "
+				+ "owner_type varchar(45) NOT NULL, "
 				+ "date decimal(16,0) NOT NULL, "
 				+ "PRIMARY KEY (cid)); ";
 		tablesQuery.put("comments", commentsQuery);
@@ -92,7 +92,7 @@ public class InstallConnect {
 		// departments
 		String departmentsQuery = "CREATE TABLE departments "
 						+ "(id int(11) NOT NULL AUTO_INCREMENT,"
-						+ "departmentName varchar(128) NOT NULL,"
+						+ "department_name varchar(128) NOT NULL,"
 						+ "PRIMARY KEY (id)); ";
 		tablesQuery.put("departments", departmentsQuery);
 		
@@ -101,23 +101,23 @@ public class InstallConnect {
 						+ "(fid int(11) NOT NULL AUTO_INCREMENT,"
 						+ "type varchar(32) NOT NULL,"
 						+ "name varchar(128) NOT NULL,"
-						+ "ownerId int(11) unsigned NOT NULL DEFAULT '0',"
+						+ "owner_id int(11) unsigned NOT NULL DEFAULT '0',"
 						+ "PRIMARY KEY (fid)); ";
 		tablesQuery.put("files", filesQuery);
 		
 		// groups
 		String groupsQuery = "CREATE TABLE groups "
 						+ "(id int(11) NOT NULL AUTO_INCREMENT, "
-						+ "groupName varchar(45) NOT NULL, "
+						+ "group_name varchar(45) NOT NULL, "
 						+ "PRIMARY KEY (id)); ";
 		tablesQuery.put("groups", groupsQuery);
 		
 		// lectures
 		String lecturesQuery = "CREATE TABLE lectures "
 						+ "(id int(11) NOT NULL AUTO_INCREMENT, "
-						+ "teacherId int(11) NOT NULL, "
+						+ "teacher_id int(11) NOT NULL, "
 						+ "title varchar(128) NOT NULL, "
-						+ "subjectId int(11) NOT NULL, "
+						+ "subject_id int(11) NOT NULL, "
 						+ "body mediumtext, "
 						+ "PRIMARY KEY (id)); ";
 		tablesQuery.put("lectures", lecturesQuery);
@@ -125,50 +125,50 @@ public class InstallConnect {
 		// practicals
 		String practicalsQuery = "CREATE TABLE practicals "
 						+ "(id int(11) NOT NULL AUTO_INCREMENT, "
-						+ "teacherId int(11) NOT NULL DEFAULT '0', "
+						+ "teacher_id int(11) NOT NULL DEFAULT '0', "
 						+ "title varchar(128) NOT NULL DEFAULT '', "
-						+ "subjectId int(11) NOT NULL, "
+						+ "subject_id int(11) NOT NULL, "
 						+ "body mediumtext, "
-						+ "PRIMARY KEY (id,teacherId), "
+						+ "PRIMARY KEY (id,teacher_id), "
 						+ "UNIQUE KEY id_UNIQUE (id)); ";
 		tablesQuery.put("practicals", practicalsQuery);
 		
 		// stgrelations
 		String stgrelationsQuery = "CREATE TABLE stgrelations "
-				  + "(teacherId int(11) NOT NULL, "
-				  + "groupId int(11) NOT NULL, "
-				  + "subjectId int(11) NOT NULL, "
-				  + "PRIMARY KEY (teacherId,groupId,subjectId)); ";
+				  + "(teacher_id int(11) NOT NULL, "
+				  + "group_id int(11) NOT NULL, "
+				  + "subject_id int(11) NOT NULL, "
+				  + "PRIMARY KEY (teacher_id,group_id,subject_id)); ";
 		tablesQuery.put("stgrelations", stgrelationsQuery);
 		
 		// subjects
 		String subjectsQuery = "CREATE TABLE subjects "
 						+ "(id int(11) NOT NULL AUTO_INCREMENT, "
-						+ "subjectName varchar(128) NOT NULL, "
-						+ "departmentId int(11) NOT NULL, "
+						+ "subject_name varchar(128) NOT NULL, "
+						+ "department_id int(11) NOT NULL, "
 						+ "PRIMARY KEY (id)); ";
 		tablesQuery.put("subjects", subjectsQuery);
 		
 		// users
 		String usersQuery = "CREATE TABLE users "
 						+ "(id int(11) NOT NULL AUTO_INCREMENT, "
-						+ "username varchar(128) NOT NULL, "
+						+ "user_name varchar(128) NOT NULL, "
 						+ "password varchar(512) NOT NULL, "
 						+ "email varchar(128) NOT NULL, "
 						+ "role tinyint(2) DEFAULT '0', "
-						+ "firstname varchar(128) DEFAULT NULL, "
-						+ "lastname varchar(128) DEFAULT NULL, "
+						+ "first_name varchar(128) DEFAULT NULL, "
+						+ "last_name varchar(128) DEFAULT NULL, "
 						+ "status tinyint(1) DEFAULT '1', "
-						+ "avatarName varchar(128) DEFAULT '', "
-						+ "groupId int(11) NOT NULL, "
+						+ "avatar_name varchar(128) DEFAULT '', "
+						+ "group_id int(11) NOT NULL, "
 						+ "PRIMARY KEY (id));";
 		tablesQuery.put("users", usersQuery);
 		
 		//tests
 		String testsQuery = "CREATE TABLE tests "
 						+ "(id INT(11) NOT NULL AUTO_INCREMENT, "
-						+ "teacherId INT(11) NOT NULL, "
-						+ "subjectId INT(11) NOT NULL, "
+						+ "teacher_id INT(11) NOT NULL, "
+						+ "subject_id INT(11) NOT NULL, "
 						+ "module TINYINT(4) NOT NULL, "
 						+ "note VARCHAR(128) NULL DEFAULT NULL, "
 						+ "PRIMARY KEY (id));";
@@ -177,32 +177,32 @@ public class InstallConnect {
 		//questions
 		String questionsQuery = "CREATE TABLE questions "
 				+ "(id INT(11) NOT NULL AUTO_INCREMENT, "
-				+ "testId INT(11) NOT NULL DEFAULT '0', "
-				+ "questionText VARCHAR(128) NOT NULL DEFAULT '0', "
-				+ "PRIMARY KEY (questionId));";
+				+ "test_id INT(11) NOT NULL DEFAULT '0', "
+				+ "question_text VARCHAR(128) NOT NULL DEFAULT '0', "
+				+ "PRIMARY KEY (question_id));";
 		tablesQuery.put("questions", questionsQuery);
 		
 		//answers
 		String answersQuery = "CREATE TABLE answers "
 				+ "(id INT(11) NOT NULL AUTO_INCREMENT, "
-				+ "questionId INT(11) NOT NULL DEFAULT '0', "
-				+ "answerText VARCHAR(64) NOT NULL DEFAULT '0', "
+				+ "question_id INT(11) NOT NULL DEFAULT '0', "
+				+ "answer_text VARCHAR(64) NOT NULL DEFAULT '0', "
 				+ "correct TINYTEXT NOT NULL, "
-				+ "PRIMARY KEY (answerId));";
+				+ "PRIMARY KEY (answer_id));";
 		tablesQuery.put("answers", answersQuery);
 		
 		//open_tests
 		String openTestsQuery = "CREATE TABLE open_tests "
-				+ "(testId INT(11) NOT NULL, "
-				+ "studentId INT(11) NOT NULL, "
-				+ "groupId INT(11) NOT NULL)";
+				+ "(test_id INT(11) NOT NULL, "
+				+ "student_id INT(11) NOT NULL, "
+				+ "group_id INT(11) NOT NULL)";
 		tablesQuery.put("open_tests", openTestsQuery);
 		
 		//ready_students
 				String readyStudentsQuery = "CREATE TABLE ready_students "
-						+ "(testId INT(11) NOT NULL, "
-						+ "studentId INT(11) NOT NULL, "
-						+ "groupId INT(11) NOT NULL)";
+						+ "(test_id INT(11) NOT NULL, "
+						+ "student_id INT(11) NOT NULL, "
+						+ "group_id INT(11) NOT NULL)";
 				tablesQuery.put("ready_students", readyStudentsQuery);
 		
 		ArrayList<String> existTables = selectExistTables();

@@ -125,10 +125,8 @@
 								<% if (currentUser.getRole() > 0) { %>
 								<td><a href="lectures?edit=true&id=<%= lecture.getId() %>">Edit</a></td>
 								<td>
-									<form action="<%= basePath %>/lectures" method="post">
-										<button type="submit" class="btn btn-danger">Delete</button>
-										<input type="hidden" name="delete-id" value="<%= lecture.getId() %>">
-									</form>
+									<button class="btn btn-danger delete-item" data-id="<%= lecture.getId() %>" 
+											data-path="/lectures">Delete</button>
 								</td>
 								<% } %>
 							</tr>

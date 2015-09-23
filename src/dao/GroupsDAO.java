@@ -14,10 +14,10 @@ import config.ConnectionManager;
 public class GroupsDAO {
 	
 	public static ArrayList<GroupBean> findAll() {
-		String query = "SELECT g.id, g.groupName, COUNT(u.groupId) as countStudents FROM groups g"
-				+ " INNER JOIN users u ON g.id = u.groupId"
+		String query = "SELECT g.id, g.group_name, COUNT(u.groupId) as count_students FROM groups g"
+				+ " INNER JOIN users u ON g.id = u.group_id"
 				+ " WHERE u.role = 0"
-				+ " GROUP BY u.groupId";
+				+ " GROUP BY u.group_id";
 		ArrayList<GroupBean> groups = new ArrayList<>();
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -27,8 +27,8 @@ public class GroupsDAO {
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				int id = rs.getInt("id");
-				int countStudents = rs.getInt("countStudents");
-				String groupName = rs.getString("groupName");
+				int countStudents = rs.getInt("count_students");
+				String groupName = rs.getString("group_name");
 				GroupBean group = new GroupBean(id, groupName, countStudents);
 				groups.add(group);
 			}
@@ -40,7 +40,7 @@ public class GroupsDAO {
 	
 	@SuppressWarnings("finally")
 	public static ArrayList<String> findGroups(String groupName) {
-		String query = "SELECT DISTINCT groupName FROM groups WHERE groupName LIKE ?";
+		String query = "SELECT DISTINCT group_name FROM groups WHERE group_name LIKE ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -55,7 +55,7 @@ public class GroupsDAO {
 			groups = new ArrayList<>();
 
 			while (rs.next()) {
-				groups.add(rs.getString("groupName"));
+				groups.add(rs.getString("group_name"));
 			}
 		}
 		catch (SQLException e) {
@@ -67,8 +67,8 @@ public class GroupsDAO {
 	}
 	
 	public static ArrayList<String> findAssignedGroups(String groupName, int subjectId) {
-		String query = "SELECT DISTINCT groupName FROM groups g INNER JOIN stgrelations s ON g.id = s.groupId"
-				+ " WHERE s.subjectId = ? AND g.groupName LIKE ?";
+		String query = "SELECT DISTINCT group_name FROM groups g INNER JOIN stgrelations s ON g.id = s.group_id"
+				+ " WHERE s.subject_id = ? AND g.group_name LIKE ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -84,7 +84,7 @@ public class GroupsDAO {
 			groups = new ArrayList<>();
 
 			while (rs.next()) {
-				groups.add(rs.getString("groupName"));
+				groups.add(rs.getString("group_name"));
 			}
 			
 		} catch (SQLException e) {
@@ -107,7 +107,7 @@ public class GroupsDAO {
 			ResultSet rs = stmt.executeQuery();
 			
 			while (rs.next()) {
-				String groupName = rs.getString("groupName");
+				String groupName = rs.getString("group_name");
 				group = new GroupBean(id, groupName);
 			}
 		} catch (SQLException e) {
@@ -120,7 +120,7 @@ public class GroupsDAO {
 	@SuppressWarnings("finally")
     public static GroupBean find(String groupName) {
 		
-		String query = "SELECT * FROM groups WHERE groupName = ?";
+		String query = "SELECT * FROM groups WHERE group_name = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -143,7 +143,7 @@ public class GroupsDAO {
 	}
 	
 	public static String groupValidate (String groupName) {
-		String query = "SELECT * FROM groups WHERE groupName = ?";
+		String query = "SELECT * FROM groups WHERE group_name = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -166,7 +166,7 @@ public class GroupsDAO {
 	@SuppressWarnings("finally")
     public static boolean insert (String groupName) {
 		String query = "INSERT INTO groups " 
-					+ "(groupName) "
+					+ "(group_name) "
 					+ "VALUES (?)";
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -205,7 +205,7 @@ public class GroupsDAO {
 	
 	@SuppressWarnings("finally")
     public static boolean update (GroupBean group) {
-		String query = "UPDATE groups SET groupName = ? WHERE id = ?";
+		String query = "UPDATE groups SET group_name = ? WHERE id = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -238,7 +238,7 @@ public class GroupsDAO {
 	        
 	        while (rs.next()) {
 	        	int groupId = rs.getInt("id");
-	        	String groupName = rs.getString("groupName");
+	        	String groupName = rs.getString("group_name");
 	        	groupsMap.put(groupId, groupName);
 	        }
 		} catch (SQLException e) {
@@ -255,7 +255,7 @@ public class GroupsDAO {
 			ArrayList<Integer> groupsId = findGroupsId(groupNames);
 			deleteRelations(userId, subjectId);
 			String insertQuery = "INSERT INTO stgrelations "
-					+ "(teacherId, subjectId, groupId) VALUES";
+					+ "(teacher_id, subject_id, group_id) VALUES";
 			
 			ConnectionManager conM = new ConnectionManager();
 			Connection con = conM.getConnection();
@@ -287,7 +287,7 @@ public class GroupsDAO {
 	
 	@SuppressWarnings("finally")
     public static ArrayList<Integer> findGroupsId(String[] groupsName) {
-		String query = "SELECT id FROM groups WHERE groupName IN (";
+		String query = "SELECT id FROM groups WHERE group_name IN (";
 
 		ArrayList<Integer> groupIds = new ArrayList<>();
 		int length = groupsName.length;
@@ -320,7 +320,7 @@ public class GroupsDAO {
 	
 	@SuppressWarnings("finally")
     public static boolean deleteRelations(int userId, int subjectId) {
-		String selectQuery = "DELETE FROM stgrelations WHERE teacherId=? AND subjectId=?";
+		String selectQuery = "DELETE FROM stgrelations WHERE teacher_id=? AND subject_id=?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -347,12 +347,12 @@ public class GroupsDAO {
 	 * @return
 	 */
 	public static HashMap<String, String> getGroupsByTeacher(int teacherId) {
-		String selectQuery = "SELECT subjectName, GROUP_CONCAT(groupName) as groupsStr "
+		String selectQuery = "SELECT subject_name, GROUP_CONCAT(group_name) as groups_str "
 				+ "FROM stgrelations r "
-				+ "INNER JOIN subjects s ON s.id = r.subjectId "
-				+ "INNER JOIN groups g ON g.id = r.groupId "
-				+ "WHERE teacherId=? "
-				+ "GROUP BY subjectId ";
+				+ "INNER JOIN subjects s ON s.id = r.subject_id "
+				+ "INNER JOIN groups g ON g.id = r.group_id "
+				+ "WHERE teacher_id=? "
+				+ "GROUP BY subject_id ";
 
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -365,8 +365,8 @@ public class GroupsDAO {
 			rs = stmt.executeQuery();
 			
 			while (rs.next()) {
-				String subjectName = rs.getString("subjectName");
-				String groupsStr = rs.getString("groupsStr");
+				String subjectName = rs.getString("subject_name");
+				String groupsStr = rs.getString("groups_str");
 				groups.put(subjectName, groupsStr);
 			}
 			
@@ -388,8 +388,8 @@ public class GroupsDAO {
 		ArrayList<Integer> studentsId = new ArrayList<>();
 		
 		String selectQuery = "SELECT id FROM users"
-				+ " WHERE role = 0 AND groupId = ?"
-				+ " AND id NOT IN (SELECT studentId FROM ready_students)";
+				+ " WHERE role = 0 AND group_id = ?"
+				+ " AND id NOT IN (SELECT student_id FROM ready_students)";
 		
 		try (PreparedStatement stmt = con.prepareStatement(selectQuery)) {
 			stmt.setInt(1, groupId);
@@ -406,7 +406,7 @@ public class GroupsDAO {
 		if (studentsId.size() == 0) {
 			return false;
 		}
-		String insertQuery = "INSERT INTO ready_students (testId, studentId, groupId) "
+		String insertQuery = "INSERT INTO ready_students (test_id, student_id, group_id) "
 				+ "VALUES ";
 		
 		int listSize = studentsId.size();

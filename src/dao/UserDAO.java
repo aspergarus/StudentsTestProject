@@ -29,7 +29,7 @@ public class UserDAO {
 		if (username.matches(EMAIL_PATTERN)) {
 			query = "SELECT * FROM users WHERE email = ?";
 		} else {
-			query = "SELECT * FROM users WHERE username = ?";
+			query = "SELECT * FROM users WHERE user_name = ?";
 		}
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -43,14 +43,14 @@ public class UserDAO {
 			if (more) {
 				bean = new UserBean();
 				bean.setId(rs.getInt("id"));
-				bean.setUserName(rs.getString("userName"));
-				bean.setFirstName(rs.getString("firstName"));
-				bean.setLastName(rs.getString("lastName"));
-				bean.setGroupId(rs.getInt("groupId"));
+				bean.setUserName(rs.getString("user_name"));
+				bean.setFirstName(rs.getString("first_name"));
+				bean.setLastName(rs.getString("last_name"));
+				bean.setGroupId(rs.getInt("group_id"));
 				bean.setEmail(rs.getString("email"));
 				bean.setRole(rs.getByte("role"));
 				bean.setPassword(rs.getString("password"));
-				bean.setAvatar(rs.getString("avatarName"));
+				bean.setAvatar(rs.getString("avatar_name"));
 				bean.setValid(true);
 			}
 		}
@@ -77,14 +77,14 @@ public class UserDAO {
 			if (more) {
 				bean = new UserBean();
 				bean.setId(rs.getInt("id"));
-				bean.setUserName(rs.getString("userName"));
-				bean.setFirstName(rs.getString("firstName"));
-				bean.setLastName(rs.getString("lastName"));
-				bean.setGroupId(rs.getInt("groupId"));
+				bean.setUserName(rs.getString("user_name"));
+				bean.setFirstName(rs.getString("first_name"));
+				bean.setLastName(rs.getString("last_name"));
+				bean.setGroupId(rs.getInt("group_id"));
 				bean.setEmail(rs.getString("email"));
 				bean.setRole(rs.getByte("role"));
 				bean.setPassword(rs.getString("password"));
-				bean.setAvatar(rs.getString("avatarName"));
+				bean.setAvatar(rs.getString("avatar_name"));
 				bean.setValid(true);
 			}
 		}
@@ -107,7 +107,7 @@ public class UserDAO {
 		int groupId = bean.getGroupId();
 		
 		String query = "INSERT INTO users "
-				+ "(username, password, email, role, firstName, lastName, groupId) "
+				+ "(user_name, password, email, role, first_name, last_name, group_id) "
 				+ "VALUES (?,?,?,?,?,?,?)";
 
 		ConnectionManager conM = new ConnectionManager();
@@ -143,13 +143,13 @@ public class UserDAO {
 			while (rs.next()) {
 				bean = new UserBean();
 				bean.setId(rs.getInt("id"));
-				bean.setUserName(rs.getString("userName"));
-				bean.setFirstName(rs.getString("firstName"));
-				bean.setLastName(rs.getString("lastName"));
+				bean.setUserName(rs.getString("user_name"));
+				bean.setFirstName(rs.getString("first_name"));
+				bean.setLastName(rs.getString("last_name"));
 				bean.setEmail(rs.getString("email"));
 				bean.setRole(rs.getByte("role"));
-				bean.setAvatar(rs.getString("avatarName"));
-				bean.setGroupId(rs.getInt("groupId"));
+				bean.setAvatar(rs.getString("avatar_name"));
+				bean.setGroupId(rs.getInt("group_id"));
 				users.add(bean);
 			}
 		}
@@ -166,7 +166,7 @@ public class UserDAO {
 
 		boolean setPass = false;
 
-		String query = "UPDATE users SET username=?, email=?, role=?, firstName=?, lastName=?, avatarName=?";
+		String query = "UPDATE users SET user_name=?, email=?, role=?, first_name=?, last_name=?, avatar_name=?";
 		if (!updatedUser.getPassword().trim().isEmpty()) {
 			query += ", password=?";
 			setPass = true;
@@ -199,8 +199,8 @@ public class UserDAO {
 	}
 
 	public static ArrayList<String> findStudents(String namePart) {
-		String query = "SELECT id, firstName, lastName FROM users "
-				+ "WHERE role = 0 AND (firstName LIKE ? OR lastName LIKE ?)";
+		String query = "SELECT id, first_name, last_name FROM users "
+				+ "WHERE role = 0 AND (first_name LIKE ? OR last_name LIKE ?)";
 
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
@@ -213,7 +213,7 @@ public class UserDAO {
 			rs = stmt.executeQuery();
 
 			while (rs.next()) {
-				list.add(rs.getString("firstName") + " " + rs.getString("lastName") + " [" + rs.getInt("id") +"]");
+				list.add(rs.getString("first_name") + " " + rs.getString("last_name") + " [" + rs.getInt("id") +"]");
 			}
 		}
 		catch (SQLException e) {
@@ -223,8 +223,8 @@ public class UserDAO {
 	}
 	
 	public static ArrayList<String> findTeachers(String namePart) {
-		String query = "SELECT id, firstName, lastName FROM users "
-				+ "WHERE role = 1 AND (firstName LIKE ? OR lastName LIKE ?)";
+		String query = "SELECT id, first_name, last_name FROM users "
+				+ "WHERE role = 1 AND (first_name LIKE ? OR last_name LIKE ?)";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -238,7 +238,7 @@ public class UserDAO {
 			rs = stmt.executeQuery();
 			
 			while (rs.next()) {
-				nameList.add(rs.getString("firstName") + " " + rs.getString("lastName") + " [" + rs.getInt("id") + "]");
+				nameList.add(rs.getString("first_name") + " " + rs.getString("last_name") + " [" + rs.getInt("id") + "]");
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -248,7 +248,7 @@ public class UserDAO {
 	}
 	
 	public static HashMap<Integer, String> getTeachersMap() {
-		String query = "SELECT id, firstName, lastName FROM users "
+		String query = "SELECT id, first_name, last_name FROM users "
 				+ "WHERE role = 1";
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -262,8 +262,8 @@ public class UserDAO {
 			
 			while(rs.next()) {
 				int teacherId = rs.getInt("id");
-				String firstName = rs.getString("firstName");
-				String lastName = rs.getString("lastName");
+				String firstName = rs.getString("first_name");
+				String lastName = rs.getString("last_name");
 				
 				teacherMap.put(teacherId, firstName + " " + lastName);
 			}
@@ -275,7 +275,7 @@ public class UserDAO {
 	}
 	
 	public static int getGroupId(int id) {
-		String query = "SELECT groupId FROM users WHERE id = ?";
+		String query = "SELECT group_id FROM users WHERE id = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -288,7 +288,7 @@ public class UserDAO {
 			rs = stmt.executeQuery();
 			
 			if (rs.next()) {
-				groupId = rs.getInt("groupId");
+				groupId = rs.getInt("group_id");
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
