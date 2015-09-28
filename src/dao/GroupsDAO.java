@@ -14,7 +14,7 @@ import config.ConnectionManager;
 public class GroupsDAO {
 	
 	public static ArrayList<GroupBean> findAll() {
-		String query = "SELECT g.id, g.group_name, COUNT(u.groupId) as count_students FROM groups g"
+		String query = "SELECT g.id, g.group_name, COUNT(u.group_id) as count_students FROM groups g"
 				+ " INNER JOIN users u ON g.id = u.group_id"
 				+ " WHERE u.role = 0"
 				+ " GROUP BY u.group_id";

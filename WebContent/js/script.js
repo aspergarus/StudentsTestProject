@@ -4,6 +4,8 @@ $(function () {
 	}
 	$('.table').bootstrapTable();
 	
+	$('.tooltip-element').tooltip();
+	
 	setAutocomplete();
 	
 	function setAutocomplete() {
