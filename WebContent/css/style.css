@@ -285,3 +285,7 @@ ol {
 #open-test-to-students, #select-all-students, #cancel-all-students {
 	margin: 10px 0px 10px 5px;
 }
+.tooltip-container {
+	display: inline-block;
+	width: 100%;
+}
