@@ -90,7 +90,7 @@
 					id="group" placeholder="Group" required
 						autocomplete="off" data-autocomplete-url="autocomplete/groups">
 				<input name="department" type="text" class="form-control typeahead hidden"
-					id="department-autocomplete" placeholder="Department" required
+					id="department-autocomplete" placeholder="Department"
 						autocomplete="off" data-autocomplete-url="autocomplete/departments">
 			</div>
 		</div>
