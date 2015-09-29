@@ -17,9 +17,6 @@ import beans.UserBean;
 @WebServlet("/index.jsp")
 public class MainServlet extends HttpServlet {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5929291805555914034L;
 
 	/**

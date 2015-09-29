@@ -73,6 +73,8 @@ public class RegisterServlet extends HttpServlet {
 		String groupName = request.getParameter("group").trim();
 		int groupId = 0;
 		
+		long registered = System.currentTimeMillis();
+		
 		if (role == 1) {
 			groupId = DepartmentsDAO.find(groupName).getId();
 		}
@@ -88,27 +90,22 @@ public class RegisterServlet extends HttpServlet {
 			UserBean user = null;
 
 			try {
-				user = new UserBean(userName, password, email, role, firstName, lastName, avatarName, groupId);
+				user = new UserBean(userName, password, email, role, firstName, lastName, avatarName, groupId, registered);
 			    user = UserDAO.register(user);
-			    
 			    
 			} catch (Throwable theException) {
 			     System.out.println(theException);
-			}
-			finally {
+			} finally {
 				if (user.isValid()) {
 					session.setAttribute("status", "success");
 					session.setAttribute("message", "User '" + userName + "' was created successfully");
-				}
-				else {
+				} else {
 					session.setAttribute("status", "danger");
 					session.setAttribute("message", "Some problem appears during creating new user.");
 				}
-				
 				response.sendRedirect("register");
 			}
-		}
-		else {
+		} else {
 			session.setAttribute("status", "danger");
 			session.setAttribute("message", message);
 			response.sendRedirect("register");
@@ -124,7 +121,7 @@ public class RegisterServlet extends HttpServlet {
 		Connection con = conM.getConnection();
 		
 		String findName = "SELECT * FROM users "
-				+ "WHERE username = ?";
+				+ "WHERE user_name = ?";
 		String findEmail = "SELECT * FROM users "
 				+ "WHERE email = ?";
 		
