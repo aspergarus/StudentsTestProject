@@ -120,7 +120,8 @@ public class StudentDAO {
 	}
 	
 	public static ArrayList<String> findAssignedStudents(String studentName, int subjectId) {
-		String query = "SELECT u.id, first_name, last_name, group_name FROM users u INNER JOIN stgrelations s ON u.group_id = s.group_id"
+		String query = "SELECT u.id, first_name, last_name, group_name FROM users u"
+				+ "	INNER JOIN stgrelations s ON u.group_id = s.group_id"
 				+ " INNER JOIN groups g ON u.group_id = g.id"
 				+ " WHERE s.subject_id = ? AND u.role = 0 AND u.id NOT IN (SELECT student_id FROM ready_students)"
 				+ " AND (u.first_name LIKE ? OR u.last_name LIKE ?)";

@@ -21,12 +21,12 @@
 		</div>
 	<% } %>
 	<% if (user.getRole() == 2) { %>	
-		<h3 class="lead">Add group</h3>
+		<h3 class="lead"><span class="translate" data-lang-key="Add group"></span></h3>
 
 		<form action="<%= basePath %>/groups" class="form" method="post"
 			class="form-horizontal">
 			<div class="form-group">
-				<label for="groupName" class="col-sm-2 control-label">Group name*</label>
+				<label for="groupName" class="col-sm-2 control-label"><span class="translate" data-lang-key="Group name"></span>*</label>
 				<div class="col-sm-10">
 					<input name="groupName" type="text" class="form-control typeahead"
 						class="groupName" required autocomplete="off">
@@ -34,7 +34,7 @@
 			</div>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10 add-subject">
-					<button type="submit" class="btn btn-primary">Add Group</button>
+					<button type="submit" class="btn btn-primary"><span class="translate" data-lang-key="Add group"></span></button>
 				</div>
 			</div>
 		</form>
@@ -42,18 +42,21 @@
 </div>
 	
 <div class="container">
-	<h1>Groups</h1>
+	<% if (groups.size() == 0) { %>
+		<h1>There are no groups yet</h1>
+	<% } else { %>
+		<h1><span class="translate" data-lang-key="Groups"></span> (<%= groups.size() %>)</h1>
+	<% } %>
 	<table class="table" data-search="true" data-show-columns="true">
-		<% out.print(groups == null ? "Groups are not exists" : ""); %>
 		<thead>
 			<tr>
 				<% if (user.getRole() == 2) { %>
 				<th data-field="id" data-align="center" data-sortable="true">ID</th>
 				<% } %>
-				<th data-field="group" data-align="center" data-sortable="true">Group</th>
-				<th data-field="studentsCount" data-align="center" data-sortable="true">Number of Students</th>
+				<th data-field="group" data-align="center" data-sortable="true"><span class="translate" data-lang-key="Group"></span></th>
+				<th data-field="studentsCount" data-align="center" data-sortable="true"><span class="translate" data-lang-key="Number of students"></span></th>
 				<% if (user.getRole() == 2) { %>
-				<th data-field="delete" data-align="center">Delete</th>
+				<th data-field="delete" data-align="center"><span class="translate" data-lang-key="Delete"></span></th>
 				<% } %>
 			</tr>
 		</thead>
@@ -70,7 +73,9 @@
 			        <td><%= group.getCountStudents() %></td>
 			        <% if (user.getRole() == 2) { %>
 			        <td>
-						<button type="button" class="btn btn-danger delete-group-btn" data-id=<%= group.getId() %>>Delete</button>
+						<button type="button" class="btn btn-danger delete-group-btn" data-id=<%= group.getId() %>>
+							<span class="translate" data-lang-key="Delete"></span>
+						</button>
 			        </td>
 			        <% } %>
 			    </tr>

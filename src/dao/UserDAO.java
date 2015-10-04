@@ -140,7 +140,9 @@ public class UserDAO {
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
 		try (Statement stmt = con.createStatement()) {
-			String query = "SELECT * FROM users";
+			String query = "SELECT * FROM users u"
+					+ " INNER JOIN groups g ON u.group_id = g.id"
+					+ " ORDER BY role DESC, g.group_name";
 			rs = stmt.executeQuery(query);
 			
 			while (rs.next()) {

@@ -81,7 +81,7 @@
 			<h1>There are no any lectures</h1>
 		<% } %>
 	<% } else { %>
-		<h1>Lectures</h1>
+		<h1>Lectures (<%= lecturesMap.size() %>)</h1>
 	<% } %>
 	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 		<% int i = 0; %>

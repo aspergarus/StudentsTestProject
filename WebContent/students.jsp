@@ -31,6 +31,7 @@
 		<% int i = 0; %>
 		<% for (StudentGroupBean group : studentList) { %>
 		<% i++; %>
+		<% int j = 1; %>
 		<div class="panel panel-default">
 			<div class="panel-heading" role="tab" id="heading-<%= i %>">
 				<h4 class="panel-title">
@@ -44,6 +45,7 @@
 					<table class="table">
 						<thead>
 							<tr>
+								<th data-field="number" data-align="center" data-sortable="true">№</th>
 								<th data-field="avatar" data-align="center" data-sortable="false">Avatar</th>
 								<th data-field="firstName" data-align="center" data-sortable="true">First Name</th>
 								<th data-field="lastName" data-align="center" data-sortable="true">Last Name</th>
@@ -52,6 +54,7 @@
 						<tbody>
 							<% for (UserBean student : group.getStudents()) { %>
 								<tr>
+									<td><%= j %></td>
 									<td>
 										<%  if (student.getAvatar().isEmpty()) { %>
 											<img src="<%= defaultAvatar %>" class="img-circle avatar-table">
@@ -59,9 +62,10 @@
 											<img src="<%= uploadAvatarPath + File.separator + student.getAvatar() %>" class="img-circle avatar-table">
 										<% } %>
 									</td>
-									<td><% out.print(student.getFirstName()); %></td>
-									<td><% out.print(student.getLastName()); %></td>
+									<td><%= student.getFirstName() %></td>
+									<td><%= student.getLastName() %></td>
 								</tr>
+								<% j++; %>
 							<% } %>
 						</tbody>
 					</table>

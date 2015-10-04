@@ -21,12 +21,14 @@
 		</div>
 	<% } %>
 	<% if (user.getRole() == 2) { %>	
-		<h3 class="lead">Add department</h3>
+		<h3 class="lead"><span class="translate" data-lang-key="Add department"></span></h3>
 
 		<form action="<%= basePath %>/department" class="form" method="post"
 			class="form-horizontal">
 			<div class="form-group">
-				<label for="departmentName" class="col-sm-2 control-label">Department name*</label>
+				<label for="departmentName" class="col-sm-2 control-label">
+					<span class="translate" data-lang-key="Department name"></span>*
+				</label>
 				<div class="col-sm-10">
 					<input name="departmentName" type="text" class="form-control"
 						class="departmentName" required autocomplete="off">
@@ -34,7 +36,7 @@
 			</div>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10 add-subject">
-					<button type="submit" class="btn btn-primary">Add department</button>
+					<button type="submit" class="btn btn-primary"><span class="translate" data-lang-key="Add department"></span></button>
 				</div>
 			</div>
 		</form>
@@ -42,18 +44,21 @@
 </div>
 	
 <div class="container">
-	<h1>Departments</h1>
+	<% if (departments.size() == 0) { %>
+		<h1>There are no departments yet</h1>
+	<% } else { %>
+		<h1><span class="translate" data-lang-key="Departments"></span> (<%= departments.size() %>)</h1>
+	<% } %>
 	<table class="table" data-search="true" data-show-columns="true">
-		<% out.print(departments == null ? "Departments are not exists" : ""); %>
 		<thead>
 			<tr>
 				<th data-field="number" data-align="center" data-sortable="true">№</th>
 				<% if (user.getRole() == 2) { %>
 				<th data-field="id" data-align="center" data-sortable="true">ID</th>
 				<% } %>
-				<th data-field="department" data-align="center" data-sortable="true">Department</th>
+				<th data-field="department" data-align="center" data-sortable="true"><span class="translate" data-lang-key="Department"></span></th>
 				<% if (user.getRole() == 2) { %>
-				<th data-field="delete" data-align="center">Delete</th>
+				<th data-field="delete" data-align="center"><span class="translate" data-lang-key="Delete"></span></th>
 				<% } %>
 			</tr>
 		</thead>
@@ -71,7 +76,9 @@
 			        </td>
 			        <% if (user.getRole() == 2) { %>
 			        <td>
-						<button type="button" class="btn btn-danger delete-department-btn" data-id=<%= department.getId() %>>Delete</button>
+						<button type="button" class="btn btn-danger delete-department-btn" data-id=<%= department.getId() %>>
+							<span class="translate" data-lang-key="Delete"></span>
+						</button>
 			        </td>
 			        <% } %>
 			    </tr>

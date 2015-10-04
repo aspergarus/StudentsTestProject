@@ -23,7 +23,6 @@ public class AnswersDAO {
 				query += ",";
 			}
 		}
-		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		int rowsAffected = 0;
@@ -38,13 +37,10 @@ public class AnswersDAO {
 			}
 			rowsAffected = stmt.executeUpdate();
 			
-		} 
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {
 			return rowsAffected > 0;
 		}
-		
 	}
-
 }

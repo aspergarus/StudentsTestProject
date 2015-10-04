@@ -27,11 +27,9 @@ public class LecturesDAO {
 				+ "INNER JOIN stgrelations s ON l.teacher_id = s.teacher_id AND l.subject_id = s.subject_id "
 				+ "WHERE s.group_id = ?";
 			
-		} 
-		else if (user.getRole() == 1) {
+		} else if (user.getRole() == 1) {
 			query = "SELECT * FROM lectures WHERE teacher_id = ? ORDER BY subject_id";
-		}
-		else {
+		} else {
 			query = "SELECT * FROM lectures ORDER BY subject_id";
 		}
 		
