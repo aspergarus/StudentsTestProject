@@ -14,10 +14,10 @@ import config.ConnectionManager;
 public class GroupsDAO {
 	
 	public static ArrayList<GroupBean> findAll() {
-		String query = "SELECT g.id, g.group_name, COUNT(u.groupId) as count_students FROM groups g"
-				+ " INNER JOIN users u ON g.id = u.group_id"
-				+ " WHERE u.role = 0"
-				+ " GROUP BY u.group_id";
+		String query = "SELECT g.*, COUNT(u.group_id) as count_students FROM groups g"
+				+ " LEFT JOIN users u ON g.id = u.group_id"
+				+ " WHERE u.role = 0 OR u.role IS NULL"
+				+ " GROUP BY g.group_name";
 		ArrayList<GroupBean> groups = new ArrayList<>();
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -45,23 +45,18 @@ public class GroupsDAO {
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		ResultSet rs = null;
-
-		ArrayList<String> groups = null;
+		ArrayList<String> groups = new ArrayList<>();
 
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setString(1, "%" + groupName.trim() + "%");
 			rs = stmt.executeQuery();
 
-			groups = new ArrayList<>();
-
 			while (rs.next()) {
 				groups.add(rs.getString("group_name"));
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-		}
-		finally {
+		} finally {
 			return groups;
 		}
 	}
@@ -73,20 +68,17 @@ public class GroupsDAO {
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		ResultSet rs = null;
-		ArrayList<String> groups = null;
+		ArrayList<String> groups = new ArrayList<>();
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, subjectId);
 			stmt.setString(2, "%" + groupName.trim() + "%");
 			
 			rs = stmt.executeQuery();
-			
-			groups = new ArrayList<>();
 
 			while (rs.next()) {
 				groups.add(rs.getString("group_name"));
 			}
-			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
         }
@@ -244,7 +236,6 @@ public class GroupsDAO {
 		} catch (SQLException e) {
         	System.out.println(e.getMessage());
         }
-		
 		return groupsMap;
 	}
 	
@@ -267,7 +258,6 @@ public class GroupsDAO {
 					insertQuery += ",";
 				}
 			}
-				
 				try (PreparedStatement stmt = con.prepareStatement(insertQuery)) {
 					int i = 0;
 					for (int groupId : groupsId) {
@@ -310,7 +300,6 @@ public class GroupsDAO {
 			while (rs.next()) {
 				groupIds.add(rs.getInt("id"));
 			}
-			
 		} catch (SQLException e) {
 	        System.out.println(e.getMessage());
         } finally {
@@ -331,13 +320,11 @@ public class GroupsDAO {
 			stmt.setInt(2, subjectId);
 			
 			rowsAffected = stmt.executeUpdate();
-			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {
 			return rowsAffected > 0;
 		}
-		
 	}
 
 	/**
@@ -373,7 +360,6 @@ public class GroupsDAO {
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} 
-		
 		return groups;
 	}
 	
@@ -402,7 +388,6 @@ public class GroupsDAO {
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
         }
-		
 		if (studentsId.size() == 0) {
 			return false;
 		}
@@ -417,7 +402,6 @@ public class GroupsDAO {
 				insertQuery += ", ";
 			}
 		}
-		
 		try (PreparedStatement stmt = con.prepareStatement(insertQuery)) {
 			int k = 1;
 			for (int i = 0; i < listSize; i++) {

@@ -42,7 +42,4 @@ public class AnswerBean {
 	public void setCorrect(boolean isCorrect) {
 	    this.isCorrect = isCorrect;
     }
-	
-	
-
 }

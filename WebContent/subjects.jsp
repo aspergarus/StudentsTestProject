@@ -53,7 +53,11 @@
 </div>
 	
 <div class="container">
-	<h1>Subjects</h1>
+	<% if (subjects.size() == 0) { %>
+		<h1>There are no subjects yet</h1>
+	<% } else { %>
+		<h1>Subjects (<%= subjects.size() %>)</h1>
+	<% } %>
 	<table class="table" data-search="true" data-show-columns="true">
 		<% out.print(subjects == null ? "Subjects are not exists" : ""); %>
 		<thead>

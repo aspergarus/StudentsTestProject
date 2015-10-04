@@ -81,7 +81,7 @@
 			<h2>You don't have any test. Try to add one.</h2>
 		<% } %>
 	<% } else { %>
-		<h1>Tests</h1>
+		<h1>Tests (<%= tests.size() %>)</h1>
 		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 			<% int i = 0; %>
 			<% for (String subject : tests.keySet()) { %>

@@ -191,7 +191,7 @@ public class DepartmentsDAO {
 	public static HashMap<Integer, String> getDepartmentsMap () {
 		String query = "SELECT * FROM departments";
 		
-		HashMap<Integer, String> departmentsMap = null;
+		HashMap<Integer, String> departmentsMap = new HashMap<>();
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -199,16 +199,15 @@ public class DepartmentsDAO {
 		
 		try (Statement stmnt = con.createStatement()) {
 	        rs = stmnt.executeQuery(query);
+	        
 	        while (rs.next()) {
-	        	departmentsMap = new HashMap<>();
 	        	int departmentId = rs.getInt("id");
 	        	String departmentName = rs.getString("department_name");
 	        	departmentsMap.put(departmentId, departmentName);
 	        }
-		} catch (SQLException e) {
+	    } catch (SQLException e) {
         	System.out.println(e.getMessage());
         }
-		
 		return departmentsMap;
 	}
 }

@@ -80,7 +80,7 @@
 			<h1>There are no any practicals</h1>
 		<% } %>
 	<% } else { %>
-		<h1>Practicals</h1>
+		<h1>Practicals (<%= practicalsMap.size() %>)</h1>
 	<% } %>
 	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 		<% int i = 0; %>

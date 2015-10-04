@@ -9,14 +9,21 @@
   "Users": {"ua": "Юзерята", "en": "Users"},
   "Welcome": {"ua": "Привіт, куме", "en": "Welcome"},
   "Edit profile": {"ua": "Змінити пику", "en": "Edit profile"},
-  "Logout": {"ua": "Пшолнах", "en": "Logout"},
+  "Logout": {"ua": "Вийти", "en": "Logout"},
   "Language": {"ua": "Мова рідна", "en": "Language"},
   "Group": {"ua": "Група", "en": "Group"},
+  "Groups": {"ua": "Групи", "en": "Groups"},
+  "Group name": {"ua": "Назва групи", "en": "Group name"},
+  "Add group": {"ua": "Додати групу", "en" : "Add group"},
+  "Delete": {"ua": "Видалити", "en": "Delete"},
   "Search group using autocomplete or create new": {"ua": "Шукайте групу, або ж створіть нову", "en": "Search group using autocomplete or create new"},
   "Student name": {"ua": "Імя студента", "en": "Student name"},
   "You can find students by first or last name": {"ua": "Ви можете знайти студентів по імені або прізвищу", "en": "You can find students by first or last name"},
   "Add to the list": {"ua": "Добавити в список", "en": "Add to the list"},
   "Students Project": {"ua": "Студентський проект", "en": "Students Project"},
   "Departments": {"ua": "Кафедри", "en": "Departments"},
-  "Groups": {"ua": "Групи", "en": "Groups"}
+  "Add department" : {"ua": "Додати кафедру", "en": "Add department"},
+  "Department name" : {"ua": "Назва кафедри", "en": "Department name"},
+  "Department" : {"ua": "Кафедра", "en": "Department"},
+  "Number of students": {"ua": "Кількість студентів", "en" : "Number of students"}
 }
