@@ -52,6 +52,7 @@
 	<table class="table" data-search="true" data-show-columns="true">
 		<thead>
 			<tr>
+				<th data-field="number" data-align="center" data-sortable="true">№</th>
 				<% if (user.getRole() == 2) { %>
 				<th data-field="id" data-align="center" data-sortable="true">ID</th>
 				<% } %>
@@ -62,8 +63,10 @@
 			</tr>
 		</thead>
 		<tbody>
+			<% int i = 1; %>
 		    <% for (DepartmentBean department: departments) { %>
 				<tr class="department-record">
+					<td><%= i %></td>
 					<% if (user.getRole() == 2) { %>
 			        <td><% out.print(department.getId()); %></td>
 			        <% } %>
@@ -79,6 +82,7 @@
 			        </td>
 			        <% } %>
 			    </tr>
+				<% i++; %>
 			<% } %>
 		</tbody>
 	</table>

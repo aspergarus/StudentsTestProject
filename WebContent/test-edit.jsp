@@ -121,7 +121,10 @@
 							<tr>
 								<% if (answer.isCorrect()) { %>
 									<td class="success"><%= j %></td>
-									<td class="success"><%= answer.getAnswerText() %></td>
+									<td class="success">
+										<span class="tooltip-element tooltip-container" data-placement="right" data-toggle="tooltip" 
+												title="Правильна відповідь"><%= answer.getAnswerText() %></span>
+									</td>
 								<% } else { %>
 									<td class="warning"><%= j %></td>
 									<td class="warning"><%= answer.getAnswerText() %></td>

@@ -4,6 +4,8 @@ $(function () {
 	}
 	$('.table').bootstrapTable();
 	
+	$('.tooltip-element').tooltip();
+	
 	setAutocomplete();
 	
 	function setAutocomplete() {
@@ -498,14 +500,15 @@ $(function () {
 			var status = parseInt($radio.val());
 			
 			if (status == 2) {
-				$('#group').addClass('hidden');
-				$('#department-autocomplete').addClass('hidden');
+				$('#group-autocomplete').addClass('hidden').prop('required', false);
+				$('#department-autocomplete').addClass('hidden').prop('required', false);
+				
 			} else if (status == 1) {
-				$('#group').addClass('hidden');
-				$('#department-autocomplete').removeClass('hidden');
+				$('#group-autocomplete').addClass('hidden').prop('required', false);
+				$('#department-autocomplete').removeClass('hidden').prop('required', true);
 			} else {
-				$('#group').removeClass('hidden');
-				$('#department-autocomplete').addClass('hidden');
+				$('#group-autocomplete').removeClass('hidden').prop('required', true);
+				$('#department-autocomplete').addClass('hidden').prop('required', false);
 			}
 		});
 	}

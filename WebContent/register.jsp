@@ -87,10 +87,10 @@
 			<label for="group" class="col-sm-2 control-label required">Group / Department</label>
 			<div class="col-sm-10">
 				<input name="group" type="text" class="form-control typeahead"
-					id="group" placeholder="Group" required
+					id="group-autocomplete" placeholder="Group" required
 						autocomplete="off" data-autocomplete-url="autocomplete/groups">
 				<input name="department" type="text" class="form-control typeahead hidden"
-					id="department-autocomplete" placeholder="Department" required
+					id="department-autocomplete" placeholder="Department"
 						autocomplete="off" data-autocomplete-url="autocomplete/departments">
 			</div>
 		</div>

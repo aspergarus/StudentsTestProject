@@ -13,6 +13,7 @@ public class UserBean {
 	private String avatarName = "";
 	private int groupId;
 	private String groupName;
+	private long registered;
 	public boolean valid = false;
 
 	public UserBean(String name) {
@@ -20,7 +21,7 @@ public class UserBean {
 	}
 
 	public UserBean(String name, String password, String email,
-			byte role, String firstName, String lastName, String avatarName, int groupId) {
+			byte role, String firstName, String lastName, String avatarName, int groupId, long registered) {
 		this.userName = name;
 		this.email = email;
 		this.role = role;
@@ -28,6 +29,7 @@ public class UserBean {
 		this.lastName = lastName;
 		this.avatarName = avatarName;
 		this.groupId = groupId;
+		this.registered = registered;
 		this.setPassword(password);
 	}
 	
@@ -124,6 +126,13 @@ public class UserBean {
     }
 	public void setGroupName(String groupName) {
 	    this.groupName = groupName;
+    }
+	
+	public long getRegistered() {
+	    return registered;
+    }
+	public void setRegistered(long registered) {
+	    this.registered = registered;
     }
 	
 	public String toString() {

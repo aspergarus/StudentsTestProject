@@ -18,6 +18,7 @@ public class GroupsDAO {
 				+ " LEFT JOIN users u ON g.id = u.group_id"
 				+ " WHERE u.role = 0 OR u.role IS NULL"
 				+ " GROUP BY g.group_name";
+
 		ArrayList<GroupBean> groups = new ArrayList<>();
 		
 		ConnectionManager conM = new ConnectionManager();

@@ -161,6 +161,7 @@ public class InstallConnect {
 						+ "status tinyint(1) DEFAULT '1', "
 						+ "avatar_name varchar(128) DEFAULT '', "
 						+ "group_id int(11) NOT NULL, "
+						+ "registered BIGINT(20) NOT NULL, "
 						+ "PRIMARY KEY (id));";
 		tablesQuery.put("users", usersQuery);
 		
