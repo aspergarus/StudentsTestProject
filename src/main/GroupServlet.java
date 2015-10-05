@@ -51,7 +51,7 @@ public class GroupServlet extends HttpServlet {
 			
 			ArrayList<GroupBean> groups = GroupsDAO.findAll();
 			request.setAttribute("groupsList", groups);
-			request.getRequestDispatcher("groups.jsp").forward(request, response);
+			request.getRequestDispatcher("/groups.jsp").forward(request, response);
 		}
 	}
 

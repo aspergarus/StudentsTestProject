@@ -318,8 +318,33 @@ public class TestsDAO {
 				System.out.println(e.getMessage());
 	        }
 		}
-		
 		return newStudents;
+	}
+	
+	public static boolean canTesting(UserBean user, int testId) {
+		if (user.getRole() > 0) {
+			return true;
+		}
+		String query = "SELECT * FROM open_tests"
+				+ " WHERE student_id = ? AND test_id = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		ResultSet rs = null;
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			
+			stmt.setInt(1, user.getId());
+			stmt.setInt(2, testId);
+			rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+	        System.out.println(e.getMessage());
+        }
+		return false;
 	}
 	
 }
