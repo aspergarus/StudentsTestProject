@@ -1,6 +1,7 @@
 package beans;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class QuestionBean {
 	
@@ -8,12 +9,19 @@ public class QuestionBean {
 	private int testId;
 	private String questionText;
 	private ArrayList<AnswerBean> answers;
+	private List<String> trueAnswers;
 	
 	public QuestionBean(int id, int testId, String questionText) {
 		this.setId(id);
 		this.setTestId(testId);
 		this.setQuestionText(questionText);
 		answers = new ArrayList<>();
+	}
+	
+	public QuestionBean(int id, int testId, List<String> trueAnswers) {
+		this.setId(id);
+		this.setTestId(testId);
+		this.setTrueAnswers(trueAnswers);
 	}
 	
 	public QuestionBean(int testId, String questionText) {
@@ -70,4 +78,12 @@ public class QuestionBean {
 	public void addAnswer(AnswerBean answer) {
 		answers.add(answer);
 	}
+
+	public List<String> getTrueAnswers() {
+	    return trueAnswers;
+    }
+
+	public void setTrueAnswers(List<String> trueAnswers) {
+	    this.trueAnswers = trueAnswers;
+    }
 }

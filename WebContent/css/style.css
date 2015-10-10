@@ -289,3 +289,19 @@ ol {
 	display: inline-block;
 	width: 100%;
 }
+.answer-text {
+	font-size: 1.5em;
+}
+#next-question, #miss-question {
+	margin-top: 1%;
+	margin-left: 1%;
+}
+.hidden {
+	display: none;
+}
+.current {
+	display: block;
+}
+.test-result {
+	text-align: center;
+}

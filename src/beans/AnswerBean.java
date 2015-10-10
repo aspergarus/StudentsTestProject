@@ -7,10 +7,17 @@ public class AnswerBean {
 	private String answerText;
 	private boolean isCorrect;
 	
+	public AnswerBean(int answerId, int questionId, String answerText, boolean isCorrect) {
+		this.answerId = answerId;
+		this.questionId = questionId;
+		this.answerText = answerText;
+		this.isCorrect = isCorrect;
+	}
+	
 	public AnswerBean(int questionId, String answerText, boolean isCorrect) {
-		this.setQuestionId(questionId);
-		this.setAnswerText(answerText);
-		this.setCorrect(isCorrect);
+		this.questionId = questionId;
+		this.answerText = answerText;
+		this.isCorrect = isCorrect;
 	}
 	
 	public AnswerBean() { }

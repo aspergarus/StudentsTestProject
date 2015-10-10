@@ -62,7 +62,6 @@
 		<% out.print(subjects == null ? "Subjects are not exists" : ""); %>
 		<thead>
 			<tr>
-				<th data-field="number" data-align="center" data-sortable="true">№</th>
 				<% if (user.getRole() == 2) { %>
 				<th data-field="id" data-align="center" data-sortable="true">ID</th>
 				<% } %>
@@ -75,10 +74,8 @@
 			</tr>
 		</thead>
 		<tbody>
-			<% int i = 1; %>
 		    <% for (SubjectsBean subject: subjects) { %>
 				<tr>
-					<td><%= i %></td>
 					<% if (user.getRole() == 2) { %>
 			        <td><% out.print(subject.getId()); %></td>
 			        <% } %>
@@ -92,7 +89,6 @@
 			        </td>
 			        <% } %>
 			    </tr>
-			    <% i++; %>
 			<% } %>
 		</tbody>
 	</table>

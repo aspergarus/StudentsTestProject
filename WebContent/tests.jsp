@@ -82,79 +82,100 @@
 		<% } %>
 	<% } else { %>
 		<h1>Tests (<%= tests.size() %>)</h1>
+		<% if (currentUser.getRole() > 0) { %>
 		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 			<% int i = 0; %>
 			<% for (String subject : tests.keySet()) { %>
-			<% i++; %>
-			<div class="panel panel-default">
-				<div class="panel-heading" role="tab" id="heading-<%= i %>">
-					<h4 class="panel-title">
-						<a class="subject-<%= i %>" data-toggle="collapse" data-parent="#accordion" href="#collapse-<%= i %>" aria-controls="collapse-<%= i %>">
-						  <%= subject %>
-						</a>
-					</h4>
-				</div>
-	
-				<div id="collapse-<%= i %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-<%= i %>">
-					<div class="panel-body">
-					
-					<% if (currentUser.getRole() > 0) { %>
-						<p class="help-block">Share this subject to groups:
-							<input type="text" class="tokenfield" value="<%= groups.get(subject) == null ? "" :  groups.get(subject) %>" name="groupName" required autocomplete="off" />
-							<input type="submit" value="Share" class="btn btn-info btn-share assign-subject-group" data-num="<%= i %>" data-subject="<%= subject %>">
-						</p>
-					<% } %>
-						
-						<table class="table">
-							<thead>
-								<tr>
-									<th data-field="title" data-align="center" data-sortable="true">Subject</th>
-									<th data-field="teacher" data-align="center" data-sortable="true">Teacher</th>
-									<th data-field="module" data-align="center" data-sortable="true">Module</th>
-									<% if (currentUser.getRole() == 1) { %>
-										<th data-field="note" data-align="center" data-sortable="true">Note</th>
-									<% } %>
-									<% if (currentUser.getRole() > 0) { %>
+				<% i++; %>
+				<div class="panel panel-default">
+					<div class="panel-heading" role="tab" id="heading-<%= i %>">
+						<h4 class="panel-title">
+							<a class="subject-<%= i %>" data-toggle="collapse" data-parent="#accordion" href="#collapse-<%= i %>" aria-controls="collapse-<%= i %>">
+							  <%= subject %>
+							</a>
+						</h4>
+					</div>
+		
+					<div id="collapse-<%= i %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-<%= i %>">
+						<div class="panel-body">
+							<p class="help-block">Share this subject to groups:
+								<input type="text" class="tokenfield" value="<%= groups.get(subject) == null ? "" :  groups.get(subject) %>" name="groupName" required autocomplete="off" />
+								<input type="submit" value="Share" class="btn btn-info btn-share assign-subject-group" data-num="<%= i %>" data-subject="<%= subject %>">
+							</p>
+							<table class="table">
+								<thead>
+									<tr>
+										<th data-field="title" data-align="center" data-sortable="true">Subject</th>
+										<th data-field="teacher" data-align="center" data-sortable="true">Teacher</th>
+										<th data-field="module" data-align="center" data-sortable="true">Module</th>
+										<% if (currentUser.getRole() == 1) { %>
+											<th data-field="note" data-align="center" data-sortable="true">Note</th>
+										<% } %>
 										<th data-field="edit" data-align="center">Edit</th>
 										<th data-field="open" data-align="center">Open</th>
+										<th data-field="start" data-align="center">Begin Test</th>
 										<th data-field="delete" data-align="center">Delete</th>
-									<% } %>
-								</tr>
-							</thead>
-							<tbody>
-							<% for (TestBean test : tests.get(subject)) { %>
-								<tr>
-									<td><%= subjects.get(test.getSubjectId()) %></td>
-									<td><%= teachers.get(test.getTeacherId()) %></td>
-									<td>
-										<span class="transformer-text" data-path="tests" data-id=<%= test.getId() %>><%= test.getModule() %></span>
-										<input type="text" style="display: none">
-									</td>
-									<% if (currentUser.getRole() == 1) { %>
+									</tr>
+								</thead>
+								<tbody>
+								<% for (TestBean test : tests.get(subject)) { %>
+									<tr>
+										<td><%= subjects.get(test.getSubjectId()) %></td>
+										<td><%= teachers.get(test.getTeacherId()) %></td>
 										<td>
-											<span class="transformer-text" data-path="tests" data-id=<%= test.getId() %>>
-												<%= (!test.getNote().equals("")) ? test.getNote() : "-" %>
-											</span>
+											<span class="transformer-text" data-path="tests" data-id=<%= test.getId() %>><%= test.getModule() %></span>
 											<input type="text" style="display: none">
 										</td>
-									<% } %>
-									<% if (currentUser.getRole() > 0) { %>
+										<% if (currentUser.getRole() == 1) { %>
+											<td>
+												<span class="transformer-text" data-path="tests" data-id=<%= test.getId() %>>
+													<%= (!test.getNote().equals("")) ? test.getNote() : "-" %>
+												</span>
+												<input type="text" style="display: none">
+											</td>
+										<% } %>
 										<td><a href="test/<%= test.getId() %>">Edit</a></td>
 										<td><a href="openTest?id=<%= test.getId() %>">Open</a></td>
+										<td><button class="btn btn-success">Begin Test</button></td>
 										<td>
 											<button class="btn btn-danger delete-item" data-id="<%= test.getId() %>" 
 												data-path="/tests">Delete</button>
 										</td>
-									<% } %>
-								</tr>
-							<% } %>
-							</tbody>
-						</table>
+									</tr>
+								<% } %>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
-			</div>
 			<% } %>
 		</div>
+		<% } else { %>
+			<div class="container">
+	    		<table class="table">
+					<thead>
+						<tr>
+							<th data-field="subject" data-align="center">Subject</th>
+							<th data-field="teacher" data-align="center">Teacher</th>
+							<th data-field="module" data-align="center">Module</th>
+							<th data-field="begin" data-align="center">Begin test</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% for (String subject : tests.keySet()) { %>
+							<% for (TestBean test : tests.get(subject)) { %>
+								<tr>
+									<td><%= subject %></td>
+									<td><%= teachers.get(test.getTeacherId()) %></td>
+									<td><%= test.getModule() %></td>
+									<td><a href="testing/<%= test.getId() %>"><button class="btn btn-success">Begin Test</button></a></td>	
+								</tr>
+							<% } %>
+						<% } %>		
+					</tbody>
+				</table>
+			</div>
+		<% } %>
 	<% } %>
 </div>
 
