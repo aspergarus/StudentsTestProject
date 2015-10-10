@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 import beans.AnswerBean;
 import beans.QuestionBean;
@@ -102,10 +104,11 @@ public class QuestionDAO {
 			rs = stmt.executeQuery();
 			
 			while(rs.next()) {
+				int answerId = rs.getInt("id");
 				int questionId = rs.getInt("question_id");
 				String answerText = rs.getString("answer_text");
 				boolean isCorrect = rs.getBoolean("correct");
-				AnswerBean answer = new AnswerBean(questionId, answerText, isCorrect);
+				AnswerBean answer = new AnswerBean(answerId, questionId, answerText, isCorrect);
 				answers.add(answer);
 			}
 		} catch (SQLException e) {
@@ -159,5 +162,51 @@ public class QuestionDAO {
 			System.out.println(e.getMessage());
 		}
 		return rowsAffected > 0;
+	}
+	
+	public static HashMap<Integer, int[]> getQuestionsWithTrueAnswers(int[] questionsId) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < questionsId.length; i++) {
+			sb.append("?");
+			if (i < questionsId.length - 1) {
+				sb.append(",");
+			}
+		}
+		String symbols = sb.toString();
+		
+		String query = "SELECT q.id, GROUP_CONCAT(a.id) as answer_id FROM questions q"
+				+ " INNER JOIN answers a"
+				+ " ON q.id = a.question_id"
+				+ " WHERE q.id IN ("
+				+ symbols
+				+ ")"
+				+ " AND a.correct = 1"
+				+ " GROUP BY q.id";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		ResultSet rs = null;
+		
+		HashMap<Integer, int[]> questions = new HashMap<>();
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			for (int i = 0; i < questionsId.length; i++) {
+				stmt.setInt(i + 1, questionsId[i]);
+			}
+			
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				int questionId = rs.getInt("id");
+				String answerIds = rs.getString("answer_id");
+				// Convert String Array to int Array
+				int[] answers = Arrays.asList(answerIds.split(",")).stream().mapToInt(Integer::parseInt).toArray();
+				
+				questions.put(questionId, answers);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return questions;
 	}
 }

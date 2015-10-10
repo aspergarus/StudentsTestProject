@@ -566,4 +566,29 @@ $(function () {
 		});
 	}
 	
+	setFirstQuestion();
+	
+	function setFirstQuestion() {
+		$('.question-block').first().removeClass('hidden').addClass('current');
+	}
+	
+	seeNextQuestion();
+	
+	function seeNextQuestion() {
+		var numberQuestions = $('.question-block').length;
+		var counter = 1;
+		$('#next-question').on('click', function() {
+			if (counter < numberQuestions) {
+				$('.current').removeClass('current').addClass('hidden').next().addClass('current').removeClass('hidden');
+				counter++;
+			} else {
+				$('.current').removeClass('current').addClass('hidden');
+				$('#next-question').addClass('hidden');
+				$('#miss-question').addClass('hidden');
+				$('.test-complete-info').removeClass('hidden');
+				$('input[type=submit]').removeClass('hidden');
+			}
+		});
+	}
+	
 });

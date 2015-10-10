@@ -2,6 +2,7 @@ package main;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import dao.QuestionDAO;
 import dao.TestsDAO;
 import beans.QuestionBean;
+import beans.QuestionAnswersBean;
 import beans.UserBean;
 
 /**
@@ -53,6 +55,7 @@ public class TestingServlet extends HttpServlet {
 			} else {
 				ArrayList<QuestionBean> questions = QuestionDAO.getQuestions(testId);
 				request.setAttribute("status", "success");
+				request.setAttribute("testId", testId);
 				request.setAttribute("questions", questions);
 				request.getRequestDispatcher("/testing.jsp").forward(request, response);
 			}
@@ -64,7 +67,43 @@ public class TestingServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		HttpSession session = request.getSession(false);
+		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+		
+		if (user == null) {
+			response.sendError(403);
+		} else {
+			int testId = Integer.parseInt(request.getParameter("test-id"));
+			int questionsNumber = Integer.parseInt(request.getParameter("questions-number"));
+			List<QuestionAnswersBean> questionAnswers = new ArrayList<>();
+			
+			for (int i = 0; i < questionsNumber; i++) {
+				String sQuestionId = request.getParameter("question-id" + i);
+				String sAnswerId = request.getParameter("answer-to-question" + i);
+				
+				if (sQuestionId != null && sAnswerId != null) {
+					int questionId = Integer.parseInt(sQuestionId);
+					int answerId = Integer.parseInt(sAnswerId);
+					QuestionAnswersBean questionAnswer = new QuestionAnswersBean(questionId, answerId);
+					questionAnswers.add(questionAnswer);
+					
+				}
+			}
+			int result = 0;
+			if (questionAnswers.size() > 0) {
+				result = TestsDAO.getResult(questionAnswers);
+				long completed = System.currentTimeMillis();
+				
+				if (user.getRole() == 0) {
+					TestsDAO.saveResult(user, testId, result, completed);
+					TestsDAO.closeTest(testId, user);
+				}
+				request.setAttribute("status", "success");
+				request.setAttribute("result", result);
+				request.getRequestDispatcher("/test-result.jsp").forward(request, response);
+			}
+			
+		}
 	}
 
 }

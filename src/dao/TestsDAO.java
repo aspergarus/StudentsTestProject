@@ -6,8 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import config.ConnectionManager;
+import beans.QuestionAnswersBean;
 import beans.TestBean;
 import beans.UserBean;
 
@@ -321,6 +323,28 @@ public class TestsDAO {
 		return newStudents;
 	}
 	
+	public static boolean closeTest(int testId, UserBean student) {
+		String query = "DELETE FROM open_tests"
+				+ " WHERE test_id = ?"
+				+ " AND student_id = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		int rowsAffected = 0;
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			
+			stmt.setInt(1, testId);
+			stmt.setInt(2, student.getId());
+			
+			rowsAffected = stmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return rowsAffected > 0;
+	}
+	
 	public static boolean canTesting(UserBean user, int testId) {
 		if (user.getRole() > 0) {
 			return true;
@@ -347,4 +371,74 @@ public class TestsDAO {
 		return false;
 	}
 	
+	public static int getResult(List<QuestionAnswersBean> questionAnswers) {
+		
+		int listSize = questionAnswers.size();
+		int [] questionsId = new int[listSize];
+		
+		for (int i = 0; i < listSize; i++) {
+			questionsId[i] = questionAnswers.get(i).getQuestionId();
+		}
+		HashMap<Integer, int []> questionsMap = QuestionDAO.getQuestionsWithTrueAnswers(questionsId);
+		double result = 0;
+		
+		for (QuestionAnswersBean question : questionAnswers) {
+			int questionId = question.getQuestionId();
+			int[] userAnswers = question.getAnswers();
+			int[] trueAnswers = questionsMap.get(questionId);
+			
+			// calculate the result
+			result += calcMark(userAnswers, trueAnswers);	
+		}
+		return (int)Math.round(result);
+	}
+	
+	private static double calcMark(int[] userAnswers, int[] trueAnswers) {
+		double mark = 0;
+		int count = 0;
+		int numTrueAnswers = trueAnswers.length;
+		int numUserAnswers = userAnswers.length;
+		
+		if (trueAnswers.length > 1) {
+			for (int i = 0; i < numTrueAnswers; i++) {
+				for (int j = 0; j < numUserAnswers; j++) {
+					if (trueAnswers[i] == userAnswers[j]) {
+						count++;
+					}
+				}
+			}
+			if (numTrueAnswers >= numUserAnswers) {
+				mark = (double)count / numTrueAnswers;
+			} else {
+				mark = (double) count / numUserAnswers;
+			}
+			
+		} else {
+			if (trueAnswers[0] == userAnswers[0]) {
+				mark = 1;
+			}
+		}
+		return mark;
+	}
+	
+	public static boolean saveResult(UserBean user, int testId, int result, long completed) {
+		String query = "INSERT INTO test_result (student_id, test_id, result, completed)"
+				+ " VALUES (?,?,?,?)";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		int rowsAffected = 0;
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, user.getId());
+			stmt.setInt(2, testId);
+			stmt.setInt(3, result);
+			stmt.setLong(4, completed);
+			rowsAffected = stmt.executeUpdate();
+			
+		} catch (SQLException e) {
+	        System.out.println(e.getMessage());
+        }
+		return rowsAffected > 0;
+	}
 }
