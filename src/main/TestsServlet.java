@@ -103,10 +103,9 @@ public class TestsServlet extends HttpServlet {
 				session.setAttribute("message", "Some troubles were occurred during addition a test");
 			}
 		}
-			
-			response.sendRedirect(request.getContextPath() + "/tests");
-			return;
-		}
+		response.sendRedirect(request.getContextPath() + "/tests");
+		return;
+	}
 	
 	
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

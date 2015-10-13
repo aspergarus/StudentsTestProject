@@ -24,9 +24,9 @@ public class TestsDAO {
 		} else if (user.getRole() == 1) {
 			query = "SELECT * FROM tests WHERE teacher_id = ?";
 		} else {
-			query = "SELECT * FROM tests t INNER JOIN open_tests ot"
-					+ " ON t.id = ot.test_id"
-					+ " WHERE ot.student_id = ?";
+			query = "SELECT * FROM tests t INNER JOIN test_students ts"
+					+ " ON t.id = ts.test_id"
+					+ " WHERE ts.student_id = ?";
 		}
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -195,10 +195,10 @@ public class TestsDAO {
         }
 	}
 	
-	public static ArrayList<UserBean> getTestStudents(int testId) {
+	public static ArrayList<UserBean> getReadyStudents(int testId) {
 		String query = "SELECT u.id, first_name, last_name, u.group_id FROM users u"
 				+ " INNER JOIN stgrelations stg ON u.group_id = stg.group_id"
-				+ "	INNER JOIN ready_students ot ON ot.student_id = u.id"
+				+ "	INNER JOIN ready_students rs ON rs.student_id = u.id"
 				+ " WHERE test_id = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -231,7 +231,7 @@ public class TestsDAO {
 		int listSize = newStudents.size();
 		
 		if (listSize > 0) {
-			String query = "INSERT INTO open_tests (test_id, student_id, group_id)"
+			String query = "INSERT INTO test_students (test_id, student_id, group_id)"
 					+ " VALUES ";
 			
 			ConnectionManager conM = new ConnectionManager();
@@ -272,7 +272,7 @@ public class TestsDAO {
 		}
 		ArrayList<UserBean> newStudents = new ArrayList<>();
 		
-		String query = "SELECT student_id FROM open_tests";
+		String query = "SELECT student_id FROM test_students";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -324,7 +324,7 @@ public class TestsDAO {
 	}
 	
 	public static boolean closeTest(int testId, UserBean student) {
-		String query = "DELETE FROM open_tests"
+		String query = "DELETE FROM test_students"
 				+ " WHERE test_id = ?"
 				+ " AND student_id = ?";
 		
@@ -349,7 +349,7 @@ public class TestsDAO {
 		if (user.getRole() > 0) {
 			return true;
 		}
-		String query = "SELECT * FROM open_tests"
+		String query = "SELECT * FROM test_students"
 				+ " WHERE student_id = ? AND test_id = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -440,5 +440,30 @@ public class TestsDAO {
 	        System.out.println(e.getMessage());
         }
 		return rowsAffected > 0;
+	}
+	
+	public static ArrayList<Integer> getTestStudents(int testId) {
+		String query = "SELECT u.id FROM users u"
+				+ "	INNER JOIN test_students ts ON ts.student_id = u.id"
+				+ " WHERE ts.test_id = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		ResultSet rs = null;
+		
+		ArrayList<Integer> studentsIdList = new ArrayList<>();
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, testId);
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				int studentId = rs.getInt("id");
+				studentsIdList.add(studentId);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+        }
+		return studentsIdList;
 	}
 }

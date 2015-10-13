@@ -108,7 +108,6 @@ public class SubjectServlet extends HttpServlet {
 				session.setAttribute("status", "danger");
 				session.setAttribute("message", errorMessage);
 			}
-			
 			response.sendRedirect(request.getContextPath() + "/subjects");
 		}
 	}

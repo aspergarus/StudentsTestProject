@@ -290,7 +290,8 @@ ol {
 	width: 100%;
 }
 .answer-text {
-	font-size: 1.5em;
+	font-size: 22px;
+	font-weight: 400;
 }
 #next-question, #miss-question {
 	margin-top: 1%;
@@ -304,4 +305,7 @@ ol {
 }
 .test-result {
 	text-align: center;
+}
+.radio {
+	margin-top: 8px;
 }

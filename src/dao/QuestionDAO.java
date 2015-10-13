@@ -119,6 +119,9 @@ public class QuestionDAO {
 			for (int i = 0; i < answers.size(); i++) {
 				if (answers.get(i).getQuestionId() == question.getId()) {
 					question.addAnswer(answers.get(i));
+					if (answers.get(i).isCorrect()) {
+						question.addTrueAnswers();
+					}
 				}
 			}
 		}
@@ -128,7 +131,7 @@ public class QuestionDAO {
 	public static boolean delete(int questionId) {
 		String query = "DELETE FROM questions WHERE id = ?";
 		
-		if(deleteAnswers(questionId)) {
+		if (deleteAnswers(questionId)) {
 			
 			ConnectionManager conM = new ConnectionManager();
 			Connection con = conM.getConnection();

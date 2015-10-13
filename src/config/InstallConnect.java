@@ -21,7 +21,7 @@ public class InstallConnect {
 	// Required tables
 	private static String[] requiredTables = {"comments", "departments", "files", "groups",
 											"lectures", "practicals", "stgrelations", "subjects",
-											"users", "tests", "questions", "answers", "open_tests", "ready_students", "test_result"};
+											"users", "tests", "questions", "answers", "test_students", "ready_students", "test_result"};
 	
 	public static int testConnect() {
 		
@@ -192,12 +192,12 @@ public class InstallConnect {
 				+ "PRIMARY KEY (answer_id));";
 		tablesQuery.put("answers", answersQuery);
 		
-		//open_tests
-		String openTestsQuery = "CREATE TABLE open_tests "
+		//test_students
+		String testStudentsQuery = "CREATE TABLE test_students "
 				+ "(test_id INT(11) NOT NULL, "
 				+ "student_id INT(11) NOT NULL, "
 				+ "group_id INT(11) NOT NULL)";
-		tablesQuery.put("open_tests", openTestsQuery);
+		tablesQuery.put("open_tests", testStudentsQuery);
 		
 		//ready_students
 		String readyStudentsQuery = "CREATE TABLE ready_students "

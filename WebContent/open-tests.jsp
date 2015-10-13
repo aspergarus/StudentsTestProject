@@ -11,6 +11,7 @@
 <% String message = (String) request.getAttribute("message"); %>
 <% TestBean currentTest = (TestBean) request.getAttribute("currentTest"); %>
 <% ArrayList<UserBean> students = (ArrayList<UserBean>) request.getAttribute("students"); %>
+<% ArrayList<Integer> testStudentsId = (ArrayList<Integer>) request.getAttribute("testStudentsId"); %>
 <% HashMap<Integer, String> groupsMap = (HashMap<Integer, String>) request.getAttribute("groupsMap"); %>
 
 <%@ include file="header.jsp" %>
@@ -84,7 +85,14 @@
 					<td><% out.print(groupsMap.get(student.getGroupId())); %></td>
 			        <td><% out.print(student.getFirstName()); %></td>
 			        <td><% out.print(student.getLastName()); %></td>
-			        <td><input type="checkbox" class="selected-student"><input type="hidden" value="<%= student.getId() %>"></td>
+			        <td>
+				        <% if (testStudentsId.contains(student.getId())) { %>
+				        	<input type="checkbox" class="selected-student" checked>
+				        <% } else { %>
+				        	<input type="checkbox" class="selected-student">
+				        <% } %>
+				        <input type="hidden" value="<%= student.getId() %>">
+			        </td>
 			    </tr>
 				<% i++; %>
 			<% } %>
