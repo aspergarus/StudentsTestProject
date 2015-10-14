@@ -300,6 +300,9 @@ ol {
 .hidden {
 	display: none;
 }
+.completed, .uncompleted {
+	display: none;
+}
 .current {
 	display: block;
 }

@@ -227,8 +227,10 @@ public class TestsDAO {
 	}
 	
 	public static boolean openTest(int[] studentsId, int testId) {
-		ArrayList<UserBean> newStudents = getNewStudents(studentsId, testId);
-		int listSize = newStudents.size();
+		
+		ArrayList<UserBean> students = getStudents(studentsId, testId);
+		
+		int listSize = students.size();
 		
 		if (listSize > 0) {
 			String query = "INSERT INTO test_students (test_id, student_id, group_id)"
@@ -247,7 +249,7 @@ public class TestsDAO {
 					
 			try (PreparedStatement stmt = con.prepareStatement(query)) {
 				int i = 0;
-				for (UserBean student : newStudents) {
+				for (UserBean student : students) {
 					stmt.setInt(i + 1, testId);
 					stmt.setInt(i + 2, student.getId());
 					stmt.setInt(i + 3, student.getGroupId());
@@ -264,49 +266,31 @@ public class TestsDAO {
 		}
 	}
 	
-	public static ArrayList<UserBean> getNewStudents(int[] studentsId, int testId) {
+	public static ArrayList<UserBean> getStudents(int[] studentsId, int testId) {
+		int size = studentsId.length;
+		String query = "";
+		ArrayList<UserBean> students = new ArrayList<>();
 		
-		ArrayList<Integer> ids = new ArrayList<>();
-		for (int i = 0; i < studentsId.length; i++) {
-			ids.add(studentsId[i]);
-		}
-		ArrayList<UserBean> newStudents = new ArrayList<>();
-		
-		String query = "SELECT student_id FROM test_students";
-		
-		ConnectionManager conM = new ConnectionManager();
-		Connection con = conM.getConnection();
-		ResultSet rs = null;
-		
-		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			rs = stmt.executeQuery();
-			while(rs.next()) {
-				int id = rs.getInt("student_id");
-				ids.remove(new Integer(id));
-			}
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-        }
-		
-		
-		int listSize = ids.size();
-		
-		if (listSize > 0) {
+		if (size > 0) {
 			query = "SELECT id, first_name, last_name, group_id FROM users WHERE id IN (";
-			for (int i = 0; i < listSize; i++) {
+			for (int i = 0; i < size; i++) {
 				query += "?";
-				if (i != listSize - 1) {
+				if (i != size - 1) {
 					query += ", ";
 				}
 			}
 			query += ")";
+				
+			ConnectionManager conM = new ConnectionManager();
+			Connection con = conM.getConnection();
+			ResultSet rs = null;
 			
 			try (PreparedStatement stmt = con.prepareStatement(query)) {
-				for (int i = 0; i < listSize; i++) {
-					stmt.setInt(i + 1, ids.get(i));
+				for (int i = 0; i < size; i++) {
+					stmt.setInt(i + 1, studentsId[i]);
 				}
 				rs = stmt.executeQuery();
-				
+					
 				while(rs.next()) {
 					int id = rs.getInt("id");
 					String firstName = rs.getString("first_name");
@@ -314,13 +298,13 @@ public class TestsDAO {
 					int groupId = rs.getInt("group_id");
 					
 					UserBean student = new UserBean(id, firstName, lastName, groupId);
-					newStudents.add(student);
+					students.add(student);
 				}
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
-	        }
+		    }
 		}
-		return newStudents;
+		return students;
 	}
 	
 	public static boolean closeTest(int testId, UserBean student) {
@@ -336,6 +320,25 @@ public class TestsDAO {
 			
 			stmt.setInt(1, testId);
 			stmt.setInt(2, student.getId());
+			
+			rowsAffected = stmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return rowsAffected > 0;
+	}
+	
+	public static boolean closeTest(int testId) {
+		String query = "DELETE FROM test_students"
+				+ " WHERE test_id = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		int rowsAffected = 0;
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, testId);
 			
 			rowsAffected = stmt.executeUpdate();
 			

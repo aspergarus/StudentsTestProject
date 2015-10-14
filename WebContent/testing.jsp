@@ -25,7 +25,7 @@
 			<form action="<%= basePath %>/testing/" id="testing-form" method="post" class="form-horizontal" >
 				<% int i = 0; %>
 				<% for(QuestionBean question : questions) { %>
-					<div class="row question-block hidden">
+					<div class="row question-block uncompleted">
 		               		<div class="form-group">
 			                    <h2 class="question-text"><%= question.getQuestionText() %></h2>
 			                   	<input type="hidden" name="question-id<%= i %>" value="<%= question.getId() %>">

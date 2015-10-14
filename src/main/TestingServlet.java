@@ -108,8 +108,6 @@ public class TestingServlet extends HttpServlet {
 				session.setAttribute("result", result);
 				response.sendRedirect(request.getContextPath() + "/result");
 			}
-			
 		}
 	}
-
 }
