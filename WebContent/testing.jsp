@@ -77,5 +77,12 @@
 			<h2>Timer</h2>
 		</div>
 	</div>
+	<script>
+	$(window).on('beforeunload', function(){
+		if ($('.uncompleted').length > 0) {
+			return "Be careful! The test will start over!";
+		}
+	});
+	</script>
 	
 <%@ include file="footer.jsp" %>
