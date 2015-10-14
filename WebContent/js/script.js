@@ -606,4 +606,47 @@ $(function () {
 		});
 	}
 	
+	removeStudentsFromReady();
+	
+	function removeStudentsFromReady () {
+		$('#clear-ready-students').on('click', function() {
+			var testId = $('input[name=id]').attr('value');
+			
+			$.ajax(basePath + "/openTest", {
+				headers: {testId : testId},
+				method: "DELETE",
+				success: function(result) {
+					$('tbody tr').remove();
+					$('tbody').append('<tr class="no-records-found"><td colspan="6">No matching records found</td></tr>');
+				},
+				error: function () {
+					$('body > .container').prepend($('<div></div>').addClass('alert alert-warning').text("Some errors."));
+				}
+			});
+		});
+	}
+	
+	removeStudentFromReady();
+	
+	function removeStudentFromReady () {
+		$('.remove-student').on('click', function() {
+			$this = $(this);
+			
+			var testId = $('input[name=id]').attr('value');
+			$parent = $this.parent();
+			var studentId = $parent.find('input[type=hidden]').attr('value');
+			
+			$.ajax(basePath + "/openTest", {
+				headers: {studentId : studentId, testId : testId},
+				method: "DELETE",
+				success: function(result) {
+					$parent.parent().remove();
+				},
+				error: function () {
+					$('body > .container').prepend($('<div></div>').addClass('alert alert-warning').text("Some errors."));
+				}
+			});
+		});
+	}
+	
 });
