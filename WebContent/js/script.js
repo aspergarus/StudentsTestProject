@@ -458,7 +458,7 @@ $(function () {
 		$('#open-test-to-students').click(function() {
 			var studentsId = "";
 			var testId = $('input[name=id]').attr('value');
-			var count = 0;
+
 			$('.selected-student').each(function() {
 				$this = $(this);
 				var i = 0;
@@ -467,28 +467,26 @@ $(function () {
 					var id = $parent.find('input[type=hidden]').attr('value');
 					studentsId += id;
 					studentsId += ",";
-					count++;
 				}
 			});
 			
-			if (count > 0) {
-				$.ajax(basePath + "/openTest", {
-					headers: {testId : testId, studentsId : studentsId },
-					method: "PUT",
-					success: function(result) {
-						$('.alert').remove();
-						if (result.trim().localeCompare("Success") == 0) {
-							$('.page-header').before('<div class="alert alert-success"><p>Test has been opened</p></div>');
-						} else {
-							$('.page-header').before('<div class="alert alert-danger"><p>Some troubles were occurred during opening the test</p></div>');
-						}
-					},
-					error: function() {
-						$('.alert').remove();
+			$.ajax(basePath + "/openTest", {
+				headers: {testId : testId, studentsId : studentsId },
+				method: "PUT",
+				success: function(result) {
+					$('.alert').remove();
+					if (result.trim().indexOf("Error") > -1) {
 						$('.page-header').before('<div class="alert alert-danger"><p>Some troubles were occurred during opening the test</p></div>');
+					} else {
+						$('.page-header').before('<div class="alert alert-success"><p>Test has been opened</p></div>');
 					}
-				});
-			}
+				},
+				error: function() {
+					$('.alert').remove();
+					$('.page-header').before('<div class="alert alert-danger"><p>Some troubles were occurred during opening the test</p></div>');
+				}
+			});
+			
 		});
 	}
 	
@@ -576,18 +574,89 @@ $(function () {
 	
 	function seeNextQuestion() {
 		var numberQuestions = $('.question-block').length;
-		var counter = 1;
-		$('#next-question').on('click', function() {
-			if (counter < numberQuestions) {
-				$('.current').removeClass('current').addClass('hidden').next().addClass('current').removeClass('hidden');
-				counter++;
-			} else {
-				$('.current').removeClass('current').addClass('hidden');
-				$('#next-question').addClass('hidden');
-				$('#miss-question').addClass('hidden');
-				$('.test-complete-info').removeClass('hidden');
-				$('input[type=submit]').removeClass('hidden');
+		var completed = 0;
+		
+		$('body').on('click', '#next-question', function() {
+			var hasAnswer = false;
+			
+			$('.current label input').each(function() {
+				$this = $(this);
+				if (($this).prop('checked')) {
+					hasAnswer = true;
+				}
+			});
+			
+			if (hasAnswer) {
+				$current = $('.current').removeClass('current').removeClass('uncompleted').addClass('completed');
+				
+				if ($current.next('.uncompleted').length > 0) {
+					$current.next().addClass('current');
+				} else {
+					$('.uncompleted').first().addClass('current').removeClass('uncompleted');
+				}
+				completed++;
+				
+				if (completed === numberQuestions) {
+					$('#next-question').addClass('hidden');
+					$('#miss-question').addClass('hidden');
+					$('.test-complete-info').removeClass('hidden');
+					$('input[type=submit]').removeClass('hidden');
+				}
 			}
+		});
+		
+		$('body').on('click', '#miss-question', function() {
+			$current = $('.current').removeClass('current').addClass('uncompleted');
+			
+			if ($current.next('.uncompleted').length > 0) {
+				$current.next('.uncompleted').addClass('current').removeClass('hidden');
+			} else {
+				$('.uncompleted').first().addClass('current');
+			}
+			
+		});
+	}
+	
+	removeStudentsFromReady();
+	
+	function removeStudentsFromReady () {
+		$('#clear-ready-students').on('click', function() {
+			var testId = $('input[name=id]').attr('value');
+			
+			$.ajax(basePath + "/openTest", {
+				headers: {testId : testId},
+				method: "DELETE",
+				success: function(result) {
+					$('tbody tr').remove();
+					$('tbody').append('<tr class="no-records-found"><td colspan="6">No matching records found</td></tr>');
+				},
+				error: function () {
+					$('body > .container').prepend($('<div></div>').addClass('alert alert-warning').text("Some errors."));
+				}
+			});
+		});
+	}
+	
+	removeStudentFromReady();
+	
+	function removeStudentFromReady () {
+		$('.remove-student').on('click', function() {
+			$this = $(this);
+			
+			var testId = $('input[name=id]').attr('value');
+			$parent = $this.parent();
+			var studentId = $parent.find('input[type=hidden]').attr('value');
+			
+			$.ajax(basePath + "/openTest", {
+				headers: {studentId : studentId, testId : testId},
+				method: "DELETE",
+				success: function(result) {
+					$parent.parent().remove();
+				},
+				error: function () {
+					$('body > .container').prepend($('<div></div>').addClass('alert alert-warning').text("Some errors."));
+				}
+			});
 		});
 	}
 	

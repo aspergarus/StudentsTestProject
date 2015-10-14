@@ -1,27 +1,21 @@
 package beans;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class QuestionBean {
 	
 	private int id;
 	private int testId;
 	private String questionText;
+	private int trueAnswers;
 	private ArrayList<AnswerBean> answers;
-	private List<String> trueAnswers;
+	
 	
 	public QuestionBean(int id, int testId, String questionText) {
 		this.setId(id);
 		this.setTestId(testId);
 		this.setQuestionText(questionText);
 		answers = new ArrayList<>();
-	}
-	
-	public QuestionBean(int id, int testId, List<String> trueAnswers) {
-		this.setId(id);
-		this.setTestId(testId);
-		this.setTrueAnswers(trueAnswers);
 	}
 	
 	public QuestionBean(int testId, String questionText) {
@@ -55,10 +49,12 @@ public class QuestionBean {
 	public ArrayList<AnswerBean> getAnswers() {
 	    return answers;
     }
-
 	public void setAnswers(ArrayList<AnswerBean> answers) {
 	    this.answers = answers;
     }
+	public void addAnswer(AnswerBean answer) {
+		answers.add(answer);
+	}
 	
 	@Override
 	public String toString() {
@@ -74,16 +70,15 @@ public class QuestionBean {
 		}
 		return answers;
 	}
-	
-	public void addAnswer(AnswerBean answer) {
-		answers.add(answer);
-	}
 
-	public List<String> getTrueAnswers() {
+	public int getTrueAnswers() {
 	    return trueAnswers;
     }
-
-	public void setTrueAnswers(List<String> trueAnswers) {
+	public void setTrueAnswers(int trueAnswers) {
 	    this.trueAnswers = trueAnswers;
     }
+	public int addTrueAnswers() {
+	    return trueAnswers++;
+    }
+	
 }

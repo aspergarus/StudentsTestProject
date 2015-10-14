@@ -136,7 +136,7 @@
 										<% } %>
 										<td><a href="test/<%= test.getId() %>">Edit</a></td>
 										<td><a href="openTest?id=<%= test.getId() %>">Open</a></td>
-										<td><button class="btn btn-success">Begin Test</button></td>
+										<td><a href="testing/<%= test.getId() %>"><button class="btn btn-success">Begin Test</button></a></td>	
 										<td>
 											<button class="btn btn-danger delete-item" data-id="<%= test.getId() %>" 
 												data-path="/tests">Delete</button>

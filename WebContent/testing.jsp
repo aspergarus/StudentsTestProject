@@ -25,7 +25,7 @@
 			<form action="<%= basePath %>/testing/" id="testing-form" method="post" class="form-horizontal" >
 				<% int i = 0; %>
 				<% for(QuestionBean question : questions) { %>
-					<div class="row question-block hidden">
+					<div class="row question-block uncompleted">
 		               		<div class="form-group">
 			                    <h2 class="question-text"><%= question.getQuestionText() %></h2>
 			                   	<input type="hidden" name="question-id<%= i %>" value="<%= question.getId() %>">
@@ -33,12 +33,22 @@
 		                   	<hr>
 		                   	<% for(AnswerBean answer : question.getAnswers()) { %>
 		                   		<div class="form-group">
-				                   	<div class="radio">
-										<label class="answer-text">
-									    	<input type="radio" name="answer-to-question<%= i %>" value="<%= answer.getAnswerId() %>">
-									    	<%= answer.getAnswerText() %>
-									  	</label>
-									</div>
+		                   			<% if (question.getTrueAnswers() == 1) { %>
+					                   	<div class="radio">
+											<label class="answer-text">
+										    	<input type="radio" class="radio" name="answer-to-question<%= i %>"
+										    		value="<%= answer.getAnswerId() %>">
+										    	<%= answer.getAnswerText() %>
+										  	</label>
+										</div>
+									<% } else { %>
+										<div>
+											<label class="answer-text">
+										    	<input type="checkbox" name="answer-to-question<%= i %>" value="<%= answer.getAnswerId() %>">
+										    	<span class="answer-text"><%= answer.getAnswerText() %></span>
+										  	</label>
+										</div>
+									<% } %>
 								</div>
 							<% } %>
 		            </div>
@@ -46,8 +56,8 @@
 	            <% } %>
 	            <div class="row test-complete-info hidden">
 	               	<div class="form-group">
-						<h2 class="question-text">Запитання закінчились!</h2>
-						<h3><small>Для перевірки натисність кнопку Complete.</small></h3>
+						<h2 class="question-text">You have given the answers to all questions!</h2>
+						<h3><small>For checking click the Complete.</small></h3>
 					</div>
 					<hr>
 				</div>
@@ -67,5 +77,12 @@
 			<h2>Timer</h2>
 		</div>
 	</div>
+	<script>
+	$(window).on('beforeunload', function(){
+		if ($('.uncompleted').length > 0) {
+			return "Be careful! The test will start over!";
+		}
+	});
+	</script>
 	
 <%@ include file="footer.jsp" %>

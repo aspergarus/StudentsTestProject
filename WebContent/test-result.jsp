@@ -24,7 +24,7 @@
 		<% } %>
 		
 		<div class="page-header">
-			<h1 class="test-result">Кількість балів: <%= result %></h1>
+			<h1 class="test-result">Your mark: <%= result %></h1>
 		</div>
 		
 	</div>

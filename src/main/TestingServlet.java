@@ -59,7 +59,6 @@ public class TestingServlet extends HttpServlet {
 				request.setAttribute("questions", questions);
 				request.getRequestDispatcher("/testing.jsp").forward(request, response);
 			}
-			
 		}
 	}
 
@@ -86,7 +85,6 @@ public class TestingServlet extends HttpServlet {
 					int answerId = Integer.parseInt(sAnswerId);
 					QuestionAnswersBean questionAnswer = new QuestionAnswersBean(questionId, answerId);
 					questionAnswers.add(questionAnswer);
-					
 				}
 			}
 			int result = 0;
@@ -95,15 +93,21 @@ public class TestingServlet extends HttpServlet {
 				long completed = System.currentTimeMillis();
 				
 				if (user.getRole() == 0) {
-					TestsDAO.saveResult(user, testId, result, completed);
-					TestsDAO.closeTest(testId, user);
+					if (!TestsDAO.saveResult(user, testId, result, completed)) {
+						session.setAttribute("message", "Some troubles occured during saving the test result.");
+						session.setAttribute("status", "warning");
+					} else {
+						session.setAttribute("message", "Test completed successfully. Result saved.");
+						session.setAttribute("status", "success");
+						TestsDAO.closeTest(testId, user);
+					}
+				} else {
+					session.setAttribute("message", "Test completed successfully.");
+					session.setAttribute("status", "success");
 				}
-				request.setAttribute("status", "success");
-				request.setAttribute("result", result);
-				request.getRequestDispatcher("/test-result.jsp").forward(request, response);
+				session.setAttribute("result", result);
+				response.sendRedirect(request.getContextPath() + "/result");
 			}
-			
 		}
 	}
-
 }

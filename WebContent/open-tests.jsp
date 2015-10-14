@@ -11,6 +11,7 @@
 <% String message = (String) request.getAttribute("message"); %>
 <% TestBean currentTest = (TestBean) request.getAttribute("currentTest"); %>
 <% ArrayList<UserBean> students = (ArrayList<UserBean>) request.getAttribute("students"); %>
+<% ArrayList<Integer> testStudentsId = (ArrayList<Integer>) request.getAttribute("testStudentsId"); %>
 <% HashMap<Integer, String> groupsMap = (HashMap<Integer, String>) request.getAttribute("groupsMap"); %>
 
 <%@ include file="header.jsp" %>
@@ -74,6 +75,7 @@
 		            <th data-field="firstName" data-align="center" data-sortable="true">First Name</th>
 		            <th data-field="lastName" data-align="center" data-sortable="true">Last Name</th>
 		            <th data-field="select" data-align="center">Select</th>
+		            <th data-field="delete" data-align="center">Remove</th>
 		        </tr>
 		    </thead>
 		    <tbody>
@@ -84,14 +86,28 @@
 					<td><% out.print(groupsMap.get(student.getGroupId())); %></td>
 			        <td><% out.print(student.getFirstName()); %></td>
 			        <td><% out.print(student.getLastName()); %></td>
-			        <td><input type="checkbox" class="selected-student"><input type="hidden" value="<%= student.getId() %>"></td>
+			        <td>
+				        <% if (testStudentsId.contains(student.getId())) { %>
+				        	<input type="checkbox" class="selected-student" checked>
+				        <% } else { %>
+				        	<input type="checkbox" class="selected-student">
+				        <% } %>
+				        <input type="hidden" value="<%= student.getId() %>">
+			        </td>
+			        <td>
+			        	<button type="button" class="btn btn-danger remove-student">
+							<span class="translate" data-lang-key="Delete"></span>
+						</button>
+						<input type="hidden" value="<%= student.getId() %>">
+					</td>
 			    </tr>
 				<% i++; %>
 			<% } %>
 			</tbody>
 		</table>
 		<div class="col-sm-12">
-			<input id="open-test-to-students" type="button" class="btn btn-info btn-lg" value="Apply">
+			<input id="open-test-to-students" type="button" class="btn btn-info" value="Apply">
+			<input id="clear-ready-students" type="button" class="btn btn-danger" value="Clear">
 			<input id="cancel-all-students" type="button" class="btn btn-warning" value="Cancel all">
 			<input id="select-all-students" type="button" class="btn btn-success" value="Select all">
 		</div>
