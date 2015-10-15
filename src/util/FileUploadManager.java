@@ -49,7 +49,7 @@ public class FileUploadManager {
 	public static ArrayList<String> uploadFiles(String fileFieldName, String savePath, Collection<Part> collection) {
 		String fileName, filePath;
 		ArrayList<String> fileNames = new ArrayList<>();
-
+		
 		try {
 			for (Part part : collection) {
 				String name = part.getName();

@@ -19,7 +19,7 @@
 <% String status = (String) request.getAttribute("status"); %>
 <% String message = (String) request.getAttribute("message"); %>
 <% String saveDir = (String) request.getAttribute("saveDir"); %>
-<% saveDir = saveDir.replaceAll("\\\\", "/");; %>
+<% saveDir = saveDir.replaceAll("\\\\", "/"); %>
 <% PracticalsBean pBean = (PracticalsBean) request.getAttribute("practicalBean"); %>
 <% String body = pBean.getBody(); %>
 <% ArrayList<FileBean> fileBeans = FileDAO.findAll(pBean.getId(), "practicals"); %>

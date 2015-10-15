@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import beans.AnswerBean;
+import beans.FileBean;
 import beans.QuestionBean;
 import config.ConnectionManager;
 
@@ -47,7 +48,10 @@ public class QuestionDAO {
 	}
     
     public static ArrayList<QuestionBean> getQuestions(int testId) {
-		String query = "SELECT * FROM questions WHERE test_id = ?";
+		String query = "SELECT * FROM questions q"
+				+ " LEFT JOIN files f ON q.id = f.owner_id"
+				+ " WHERE test_id = ?"
+				+ " ORDER BY q.id";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -62,8 +66,18 @@ public class QuestionDAO {
 			while(rs.next()) {
 				int id = rs.getInt("id");
 				String questionText = rs.getString("question_text");
-				
 				QuestionBean question = new QuestionBean(id, testId, questionText);
+				
+				int fileId = rs.getInt("fid");
+				System.out.println(fileId);
+				if (fileId != 0) {
+					int questionId = rs.getInt("owner_id");
+					String type = rs.getString("type");
+					String name = rs.getString("name");
+					FileBean bean = new FileBean(fileId, type, name, questionId);
+					question.setImage(bean);
+				}
+				
 				questions.add(question);
 			}
 		} catch (SQLException e) {

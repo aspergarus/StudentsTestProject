@@ -181,25 +181,21 @@ public class PracticalsServlet extends HttpServlet {
 					if (fileNames.isEmpty()) {
 						session.setAttribute("status", "success");
 						session.setAttribute("message", "Practical has been added");
-					}
-					else {
+					} else {
 						bean = PracticalsDAO.find(subjectId, title);
 						if (FileDAO.insert(bean.getId(), "practicals", fileNames)) {
 							session.setAttribute("status", "success");
 							session.setAttribute("message", "Practical has been added");
-						}
-						else {
+						} else {
 							session.setAttribute("status", "danger");
 							session.setAttribute("message", "Some troubles were occurred during writing file info to db");
 						}
 					}
-				}
-				else {
+				} else {
 					session.setAttribute("status", "danger");
 					session.setAttribute("message", "Some troubles were occurred during creating a practical");
 				}
-			}
-			else {
+			} else {
 				session.setAttribute("status", "danger");
 				session.setAttribute("message", errorMessage);
 			}
