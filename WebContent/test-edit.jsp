@@ -1,13 +1,17 @@
 <%@page import="beans.TestBean"%>
 <%@page import="beans.QuestionBean"%>
 <%@page import="beans.AnswerBean"%>
+<%@page import="beans.FileBean"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="util.FileUploadManager"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
 <% String basePath = request.getContextPath(); %>
 <% String status = (String) request.getAttribute("status"); %>
 <% String message = (String) request.getAttribute("message"); %>
+<% String saveDir = (String) request.getAttribute("saveDir"); %>
+<% saveDir = saveDir.replaceAll("\\\\", "/"); %>
 <% TestBean editedTest = (TestBean) request.getAttribute("editedTest"); %>
 <% ArrayList<QuestionBean> questions = (ArrayList<QuestionBean>) request.getAttribute("questions"); %>
 
@@ -26,12 +30,21 @@
 			<h1>Add a question</h1>
 		</div>
 
-		<form action="<%= basePath %>/test/<%= editedTest.getId() %>" id="question-form" method="post" class="form-horizontal" >
+		<form action="<%= basePath %>/test/<%= editedTest.getId() %>" id="question-form" method="post"
+			class="form-horizontal" enctype="multipart/form-data">
 			<div class="form-group">
 				<label for="question" class="col-sm-2 control-label required">Question*</label>
 				<div class="col-sm-10">
 					<textarea name="question" id="question" class="form-control" rows="3" 
 						placeholder="Question*" required></textarea>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="upload" class="col-sm-2 control-label required">Upload image</label>
+				<div class="col-sm-10">
+					<input id="upload" type="file" class="file" name="upload" data-preview-file-type="picture">
+					<p class="help-block">File size not more then 10 MB.</p>
 				</div>
 			</div>
  			
@@ -108,6 +121,10 @@
     		</form>
   			</div>
   			<div class="panel-body">
+  				<% FileBean image = question.getImage(); %>
+  				<% if (image != null) { %>
+  					<img src="<%= basePath + "/" + saveDir + "/" + image.getName() %>" alt="<%= image.getName() %>" />
+  				<% } %>
     			<table class="table">
 						<thead>
 							<tr>

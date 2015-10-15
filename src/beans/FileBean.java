@@ -5,6 +5,15 @@ public class FileBean {
 	String type;
 	String name;
 	int ownerId;
+	
+	public FileBean(int fid, String type, String name, int ownerId) {
+		this.fid = fid;
+		this.type = type;
+		this.name = name;
+		this.ownerId = ownerId;
+	}
+	
+	public FileBean() { }
 
 	public int getFid() {
 		return fid;

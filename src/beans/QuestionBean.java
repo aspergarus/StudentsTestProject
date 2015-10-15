@@ -9,7 +9,7 @@ public class QuestionBean {
 	private String questionText;
 	private int trueAnswers;
 	private ArrayList<AnswerBean> answers;
-	
+	private FileBean image;
 	
 	public QuestionBean(int id, int testId, String questionText) {
 		this.setId(id);
@@ -79,6 +79,14 @@ public class QuestionBean {
     }
 	public int addTrueAnswers() {
 	    return trueAnswers++;
+    }
+
+	public FileBean getImage() {
+	    return image;
+    }
+
+	public void setImage(FileBean image) {
+	    this.image = image;
     }
 	
 }
