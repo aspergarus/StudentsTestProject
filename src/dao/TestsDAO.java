@@ -11,6 +11,7 @@ import java.util.List;
 import config.ConnectionManager;
 import beans.QuestionAnswersBean;
 import beans.TestBean;
+import beans.TestResultBean;
 import beans.UserBean;
 
 public class TestsDAO {
@@ -508,5 +509,36 @@ public class TestsDAO {
 			System.out.println(e.getMessage());
         }
 		return studentsIdList;
+	}
+	
+	public static ArrayList<TestResultBean> getResults(int testId) {
+		String query = "SELECT tr.*, u.first_name, u.last_name, u.group_id FROM test_result tr"
+				+ " INNER JOIN users u ON tr.student_id = u.id"
+				+ " WHERE test_id = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		ResultSet rs = null;
+		
+		ArrayList<TestResultBean> resultsList = new ArrayList<>();
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, testId);
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				String firstName = rs.getString("first_name");
+				String lastName = rs.getString("last_name");
+				int groupId = rs.getInt("group_id");
+				int result = rs.getInt("result");
+				long testCmpleted = rs.getLong("completed");
+				TestResultBean resultBean = new TestResultBean(groupId, firstName, lastName, testCmpleted, result);
+				
+				resultsList.add(resultBean);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+        }
+		return resultsList;
 	}
 }

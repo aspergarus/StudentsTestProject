@@ -11,7 +11,6 @@
 <% String status = (String) request.getAttribute("status"); %>
 <% String message = (String) request.getAttribute("message"); %>
 <% HashMap<String, ArrayList<TestBean>> tests = (HashMap<String, ArrayList<TestBean>>) request.getAttribute("testsMap"); %>
-<% HashMap<Integer, String> subjects = (HashMap<Integer, String>) request.getAttribute("subjects");  %>
 <% HashMap<Integer, String> teachers = (HashMap<Integer, String>) request.getAttribute("teachers"); %>
 <% HashMap<String, String> groups = (HashMap<String, String>) request.getAttribute("groupsMap"); %>
 
@@ -90,7 +89,8 @@
 				<div class="panel panel-default">
 					<div class="panel-heading" role="tab" id="heading-<%= i %>">
 						<h4 class="panel-title">
-							<a class="subject-<%= i %>" data-toggle="collapse" data-parent="#accordion" href="#collapse-<%= i %>" aria-controls="collapse-<%= i %>">
+							<a class="subject-<%= i %>" data-toggle="collapse" data-parent="#accordion" 
+								href="#collapse-<%= i %>" aria-controls="collapse-<%= i %>">
 							  <%= subject %>
 							</a>
 						</h4>
@@ -105,7 +105,6 @@
 							<table class="table">
 								<thead>
 									<tr>
-										<th data-field="title" data-align="center" data-sortable="true">Subject</th>
 										<th data-field="teacher" data-align="center" data-sortable="true">Teacher</th>
 										<th data-field="module" data-align="center" data-sortable="true">Module</th>
 										<% if (currentUser.getRole() == 1) { %>
@@ -113,6 +112,7 @@
 										<% } %>
 										<th data-field="edit" data-align="center">Edit</th>
 										<th data-field="open" data-align="center">Open</th>
+										<th data-field="results" data-align="center">Results</th>
 										<th data-field="start" data-align="center">Begin Test</th>
 										<th data-field="delete" data-align="center">Delete</th>
 									</tr>
@@ -120,7 +120,6 @@
 								<tbody>
 								<% for (TestBean test : tests.get(subject)) { %>
 									<tr>
-										<td><%= subjects.get(test.getSubjectId()) %></td>
 										<td><%= teachers.get(test.getTeacherId()) %></td>
 										<td>
 											<span class="transformer-text" data-path="tests" data-id=<%= test.getId() %>><%= test.getModule() %></span>
@@ -136,6 +135,7 @@
 										<% } %>
 										<td><a href="test/<%= test.getId() %>">Edit</a></td>
 										<td><a href="openTest?id=<%= test.getId() %>">Open</a></td>
+										<td><a href="testResults?id=<%= test.getId() %>">Results</a></td>
 										<td><a href="testing/<%= test.getId() %>"><button class="btn btn-success">Begin Test</button></a></td>	
 										<td>
 											<button class="btn btn-danger delete-item" data-id="<%= test.getId() %>" 
