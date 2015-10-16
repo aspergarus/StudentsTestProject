@@ -1,5 +1,6 @@
 <%@page import="beans.QuestionBean"%>
 <%@page import="beans.AnswerBean"%>
+<%@page import="beans.FileBean"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -7,6 +8,8 @@
 <% String basePath = request.getContextPath(); %>
 <% String status = (String) request.getAttribute("status"); %>
 <% String message = (String) request.getAttribute("message"); %>
+<% String saveDir = (String) request.getAttribute("saveDir"); %>
+<% saveDir = saveDir.replaceAll("\\\\", "/"); %>
 <% int testId = (int) request.getAttribute("testId"); %>
 <% ArrayList<QuestionBean> questions = (ArrayList<QuestionBean>) request.getAttribute("questions"); %>
 
@@ -30,6 +33,12 @@
 			                    <h2 class="question-text"><%= question.getQuestionText() %></h2>
 			                   	<input type="hidden" name="question-id<%= i %>" value="<%= question.getId() %>">
 		                   	</div>
+		                   	<% FileBean image = question.getImage(); %>
+			  				<% if (image != null) { %>
+				  				<img class="question-img" src="<%= basePath + "/" + saveDir + "/" + image.getName() %>" 
+				  					alt="<%= image.getName() %>" />
+				  				
+			  				<% } %>
 		                   	<hr>
 		                   	<% for(AnswerBean answer : question.getAnswers()) { %>
 		                   		<div class="form-group">
@@ -63,8 +72,8 @@
 				</div>
 				
 	            <div class="form-group">
-					<input type="button" class="btn btn-lg btn-success" id="next-question" value="Next"/>
-					<input type="button" class="btn btn-lg btn-info" id="miss-question" value="Miss"/>
+	           		<input type="button" class="btn btn-lg btn-info" id="miss-question" value="Miss"/>
+					<input type="button" class="btn btn-lg btn-success" id="next-question" value="Next"/>	
 				</div>
 				<div class="form-group">
 					<input type="hidden" name="test-id" value="<%= testId %>"/>

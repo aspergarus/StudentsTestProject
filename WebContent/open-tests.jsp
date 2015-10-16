@@ -103,13 +103,22 @@
 			    </tr>
 				<% i++; %>
 			<% } %>
+			<tr>
+				<td></td>
+				<td></td>
+		        <td></td>
+		        <td></td>
+		        <td>
+		        	<label for="toggle-select">Select all</label>
+				    <input type="checkbox" id="toggle-select">
+			  	</td>
+		        <td><input id="clear-ready-students" type="button" class="btn btn-danger" value="Remove all"></td>
+			</tr>
 			</tbody>
 		</table>
 		<div class="col-sm-12">
 			<input id="open-test-to-students" type="button" class="btn btn-info" value="Apply">
-			<input id="clear-ready-students" type="button" class="btn btn-danger" value="Clear">
-			<input id="cancel-all-students" type="button" class="btn btn-warning" value="Cancel all">
-			<input id="select-all-students" type="button" class="btn btn-success" value="Select all">
+			
 		</div>
 	</div>
 	

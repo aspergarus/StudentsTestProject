@@ -443,13 +443,14 @@ $(function () {
 	selectStudents();
 	
 	function selectStudents() {
-		$('body').on('click', '#select-all-students', function() {
-			$('.selected-student').prop('checked', true);
+		$('body').on('click', '#toggle-select', function() {
+			if ($(this).prop('checked')) {
+				$('.selected-student').prop('checked', true);
+			} else {
+				$('.selected-student').prop('checked', false);
+			}
 		});
 		
-		$('body').on('click', '#cancel-all-students', function() {
-			$('.selected-student').prop('checked', false);
-		});
 	}
 	
 	openTest();

@@ -1,5 +1,6 @@
 package main;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ import beans.UserBean;
 @WebServlet("/testing/*")
 public class TestingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	public static String saveDir = "files" + File.separator + "testQuestionsFiles";
       
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -57,6 +59,7 @@ public class TestingServlet extends HttpServlet {
 				request.setAttribute("status", "success");
 				request.setAttribute("testId", testId);
 				request.setAttribute("questions", questions);
+				request.setAttribute("saveDir", saveDir);
 				request.getRequestDispatcher("/testing.jsp").forward(request, response);
 			}
 		}

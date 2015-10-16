@@ -69,7 +69,6 @@ public class QuestionDAO {
 				QuestionBean question = new QuestionBean(id, testId, questionText);
 				
 				int fileId = rs.getInt("fid");
-				System.out.println(fileId);
 				if (fileId != 0) {
 					int questionId = rs.getInt("owner_id");
 					String type = rs.getString("type");
@@ -77,7 +76,6 @@ public class QuestionDAO {
 					FileBean bean = new FileBean(fileId, type, name, questionId);
 					question.setImage(bean);
 				}
-				
 				questions.add(question);
 			}
 		} catch (SQLException e) {
