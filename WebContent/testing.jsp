@@ -1,5 +1,6 @@
 <%@page import="beans.QuestionBean"%>
 <%@page import="beans.AnswerBean"%>
+<%@page import="beans.TestBean"%>
 <%@page import="beans.FileBean"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -10,7 +11,7 @@
 <% String message = (String) request.getAttribute("message"); %>
 <% String saveDir = (String) request.getAttribute("saveDir"); %>
 <% saveDir = saveDir.replaceAll("\\\\", "/"); %>
-<% int testId = (int) request.getAttribute("testId"); %>
+<% TestBean test = (TestBean) request.getAttribute("test"); %>
 <% ArrayList<QuestionBean> questions = (ArrayList<QuestionBean>) request.getAttribute("questions"); %>
 
 <%@ include file="header.jsp" %>
@@ -76,19 +77,19 @@
 					<input type="button" class="btn btn-lg btn-success" id="next-question" value="Next"/>	
 				</div>
 				<div class="form-group">
-					<input type="hidden" name="test-id" value="<%= testId %>"/>
+					<input type="hidden" name="test-id" value="<%= test.getId() %>"/>
 					<input type="hidden" name="questions-number" value="<%= questions.size() %>"/>
 					<input type="submit" class="btn btn-primary btn-lg hidden" value="Complete"/>
 				</div>
 			</form>
 		</div>
-		<div class="col-md-2">
-			<h2>Timer</h2>
+		<div class="col-md-3">
+			<div class="example" data-timer="<%= test.getTime() %>"></div>
 		</div>
 	</div>
 	<script>
 	$(window).on('beforeunload', function(){
-		if ($('.uncompleted').length > 0) {
+		if ($('.uncompleted').length > 0 ) {
 			return "Be careful! The test will start over!";
 		}
 	});

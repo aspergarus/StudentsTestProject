@@ -7,15 +7,17 @@ public class TestBean {
 	private int subjectId;
 	private byte module;
 	private String note;
+	private int time;
 	
-	public TestBean (int teacherId, int subjectId, byte module, String note) {
+	public TestBean (int teacherId, int subjectId, byte module, String note, int time) {
 		this.teacherId = teacherId;
 		this.subjectId = subjectId;
 		this.module = module;
 		this.note = note;
+		this.time = time;
 	}
 	
-	public TestBean() {}
+	public TestBean() { }
 
 	public int getId() {
 	    return id;
@@ -51,6 +53,11 @@ public class TestBean {
 	public void setNote(String note) {
 	    this.note = note;
     }
-	
-	
+
+	public int getTime() {
+	    return time;
+    }
+	public void setTime(int time) {
+	    this.time = time;
+    }
 }

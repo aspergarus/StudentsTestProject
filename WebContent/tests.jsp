@@ -52,7 +52,7 @@
 			<div class="form-group">
 				<label for="module" class="col-sm-2 control-label">Module*</label>
 				<div class="col-sm-10">
-					<input name="module" type="number" class="form-control" required>
+					<input name="module" type="number" class="form-control" required/>
 				</div>
 			</div>
 			
@@ -60,6 +60,13 @@
 				<label for="note" class="col-sm-2 control-label required">Note</label>
 				<div class="col-sm-10">
 					<textarea name="note" class="form-control text-area" rows="3"></textarea>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="time" class="col-sm-2 control-label required">Time</label>
+				<div class="col-sm-10">
+					<input type="number" name="time" class="form-control"/>
 				</div>
 			</div>
 			
@@ -99,8 +106,11 @@
 					<div id="collapse-<%= i %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-<%= i %>">
 						<div class="panel-body">
 							<p class="help-block">Share this subject to groups:
-								<input type="text" class="tokenfield" value="<%= groups.get(subject) == null ? "" :  groups.get(subject) %>" name="groupName" required autocomplete="off" />
-								<input type="submit" value="Share" class="btn btn-info btn-share assign-subject-group" data-num="<%= i %>" data-subject="<%= subject %>">
+								<input type="text" class="tokenfield" 
+									value="<%= groups.get(subject) == null ? "" :  groups.get(subject) %>" 
+										name="groupName" required autocomplete="off" />
+								<input type="submit" value="Share" class="btn btn-info btn-share assign-subject-group" 
+									data-num="<%= i %>" data-subject="<%= subject %>" />
 							</p>
 							<table class="table">
 								<thead>
@@ -110,6 +120,7 @@
 										<% if (currentUser.getRole() == 1) { %>
 											<th data-field="note" data-align="center" data-sortable="true">Note</th>
 										<% } %>
+										<th data-field="time" data-align="center" data-sortable="true">Time</th>
 										<th data-field="edit" data-align="center">Edit</th>
 										<th data-field="open" data-align="center">Open</th>
 										<th data-field="results" data-align="center">Results</th>
@@ -122,17 +133,26 @@
 									<tr>
 										<td><%= teachers.get(test.getTeacherId()) %></td>
 										<td>
-											<span class="transformer-text" data-path="tests" data-id=<%= test.getId() %>><%= test.getModule() %></span>
+											<span class="transformer-text" data-path="tests" data-parameter="module" 
+												data-id=<%= test.getId() %>><%= test.getModule() %></span>
 											<input type="text" style="display: none">
 										</td>
 										<% if (currentUser.getRole() == 1) { %>
 											<td>
-												<span class="transformer-text" data-path="tests" data-id=<%= test.getId() %>>
+												<span class="transformer-text" data-path="tests" data-parameter="note" 
+													data-id=<%= test.getId() %>>
 													<%= (!test.getNote().equals("")) ? test.getNote() : "-" %>
 												</span>
 												<input type="text" style="display: none">
 											</td>
 										<% } %>
+										<td>
+											<span class="transformer-text" data-path="tests" data-parameter="time" 
+												data-id=<%= test.getId() %>>
+												<%= test.getTime() %>
+											</span>
+											<input type="text" style="display: none">
+										</td>
 										<td><a href="test/<%= test.getId() %>">Edit</a></td>
 										<td><a href="openTest?id=<%= test.getId() %>">Open</a></td>
 										<td><a href="testResults?id=<%= test.getId() %>">Results</a></td>

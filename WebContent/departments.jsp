@@ -73,7 +73,7 @@
 			        </td>
 			        <% if (user.getRole() == 2) { %>
 			        <td>
-						<button type="button" class="btn btn-danger" data-id=<%= department.getId() %> data-path="/departments">
+						<button type="button" class="btn btn-danger delete-item" data-id=<%= department.getId() %> data-path="/department">
 							<span class="translate" data-lang-key="Delete"></span>
 						</button>
 			        </td>

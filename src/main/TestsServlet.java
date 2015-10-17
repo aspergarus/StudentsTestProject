@@ -84,6 +84,7 @@ public class TestsServlet extends HttpServlet {
 			int subjectId = SubjectsDAO.find(subject);
 			byte module = Byte.valueOf(request.getParameter("module"));
 			String note = request.getParameter("note");
+			int time = Integer.parseInt(request.getParameter("time")) * 60;
 			int id;
 			
 			if (user.getRole() == 2) {
@@ -93,7 +94,7 @@ public class TestsServlet extends HttpServlet {
 				id = user.getId();
 			}
 			
-			TestBean newTest = new TestBean(id, subjectId, module, note);
+			TestBean newTest = new TestBean(id, subjectId, module, note, time);
 			
 			if (TestsDAO.insert(newTest)) {
 				session.setAttribute("status", "success");
@@ -117,15 +118,18 @@ public class TestsServlet extends HttpServlet {
 		} else {
 			//Update in DB
 			int id = Integer.valueOf(request.getHeader("id"));
-			String newData = java.net.URLDecoder.decode(request.getHeader("name"), "UTF-8");
+			String parameterName = request.getHeader("parameterName");
 			
-			try {
-				int module = Integer.parseInt(newData);
-				// Update Module
+			String newData = java.net.URLDecoder.decode(request.getHeader("data"), "UTF-8");
+			
+			if (parameterName.equals("module")) {
+				byte module = Byte.parseByte(newData);
 				TestsDAO.update(id, module);
-			} catch (Exception e) {
-				// Update Note
+			} else if (parameterName.equals("note")) {
 				TestsDAO.update(id, newData);
+			} else if (parameterName.equals("time")) {
+				int time = Integer.parseInt(newData);
+				TestsDAO.update(id, time * 60);
 			}
 			response.getOutputStream().println("Test has been updated successfully.");
 		}

@@ -55,6 +55,7 @@ public class TestsDAO {
 	        	test.setSubjectId(subjectId);
 	        	test.setModule(rs.getByte("module"));
 	        	test.setNote(rs.getString("note"));
+	        	test.setTime(rs.getInt("time"));
 	        	
 	        	if (tmpSubjectId != subjectId && tmpSubjectId == 0) {
 					tmpSubjectId = subjectId;
@@ -82,8 +83,8 @@ public class TestsDAO {
 	@SuppressWarnings("finally")
     public static boolean insert(TestBean newTest) {
 		String query = "INSERT INTO tests "
-				+ "(teacher_id, subject_id, module, note) "
-				+ "VALUES (?, ?, ?, ?)";
+				+ "(teacher_id, subject_id, module, note, time) "
+				+ "VALUES (?, ?, ?, ?, ?)";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -95,6 +96,7 @@ public class TestsDAO {
 			stmt.setInt(2, newTest.getSubjectId());
 			stmt.setByte(3, newTest.getModule());
 			stmt.setString(4, newTest.getNote());
+			stmt.setInt(5, newTest.getTime());
 
 			rowsAffected = stmt.executeUpdate();
 		}
@@ -128,6 +130,7 @@ public class TestsDAO {
 				test.setSubjectId(rs.getInt("subject_id"));
 				test.setModule(rs.getByte("module"));
 				test.setNote(rs.getString("note"));
+				test.setTime(rs.getInt("time"));
 			}
 			
 		} catch (SQLException e) {
@@ -138,7 +141,7 @@ public class TestsDAO {
 	}
 	
 	@SuppressWarnings("finally")
-    public static boolean update(int id, int module) {
+    public static boolean update(int id, byte module) {
 		String query = "UPDATE tests SET module = ? WHERE id = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -146,7 +149,7 @@ public class TestsDAO {
 		int rowsAffected = 0;
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setInt(1, module);
+			stmt.setByte(1, module);
 			stmt.setInt(2, id);
 			rowsAffected = stmt.executeUpdate();
 			
@@ -167,6 +170,26 @@ public class TestsDAO {
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setString(1, note);
+			stmt.setInt(2, id);
+			rowsAffected = stmt.executeUpdate();
+			
+		} catch (SQLException e) {
+	        System.out.println(e.getMessage());
+        } finally {
+        	return rowsAffected > 0;
+        }
+	}
+	
+	@SuppressWarnings("finally")
+    public static boolean update(int id, int time) {
+		String query = "UPDATE tests SET time = ? WHERE id = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		int rowsAffected = 0;
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, time);
 			stmt.setInt(2, id);
 			rowsAffected = stmt.executeUpdate();
 			

@@ -84,7 +84,7 @@
 			        <% if (user.getRole() == 2) { %>
 			        <td><a href="subjects?edit=true&id=<%= subject.getId() %>">Edit</a></td>
 			        <td>
-						<button class="btn btn-danger" data-id="<%= subject.getId() %>"
+						<button class="btn btn-danger delete-item" data-id="<%= subject.getId() %>"
 							data-path="/subjects">Delete</button>
 			        </td>
 			        <% } %>
