@@ -1,5 +1,7 @@
 <%@page import="beans.QuestionBean"%>
 <%@page import="beans.AnswerBean"%>
+<%@page import="beans.TestBean"%>
+<%@page import="beans.FileBean"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -7,7 +9,9 @@
 <% String basePath = request.getContextPath(); %>
 <% String status = (String) request.getAttribute("status"); %>
 <% String message = (String) request.getAttribute("message"); %>
-<% int testId = (int) request.getAttribute("testId"); %>
+<% String saveDir = (String) request.getAttribute("saveDir"); %>
+<% saveDir = saveDir.replaceAll("\\\\", "/"); %>
+<% TestBean test = (TestBean) request.getAttribute("test"); %>
 <% ArrayList<QuestionBean> questions = (ArrayList<QuestionBean>) request.getAttribute("questions"); %>
 
 <%@ include file="header.jsp" %>
@@ -30,6 +34,12 @@
 			                    <h2 class="question-text"><%= question.getQuestionText() %></h2>
 			                   	<input type="hidden" name="question-id<%= i %>" value="<%= question.getId() %>">
 		                   	</div>
+		                   	<% FileBean image = question.getImage(); %>
+			  				<% if (image != null) { %>
+				  				<img class="question-img" src="<%= basePath + "/" + saveDir + "/" + image.getName() %>" 
+				  					alt="<%= image.getName() %>" />
+				  				
+			  				<% } %>
 		                   	<hr>
 		                   	<% for(AnswerBean answer : question.getAnswers()) { %>
 		                   		<div class="form-group">
@@ -63,23 +73,23 @@
 				</div>
 				
 	            <div class="form-group">
-					<input type="button" class="btn btn-lg btn-success" id="next-question" value="Next"/>
-					<input type="button" class="btn btn-lg btn-info" id="miss-question" value="Miss"/>
+	           		<input type="button" class="btn btn-lg btn-info" id="miss-question" value="Miss"/>
+					<input type="button" class="btn btn-lg btn-success" id="next-question" value="Next"/>	
 				</div>
 				<div class="form-group">
-					<input type="hidden" name="test-id" value="<%= testId %>"/>
+					<input type="hidden" name="test-id" value="<%= test.getId() %>"/>
 					<input type="hidden" name="questions-number" value="<%= questions.size() %>"/>
 					<input type="submit" class="btn btn-primary btn-lg hidden" value="Complete"/>
 				</div>
 			</form>
 		</div>
-		<div class="col-md-2">
-			<h2>Timer</h2>
+		<div class="col-md-3">
+			<div class="example" data-timer="<%= test.getTime() %>"></div>
 		</div>
 	</div>
 	<script>
 	$(window).on('beforeunload', function(){
-		if ($('.uncompleted').length > 0) {
+		if ($('.uncompleted').length > 0 ) {
 			return "Be careful! The test will start over!";
 		}
 	});

@@ -150,7 +150,9 @@ $(function () {
 			var $this = $(this);
 			var text = $this.text().trim();
 			var id = $this.data('id');
-			var path = $this.attr('data-path');
+			var path = $this.data('path');
+			
+			var parameter = $this.data('parameter');
 			
 			var $parent = $this.parent();
 			var $input = $parent.find('input');
@@ -169,7 +171,7 @@ $(function () {
 				if ($input.val().trim() != "") {
 					var newText = $input.val();
 					$.ajax(basePath + "/" + path, {
-						headers: {'id': id, 'name' : encodeURIComponent(newText) },
+						headers: {'id': id, 'parameterName' : parameter, 'data' : encodeURIComponent(newText) },
 						method: "PUT",
 						success: function(result) {
 							$this.text(newText);
@@ -185,66 +187,6 @@ $(function () {
 			});
 		});
 	}
-
-	departmentDeleteOperation();
-
-	function departmentDeleteOperation() {
-		$('.delete-department-btn').click(function(e) {
-			e.preventDefault();
-
-			var $this = $(this);
-			var $parent = $this.parent();
-			
-			// Show animation
-			var $animationBlock = $('<div></div>').addClass('ajax-loader').append($('<img></img>').attr({ src : "imgs/ajax-loader.gif" }));
-			$parent.append($animationBlock);
-			$this.remove();
-
-			var id = $this.data('id');
-			$.ajax(basePath + "/department", {
-				headers: {id : id },
-				method: "DELETE",
-				success: function(result) {
-					$parent.find("div").remove();
-					$parent.append($('<span></span>').addClass('span-alert alert-success').text(result));
-				},
-				error: function() {
-					$parent.append($('<span></span>').addClass('span-alert alert-danger').text("Could not delete this departmnet"));
-				}
-			});
-		});
-	}
-	
-	groupDeleteOperation();
-	
-	function groupDeleteOperation() {
-		$('.delete-group-btn').click(function(e) {
-			e.preventDefault();
-
-			var $this = $(this);
-			var $parent = $this.parent();
-			
-			// Show animation
-			var $animationBlock = $('<div></div>').addClass('ajax-loader').append($('<img></img>').attr({ src : "imgs/ajax-loader.gif" }));
-			$parent.append($animationBlock);
-			$this.remove();
-
-			var id = $this.data('id');
-			$.ajax(basePath + "/groups", {
-				headers: {id : id },
-				method: "DELETE",
-				success: function(result) {
-					$parent.find("div").remove();
-					$parent.append($('<span></span>').addClass('span-alert alert-success').text(result));
-				},
-				error: function() {
-					$parent.append($('<span></span>').addClass('span-alert alert-danger').text("Could not delete this group"));
-				}
-			});
-		});
-	}
-	
-	
 
 	commentDeleteOperation();
 
@@ -443,13 +385,14 @@ $(function () {
 	selectStudents();
 	
 	function selectStudents() {
-		$('body').on('click', '#select-all-students', function() {
-			$('.selected-student').prop('checked', true);
+		$('body').on('click', '#toggle-select', function() {
+			if ($(this).prop('checked')) {
+				$('.selected-student').prop('checked', true);
+			} else {
+				$('.selected-student').prop('checked', false);
+			}
 		});
 		
-		$('body').on('click', '#cancel-all-students', function() {
-			$('.selected-student').prop('checked', false);
-		});
 	}
 	
 	openTest();
@@ -658,6 +601,31 @@ $(function () {
 				}
 			});
 		});
+	}
+	
+	setCountdown();
+	
+	function setCountdown() {
+		$timer = $(".example").TimeCircles({"direction": "Counter-clockwise",
+			"animation": "ticks",
+			"bg_width": 1.2,
+		    "fg_width": 0.13,
+		    "circle_bg_color": "#75756C",
+			"time": {
+				Days: { show: false },
+			    Hours: { show: false },
+			    Minutes: { "color": "#FFCC66" },
+			    Seconds: { color: "#FF9999" }
+			}
+		}).addListener(
+			function(unit,value,total) { 
+				if (total == 0) {
+					$timer.stop();
+					$('.question-block').removeClass('uncompleted');
+					$('input[type=submit]').click();
+				}	
+			} 
+		);
 	}
 	
 });

@@ -123,8 +123,12 @@
   			<div class="panel-body">
   				<% FileBean image = question.getImage(); %>
   				<% if (image != null) { %>
-  					<img src="<%= basePath + "/" + saveDir + "/" + image.getName() %>" alt="<%= image.getName() %>" />
+	  				<div class="col-md-12 img-container">
+	  					<img class="question-img" src="<%= basePath + "/" + saveDir + "/" + image.getName() %>" 
+	  						alt="<%= image.getName() %>" />
+	  				</div>
   				<% } %>
+  				
     			<table class="table">
 						<thead>
 							<tr>

@@ -167,7 +167,7 @@ public class SubjectServlet extends HttpServlet {
 				int id = Integer.parseInt(deleteId);
 				
 				if (SubjectsDAO.delete(id)) {
-					response.getOutputStream().println("Department has been deleted successfully.");
+					response.getOutputStream().println("Subject has been deleted successfully.");
 				} else {
 					response.getOutputStream().println("Some troubles were occured during deleting a subject.");
 				}

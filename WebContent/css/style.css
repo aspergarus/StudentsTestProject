@@ -279,10 +279,7 @@ ol {
 .delete-question {
 	float: right;
 }
-#select-all-students, #cancel-all-students {
-	float: right;
-}
-#open-test-to-students, #select-all-students, #cancel-all-students {
+#open-test-to-students {
 	margin: 10px 0px 10px 5px;
 }
 .tooltip-container {
@@ -293,9 +290,13 @@ ol {
 	font-size: 22px;
 	font-weight: 400;
 }
+.question-block {
+	min-height: 500px;
+}
 #next-question, #miss-question {
 	margin-top: 1%;
 	margin-left: 1%;
+	width: 20%;
 }
 .hidden {
 	display: none;
@@ -311,4 +312,15 @@ ol {
 }
 .radio {
 	margin-top: 8px;
+}
+.question-img {
+	max-width: 60%;
+	height: auto;
+	margin-bottom: 1%;
+}
+.img-container {
+	text-align: center;
+}
+#toggle-select {
+	margin-left: 5%!important;
 }

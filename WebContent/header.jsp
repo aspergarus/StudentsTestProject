@@ -21,9 +21,10 @@
 <link rel="stylesheet" href="<%= basePathHeader %>/css/jquery-ui.min.css">
 <link rel="stylesheet" href="<%= basePathHeader %>/css/style.css">
 <link rel="stylesheet" href="<%= basePathHeader %>/css/bootstrap-dialog.min.css">
+<link rel="stylesheet" href="<%= basePathHeader %>/css/TimeCircles.css" rel="stylesheet"> 
 
 <!-- js libraries -->
-<script src="<%= basePathHeader %>/js/jquery.min.js"></script>
+<script  src="<%= basePathHeader %>/js/jquery.min.js"></script>
 <script src="<%= basePathHeader %>/js/jquery-ui.min.js"></script>
 <script src="<%= basePathHeader %>/js/bootstrap.min.js"></script>
 <script src="<%= basePathHeader %>/js/bootstrap-table.min.js"></script>
@@ -33,6 +34,7 @@
 <script src="<%= basePathHeader %>/js/bootstrap-tokenfield.js"></script>
 <script src="<%= basePathHeader %>/js/bootstrap-dialog.min.js"></script>
 <script src="<%= basePathHeader %>/js/lib/ck/ckeditor.js"></script>
+<script src="<%= basePathHeader %>/js/TimeCircles.js"></script>
 
 <!-- Custom javascripts variables -->
 <script>var basePath = "<%= basePathHeader %>";</script>

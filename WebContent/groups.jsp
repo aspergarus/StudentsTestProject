@@ -73,7 +73,7 @@
 			        <td><%= group.getCountStudents() %></td>
 			        <% if (user.getRole() == 2) { %>
 			        <td>
-						<button type="button" class="btn btn-danger delete-group-btn" data-id=<%= group.getId() %>>
+						<button type="button" class="btn btn-danger delete-item" data-id=<%= group.getId() %> data-path="/groups">
 							<span class="translate" data-lang-key="Delete"></span>
 						</button>
 			        </td>

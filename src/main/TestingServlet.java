@@ -1,5 +1,6 @@
 package main;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import dao.QuestionDAO;
 import dao.TestsDAO;
 import beans.QuestionBean;
 import beans.QuestionAnswersBean;
+import beans.TestBean;
 import beans.UserBean;
 
 /**
@@ -23,6 +25,7 @@ import beans.UserBean;
 @WebServlet("/testing/*")
 public class TestingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	public static String saveDir = "files" + File.separator + "testQuestionsFiles";
       
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -53,10 +56,12 @@ public class TestingServlet extends HttpServlet {
 				request.setAttribute("message", "You don't have access to this test.");
 				request.getRequestDispatcher(request.getContextPath() + "/error-access.jsp").forward(request, response);
 			} else {
+				TestBean test = TestsDAO.find(testId);
 				ArrayList<QuestionBean> questions = QuestionDAO.getQuestions(testId);
 				request.setAttribute("status", "success");
-				request.setAttribute("testId", testId);
+				request.setAttribute("test", test);
 				request.setAttribute("questions", questions);
+				request.setAttribute("saveDir", saveDir);
 				request.getRequestDispatcher("/testing.jsp").forward(request, response);
 			}
 		}
