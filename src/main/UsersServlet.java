@@ -29,15 +29,14 @@ public class UsersServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+		
 		if (user == null) {
 			response.sendRedirect(request.getContextPath() + "/login");
-		}
-		else if (!user.getAccess("register")) {
+		} else if (!user.getAccess("register")) {
 			request.setAttribute("status", "warning");
 			request.setAttribute("message", "You don't have access to this page.");
 			request.getRequestDispatcher("error-access.jsp").forward(request, response);
-		}
-		else {
+		} else {
 			// Select all users here.
 			ArrayList<UserBean> users = UserDAO.findAll();
 			HashMap<Integer, String> departmentsMap = DepartmentsDAO.getDepartmentsMap();

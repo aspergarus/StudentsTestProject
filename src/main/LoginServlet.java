@@ -1,7 +1,6 @@
 package main;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,17 +28,16 @@ public class LoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+		
 		if (user != null) {
 			response.sendRedirect(request.getContextPath() + "/");
-		}
-		else {
+		} else {
 			String error = null;
 			if (session != null) {
 				error = (String) session.getAttribute("error");
 				session.setAttribute("error", null);
 			}
 			request.setAttribute("error", error);
-
 			request.getRequestDispatcher("login.jsp").forward(request, response);
 		}
 	}
@@ -66,10 +64,9 @@ public class LoginServlet extends HttpServlet {
 		    	request.setAttribute("status", "warning");
 				request.setAttribute("message", "Username or password not found.");
 				request.getRequestDispatcher("login.jsp").forward(request, response);
-		    }
-		    	
-		} catch (Throwable theException) {
-		     System.out.println(theException);
+		    }	
+		} catch (Throwable e) {
+		     System.out.println(e);
 		}
 	}
 }

@@ -44,44 +44,40 @@ public class UserEditServlet extends HttpServlet {
 
 		if (user == null) {
 			response.sendRedirect(request.getContextPath() + "/login");
-		}
-		else if (!user.getAccess(request.getServletPath() + request.getPathInfo())) {
+		} else if (!user.getAccess(request.getServletPath() + request.getPathInfo())) {
 			request.setAttribute("status", "warning");
 			request.setAttribute("message", "You don't have access to this page.");
 			request.getRequestDispatcher(request.getContextPath() + "/error-access.jsp").forward(request, response);
-		}
-		else {
-			String status = null;
-			String message = null;
-			if (session != null) {
-				status = (String) session.getAttribute("status");
-				message = (String) session.getAttribute("message");
+		} else {
+			String status = (String) session.getAttribute("status");
+			String message = (String) session.getAttribute("message");
+
+			if (status != null && message != null) {
+				request.setAttribute("status", status);
+				request.setAttribute("message", message);
 				session.setAttribute("status", null);
 				session.setAttribute("message", null);
 			}
-			request.setAttribute("status", status);
-			request.setAttribute("message", message);
-
 			UserBean editedUser = null;
 
 			// Get user id from path.
-			String[] pathParts = request.getPathInfo().split("/");
-			int id = Integer.valueOf(pathParts[1]);
-
 			try {
+				String[] pathParts = request.getPathInfo().split("/");
+				int id = Integer.valueOf(pathParts[1]);
+				
 				editedUser = UserDAO.find(id);
-			} catch (SQLException e) {
-				System.out.println("Can't find such user.");
-				System.out.println(e.getMessage());
-			}
-			if (editedUser != null) {
-				request.setAttribute("editedUser", editedUser);
-				request.setAttribute("userRole", user.getRole());
-				request.getRequestDispatcher("/formUser.jsp").forward(request, response);
-			}
-			else {
+				
+				if (editedUser != null) {
+					request.setAttribute("editedUser", editedUser);
+					request.setAttribute("userRole", user.getRole());
+					request.getRequestDispatcher("/formUser.jsp").forward(request, response);
+				} else {
+					response.sendError(404);
+				}
+			} catch (Exception e) {
 				response.sendError(404);
 			}
+			
 		}
 	}
 

@@ -36,33 +36,36 @@ public class TestingServlet extends HttpServlet {
 		if (user == null) {
 			response.sendRedirect(request.getContextPath() + "/login");
 		} else {
-			String status = null;
-			String message = null;
-			if (session != null) {
-				status = (String) session.getAttribute("status");
-				message = (String) session.getAttribute("message");
+			String status = (String) session.getAttribute("status");
+			String message = (String) session.getAttribute("message");
+
+			if (status != null && message != null) {
+				request.setAttribute("status", status);
+				request.setAttribute("message", message);
 				session.setAttribute("status", null);
 				session.setAttribute("message", null);
 			}
-			request.setAttribute("status", status);
-			request.setAttribute("message", message);
 			
 			// Get test id from path.
-			String[] pathParts = request.getPathInfo().split("/");
-			int testId = Integer.valueOf(pathParts[1]);
-			
-			if (!TestsDAO.canTesting(user, testId)) {
-				request.setAttribute("status", "warning");
-				request.setAttribute("message", "You don't have access to this test.");
-				request.getRequestDispatcher(request.getContextPath() + "/error-access.jsp").forward(request, response);
-			} else {
-				TestBean test = TestsDAO.find(testId);
-				ArrayList<QuestionBean> questions = QuestionDAO.getQuestions(testId);
-				request.setAttribute("status", "success");
-				request.setAttribute("test", test);
-				request.setAttribute("questions", questions);
-				request.setAttribute("saveDir", saveDir);
-				request.getRequestDispatcher("/testing.jsp").forward(request, response);
+			try {
+				String[] pathParts = request.getPathInfo().split("/");
+				int testId = Integer.valueOf(pathParts[1]);
+				
+				if (!TestsDAO.canTesting(user, testId)) {
+					request.setAttribute("status", "warning");
+					request.setAttribute("message", "You don't have access to this test.");
+					request.getRequestDispatcher(request.getContextPath() + "/error-access.jsp").forward(request, response);
+				} else {
+					TestBean test = TestsDAO.find(testId);
+					ArrayList<QuestionBean> questions = QuestionDAO.getQuestions(testId);
+					request.setAttribute("status", "success");
+					request.setAttribute("test", test);
+					request.setAttribute("questions", questions);
+					request.setAttribute("saveDir", saveDir);
+					request.getRequestDispatcher("/testing.jsp").forward(request, response);
+				}
+			} catch (Exception e) {
+				response.sendError(404);
 			}
 		}
 	}

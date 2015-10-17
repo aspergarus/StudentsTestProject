@@ -29,8 +29,7 @@ public class CommentsServlet extends HttpServlet {
 
 		if (user == null) {
 			response.sendError(403);
-		}
-		else {
+		} else {
 			// Get info of new comment
 			CommentsBean comment = new CommentsBean();
 			comment.setTitle(request.getParameter("title"));
@@ -48,13 +47,11 @@ public class CommentsServlet extends HttpServlet {
 				if (CommentsDAO.insert(comment)) {
 					session.setAttribute("status", "success");
 					session.setAttribute("message", "Comments has been added");
-				}
-				else {
+				} else {
 					session.setAttribute("status", "danger");
 					session.setAttribute("message", "Some troubles were occurred during adding a comment");
 				}
-			}
-			else {
+			} else {
 				session.setAttribute("status", "danger");
 				session.setAttribute("message", errorMessage);
 			}
@@ -71,8 +68,7 @@ public class CommentsServlet extends HttpServlet {
 
 		if (user == null) {
 			response.sendError(403);
-		}
-		else {
+		} else {
 			// Get params
 			int cid = Integer.valueOf(request.getHeader("cid"));
 
@@ -82,7 +78,6 @@ public class CommentsServlet extends HttpServlet {
 				response.sendError(403, "User does not have access");
 				return;
 			}
-
 			//Delete from DB
 			CommentsDAO.delete(cid);
 			response.getOutputStream().println("Comment has been deleted successfully.");
@@ -98,8 +93,7 @@ public class CommentsServlet extends HttpServlet {
 
 		if (user == null) {
 			response.sendError(403);
-		}
-		else {
+		} else {
 			// Check if current user is author of this comment and update comment if it is.
 			int cid = Integer.valueOf(request.getHeader("cid"));
 			String title = java.net.URLDecoder.decode(request.getHeader("title"), "UTF-8");

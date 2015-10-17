@@ -50,37 +50,35 @@ public class TestEditServlet extends HttpServlet {
 
 		if (user == null) {
 			response.sendRedirect(request.getContextPath() + "/login");
-		}
-		else if (user.getRole() == 0) {
+		} else if (user.getRole() == 0) {
 			request.setAttribute("status", "warning");
 			request.setAttribute("message", "You don't have access to this page.");
 			request.getRequestDispatcher(request.getContextPath() + "/error-access.jsp").forward(request, response);
 		} else {
-			String status = null;
-			String message = null;
-			if (session != null) {
-				status = (String) session.getAttribute("status");
-				message = (String) session.getAttribute("message");
+			String status = (String) session.getAttribute("status");
+			String message = (String) session.getAttribute("message");
+
+			if (status != null && message != null) {
+				request.setAttribute("status", status);
+				request.setAttribute("message", message);
 				session.setAttribute("status", null);
 				session.setAttribute("message", null);
 			}
-			request.setAttribute("status", status);
-			request.setAttribute("message", message);
-			
 			// Get test id from path.
-			String[] pathParts = request.getPathInfo().split("/");
-			int id = Integer.valueOf(pathParts[1]);
-			
-			TestBean editedTest = TestsDAO.find(id);
-			ArrayList<QuestionBean> questions = QuestionDAO.getQuestions(id);
-			
-			request.setAttribute("editedTest", editedTest);
-			request.setAttribute("saveDir", saveDir);
-			request.setAttribute("questions", questions);
-			request.getRequestDispatcher("/test-edit.jsp").forward(request, response);
-			
+			try {
+				String[] pathParts = request.getPathInfo().split("/");
+				int id = Integer.valueOf(pathParts[1]);
+				TestBean editedTest = TestsDAO.find(id);
+				ArrayList<QuestionBean> questions = QuestionDAO.getQuestions(id);
+				
+				request.setAttribute("editedTest", editedTest);
+				request.setAttribute("saveDir", saveDir);
+				request.setAttribute("questions", questions);
+				request.getRequestDispatcher("/test-edit.jsp").forward(request, response);
+			} catch (Exception e) {
+				response.sendError(404);
+			}
 		}
-		
 	}
 
 	/**
@@ -92,12 +90,10 @@ public class TestEditServlet extends HttpServlet {
 
 		if (user == null) {
 			response.sendRedirect(request.getContextPath() + "/login");
-			
 		} else if (user.getRole() == 0) {
 			request.setAttribute("status", "warning");
 			request.setAttribute("message", "You don't have access to this page.");
 			request.getRequestDispatcher(request.getContextPath() + "/error-access.jsp").forward(request, response);
-			
 		} else {
 			String deleteQuestionId = request.getParameter("delete-question-id");
 			
@@ -118,7 +114,6 @@ public class TestEditServlet extends HttpServlet {
 				String sTestId = request.getParameter("id");
 				if (sTestId != null) {
 					int testId = Integer.parseInt(sTestId);
-					
 					String questionText = request.getParameter("question");
 					
 					// Upload additional files.
@@ -129,7 +124,6 @@ public class TestEditServlet extends HttpServlet {
 					ArrayList<AnswerBean> answers = new ArrayList<>();
 					
 					QuestionBean question = new QuestionBean(testId, questionText);
-					
 					int questionId = QuestionDAO.add(question);
 					
 					if (questionId == 0) {
@@ -145,7 +139,6 @@ public class TestEditServlet extends HttpServlet {
 						AnswerBean answer = new AnswerBean(questionId, answerText, isCorrect);
 						answers.add(answer);
 					}
-					
 					if (AnswersDAO.add(answers)) {
 						if (fileNames.isEmpty()) {
 							session.setAttribute("status", "success");

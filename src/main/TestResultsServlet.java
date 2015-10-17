@@ -40,16 +40,13 @@ public class TestResultsServlet extends HttpServlet {
 		
 		if (user == null) {
 			response.sendRedirect(request.getContextPath() + "/login");
-			
 		} else if (user.getRole() == 0) {
 			request.setAttribute("status", "warning");
 			request.setAttribute("message", "You don't have access to this page.");
 			request.getRequestDispatcher("error-access.jsp").forward(request, response);
-			
 		} else {
-			String sTestId = request.getParameter("id");
-			
-			if (sTestId != null && !sTestId.equals("")) {
+			try {
+				String sTestId = request.getParameter("id");
 				int testId = Integer.parseInt(sTestId);
 				ArrayList<TestResultBean> results = TestsDAO.getResults(testId);
 				HashMap<Integer, String> groupsMap = GroupsDAO.getGroupsMap();
@@ -57,7 +54,7 @@ public class TestResultsServlet extends HttpServlet {
 				request.setAttribute("results", results);
 				request.setAttribute("groupsMap", groupsMap);
 				request.getRequestDispatcher("/test-results.jsp").forward(request, response);
-			} else {
+			} catch (Exception e) {
 				response.sendError(404);
 			}
 		}

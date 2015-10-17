@@ -27,25 +27,24 @@ public class StudentsServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+		
 		if (user == null) {
 			response.sendRedirect(request.getContextPath() + "/login");
-		}
-		else if (!user.getAccess("students")) {
+		} else if (!user.getAccess("students")) {
 			request.setAttribute("status", "warning");
 			request.setAttribute("message", "You don't have access to this page.");
 			request.getRequestDispatcher("error-access.jsp").forward(request, response);
-		}
-		else {
+		} else {
 			String status = (String) session.getAttribute("status");
 			String message = (String) session.getAttribute("message");
+			
 			if (status != null && message != null) {
 				request.setAttribute("status", status);
 				request.setAttribute("message", message);
 				session.setAttribute("status", null);
 				session.setAttribute("message", null);
 			}
-
-			// Select all students here.
+			// Select all students.
 			ArrayList<StudentGroupBean> studentList = StudentDAO.findAll(user);
 			request.setAttribute("studentList", studentList);
 			request.setAttribute("currentUser", user);
@@ -59,10 +58,10 @@ public class StudentsServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+		
 		if (user == null || !user.getAccess("students")) {
 			response.sendError(403);
-		}
-		else {
+		} else {
 			// Get form values.
 			String name = request.getParameter("name");
 			String group = request.getParameter("group");
@@ -73,21 +72,18 @@ public class StudentsServlet extends HttpServlet {
 				String errorMessage = studentValidate(name);
 				if (errorMessage == null) {
 					// Add student to list only if he is not in other groups.
-					int studentId = Integer.valueOf(getStudentIdFromName(name));
+					int studentId = Integer.parseInt(getStudentIdFromName(name));
 					if (StudentDAO.insert(group, studentId)) {
 						session.setAttribute("status", "success");
 						session.setAttribute("message", "Student has been added to list");
-					}
-					else {
+					} else {
 						session.setAttribute("status", "danger");
 						session.setAttribute("message", "Some troubles were occurred during creating a student");
 					}
-				}
-				else {
+				} else {
 					session.setAttribute("status", "danger");
 					session.setAttribute("message", errorMessage);
 				}
-
 			}
 			response.sendRedirect("students");
 		}
@@ -97,8 +93,7 @@ public class StudentsServlet extends HttpServlet {
 		int studentId = 0;
 		if (studentName.lastIndexOf("[") == -1) {
 			return "Can't find this student. Please, search it using autocomplete.";
-		}
-		else {
+		} else {
 			studentId = Integer.valueOf(getStudentIdFromName(studentName));
 		}
 		if (studentBelongGroup(studentId)) {

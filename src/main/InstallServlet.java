@@ -37,8 +37,7 @@ public class InstallServlet extends HttpServlet {
 		
 		if (statusDB == 0) {
 			response.sendRedirect(request.getContextPath() + "/");
-		}
-		else {
+		} else {
 			request.setAttribute("statusDB", statusDB);
 			request.getRequestDispatcher("install-db.jsp").forward(request, response);
 		}

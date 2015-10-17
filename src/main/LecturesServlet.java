@@ -48,10 +48,10 @@ public class LecturesServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+		
 		if (user == null) {
 			response.sendRedirect(request.getContextPath() + "/login");
-		}
-		else {
+		} else {
 			String status = (String) session.getAttribute("status");
 			String message = (String) session.getAttribute("message");
 			if (status != null && message != null) {
@@ -60,7 +60,6 @@ public class LecturesServlet extends HttpServlet {
 				session.setAttribute("status", null);
 				session.setAttribute("message", null);
 			}
-			
 			String id = request.getParameter("id");
 			boolean edit = request.getParameter("edit") == null ? false : Boolean.valueOf(request.getParameter("edit"));
 			
@@ -74,22 +73,26 @@ public class LecturesServlet extends HttpServlet {
 				request.setAttribute("currentUser", user);
 				request.setAttribute("groupsMap", groups);
 				request.getRequestDispatcher("lectures.jsp").forward(request, response);
-			}
-			else {
+			} else {
 				// Show lecture info, or editing form for lecture/.
 				String jsp = edit ? "lecture-edit.jsp" : "lecture-view.jsp";
-
-				//Show or edit specific lecture
-				LecturesBean lecturesBean = LecturesDAO.find(Integer.valueOf(id));
-				if (lecturesBean == null) {
-					session.setAttribute("status", "Warning");
-					session.setAttribute("message", "Such lecture does not exist");
-					response.sendRedirect(request.getContextPath() + "/lectures");
-				}
-				else {
-					request.setAttribute("lecturesBean", lecturesBean);
-					request.setAttribute("saveDir", saveDir);
-					request.getRequestDispatcher(jsp).forward(request, response);
+				
+				try {
+					int lectureId = Integer.parseInt(id);
+					//Show or edit specific lecture
+					LecturesBean lecturesBean = LecturesDAO.find(lectureId);
+					
+					if (lecturesBean == null) {
+						session.setAttribute("status", "warning");
+						session.setAttribute("message", "Such lecture does not exist");
+						response.sendRedirect(request.getContextPath() + "/lectures");
+					} else {
+						request.setAttribute("lecturesBean", lecturesBean);
+						request.setAttribute("saveDir", saveDir);
+						request.getRequestDispatcher(jsp).forward(request, response);
+					}
+				} catch (NumberFormatException e) {
+					response.sendError(404);
 				}
 			}
 		}
@@ -101,9 +104,7 @@ public class LecturesServlet extends HttpServlet {
 		
 		if (user == null) {
 			response.sendError(403);
-			
 		} else {
-			
 			// Update existed lecture
 			String updateId = request.getParameter("update-id");
 			if (updateId != null) {
@@ -113,7 +114,6 @@ public class LecturesServlet extends HttpServlet {
 				String body = request.getParameter("body").trim();
 				
 				int subjectId = SubjectsDAO.find(subject);
-
 				String errorMessage = lectureValidate(title, subjectId, 1);
 
 				if (errorMessage == null) {
@@ -128,13 +128,11 @@ public class LecturesServlet extends HttpServlet {
 						if (FileDAO.insert(lBean.getId(), "lectures", fileNames)) {
 							session.setAttribute("status", "success");
 							session.setAttribute("message", "Lecture has been added");
-						}
-						else {
+						} else {
 							session.setAttribute("status", "danger");
 							session.setAttribute("message", "Some troubles were occurred during writing file info to db");
 						}
 					}
-
 					// Update fields in practical bean.
 					lBean.setTitle(title);
 					lBean.setBody(body);
@@ -143,8 +141,7 @@ public class LecturesServlet extends HttpServlet {
 					if (LecturesDAO.update(lBean)) {
 						session.setAttribute("status", "success");
 						session.setAttribute("message", "Lecture has been updated");
-					}
-					else {
+					} else {
 						session.setAttribute("status", "danger");
 						session.setAttribute("message", "Some troubles were occurred during updating a lecture");
 					}
@@ -152,7 +149,6 @@ public class LecturesServlet extends HttpServlet {
 					session.setAttribute("status", "danger");
 					session.setAttribute("message", errorMessage);
 				}
-
 				response.sendRedirect(request.getContextPath() + "/lectures");
 				return;
 			}
@@ -168,7 +164,6 @@ public class LecturesServlet extends HttpServlet {
 			String body = request.getParameter("body").trim();
 			
 			int subjectId = SubjectsDAO.find(subject);
-			
 			String errorMessage = lectureValidate(title, subjectId, 0);
 			
 			if (errorMessage == null) {
@@ -179,29 +174,24 @@ public class LecturesServlet extends HttpServlet {
 					if (fileNames.isEmpty()) {
 						session.setAttribute("status", "success");
 						session.setAttribute("message", "Lecture has been added");
-					}
-					else {
+					} else {
 						bean = LecturesDAO.find(subjectId, title);
 						if (FileDAO.insert(bean.getId(), "lectures", fileNames)) {
 							session.setAttribute("status", "success");
 							session.setAttribute("message", "Lecture has been added");
-						}
-						else {
+						} else {
 							session.setAttribute("status", "danger");
 							session.setAttribute("message", "Some troubles were occurred during writing file info to db");
 						}
 					}
-				}
-				else {
+				} else {
 					session.setAttribute("status", "danger");
 					session.setAttribute("message", "Some troubles were occurred during creating a lecture");
 				}
-			} 
-			else {
+			} else {
 				session.setAttribute("status", "danger");
 				session.setAttribute("message", errorMessage);
 			}
-			
 			response.sendRedirect(request.getContextPath() + "/lectures");
 		}
 	}
@@ -223,9 +213,7 @@ public class LecturesServlet extends HttpServlet {
 		
 		if (user == null) {
 			response.sendError(403);
-			
 		} else {
-			
 			String deleteId = request.getHeader("id");
 			if (deleteId != null) {
 				int id = Integer.valueOf(deleteId);
@@ -239,9 +227,7 @@ public class LecturesServlet extends HttpServlet {
 					FileUploadManager.deleteFiles(fileBeans, savePath);
 					FileDAO.deleteAll(fileBeans);
 				}
-				
-				boolean deletedFlag = LecturesDAO.delete(id);
-				if (deletedFlag) {
+				if (LecturesDAO.delete(id)) {
 					response.getOutputStream().println("Lecture has been deleted successfully.");
 				} else {
 					response.getOutputStream().println("Some troubles during deleting a lecture.");
@@ -249,6 +235,4 @@ public class LecturesServlet extends HttpServlet {
 			}
 		}
 	}
-	
-
 }
