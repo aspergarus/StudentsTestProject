@@ -32,6 +32,7 @@ public class TestResultServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+		
 		if (user == null) {
 			response.sendRedirect(request.getContextPath() + "/login");
 		} else {
@@ -53,7 +54,6 @@ public class TestResultServlet extends HttpServlet {
 				request.setAttribute("message", "You can see the result after completing the test.");
 				request.getRequestDispatcher("error-access.jsp").forward(request, response);;
 			}
-			
 		}
 	}
 

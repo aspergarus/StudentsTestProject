@@ -36,19 +36,23 @@ public class GroupServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+		
 		if (user == null) {
 			response.sendRedirect(request.getContextPath() + "/login");
-		}
-		else {
+		} else if (user.getRole() == 0) {
+			request.setAttribute("status", "warning");
+			request.setAttribute("message", "You don't have access to this page.");
+			request.getRequestDispatcher("error-access.jsp").forward(request, response);
+		} else {
 			String status = (String) session.getAttribute("status");
 			String message = (String) session.getAttribute("message");
+			
 			if (status != null && message != null) {
 				request.setAttribute("status", status);
 				request.setAttribute("message", message);
 				session.setAttribute("status", null);
 				session.setAttribute("message", null);
 			}
-			
 			ArrayList<GroupBean> groups = GroupsDAO.findAll();
 			request.setAttribute("groupsList", groups);
 			request.getRequestDispatcher("/groups.jsp").forward(request, response);
@@ -64,8 +68,7 @@ public class GroupServlet extends HttpServlet {
 		
 		if (user == null) {
 			response.sendError(403);
-		}
-		else {
+		} else {
 			String subjectHeader = request.getHeader("subject");
 			String groupsHeader = request.getHeader("groups");
 			
@@ -80,8 +83,7 @@ public class GroupServlet extends HttpServlet {
 				} catch (NullPointerException e) {
 					System.out.println(e.getMessage());
 				}
-			}
-			else {
+			} else {
 				// Add new group
 				String groupName = request.getParameter("groupName");
 				String errorMessage = GroupsDAO.groupValidate(groupName);
@@ -90,13 +92,11 @@ public class GroupServlet extends HttpServlet {
 					if (GroupsDAO.insert(groupName)) {
 						session.setAttribute("status", "success");
 						session.setAttribute("message", "Group has been added");
-					}
-					else {
+					} else {
 						session.setAttribute("status", "danger");
 						session.setAttribute("message", "Some troubles were occurred during adding a group");
 					}
-				}
-				else {
+				} else {
 					session.setAttribute("status", "danger");
 					session.setAttribute("message", errorMessage);
 				}
@@ -115,8 +115,7 @@ public class GroupServlet extends HttpServlet {
 
 		if (user == null) {
 			response.sendError(403);
-		}
-		else {
+		} else {
 			//Update in DB
 			int id = Integer.valueOf(request.getHeader("id"));
 			String newGroupName = java.net.URLDecoder.decode(request.getHeader("name"), "UTF-8");
@@ -135,8 +134,7 @@ public class GroupServlet extends HttpServlet {
 
 		if (user == null) {
 			response.sendError(403);
-		}
-		else {
+		} else {
 			//Delete from DB
 			int id = Integer.valueOf(request.getHeader("id"));
 			GroupsDAO.delete(id);

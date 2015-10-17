@@ -37,8 +37,13 @@ public class SubjectServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+		
 		if (user == null) {
 			response.sendRedirect(request.getContextPath() + "/login");
+		} else if (user.getRole() == 0) {
+			request.setAttribute("status", "warning");
+			request.setAttribute("message", "You don't have access to this page.");
+			request.getRequestDispatcher("error-access.jsp").forward(request, response);
 		} else {
 			String status = (String) session.getAttribute("status");
 			String message = (String) session.getAttribute("message");
@@ -49,30 +54,33 @@ public class SubjectServlet extends HttpServlet {
 				session.setAttribute("status", null);
 				session.setAttribute("message", null);
 			}
-			
-			String id = request.getParameter("id");
-			boolean edit = request.getParameter("edit") == null ? false : Boolean.valueOf(request.getParameter("edit"));
-			HashMap<Integer, String> departmentsMap = DepartmentsDAO.getDepartmentsMap();
-			
-			if (edit) {
-				SubjectsBean subjectsBean = SubjectsDAO.find(Integer.valueOf(id));
-				if (subjectsBean == null) {
-					session.setAttribute("status", "Warning");
-					session.setAttribute("message", "Such subject does not exist");
-					response.sendRedirect(request.getContextPath() + "/subjects");
+			try {
+				String id = request.getParameter("id");
+				boolean edit = request.getParameter("edit") == null ? false : Boolean.valueOf(request.getParameter("edit"));
+				HashMap<Integer, String> departmentsMap = DepartmentsDAO.getDepartmentsMap();
+				
+				if (edit && user.getRole() == 2) {
+					SubjectsBean subjectsBean = SubjectsDAO.find(Integer.valueOf(id));
+					if (subjectsBean == null) {
+						session.setAttribute("status", "Warning");
+						session.setAttribute("message", "Such subject does not exist");
+						response.sendRedirect(request.getContextPath() + "/subjects");
+					} else {
+						request.setAttribute("subjectsBean", subjectsBean);
+						request.setAttribute("departmentsMap", departmentsMap);
+						request.getRequestDispatcher("subject-edit.jsp").forward(request, response);
+					}
 				} else {
-					request.setAttribute("subjectsBean", subjectsBean);
+					//Show all subjects
+					ArrayList<SubjectsBean> subjectsList = SubjectsDAO.findAll(user);
+					request.setAttribute("subjectsList", subjectsList);
 					request.setAttribute("departmentsMap", departmentsMap);
-					request.getRequestDispatcher("subject-edit.jsp").forward(request, response);
+					request.getRequestDispatcher("subjects.jsp").forward(request, response);
 				}
+			} catch (NumberFormatException e) {
+				response.sendError(404);
 			}
-			//Show all subjects
-			else {
-				ArrayList<SubjectsBean> subjectsList = SubjectsDAO.findAll(user);
-				request.setAttribute("subjectsList", subjectsList);
-				request.setAttribute("departmentsMap", departmentsMap);
-				request.getRequestDispatcher("subjects.jsp").forward(request, response);
-			}
+			
 		}
 	}
 
@@ -85,15 +93,12 @@ public class SubjectServlet extends HttpServlet {
 		
 		if (user == null) {
 			response.sendError(403);
-			
 		} else {
-		
 			String subjectName = request.getParameter("subjectName").trim();
 			String department = request.getParameter("departmentName").trim();
 			int departmentId = DepartmentsDAO.find(department).getId();
 			
 			String errorMessage = SubjectsDAO.subjectValidate(subjectName, departmentId);
-			
 			if (errorMessage == null) {
 				SubjectsBean bean = new SubjectsBean(subjectName, departmentId);
 				
@@ -119,14 +124,12 @@ public class SubjectServlet extends HttpServlet {
 		if (user == null) {
 			response.sendError(403);
 		} else {
-			
 			int subjectId = Integer.parseInt(request.getHeader("id"));
 			String subjectHeader = request.getHeader("subject");
 			String departmentHeader = request.getHeader("department");
 			
 			if (subjectHeader != null && departmentHeader != null) {
 				try {
-					
 					String subjectName = java.net.URLDecoder.decode(subjectHeader, "UTF-8").trim();
 					String department = java.net.URLDecoder.decode(departmentHeader, "UTF-8").trim();
 					
@@ -144,12 +147,10 @@ public class SubjectServlet extends HttpServlet {
 					} else {
 						response.getOutputStream().println(errorMessage);
 					}
-					
 				} catch (NullPointerException e) {
 					System.out.println(e.getMessage());
 				}
 			}
-			
 		}
 	}
 	
@@ -174,5 +175,4 @@ public class SubjectServlet extends HttpServlet {
 			}
 		}
 	}
-	
 }

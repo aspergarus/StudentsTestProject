@@ -42,17 +42,16 @@ public class TestsServlet extends HttpServlet {
 		
 		if (user == null) {
 			response.sendRedirect(request.getContextPath() + "/login");
-		}
-		else {
+		} else {
 			String status = (String) session.getAttribute("status");
 			String message = (String) session.getAttribute("message");
+			
 			if (status != null && message != null) {
 				request.setAttribute("status", status);
 				request.setAttribute("message", message);
 				session.setAttribute("status", null);
 				session.setAttribute("message", null);
 			}
-			
 			// Show exists tests
 			HashMap<String, ArrayList<TestBean>> testsMap = TestsDAO.findAll(user);
 			HashMap<Integer, String> subjects = SubjectsDAO.getSubjectsMap();
@@ -93,7 +92,6 @@ public class TestsServlet extends HttpServlet {
 			} else {
 				id = user.getId();
 			}
-			
 			TestBean newTest = new TestBean(id, subjectId, module, note, time);
 			
 			if (TestsDAO.insert(newTest)) {
@@ -105,7 +103,6 @@ public class TestsServlet extends HttpServlet {
 			}
 		}
 		response.sendRedirect(request.getContextPath() + "/tests");
-		return;
 	}
 	
 	
@@ -142,7 +139,6 @@ public class TestsServlet extends HttpServlet {
 		if (user == null) {
 			response.sendError(403);
 		} else {
-
 			String deleteId = request.getHeader("id");
 			if (deleteId != null && !deleteId.equals("")) {
 				int id = Integer.parseInt(deleteId);

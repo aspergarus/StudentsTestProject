@@ -25,13 +25,12 @@ public class MainServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+		
 		if (user == null) {
 			response.sendRedirect(request.getContextPath() + "/login");
-		}
-		else {
+		} else {
 			request.setAttribute("currentUser", user);
 			request.getRequestDispatcher("main.jsp").forward(request, response);
 		}
 	}
-
 }

@@ -45,19 +45,19 @@ public class PracticalsServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+		
 		if (user == null) {
 			response.sendRedirect(request.getContextPath() + "/login");
-		}
-		else {
+		} else {
 			String status = (String) session.getAttribute("status");
 			String message = (String) session.getAttribute("message");
+			
 			if (status != null && message != null) {
 				request.setAttribute("status", status);
 				request.setAttribute("message", message);
 				session.setAttribute("status", null);
 				session.setAttribute("message", null);
 			}
-
 			String id = request.getParameter("id");
 			boolean edit = request.getParameter("edit") == null ? false : Boolean.valueOf(request.getParameter("edit"));
 
@@ -70,22 +70,25 @@ public class PracticalsServlet extends HttpServlet {
 				request.setAttribute("currentUser", user);
 				request.setAttribute("groupsMap", groups);
 				request.getRequestDispatcher("practicals.jsp").forward(request, response);
-			}
-			else {
+			} else {
 				// Show practical info, or editing form for practical/.
 				String jsp = edit ? "practical-edit.jsp" : "practical-view.jsp";
-
-				// Show specific practical
-				PracticalsBean practicalBean = PracticalsDAO.find(Integer.valueOf(id));
-				if (practicalBean == null) {
-					session.setAttribute("status", "Warning");
-					session.setAttribute("message", "Such practical does not exist");
-					response.sendRedirect(request.getContextPath() + "/practicals");
-				}
-				else {
-					request.setAttribute("practicalBean", practicalBean);
-					request.setAttribute("saveDir", saveDir);
-					request.getRequestDispatcher(jsp).forward(request, response);
+				try {
+					int practicalId = Integer.parseInt(id);
+					// Show specific practical
+					PracticalsBean practicalBean = PracticalsDAO.find(practicalId);
+					
+					if (practicalBean == null) {
+						session.setAttribute("status", "warning");
+						session.setAttribute("message", "Such practical does not exist");
+						response.sendRedirect(request.getContextPath() + "/practicals");
+					} else {
+						request.setAttribute("practicalBean", practicalBean);
+						request.setAttribute("saveDir", saveDir);
+						request.getRequestDispatcher(jsp).forward(request, response);
+					}
+				} catch (NumberFormatException e) {
+					response.sendError(404);
 				}
 			}
 		}
@@ -97,14 +100,12 @@ public class PracticalsServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
+		
 		if (user == null) {
 			response.sendError(403);
-		}
-		else if (!user.getAccess("practicals")) {
+		} else if (!user.getAccess("practicals")) {
 			response.sendError(403);
-		}
-		else {
-			
+		} else {
 			// Update existed practical
 			String updateId = request.getParameter("update-id");
 			if (updateId != null) {
@@ -114,7 +115,6 @@ public class PracticalsServlet extends HttpServlet {
 				String body = request.getParameter("body").trim();
 				
 				int subjectId = SubjectsDAO.find(subject);
-
 				String errorMessage = practicalValidate(title, subject, 1);
 
 				if (errorMessage == null) {
@@ -129,13 +129,11 @@ public class PracticalsServlet extends HttpServlet {
 						if (FileDAO.insert(pBean.getId(), "practicals", fileNames)) {
 							session.setAttribute("status", "success");
 							session.setAttribute("message", "Lecture has been added");
-						}
-						else {
+						} else {
 							session.setAttribute("status", "danger");
 							session.setAttribute("message", "Some troubles were occurred during writing file info to db");
 						}
 					}
-
 					// Update fields in practical bean.
 					pBean.setTitle(title);
 					pBean.setBody(body);
@@ -144,19 +142,15 @@ public class PracticalsServlet extends HttpServlet {
 					if (PracticalsDAO.update(pBean)) {
 						session.setAttribute("status", "success");
 						session.setAttribute("message", "Practical has been updated");
-					}
-					else {
+					} else {
 						session.setAttribute("status", "danger");
 						session.setAttribute("message", "Some troubles were occurred during updating a practical");
 					}
-				}
-				else {
+				} else {
 					session.setAttribute("status", "danger");
 					session.setAttribute("message", errorMessage);
 				}
-
 				response.sendRedirect(request.getContextPath() + "/practicals");
-				return;
 			}
 
 			// Create new practical
@@ -170,7 +164,6 @@ public class PracticalsServlet extends HttpServlet {
 			String body = request.getParameter("body").trim();
 			
 			int subjectId = SubjectsDAO.find(subject);
-
 			String errorMessage = practicalValidate(title, subject, 0);
 
 			if (errorMessage == null) {
@@ -199,7 +192,6 @@ public class PracticalsServlet extends HttpServlet {
 				session.setAttribute("status", "danger");
 				session.setAttribute("message", errorMessage);
 			}
-
 			response.sendRedirect(request.getContextPath() + "/practicals");
 		}
 	}
@@ -215,16 +207,13 @@ public class PracticalsServlet extends HttpServlet {
 		return null;
 	}
 	
-	
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
 		
 		if (user == null) {
-			response.sendError(403);
-			
+			response.sendError(403);	
 		} else {
-			
 			String deleteId = request.getHeader("id");
 			if (deleteId != null) {
 				int id = Integer.valueOf(deleteId);
@@ -239,8 +228,7 @@ public class PracticalsServlet extends HttpServlet {
 					FileDAO.deleteAll(fileBeans);
 				}
 
-				boolean deletedFlag = PracticalsDAO.delete(id);
-				if (deletedFlag) {
+				if (PracticalsDAO.delete(id)) {
 					response.getOutputStream().println("Lecture has been deleted successfully.");
 				} else {
 					response.getOutputStream().println("Some troubles during deleting a lecture.");
@@ -248,5 +236,4 @@ public class PracticalsServlet extends HttpServlet {
 			}
 		}
 	}
-
 }

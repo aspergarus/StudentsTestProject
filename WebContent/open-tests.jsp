@@ -103,17 +103,19 @@
 			    </tr>
 				<% i++; %>
 			<% } %>
-			<tr>
-				<td></td>
-				<td></td>
-		        <td></td>
-		        <td></td>
-		        <td>
-		        	<label for="toggle-select">Select all</label>
-				    <input type="checkbox" id="toggle-select">
-			  	</td>
-		        <td><input id="clear-ready-students" type="button" class="btn btn-danger" value="Remove all"></td>
-			</tr>
+			<% if (students.size() > 0) { %>
+				<tr>
+					<td></td>
+					<td></td>
+			        <td></td>
+			        <td></td>
+			        <td>
+			        	<label for="toggle-select">Select all</label>
+					    <input type="checkbox" id="toggle-select">
+				  	</td>
+			        <td><input id="clear-ready-students" type="button" class="btn btn-danger" value="Remove all"></td>
+				</tr>
+			<% } %>
 			</tbody>
 		</table>
 		<div class="col-sm-12">

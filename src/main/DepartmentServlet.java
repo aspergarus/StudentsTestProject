@@ -37,10 +37,14 @@ public class DepartmentServlet extends HttpServlet {
 		UserBean user = (session != null) ? (UserBean) session.getAttribute("user") : null;
 		if (user == null) {
 			response.sendRedirect(request.getContextPath() + "/login");
+		} else if (user.getRole() == 0) {
+			request.setAttribute("status", "warning");
+			request.setAttribute("message", "You don't have access to this page.");
+			request.getRequestDispatcher("error-access.jsp").forward(request, response);
 		} else {
 			String status = (String) session.getAttribute("status");
 			String message = (String) session.getAttribute("message");
-			
+
 			if (status != null && message != null) {
 				request.setAttribute("status", status);
 				request.setAttribute("message", message);

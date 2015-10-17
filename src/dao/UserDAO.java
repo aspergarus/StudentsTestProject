@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jasypt.util.password.StrongPasswordEncryptor;
 
@@ -61,7 +63,7 @@ public class UserDAO {
 		return bean;
 	}
 
-	public static UserBean find(int id) throws SQLException {
+	public static UserBean find(int id) {
 		UserBean bean = null;
 
 		String query = "SELECT * FROM users WHERE id = ?";
@@ -71,10 +73,9 @@ public class UserDAO {
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
-			boolean more = rs.next();
 
 			// if user exists set the isValid variable to true
-			if (more) {
+			if (rs.next()) {
 				bean = new UserBean();
 				bean.setId(rs.getInt("id"));
 				bean.setUserName(rs.getString("user_name"));
@@ -87,11 +88,9 @@ public class UserDAO {
 				bean.setAvatar(rs.getString("avatar_name"));
 				bean.setValid(true);
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-		
 		return bean;
 	}
 
@@ -131,6 +130,56 @@ public class UserDAO {
 		
         bean.setValid(rowsAffected > 0);
 		return bean;
+	}
+	
+	public static ArrayList<String> formValidate(String name, String pass, String email) {
+		
+		ArrayList<String> errorMessageList = new ArrayList<>();
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		
+		String findName = "SELECT * FROM users "
+				+ "WHERE user_name = ?";
+		String findEmail = "SELECT * FROM users "
+				+ "WHERE email = ?";
+		
+		try (PreparedStatement stmt = con.prepareStatement(findName)) {
+			stmt.setString(1, name);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				errorMessageList.add("The Username is already used");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		try (PreparedStatement stmt = con.prepareStatement(findEmail)) {
+			stmt.setString(1, email);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				errorMessageList.add("The email is already used");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		//Email validator
+		String EMAIL_PATTERN = 
+				"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+		
+		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+		Matcher matcher = pattern.matcher(email);
+		if (matcher.matches() == false) {
+			errorMessageList.add("Email is not valid.");
+		}
+		
+		//Name and password validator
+		if (name.isEmpty() || pass.isEmpty()) {
+			errorMessageList.add("Name or password is Empty");
+		}
+		return errorMessageList; 
 	}
 
 	public static ArrayList<UserBean> findAll() {
