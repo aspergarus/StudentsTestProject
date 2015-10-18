@@ -507,10 +507,15 @@ $(function () {
 		});
 	}
 	
-	setFirstQuestion();
+	initializeTest();
 	
-	function setFirstQuestion() {
+	function initializeTest() {
 		$('.question-block').first().removeClass('hidden').addClass('current');
+		
+		var questions = $('.question-block').length;
+		$('#all-questions').text(questions);
+		$('.progress-bar').attr('aria-valuemax', questions);
+		
 	}
 	
 	seeNextQuestion();
@@ -538,10 +543,16 @@ $(function () {
 					$('.uncompleted').first().addClass('current').removeClass('uncompleted');
 				}
 				completed++;
+				var currentNumberQuestion = completed + 1;
+				$('.progress-bar').attr('aria-valuenow', currentNumberQuestion);
+				$('#current-number-question').text(currentNumberQuestion);
+				var percents = currentNumberQuestion / numberQuestions * 100;
+				$('.progress-bar').css('width', percents + '%');
 				
 				if (completed === numberQuestions) {
-					$('#next-question').addClass('hidden');
-					$('#miss-question').addClass('hidden');
+					$('#next-question').hide();
+					$('#miss-question').hide();
+					$('.progress').hide();
 					$('.test-complete-info').removeClass('hidden');
 					$('input[type=submit]').removeClass('hidden');
 				}

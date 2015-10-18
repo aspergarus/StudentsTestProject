@@ -3,7 +3,7 @@
 <%@page import="beans.TestBean"%>
 <%@page import="beans.FileBean"%>
 <%@page import="java.util.ArrayList"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
 <% String basePath = request.getContextPath(); %>
@@ -21,10 +21,16 @@
 	<div class="container">
 
 		<%	if (status != null && message != null) { %>
-		<div class="alert alert-${status}">
-			<p>${message}</p>
-		</div>
+			<div class="alert alert-${status}">
+				<p>${message}</p>
+			</div>
 		<% } %>
+		<div class="progress">
+  			<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="1" 
+  				aria-valuemin="0" aria-valuemax="15" style="width: <%= ((double)1 / questions.size()) * 100 %>%">
+    			<p><span id="current-number-question">1</span> / <span id="all-questions"></span></p> 
+  			</div>
+		</div>
 		<div class="col-md-8 col-md-offset-1">
 			<form action="<%= basePath %>/testing/" id="testing-form" method="post" class="form-horizontal" >
 				<% int i = 0; %>
