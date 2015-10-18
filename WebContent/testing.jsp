@@ -96,7 +96,7 @@
 	<script>
 	$(window).on('beforeunload', function(){
 		if ($('.uncompleted').length > 0 ) {
-			return "Be careful! The test will start over!";
+			return "You will not be able to join this test again!";
 		}
 	});
 	</script>

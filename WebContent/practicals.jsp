@@ -124,7 +124,7 @@
 									<td><a href="practicals?edit=true&id=<%= practical.getId() %>">Edit</a></td>
 									<td>
 										<button class="btn btn-danger delete-item" data-id="<%= practical.getId() %>" 
-											data-path="/practicals">Delete</button>
+											data-path="/practicals" data-item="practical">Delete</button>
 									</td>
 								<% } %>
 							</tr>

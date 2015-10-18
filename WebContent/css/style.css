@@ -291,7 +291,7 @@ ol {
 	font-weight: 400;
 }
 .question-block {
-	min-height: 500px;
+	min-height: 450px;
 }
 #next-question, #miss-question {
 	margin-top: 1%;
