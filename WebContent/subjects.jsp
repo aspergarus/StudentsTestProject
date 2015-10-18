@@ -85,7 +85,7 @@
 			        <td><a href="subjects?edit=true&id=<%= subject.getId() %>">Edit</a></td>
 			        <td>
 						<button class="btn btn-danger delete-item" data-id="<%= subject.getId() %>"
-							data-path="/subjects">Delete</button>
+							data-path="/subjects" data-item="subject">Delete</button>
 			        </td>
 			        <% } %>
 			    </tr>

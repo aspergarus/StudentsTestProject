@@ -126,7 +126,7 @@
 								<td><a href="lectures?edit=true&id=<%= lecture.getId() %>">Edit</a></td>
 								<td>
 									<button class="btn btn-danger delete-item" data-id="<%= lecture.getId() %>" 
-											data-path="/lectures">Delete</button>
+											data-path="/lectures" data-item="lecture">Delete</button>
 								</td>
 								<% } %>
 							</tr>

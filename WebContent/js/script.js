@@ -459,21 +459,35 @@ $(function () {
 	function deleteItem() {
 		$('.delete-item').on('click', function(e) {
 			e.preventDefault();
-			
 			var $button = $(this);
-			var itemId = $button.data('id');
-			var morePath = $button.data('path');
-			var $parent = $button.closest('tr');
+			var item = $button.data('item');
 			
-			$.ajax(basePath + morePath, {
-				headers: {id : itemId},
-				method: "DELETE",
-				success: function(result) {
-					$parent.remove();
-				},
-				error: function () {
-					$button.parent().append($('<span></span>').addClass('span-alert alert-warning').text("Error"));
-				}
+			swal({	title: "Are you sure?",   
+					text: "You will not be able to recover this " + item + "!",   
+					type: "warning",   
+					showCancelButton: true,   
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "Yes, delete it!",   
+					cancelButtonText: "No, cancel!",   
+					closeOnConfirm: false   
+				}, function(isConfirm) {   
+					if (isConfirm) {
+						var itemId = $button.data('id');
+						var morePath = $button.data('path');
+						var $parent = $button.closest('tr');
+						
+						$.ajax(basePath + morePath, {
+							headers: {id : itemId},
+							method: "DELETE",
+							success: function(result) {
+								$parent.remove();
+								swal("Deleted!", "Your item has been deleted.", "success"); 
+							},
+							error: function () {
+								$button.parent().append($('<span></span>').addClass('span-alert alert-warning').text("Error"));
+							}
+						});   
+					} 
 			});
 		});
 	}
