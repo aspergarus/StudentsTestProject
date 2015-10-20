@@ -329,3 +329,6 @@ ol {
 	margin: 5%;
 	text-align: center;
 }
+.answers-list {
+	list-style-type: none;
+}

@@ -47,7 +47,7 @@ public class TestResultServlet extends HttpServlet {
 				session.setAttribute("status", null);
 				session.setAttribute("message", null);
 				session.setAttribute("result", null);
-				
+				session.setAttribute("questions", null);
 				request.getRequestDispatcher("test-result.jsp").forward(request, response);
 			} else {
 				request.setAttribute("status", "warning");

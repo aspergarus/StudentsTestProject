@@ -57,7 +57,12 @@ public class TestingServlet extends HttpServlet {
 					request.getRequestDispatcher(request.getContextPath() + "/error-access.jsp").forward(request, response);
 				} else {
 					TestBean test = TestsDAO.find(testId);
-					ArrayList<QuestionBean> questions = QuestionDAO.getQuestions(testId);
+					
+					ArrayList<QuestionBean> questions = (ArrayList<QuestionBean>) session.getAttribute("questions");
+					if (questions == null) {
+						questions = QuestionDAO.getQuestions(test);
+						session.setAttribute("questions", questions);
+					}
 					request.setAttribute("status", "success");
 					request.setAttribute("test", test);
 					request.setAttribute("questions", questions);

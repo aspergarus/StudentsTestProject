@@ -172,6 +172,8 @@ public class InstallConnect {
 						+ "subject_id INT(11) NOT NULL, "
 						+ "module TINYINT(4) NOT NULL, "
 						+ "note VARCHAR(128) NULL DEFAULT NULL, "
+						+ "time INT(11) NOT NULL DEFAULT '0', "
+						+ "test_questions INT(11) NOT NULL DEFAULT '0', "
 						+ "PRIMARY KEY (id));";
 		tablesQuery.put("tests", testsQuery);
 		
