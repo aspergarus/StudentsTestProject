@@ -52,7 +52,7 @@ public class TestResultServlet extends HttpServlet {
 			} else {
 				request.setAttribute("status", "warning");
 				request.setAttribute("message", "You can see the result after completing the test.");
-				request.getRequestDispatcher("error-access.jsp").forward(request, response);;
+				request.getRequestDispatcher("error-access.jsp").forward(request, response);
 			}
 		}
 	}

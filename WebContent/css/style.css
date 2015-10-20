@@ -309,6 +309,7 @@ ol {
 }
 .test-result {
 	text-align: center;
+	font-size: 4em;
 }
 .radio {
 	margin-top: 8px;
@@ -323,4 +324,8 @@ ol {
 }
 #toggle-select {
 	margin-left: 5%!important;
+}
+.reference-block {
+	margin: 5%;
+	text-align: center;
 }

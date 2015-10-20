@@ -27,6 +27,13 @@
 			<h1 class="test-result">Your mark: <%= result %></h1>
 		</div>
 		
+		<div class="reference-block">
+			<h2>Thanks! Please <a href="<%= basePath %>/logout"><span class="go-logout">sign out</span></a>
+				or go to the <a href="<%= basePath %>">main page</a>.
+			</h2>
+			
+		</div>
+		
 	</div>
 
 <%@ include file="footer.jsp" %>

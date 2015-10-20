@@ -149,7 +149,7 @@
 										<td>
 											<span class="transformer-text" data-path="tests" data-parameter="time" 
 												data-id=<%= test.getId() %>>
-												<%= test.getTime() %>
+												<%= test.getTime() / 60 %>
 											</span>
 											<input type="text" style="display: none">
 										</td>
