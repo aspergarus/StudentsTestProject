@@ -24,12 +24,18 @@
 		<% } %>
 		
 		<div class="page-header">
-			<h1 class="test-result">Your mark: <%= result %></h1>
+			<h1 class="test-result">
+				<span class="translate" data-lang-key="Your mark"></span>: <%= result %>
+			</h1>
 		</div>
 		
 		<div class="reference-block">
-			<h2>Thanks! Please <a href="<%= basePath %>/logout"><span class="go-logout">sign out</span></a>
-				or go to the <a href="<%= basePath %>">main page</a>.
+			<h2>
+				<span class="translate" data-lang-key="Thanks"></span>! 
+				<span class="translate" data-lang-key="You can"></span>
+				<a href="<%= basePath %>/logout"><span class="go-logout translate" data-lang-key="sign out"></span></a>
+				<span class="translate" data-lang-key="or go to the"></span> 
+				<a href="<%= basePath %>"><span class="translate" data-lang-key="main page"></span></a>.
 			</h2>
 			
 		</div>

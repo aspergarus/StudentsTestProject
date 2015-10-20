@@ -27,13 +27,15 @@
 		</div>
 		<% } %>
 		<div class="page-header">
-			<h1>Add a question</h1>
+			<h1><span class="translate" data-lang-key="Add a question"></span></h1>
 		</div>
 
 		<form action="<%= basePath %>/test/<%= editedTest.getId() %>" id="question-form" method="post"
 			class="form-horizontal" enctype="multipart/form-data">
 			<div class="form-group">
-				<label for="question" class="col-sm-2 control-label required">Question*</label>
+				<label for="question" class="col-sm-2 control-label required">
+					<span class="translate" data-lang-key="Question"></span>*
+				</label>
 				<div class="col-sm-10">
 					<textarea name="question" id="question" class="form-control" rows="3" 
 						placeholder="Question*" required></textarea>
@@ -41,17 +43,23 @@
 			</div>
 			
 			<div class="form-group">
-				<label for="upload" class="col-sm-2 control-label required">Upload image</label>
+				<label for="upload" class="col-sm-2 control-label required">
+					<span class="translate" data-lang-key="Upload image"></span>
+				</label>
 				<div class="col-sm-10">
 					<input id="upload" type="file" class="file" name="upload" data-preview-file-type="picture">
-					<p class="help-block">File size not more then 10 MB.</p>
+					<p class="help-block">
+						<span class="translate" data-lang-key="File size not more then"></span> 10 MB.
+					</p>
 				</div>
 			</div>
  			
  			<div class="answers">
 
 	 			<div class="form-group answer">
-					<label for="answer" class="col-sm-2 control-label required">Answer*</label>
+					<label for="answer" class="col-sm-2 control-label required">
+						<span class="translate" data-lang-key="Answer"></span>*
+					</label>
 					<div class="col-sm-8">
 						<input name="answer-1" type="text" class="form-control"
 							placeholder="Answer*" required>
@@ -59,7 +67,7 @@
 					<div class="col-sm-1">
 						<label>
 							<input type="checkbox" name="correct-answer-1" class="true-answer">
-							True
+							<span class="translate" data-lang-key="Correct"></span>
 						</label>
 					</div>
 					<div class="col-sm-1">
@@ -68,7 +76,9 @@
 				</div>
 				
 				<div class="form-group answer">
-					<label for="answer" class="col-sm-2 control-label required">Answer*</label>
+					<label for="answer" class="col-sm-2 control-label required">
+					<span class="translate" data-lang-key="Answer"></span>*
+					</label>
 					<div class="col-sm-8">
 						<input name="answer-2" type="text" class="form-control"
 							placeholder="Answer*" required>
@@ -76,7 +86,7 @@
 					<div class="col-sm-1">
 						<label>
 							<input type="checkbox" name="correct-answer-2" class="true-answer">
-							True
+							<span class="translate" data-lang-key="Correct"></span>
 						</label>
 					</div>
 					<div class="col-sm-1">
@@ -87,7 +97,9 @@
 				
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
-					<input type="button" id="add-answer" class="btn btn-primary btn-xs" value="Add an answer">
+					<button type="button" id="add-answer" class="btn btn-primary btn-xs">
+						<span class="translate" data-lang-key="Add answer"></span>
+					</button>
 				</div>
 			</div>
 				
@@ -105,7 +117,7 @@
 	</div>
 	
 	<div class="container">
-	<h1>Available questions: <%= questions.size() %></h1>
+	<h1><span class="translate" data-lang-key="Added questions"></span>: <%= questions.size() %></h1>
 	
 	<div class="panel panel-default">
 		<% int i = 0; %>
@@ -133,7 +145,9 @@
 						<thead>
 							<tr>
 								<th data-field="title" data-align="center" data-sortable="true">№</th>
-								<th data-field="teacher" data-align="center" data-sortable="true">Answer</th>
+								<th data-field="teacher" data-align="center" data-sortable="true">
+									<span class="translate" data-lang-key="Answer"></span>
+								</th>
 							</tr>
 						</thead>
 						<tbody>

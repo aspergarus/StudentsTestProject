@@ -77,8 +77,14 @@
 	            <% } %>
 	            <div class="row test-complete-info hidden">
 	               	<div class="form-group">
-						<h2 class="question-text">You have given the answers to all questions!</h2>
-						<h3><small>For checking click the Complete.</small></h3>
+						<h2 class="question-text">
+							<span class="translate" data-lang-key="You have given the answers to all questions"></span>!
+						</h2>
+						<h3>
+							<small>
+							<span class="translate" data-lang-key="For checking click the Complete"></span>.
+							</small>
+						</h3>
 					</div>
 					<hr>
 				</div>

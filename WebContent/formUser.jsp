@@ -19,13 +19,15 @@
 		</div>
 		<% } %>
 		<div class="page-header">
-			<h1>Edit profile</h1>
+			<h1><span class="translate" data-lang-key="Edit profile"></span></h1>
 		</div>
 
 		<form action="<%= basePath %>/user/<%= editedUser.getId() %>" id="form" method="post" enctype="multipart/form-data"
 			class="form-horizontal">
 			<div class="form-group">
-				<label for="editedusername" class="col-sm-2 control-label required">Username*</label>
+				<label for="editedusername" class="col-sm-2 control-label required">
+					<span class="translate" data-lang-key="Username"></span>*
+				</label>
 				<div class="col-sm-10">
 					<input name="editedusername" type="text" class="form-control"
 						id="editedusername" placeholder="Username*" required value="<%= editedUser.getUsername() %>">
@@ -33,7 +35,9 @@
 			</div>
  
 			<div class="form-group">
-				<label for="editedpass" class="col-sm-2 control-label required">Password*</label>
+				<label for="editedpass" class="col-sm-2 control-label required">
+					<span class="translate" data-lang-key="Password"></span>*
+				</label>
 				<div class="col-sm-10">
 					<input name="editedpass" type="password" class="form-control" id="editedpass"
 						placeholder="You can leave the old password. Just don't fill this field">
@@ -41,7 +45,9 @@
 			</div>
 
 			<div class="form-group">
-				<label for="editedemail" class="col-sm-2 control-label required">Email*</label>
+				<label for="editedemail" class="col-sm-2 control-label required">
+					<span class="translate" data-lang-key="Email"></span>*
+				</label>
 				<div class="col-sm-10">
 					<input name="editedemail" type="email" class="form-control"
 						placeholder="Email*" required value=<%= editedUser.getEmail() %>>
@@ -51,27 +57,31 @@
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
 					<div class="radiobutton">
-						<label> <input type="radio" name="role" value="0" <%= editedUser.getRole() == 0 ? "checked" : "" %>>Student
+						<label> <input type="radio" name="role" value="0" <%= editedUser.getRole() == 0 ? "checked" : "" %>>
+							<span class="translate" data-lang-key="Student"></span>
 						</label>
 					</div>
 				</div>
 				<div class="col-sm-offset-2 col-sm-10">
 					<div class="radiobutton">
-						<label> <input type="radio" name="role" value="1" <%= editedUser.getRole() == 1 ? "checked" : "" %>>Teacher
+						<label> <input type="radio" name="role" value="1" <%= editedUser.getRole() == 1 ? "checked" : "" %>>
+							<span class="translate" data-lang-key="Teacher"></span>
 						</label>
 					</div>
 				</div>
 				<div class="col-sm-offset-2 col-sm-10">
 					<div class="radiobutton">
-						<label> <input type="radio" name="role" value="2" <%= editedUser.getRole() == 2 ? "checked" : "" %>>Admin
+						<label> <input type="radio" name="role" value="2" <%= editedUser.getRole() == 2 ? "checked" : "" %>>
+							<span class="translate" data-lang-key="Admin"></span>
 						</label>
 					</div>
 				</div>
 			</div>
 
 			<div class="form-group">
-				<label for="firstname" class="col-sm-2 control-label required">First
-					Name</label>
+				<label for="firstname" class="col-sm-2 control-label required">
+					<span class="translate" data-lang-key="First Name"></span>
+				</label>
 				<div class="col-sm-10">
 					<input name="firstname" type="text" class="form-control"
 						id="firstname" placeholder="First Name" required value="<%= editedUser.getFirstName() == null ? "" : editedUser.getFirstName() %>">
@@ -79,8 +89,9 @@
 			</div>
 
 			<div class="form-group">
-				<label for="lastname" class="col-sm-2 control-label required">Last
-					Name</label>
+				<label for="lastname" class="col-sm-2 control-label required">
+					<span class="translate" data-lang-key="Last Name"></span>
+				</label>
 				<div class="col-sm-10">
 					<input name="lastname" type="text" class="form-control"
 						id="lastname" placeholder="Last Name" required value="<%= editedUser.getLastName() == null ? "" : editedUser.getLastName() %>">
@@ -88,11 +99,17 @@
 			</div>
 			
 			<div class="form-group">
-				<label for="avatar" class="col-sm-2 control-label required">Avatar</label>
+				<label for="avatar" class="col-sm-2 control-label required">
+					<span class="translate" data-lang-key="Avatar"></span>
+				</label>
 				<div class="col-sm-10">
 					<img src="<%= avatar %>" class="img-circle avatar-form">
 					<div class="fileinput fileinput-new" data-provides="fileinput">
-  						<span class="btn btn-default btn-file"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span><input type="file" name="avatar"></span>
+  						<span class="btn btn-default btn-file">
+  							<span class="fileinput-new"><span class="translate" data-lang-key="Select file"></span></span>
+  							<span class="fileinput-exists"><span class="translate" data-lang-key="Change"></span></span>
+  							<input type="file" name="avatar">
+  						</span>
   						<span class="fileinput-filename"></span>
   						<a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">&times;</a>
 					</div>
@@ -101,7 +118,9 @@
 
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
-					<button type="submit" class="btn btn-primary">Save changes</button>
+					<button type="submit" class="btn btn-primary">
+						<span class="translate" data-lang-key="Save changes"></span>
+					</button>
 				</div>
 			</div>
 			<input type="hidden" name="id" value="<%= editedUser.getId() %>">

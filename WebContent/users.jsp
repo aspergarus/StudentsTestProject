@@ -21,20 +21,39 @@
 <div class="container">
 
 	<div class="starter-template">
-		<h1>Users</h1>
+		<h1><span class="translate" data-lang-key="Users"></span></h1>
 		<table class="table" data-search="true" data-show-columns="true">
 			<%= (users == null) ? "Users are not exists" : "" %>
 		    <thead>
 		        <tr>
-		        	<th data-field="avatar" data-align="center" data-sortable="false">Avatar</th>
-		            <th data-field="userName" data-align="center" data-sortable="true">User Name</th>
-		            <th data-field="email" data-align="center" data-sortable="true">Email</th>
-		            <th data-field="firstName" data-align="center" data-sortable="true">First Name</th>
-		            <th data-field="lastName" data-align="center" data-sortable="true">Last Name</th>
-		            <th data-field="groupId" data-align="center" data-sortable="true">Group / Department</th>
-		            <th data-field="registered" data-align="center" data-sortable="true">Registration Date</th>
-		            <th data-field="role" data-align="center" data-sortable="true">Role</th>
-		            <th data-field="edit" data-align="center">Edit</th>
+		        	<th data-field="avatar" data-align="center" data-sortable="false">
+		        		<span class="translate" data-lang-key="Avatar"></span>
+		        	</th>
+		            <th data-field="userName" data-align="center" data-sortable="true">
+		            	<span class="translate" data-lang-key="Username"></span>
+		            </th>
+		            <th data-field="email" data-align="center" data-sortable="true">
+		            	<span class="translate" data-lang-key="Email"></span>
+		            </th>
+		            <th data-field="firstName" data-align="center" data-sortable="true">
+		            	<span class="translate" data-lang-key="First Name"></span>
+		            </th>
+		            <th data-field="lastName" data-align="center" data-sortable="true">
+		            	<span class="translate" data-lang-key="Last Name"></span>
+		            </th>
+		            <th data-field="groupId" data-align="center" data-sortable="true">
+		            <span class="translate" data-lang-key="Group"></span> / 
+		            <span class="translate" data-lang-key="Department"></span>
+		            </th>
+		            <th data-field="registered" data-align="center" data-sortable="true">
+		            <span class="translate" data-lang-key="Registration Date"></span>
+		            </th>
+		            <th data-field="role" data-align="center" data-sortable="true">
+		            	<span class="translate" data-lang-key="Role"></span>
+		            </th>
+		            <th data-field="edit" data-align="center">
+		            	<span class="translate" data-lang-key="Edit"></span>	
+		            </th>
 		        </tr>
 		    </thead>
 		    <tbody>
@@ -55,13 +74,15 @@
 			        <% } else if (user.getRole() == 1) { %>
 			        	<td><%= departmentsMap.get(user.getGroupId()) %></td>
 			        <% } else { %>
-			        	<td><%= "Administration" %></td>
+			        	<td><span class="translate" data-lang-key="Administration"></span></td>
 			        <% } %>
 			        <td>
 			        	<%= new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(user.getRegistered()) %>
 			        </td>
 			        <td><%= user.getHumanRole() %></td>
-			        <td><a href="<%= basePath + "/user/" + user.getId() %>" target="_blank">Edit</a></td>
+			        <td><a href="<%= basePath + "/user/" + user.getId() %>" target="_blank">
+			        	<span class="translate" data-lang-key="Edit"></span>
+			        </a></td>
 			    </tr>
 			<% } %>
 			</tbody>

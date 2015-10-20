@@ -27,12 +27,14 @@
 		
 	<% if (currentUser.getRole() > 0) { %>
 		
-		<h3 class="lead">Add a Test</h3>
+		<h3 class="lead"><span class="translate" data-lang-key="Add test"></span></h3>
 
 		<form action="<%= basePath %>/tests" class="form" method="post"
 			class="form-horizontal">
 			<div class="form-group">
-				<label for="subject" class="col-sm-2 control-label">Subject*</label>
+				<label for="subject" class="col-sm-2 control-label">
+					<span class="translate" data-lang-key="Subject"></span>*
+				</label>
 				<div class="col-sm-10">
 					<input name="subject" type="text" class="form-control typeahead"
 						required autocomplete="off" data-autocomplete-url="autocomplete/subjects">
@@ -41,7 +43,9 @@
 			
 			<% if (currentUser.getRole() == 2) { %>
 				<div class="form-group">
-					<label for="teacher" class="col-sm-2 control-label">Teacher*</label>
+					<label for="teacher" class="col-sm-2 control-label">
+						<span class="translate" data-lang-key="Teacher"></span>*
+					</label>
 					<div class="col-sm-10">
 						<input name="teacher" type="text" class="form-control typeahead"
 							required autocomplete="off" data-autocomplete-url="autocomplete/teachers">
@@ -50,28 +54,36 @@
 			<% } %>
 			
 			<div class="form-group">
-				<label for="module" class="col-sm-2 control-label">Module*</label>
+				<label for="module" class="col-sm-2 control-label">
+					<span class="translate" data-lang-key="Module"></span>*
+				</label>
 				<div class="col-sm-10">
 					<input name="module" type="number" class="form-control" required/>
 				</div>
 			</div>
 			
 			<div class="form-group">
-				<label for="note" class="col-sm-2 control-label required">Note</label>
+				<label for="note" class="col-sm-2 control-label required">
+					<span class="translate" data-lang-key="Note"></span>
+				</label>
 				<div class="col-sm-10">
 					<textarea name="note" class="form-control text-area" rows="3"></textarea>
 				</div>
 			</div>
 			
 			<div class="form-group">
-				<label for="time" class="col-sm-2 control-label required">Time*</label>
+				<label for="time" class="col-sm-2 control-label required">
+					<span class="translate" data-lang-key="Time"></span>*
+				</label>
 				<div class="col-sm-10">
 					<input type="number" name="time" class="form-control" required/>
 				</div>
 			</div>
 			
 			<div class="form-group">
-				<label for="test-questions" class="col-sm-2 control-label required">Number of Questions*</label>
+				<label for="test-questions" class="col-sm-2 control-label required">
+					<span class="translate" data-lang-key="Number of questions"></span>*
+				</label>
 				<div class="col-sm-10">
 					<input type="number" name="test-questions" class="form-control" required/>
 				</div>
@@ -79,7 +91,9 @@
 			
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
-					<button type="submit" class="btn btn-primary">Add a test</button>
+					<button type="submit" class="btn btn-primary">
+						<span class="translate" data-lang-key="Add test"></span>
+					</button>
 				</div>
 			</div>
 		</form>
@@ -89,12 +103,14 @@
 <div class="container">
 	<% if (tests.size() == 0) { %>
 		<% if (currentUser.getRole() == 0) { %>
-			<h2>No one test for you now.</h2>
+			<h2><span class="translate" data-lang-key="No one test for you now"></span>.</h2>
 		<% } else if (currentUser.getRole() == 1) { %>
-			<h2>You don't have any test. Try to add one.</h2>
+			<h2><span class="translate" data-lang-key="You don't have any test"></span>.</h2>
+		<% } else { %>
+			<h2><span class="translate" data-lang-key="There are no any test"></span>.</h2>
 		<% } %>
 	<% } else { %>
-		<h1>Tests (<%= tests.size() %>)</h1>
+		<h1><span class="translate" data-lang-key="Tests"></span> (<%= tests.size() %>)</h1>
 		<% if (currentUser.getRole() > 0) { %>
 		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 			<% int i = 0; %>
@@ -112,7 +128,7 @@
 		
 					<div id="collapse-<%= i %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-<%= i %>">
 						<div class="panel-body">
-							<p class="help-block">Share this subject to groups:
+							<p class="help-block"><span class="translate" data-lang-key="Share this subject to groups"></span>:
 								<input type="text" class="tokenfield" 
 									value="<%= groups.get(subject) == null ? "" :  groups.get(subject) %>" 
 										name="groupName" required autocomplete="off" />
@@ -122,18 +138,38 @@
 							<table class="table">
 								<thead>
 									<tr>
-										<th data-field="teacher" data-align="center" data-sortable="true">Teacher</th>
-										<th data-field="module" data-align="center" data-sortable="true">Module</th>
+										<th data-field="teacher" data-align="center" data-sortable="true">
+											<span class="translate" data-lang-key="Teacher"></span>
+										</th>
+										<th data-field="module" data-align="center" data-sortable="true">
+											<span class="translate" data-lang-key="Module"></span>
+										</th>
 										<% if (currentUser.getRole() == 1) { %>
-											<th data-field="note" data-align="center" data-sortable="true">Note</th>
+											<th data-field="note" data-align="center" data-sortable="true">
+												<span class="translate" data-lang-key="Note"></span>
+											</th>
 										<% } %>
-										<th data-field="time" data-align="center" data-sortable="true">Time</th>
-										<th data-field="test-questions" data-align="center" data-sortable="true">Questions</th>
-										<th data-field="edit" data-align="center">Edit</th>
-										<th data-field="open" data-align="center">Open</th>
-										<th data-field="results" data-align="center">Results</th>
-										<th data-field="start" data-align="center">Begin Test</th>
-										<th data-field="delete" data-align="center">Delete</th>
+										<th data-field="time" data-align="center" data-sortable="true">
+											<span class="translate" data-lang-key="Time"></span>
+										</th>
+										<th data-field="test-questions" data-align="center" data-sortable="true">
+											<span class="translate" data-lang-key="Number of questions"></span>
+										</th>
+										<th data-field="edit" data-align="center">
+											<span class="translate" data-lang-key="Edit"></span>
+										</th>
+										<th data-field="open" data-align="center">
+											<span class="translate" data-lang-key="Open"></span>
+										</th>
+										<th data-field="results" data-align="center">
+											<span class="translate" data-lang-key="Results"></span>
+										</th>
+										<th data-field="start" data-align="center">
+											<span class="translate" data-lang-key="Begin test"></span>
+										</th>
+										<th data-field="delete" data-align="center">
+											<span class="translate" data-lang-key="Delete"></span>
+										</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -168,13 +204,27 @@
 											</span>
 											<input type="text" style="display: none">
 										</td>
-										<td><a href="test/<%= test.getId() %>">Edit</a></td>
-										<td><a href="openTest?id=<%= test.getId() %>">Open</a></td>
-										<td><a href="testResults?id=<%= test.getId() %>">Results</a></td>
-										<td><a href="testing/<%= test.getId() %>"><button class="btn btn-success">Begin Test</button></a></td>	
+										<td><a href="test/<%= test.getId() %>">
+											<span class="translate" data-lang-key="Edit"></span>
+										</a></td>
+										<td><a href="openTest?id=<%= test.getId() %>">
+											<span class="translate" data-lang-key="Open"></span>
+										</a></td>
+										<td><a href="testResults?id=<%= test.getId() %>">
+											<span class="translate" data-lang-key="Results"></span>
+										</a></td>
+										<td>
+											<a href="testing/<%= test.getId() %>">
+											<button class="btn btn-success">
+												<span class="translate" data-lang-key="Begin test"></span>
+											</button>
+											</a>
+										</td>	
 										<td>
 											<button class="btn btn-danger delete-item" data-id="<%= test.getId() %>" 
-												data-path="/tests" data-item="test">Delete</button>
+												data-path="/tests" data-item="test">
+											<span class="translate" data-lang-key="Delete"></span>
+											</button>
 										</td>
 									</tr>
 								<% } %>
@@ -190,10 +240,18 @@
 	    		<table class="table">
 					<thead>
 						<tr>
-							<th data-field="subject" data-align="center">Subject</th>
-							<th data-field="teacher" data-align="center">Teacher</th>
-							<th data-field="module" data-align="center">Module</th>
-							<th data-field="begin" data-align="center">Begin test</th>
+							<th data-field="subject" data-align="center">
+								<span class="translate" data-lang-key="Subject"></span>
+							</th>
+							<th data-field="teacher" data-align="center">
+								<span class="translate" data-lang-key="Teacher"></span>
+							</th>
+							<th data-field="module" data-align="center">
+								<span class="translate" data-lang-key="Module"></span>
+							</th>
+							<th data-field="begin" data-align="center">
+								<span class="translate" data-lang-key="Begin test"></span>
+							</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -203,7 +261,13 @@
 									<td><%= subject %></td>
 									<td><%= teachers.get(test.getTeacherId()) %></td>
 									<td><%= test.getModule() %></td>
-									<td><a href="testing/<%= test.getId() %>"><button class="btn btn-success">Begin Test</button></a></td>	
+									<td>
+										<a href="testing/<%= test.getId() %>">
+											<button class="btn btn-success">
+												<span class="translate" data-lang-key="Begin test"></span>
+											</button>
+										</a>
+									</td>	
 								</tr>
 							<% } %>
 						<% } %>		

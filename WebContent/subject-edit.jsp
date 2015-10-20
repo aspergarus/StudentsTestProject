@@ -23,10 +23,12 @@
 		<p>${message}</p>
 	</div>
 	<% } %>
-	<h3 class="lead">Edit subject</h3>
+	<h3 class="lead"><span class="translate" data-lang-key="Edit subject"></span></h3>
 	
 		<div class="form-group">
-			<label for="subject" class="col-sm-2 control-label">Subject Name*</label>
+			<label for="subject" class="col-sm-2 control-label">
+				<span class="translate" data-lang-key="Subject name"></span>*
+			</label>
 			<div class="col-sm-10">
 				<input name="subjectName" type="text" class="form-control typeahead"
 					class="subject" required autocomplete="off" data-autocomplete-url="autocomplete/subjects" value="<%= subjectName %>">
@@ -34,7 +36,7 @@
 		</div>
 
 		<div class="form-group">
-			<label for="title" class="col-sm-2 control-label">Department*</label>
+			<label for="title" class="col-sm-2 control-label"><span class="translate" data-lang-key="Department"></span>*</label>
 			<div class="col-sm-10">
 				<input name="departmentName" type="text" class="form-control" id="title" required value="<%= department %>">
 			</div>
@@ -42,7 +44,9 @@
 
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				<button class="btn btn-primary update-subject" data-id="<%= sBean.getId() %>">Update</button>
+				<button class="btn btn-primary update-subject" data-id="<%= sBean.getId() %>">
+					<span class="translate" data-lang-key="Update"></span>
+				</button>
 			</div>
 		</div>
 </div>

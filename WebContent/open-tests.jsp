@@ -26,12 +26,14 @@
 		</div>
 		<% } %>
 		<div class="page-header">
-			<h2>Add students to list</h2>
+			<h2><span class="translate" data-lang-key="Add students to list"></span></h2>
 		</div>
 
 		<form action="<%= basePath %>/openTest" method="post" class="form-horizontal" >
 			<div class="form-group">
-				<label for="group" class="col-sm-2 control-label required">Group</label>
+				<label for="group" class="col-sm-2 control-label required">
+					<span class="translate" data-lang-key="Group"></span>
+				</label>
 				<div class="col-sm-10">
 					<input type="text" name="group" class="form-control typeahead"
 						placeholder="Group" required autocomplete="off"
@@ -49,7 +51,9 @@
 		
 		<form action="<%= basePath %>/openTest" method="post" class="form-horizontal" >
 			<div class="form-group">
-				<label for="student" class="col-sm-2 control-label required">Student</label>
+				<label for="student" class="col-sm-2 control-label required">
+					<span class="translate" data-lang-key="Student"></span>
+				</label>
 				<div class="col-sm-10">
 					<input type="text" name="student" class="form-control typeahead"
 						placeholder="Students first or last name" required autocomplete="off"
@@ -65,17 +69,27 @@
 			</div>
 		</form>
 			
-			<h1>Students</h1>
+			<h1><span class="translate" data-lang-key="Students"></span></h1>
 			<table class="table" data-search="true" data-show-columns="true">
 			<% out.print(students == null ? "Test is not available" : ""); %>
 		    <thead>
 		        <tr>
 		        	<th data-field="number" data-align="center" data-sortable="true">№</th>
-		        	<th data-field="group" data-align="center" data-sortable="true">Group</th>
-		            <th data-field="firstName" data-align="center" data-sortable="true">First Name</th>
-		            <th data-field="lastName" data-align="center" data-sortable="true">Last Name</th>
-		            <th data-field="select" data-align="center">Select</th>
-		            <th data-field="delete" data-align="center">Remove</th>
+		        	<th data-field="group" data-align="center" data-sortable="true">
+		        		<span class="translate" data-lang-key="Group"></span>
+		        	</th>
+		            <th data-field="firstName" data-align="center" data-sortable="true">
+		            	<span class="translate" data-lang-key="First Name"></span>
+		            </th>
+		            <th data-field="lastName" data-align="center" data-sortable="true">
+		            	<span class="translate" data-lang-key="Last Name"></span>
+		            </th>
+		            <th data-field="select" data-align="center">
+		            	<span class="translate" data-lang-key="First Name"></span>
+		            </th>
+		            <th data-field="delete" data-align="center">
+		            	<span class="translate" data-lang-key="Delete"></span>
+		            </th>
 		        </tr>
 		    </thead>
 		    <tbody>
@@ -110,10 +124,16 @@
 			        <td></td>
 			        <td></td>
 			        <td>
-			        	<label for="toggle-select">Select all</label>
+			        	<label for="toggle-select">
+			        		<span class="translate" data-lang-key="Select all"></span>
+			        	</label>
 					    <input type="checkbox" id="toggle-select">
 				  	</td>
-			        <td><input id="clear-ready-students" type="button" class="btn btn-danger" value="Remove all"></td>
+			        <td>
+			        	<button id="clear-ready-students" type="button" class="btn btn-danger">
+			        		<span class="translate" data-lang-key="Remove all"></span>
+			        	</button>
+			        </td>
 				</tr>
 			<% } %>
 			</tbody>

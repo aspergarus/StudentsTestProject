@@ -20,21 +20,27 @@
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/bootstrap-theme.css">
 
+<script>var basePath = "<%= basePath %>";</script>
+
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+
+<script src="<%= basePath %>/js/translate.js"></script>
 
 </head>
 <body>
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="<%= request.getContextPath() %>">Students Test Project</a>
+				<a class="navbar-brand" href="<%= request.getContextPath() %>">
+					<span class="translate" data-lang-key="Students Project"></span>
+				</a>
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li><a href="<%= basePath %>">Home</a></li>
+					<li><a href="<%= basePath %>"><span class="translate" data-lang-key="Home"></span></a></li>
 					<li class="active"><a
-						href="<%= basePath %>/login">Login</a></li>
+						href="<%= basePath %>/login"><span class="translate" data-lang-key="Login"></span></a></li>
 				</ul>
 			</div>
 		</div>
@@ -48,15 +54,19 @@
 		<% } %>
 
 		<form class="form-signin" action="login" method="post">
-			<h2 class="form-signin-heading">Please sign in</h2>
-			<label for="login" class="sr-only">Email address</label> <input
-				type="text" id="login" class="form-control"
-				placeholder="Email address or Username" required="" autofocus="" name="login">
-			<label for="pass" class="sr-only">Password</label> <input
-				type="password" id="pass" class="form-control"
-				placeholder="Password" required="" name="pass">
-			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign
-				in</button>
+			<h2 class="form-signin-heading">
+				<span class="translate" data-lang-key="Please sign in"></span>
+			</h2>
+			<label for="login" class="sr-only"><span class="translate" data-lang-key="Email address or Username"></span></label>
+			<input type="text" id="login" class="form-control" 
+				placeholder="Email address or Username" name="login" required>
+			
+			<label for="pass" class="sr-only"><span class="translate" data-lang-key="Password"></span></label>
+			<input type="password" id="pass" class="form-control"
+				placeholder="Password" name="pass" required>
+			<button class="btn btn-lg btn-primary btn-block" type="submit">
+				<span class="translate" data-lang-key="Sign In"></span>
+			</button>
 		</form>
 	</div>
 </body>

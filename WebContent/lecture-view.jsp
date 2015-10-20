@@ -55,7 +55,7 @@
 
 	<% if (!comments.isEmpty()) { %>
 		<div class="comment-list clearfix" id="comments">
-		<h2>Comments</h2>
+		<h2><span class="translate" data-lang-key="Comments"></span></h2>
 			<ol>
 				<% for(Object[] pack : comments) { %>
 					<% UserBean commentAuthor = (UserBean) pack[0]; %>
@@ -98,7 +98,7 @@
 	<% } %>
 
 	<div class="comment-form">
-		<h2 class="lead">Leave your comment</h2>
+		<h2 class="lead"><span class="translate" data-lang-key="Leave your comment"></span></h2>
 		<form class="form" method="post" action="<%= basePath %>/comments">
 			<div class="form-group">
 				<input class="form-control" type="text" name="title" id="title" required placeholder="Comment title...">
