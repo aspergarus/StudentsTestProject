@@ -64,9 +64,16 @@
 			</div>
 			
 			<div class="form-group">
-				<label for="time" class="col-sm-2 control-label required">Time</label>
+				<label for="time" class="col-sm-2 control-label required">Time*</label>
 				<div class="col-sm-10">
-					<input type="number" name="time" class="form-control"/>
+					<input type="number" name="time" class="form-control" required/>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="test-questions" class="col-sm-2 control-label required">Number of Questions*</label>
+				<div class="col-sm-10">
+					<input type="number" name="test-questions" class="form-control" required/>
 				</div>
 			</div>
 			
@@ -121,6 +128,7 @@
 											<th data-field="note" data-align="center" data-sortable="true">Note</th>
 										<% } %>
 										<th data-field="time" data-align="center" data-sortable="true">Time</th>
+										<th data-field="test-questions" data-align="center" data-sortable="true">Questions</th>
 										<th data-field="edit" data-align="center">Edit</th>
 										<th data-field="open" data-align="center">Open</th>
 										<th data-field="results" data-align="center">Results</th>
@@ -150,6 +158,13 @@
 											<span class="transformer-text" data-path="tests" data-parameter="time" 
 												data-id=<%= test.getId() %>>
 												<%= test.getTime() / 60 %>
+											</span>
+											<input type="text" style="display: none">
+										</td>
+										<td>
+											<span class="transformer-text" data-path="tests" data-parameter="test_questions" 
+												data-id=<%= test.getId() %>>
+												<%= test.getTestQuestions() %>
 											</span>
 											<input type="text" style="display: none">
 										</td>

@@ -69,7 +69,7 @@ public class TestEditServlet extends HttpServlet {
 				String[] pathParts = request.getPathInfo().split("/");
 				int id = Integer.valueOf(pathParts[1]);
 				TestBean editedTest = TestsDAO.find(id);
-				ArrayList<QuestionBean> questions = QuestionDAO.getQuestions(id);
+				ArrayList<QuestionBean> questions = QuestionDAO.getQuestions(editedTest);
 				
 				request.setAttribute("editedTest", editedTest);
 				request.setAttribute("saveDir", saveDir);

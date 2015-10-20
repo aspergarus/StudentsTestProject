@@ -8,13 +8,15 @@ public class TestBean {
 	private byte module;
 	private String note;
 	private int time;
+	private int testQuestions;
 	
-	public TestBean (int teacherId, int subjectId, byte module, String note, int time) {
+	public TestBean (int teacherId, int subjectId, byte module, String note, int time, int testQuestions) {
 		this.teacherId = teacherId;
 		this.subjectId = subjectId;
 		this.module = module;
 		this.note = note;
 		this.time = time;
+		this.setTestQuestions(testQuestions);
 	}
 	
 	public TestBean() { }
@@ -59,5 +61,13 @@ public class TestBean {
     }
 	public void setTime(int time) {
 	    this.time = time;
+    }
+
+	public int getTestQuestions() {
+	    return testQuestions;
+    }
+
+	public void setTestQuestions(int testQuestions) {
+	    this.testQuestions = testQuestions;
     }
 }

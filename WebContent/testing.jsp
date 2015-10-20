@@ -39,19 +39,20 @@
 				<% for(QuestionBean question : questions) { %>
 					<% questionsId[i] = question.getId(); %>
 					<div class="question-id-<%= question.getId() %> row question-block uncompleted">
-		               		<div class="form-group">
-			                    <h2 class="question-text"><%= question.getQuestionText() %></h2>
-			                   	<input type="hidden" class="question-id" name="question-id<%= i %>" 
-			                   		value="<%= question.getId() %>">
-		                   	</div>
-		                   	<% FileBean image = question.getImage(); %>
-			  				<% if (image != null) { %>
-				  				<img class="question-img" src="<%= basePath + "/" + saveDir + "/" + image.getName() %>" 
-				  					alt="<%= image.getName() %>" />
-			  				<% } %>
-		                   	<hr>
+	               		<div class="form-group">
+		                    <h2 class="question-text"><%= question.getQuestionText() %></h2>
+		                   	<input type="hidden" class="question-id" name="question-id<%= i %>" 
+		                   		value="<%= question.getId() %>">
+	                   	</div>
+	                   	<% FileBean image = question.getImage(); %>
+		  				<% if (image != null) { %>
+			  				<img class="question-img" src="<%= basePath + "/" + saveDir + "/" + image.getName() %>" 
+			  					alt="<%= image.getName() %>" />
+		  				<% } %>
+	                   	<hr>
+	                   	<ul class="answers-list">
 		                   	<% for(AnswerBean answer : question.getAnswers()) { %>
-		                   		<div class="form-group">
+		                   		<li><div class="form-group">
 		                   			<% if (question.getTrueAnswers() == 1) { %>
 					                   	<div class="radio">
 											<label class="answer-text">
@@ -68,8 +69,9 @@
 										  	</label>
 										</div>
 									<% } %>
-								</div>
+								</div></li>
 							<% } %>
+						</ul>
 		            </div>
 		            <% i++; %>
 	            <% } %>

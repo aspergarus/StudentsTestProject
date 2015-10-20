@@ -12,6 +12,7 @@ import java.util.HashMap;
 import beans.AnswerBean;
 import beans.FileBean;
 import beans.QuestionBean;
+import beans.TestBean;
 import config.ConnectionManager;
 
 public class QuestionDAO {
@@ -47,11 +48,12 @@ public class QuestionDAO {
 		return result;
 	}
     
-    public static ArrayList<QuestionBean> getQuestions(int testId) {
+    public static ArrayList<QuestionBean> getQuestions(TestBean test) {
 		String query = "SELECT * FROM questions q"
 				+ " LEFT JOIN files f ON q.id = f.owner_id"
 				+ " WHERE test_id = ?"
-				+ " ORDER BY q.id";
+				+ " ORDER BY RAND()"
+				+ " LIMIT ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
@@ -60,13 +62,14 @@ public class QuestionDAO {
 		ArrayList<QuestionBean> questions = new ArrayList<>();
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setInt(1, testId);
+			stmt.setInt(1, test.getId());
+			stmt.setInt(2, test.getTestQuestions());
 			rs = stmt.executeQuery();
 			
 			while(rs.next()) {
 				int id = rs.getInt("id");
 				String questionText = rs.getString("question_text");
-				QuestionBean question = new QuestionBean(id, testId, questionText);
+				QuestionBean question = new QuestionBean(id, test.getId(), questionText);
 				
 				int fileId = rs.getInt("fid");
 				if (fileId != 0) {
