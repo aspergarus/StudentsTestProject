@@ -3,6 +3,7 @@
 <%@page import="beans.TestBean"%>
 <%@page import="beans.FileBean"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Arrays"%>
 <%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
@@ -13,6 +14,7 @@
 <% saveDir = saveDir.replaceAll("\\\\", "/"); %>
 <% TestBean test = (TestBean) request.getAttribute("test"); %>
 <% ArrayList<QuestionBean> questions = (ArrayList<QuestionBean>) request.getAttribute("questions"); %>
+<% int [] questionsId = new int[questions.size()]; %>
 
 <%@ include file="header.jsp" %>
 
@@ -27,24 +29,25 @@
 		<% } %>
 		<div class="progress">
   			<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="1" 
-  				aria-valuemin="0" aria-valuemax="15" style="width: <%= ((double)1 / questions.size()) * 100 %>%">
-    			<p><span id="current-number-question">1</span> / <span id="all-questions"></span></p> 
+  				aria-valuemin="0" aria-valuemax="15">
+    			<p><span id="current-number-question"></span> / <span id="all-questions"></span></p> 
   			</div>
 		</div>
 		<div class="col-md-8 col-md-offset-1">
-			<form action="<%= basePath %>/testing/" id="testing-form" method="post" class="form-horizontal" >
+			<form action="<%= basePath %>/testing/" id="testing-form" method="post" id="testing-form" class="form-horizontal" >
 				<% int i = 0; %>
 				<% for(QuestionBean question : questions) { %>
-					<div class="row question-block uncompleted">
+					<% questionsId[i] = question.getId(); %>
+					<div class="question-id-<%= question.getId() %> row question-block uncompleted">
 		               		<div class="form-group">
 			                    <h2 class="question-text"><%= question.getQuestionText() %></h2>
-			                   	<input type="hidden" name="question-id<%= i %>" value="<%= question.getId() %>">
+			                   	<input type="hidden" class="question-id" name="question-id<%= i %>" 
+			                   		value="<%= question.getId() %>">
 		                   	</div>
 		                   	<% FileBean image = question.getImage(); %>
 			  				<% if (image != null) { %>
 				  				<img class="question-img" src="<%= basePath + "/" + saveDir + "/" + image.getName() %>" 
 				  					alt="<%= image.getName() %>" />
-				  				
 			  				<% } %>
 		                   	<hr>
 		                   	<% for(AnswerBean answer : question.getAnswers()) { %>
@@ -90,15 +93,10 @@
 			</form>
 		</div>
 		<div class="col-md-3">
-			<div class="example" data-timer="<%= test.getTime() %>"></div>
+			<div class="timer" data-timer="<%= test.getTime() %>"></div>
+			<span id="test-time" class="hidden"><%= test.getTime() %></span>
 		</div>
+		<input type="hidden" name="questions-id-list" value="<%= Arrays.toString(questionsId) %>" />
 	</div>
-	<script>
-	$(window).on('beforeunload', function(){
-		if ($('.uncompleted').length > 0 ) {
-			return "You will not be able to join this test again!";
-		}
-	});
-	</script>
 	
 <%@ include file="footer.jsp" %>
