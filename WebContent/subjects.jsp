@@ -25,19 +25,23 @@
 	
 	<% if (user.getRole() == 2) { %>
 		
-		<h3 class="lead">Add subject</h3>
+		<h3 class="lead"><span class="translate" data-lang-key="Add subject"></span></h3>
 
 		<form action="<%= basePath %>/subjects" class="form" method="post"
 			class="form-horizontal">
 			<div class="form-group">
-				<label for="subjectName" class="col-sm-2 control-label">Subject name*</label>
+				<label for="subjectName" class="col-sm-2 control-label">
+					<span class="translate" data-lang-key="Subject name"></span>*
+				</label>
 				<div class="col-sm-10">
 					<input name="subjectName" type="text" class="form-control subjectName"
 						required autocomplete="off">
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="departmentName" class="col-sm-2 control-label">Department*</label>
+				<label for="departmentName" class="col-sm-2 control-label">
+					<span class="translate" data-lang-key="Department"></span>*
+				</label>
 				<div class="col-sm-10">
 					<input name="departmentName" type="text" class="form-control typeahead" id="departmentName" required
 						autocomplete="off" data-autocomplete-url="autocomplete/departments">
@@ -45,7 +49,9 @@
 			</div>	
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10 add-subject">
-					<button type="submit" class="btn btn-primary">Add subject</button>
+					<button type="submit" class="btn btn-primary">
+						<span class="translate" data-lang-key="Add subject"></span>
+					</button>
 				</div>
 			</div>
 		</form>
@@ -54,9 +60,9 @@
 	
 <div class="container">
 	<% if (subjects.size() == 0) { %>
-		<h1>There are no subjects yet</h1>
+		<h1><span class="translate" data-lang-key="There are no subjects yet"></span></h1>
 	<% } else { %>
-		<h1>Subjects (<%= subjects.size() %>)</h1>
+		<h1><span class="translate" data-lang-key="Subjects"></span> (<%= subjects.size() %>)</h1>
 	<% } %>
 	<table class="table" data-search="true" data-show-columns="true">
 		<% out.print(subjects == null ? "Subjects are not exists" : ""); %>
@@ -65,11 +71,19 @@
 				<% if (user.getRole() == 2) { %>
 				<th data-field="id" data-align="center" data-sortable="true">ID</th>
 				<% } %>
-				<th data-field="subjectName" data-align="center" data-sortable="true">Subject Name</th>
-				<th data-field="department" data-align="center" data-sortable="true">Department</th>
+				<th data-field="subjectName" data-align="center" data-sortable="true">
+					<span class="translate" data-lang-key="Subject name"></span>
+				</th>
+				<th data-field="department" data-align="center" data-sortable="true">
+					<span class="translate" data-lang-key="Department"></span>
+				</th>
 				<% if (user.getRole() == 2) { %>
-				<th data-field="edit" data-align="center">Edit</th>
-				<th data-field="delete" data-align="center">Delete</th>
+					<th data-field="edit" data-align="center">
+						<span class="translate" data-lang-key="Edit"></span>
+					</th>
+					<th data-field="delete" data-align="center">
+						<span class="translate" data-lang-key="Delete"></span>
+					</th>
 				<% } %>
 			</tr>
 		</thead>
@@ -82,10 +96,14 @@
 			        <td><% out.print(subject.getSubjectName()); %></td>
 			        <td><% out.print (departmentsMap.get(subject.getDepartmentId())); %></td>
 			        <% if (user.getRole() == 2) { %>
-			        <td><a href="subjects?edit=true&id=<%= subject.getId() %>">Edit</a></td>
+			        <td><a href="subjects?edit=true&id=<%= subject.getId() %>">
+			        	<span class="translate" data-lang-key="Edit"></span>
+			        </a></td>
 			        <td>
 						<button class="btn btn-danger delete-item" data-id="<%= subject.getId() %>"
-							data-path="/subjects" data-item="subject">Delete</button>
+							data-path="/subjects" data-item="subject">
+							<span class="translate" data-lang-key="Delete"></span>	
+						</button>
 			        </td>
 			        <% } %>
 			    </tr>

@@ -23,17 +23,27 @@
 			</div>
 		<% } %>
 	
-		<h1>Results of the Test</h1>
+		<h1><span class="translate" data-lang-key="Results of the Test"></span></h1>
 		<table class="table" data-search="true" data-show-columns="true">
 		<% out.print(results == null ? "Results is not available" : ""); %>
 	    <thead>
 	        <tr>
 	        	<th data-field="number" data-align="center" data-sortable="true">№</th>
-	        	<th data-field="group" data-align="center" data-sortable="true">Group</th>
-	            <th data-field="firstName" data-align="center" data-sortable="true">First Name</th>
-	            <th data-field="lastName" data-align="center" data-sortable="true">Last Name</th>
-	            <th data-field="completed" data-align="center" data-sortable="true">Completed</th>
-	            <th data-field="result" data-align="center" data-sortable="true">Result</th>
+	        	<th data-field="group" data-align="center" data-sortable="true">
+	        		<span class="translate" data-lang-key="Group"></span>
+	        	</th>
+	            <th data-field="firstName" data-align="center" data-sortable="true">
+	            	<span class="translate" data-lang-key="First Name"></span>
+	            </th>
+	            <th data-field="lastName" data-align="center" data-sortable="true">
+	            	<span class="translate" data-lang-key="Last Name"></span>
+	            </th>
+	            <th data-field="completed" data-align="center" data-sortable="true">
+	            	<span class="translate" data-lang-key="Completed"></span>
+	            </th>
+	            <th data-field="result" data-align="center" data-sortable="true">
+	            	<span class="translate" data-lang-key="Result"></span>
+	            </th>
 	        </tr>
 	    </thead>
 	    <tbody>

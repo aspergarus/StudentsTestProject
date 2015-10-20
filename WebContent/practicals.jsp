@@ -27,11 +27,13 @@
 	
 	<% if (currentUser.getRole() > 0) { %>
 	
-		<h3 class="lead">Add practical</h3>
+		<h3 class="lead"><span class="translate" data-lang-key="Add practical"></span></h3>
 		<form action="<%= basePath %>/practicals" class="form" method="post"
 			class="form-horizontal" enctype="multipart/form-data">
 			<div class="form-group">
-				<label for="subject" class="col-sm-2 control-label">Subject*</label>
+				<label for="subject" class="col-sm-2 control-label">
+					<span class="translate" data-lang-key="Subject"></span>*
+				</label>
 				<div class="col-sm-10">
 					<input name="subject" type="text" class="form-control typeahead"
 						class="subject" required autocomplete="off" data-autocomplete-url="autocomplete/subjects">
@@ -39,30 +41,41 @@
 			</div>
 	
 			<div class="form-group">
-				<label for="title" class="col-sm-2 control-label">Title*</label>
+				<label for="title" class="col-sm-2 control-label">
+				<span class="translate" data-lang-key="Title"></span>*
+				</label>
 				<div class="col-sm-10">
 					<input name="title" type="text" class="form-control" id="title" required>
 				</div>
 			</div>
 	
 			<div class="form-group">
-				<label for="body" class="col-sm-2 control-label required">Body</label>
+				<label for="body" class="col-sm-2 control-label required">
+					<span class="translate" data-lang-key="Body"></span>
+				</label>
 				<div class="col-sm-10">
 					<textarea class="ckeditor" name="body" class="form-control" rows="3"></textarea>
 				</div>
 			</div>
 	
 			<div class="form-group">
-				<label for="upload" class="col-sm-2 control-label required">Upload files</label>
+				<label for="upload" class="col-sm-2 control-label required">
+					<span class="translate" data-lang-key="Upload files"></span>
+				</label>
 				<div class="col-sm-10">
 					<input id="upload" type="file" class="file" name="upload" data-preview-file-type="text" multiple>
-					<p class="help-block">File size not more then 10 MB. Allowed formats: pdf, doc, docx.</p>
+					<p class="help-block">
+						<span class="translate" data-lang-key="File size not more then"></span> 10 MB.
+						<span class="translate" data-lang-key="Allowed formats"></span>: pdf, doc, docx.
+					</p>
 				</div>
 			</div>
 	
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
-					<button type="submit" class="btn btn-primary">Add practical</button>
+					<button type="submit" class="btn btn-primary">
+						<span class="translate" data-lang-key="Add practical"></span>
+					</button>
 				</div>
 			</div>
 		</form>
@@ -72,15 +85,15 @@
 <div class="container">
 	<% if (practicalsMap.size() == 0) { %>
 		<% if (currentUser.getRole() == 0) { %>
-			<h1>We don't have practicals for you.</h1>
+			<h1><span class="translate" data-lang-key="We don't have practicals for you"></span>.</h1>
 		<% } else if (currentUser.getRole() == 1) { %>
-			<h1>You don't have practicals.</h1>
-			<h2><small>You can add them on the form over this message.</small></h2>
+			<h1><span class="translate" data-lang-key="You don't have practicals"></span>.</h1>
+			<h2><small><span class="translate" data-lang-key="You can add them on the form over this message"></span>.</small></h2>
 		<% } else { %>
-			<h1>There are no any practicals</h1>
+			<h1><span class="translate" data-lang-key="There are no any practicals"></span></h1>
 		<% } %>
 	<% } else { %>
-		<h1>Practicals (<%= practicalsMap.size() %>)</h1>
+		<h1><span class="translate" data-lang-key="Practicals"></span> (<%= practicalsMap.size() %>)</h1>
 	<% } %>
 	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 		<% int i = 0; %>
@@ -98,7 +111,7 @@
 				<div class="panel-body">
 				
 				<% if (currentUser.getRole() == 1) { %>
-					<p class="help-block">Share this subject to groups:
+					<p class="help-block"><span class="translate" data-lang-key="Share this subject to groups"></span>:
 						<input type="text" class="tokenfield" value="<%= groups.get(subject) == null ? "" :  groups.get(subject) %>" name="groupName" required autocomplete="off" />
 						<input type="submit" value="Share" class="btn btn-info btn-share assign-subject-group" data-num="<%= i %>" data-subject="<%= subject %>">
 					</p>
@@ -107,11 +120,19 @@
 					<table class="table">
 						<thead>
 							<tr>
-								<th data-field="title" data-align="center" data-sortable="true">Title</th>
-					            <th data-field="view" data-align="center">View</th>
+								<th data-field="title" data-align="center" data-sortable="true">
+									<span class="translate" data-lang-key="Title"></span>
+								</th>
+					            <th data-field="view" data-align="center">
+					            	<span class="translate" data-lang-key="View"></span>
+					            </th>
 					            <% if (currentUser.getRole() > 0) { %>
-					            	<th data-field="edit" data-align="center">Edit</th>
-					            	<th data-field="delete" data-align="center">Delete</th>
+					            	<th data-field="edit" data-align="center">
+					            		<span class="translate" data-lang-key="Edit"></span>
+					            	</th>
+					            	<th data-field="delete" data-align="center">
+					            		<span class="translate" data-lang-key="Delete"></span>
+					            	</th>
 					            <%} %>
 							</tr>
 						</thead>
@@ -119,12 +140,18 @@
 						<% for (PracticalsBean practical : practicalsMap.get(subject)) { %>
 							<tr>
 								<td><%= practical.getTitle() %></td>
-								<td><a href="practicals?id=<%= practical.getId() %>">View</a></td>
+								<td><a href="practicals?id=<%= practical.getId() %>">
+									<span class="translate" data-lang-key="View"></span>
+								</a></td>
 								<% if (currentUser.getRole() > 0) { %>
-									<td><a href="practicals?edit=true&id=<%= practical.getId() %>">Edit</a></td>
+									<td><a href="practicals?edit=true&id=<%= practical.getId() %>">
+										<span class="translate" data-lang-key="Edit"></span>
+									</a></td>
 									<td>
 										<button class="btn btn-danger delete-item" data-id="<%= practical.getId() %>" 
-											data-path="/practicals" data-item="practical">Delete</button>
+											data-path="/practicals" data-item="practical">
+											<span class="translate" data-lang-key="Delete"></span>
+										</button>
 									</td>
 								<% } %>
 							</tr>

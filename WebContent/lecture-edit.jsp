@@ -30,56 +30,73 @@
 		<p>${message}</p>
 	</div>
 	<% } %>
-	<h3 class="lead">Edit lecture</h3>
+	<h3 class="lead"><span class="translate" data-lang-key="Edit lecture"></span></h3>
 	<form action="<%= basePath %>/lectures" class="form" method="post"
 		class="form-horizontal" enctype="multipart/form-data">
 		<div class="form-group">
-			<label for="subject" class="col-sm-2 control-label">Subject*</label>
+			<label for="subject" class="col-sm-2 control-label">
+				<span class="translate" data-lang-key="Subject"></span>*
+			</label>
 			<div class="col-sm-10">
 				<input name="subject" type="text" class="form-control typeahead"
-					class="subject" required autocomplete="off" data-autocomplete-url="autocomplete/subjects" value="<%= subjectsMap.get(lBean.getSubjectId()) %>">
+					class="subject" required autocomplete="off" data-autocomplete-url="autocomplete/subjects" 
+						value="<%= subjectsMap.get(lBean.getSubjectId()) %>">
 			</div>
 		</div>
 
 		<div class="form-group">
-			<label for="title" class="col-sm-2 control-label">Title*</label>
+			<label for="title" class="col-sm-2 control-label">
+				<span class="translate" data-lang-key="Title"></span>*
+			</label>
 			<div class="col-sm-10">
 				<input name="title" type="text" class="form-control" id="title" required value="<%= lBean.getTitle() %>">
 			</div>
 		</div>
 
 		<div class="form-group">
-			<label for="body" class="col-sm-2 control-label required">Body</label>
+			<label for="body" class="col-sm-2 control-label required">
+				<span class="translate" data-lang-key="Body"></span>
+			</label>
 			<div class="col-sm-10">
 				<textarea class="ckeditor" name="body" class="form-control" rows="3"><%= lBean.getBody() %></textarea>
 			</div>
 		</div>
 
 		<div class="form-group">
-			<label for="upload" class="col-sm-2 control-label required">Upload files</label>
+			<label for="upload" class="col-sm-2 control-label required">
+				<span class="translate" data-lang-key="Upload files"></span>
+			</label>
 			<div class="col-sm-10">
 				<% for (FileBean fileBean : fileBeans) { %>
 					<div class="file">
 						<div class="file-info">
 							<a href="<%= saveDir + File.separator + fileBean.getName() %>" download>
-								<img src="imgs/icons/<%= FileUploadManager.extractFileExt(fileBean.getName()) %>.png" alt="<%= fileBean.getName() %>" />
+								<img src="imgs/icons/<%= FileUploadManager.extractFileExt(fileBean.getName()) %>.png" 
+									alt="<%= fileBean.getName() %>" />
 								<%= fileBean.getName() %>
 							</a>
 						</div>
 						<div class="file-delete-button">
-							<button type="button" class="btn btn-danger delete-file-btn" data-fid=<%= fileBean.getFid() %>>Delete</button>
+							<button type="button" class="btn btn-danger delete-file-btn" data-fid=<%= fileBean.getFid() %>>
+								<span class="translate" data-lang-key="Delete"></span>
+							</button>
 						</div>
 						
 					</div>
 				<% } %>
 				<input id="upload" type="file" class="file" name="upload" data-preview-file-type="text" multiple accept="application/msword, application/pdf">
-				<p class="help-block">File size not more then 10 MB. Allowed formats: pdf, doc, docx.</p>
+				<p class="help-block">
+					<span class="translate" data-lang-key="File size not more then"></span> 10 MB.
+					<span class="translate" data-lang-key="Allowed formats"></span>: pdf, doc, docx.
+				</p>
 			</div>
 		</div>
 
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				<button type="submit" class="btn btn-primary">Update</button>
+				<button type="submit" class="btn btn-primary">
+					<span class="translate" data-lang-key="Update"></span>
+				</button>
 			</div>
 		</div>
 		<input type="hidden" name="update-id" value="<%= lBean.getId() %>">
