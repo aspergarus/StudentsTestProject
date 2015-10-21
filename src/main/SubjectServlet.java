@@ -124,32 +124,22 @@ public class SubjectServlet extends HttpServlet {
 		if (user == null) {
 			response.sendError(403);
 		} else {
-			int subjectId = Integer.parseInt(request.getHeader("id"));
-			String subjectHeader = request.getHeader("subject");
-			String departmentHeader = request.getHeader("department");
+			int subjectId = Integer.valueOf(request.getHeader("id"));
+			String newSubjectName = java.net.URLDecoder.decode(request.getHeader("data"), "UTF-8");
 			
-			if (subjectHeader != null && departmentHeader != null) {
-				try {
-					String subjectName = java.net.URLDecoder.decode(subjectHeader, "UTF-8").trim();
-					String department = java.net.URLDecoder.decode(departmentHeader, "UTF-8").trim();
-					
-					int departmentId = DepartmentsDAO.find(department).getId();
-					String errorMessage = SubjectsDAO.subjectValidate(subjectName, departmentId);
+			int departmentId = SubjectsDAO.findDepartment(subjectId);
+			String errorMessage = SubjectsDAO.subjectValidate(newSubjectName, departmentId);
 
-					if (errorMessage == null) {
-						SubjectsBean sBean = new SubjectsBean(subjectId, subjectName, departmentId);
-						
-						if (SubjectsDAO.update(sBean)) {
-							response.getOutputStream().println("Subject has been updated successfully.");
-						} else {
-							response.getOutputStream().println("Some troubles were occurred during updating a subject.");
-						}
-					} else {
-						response.getOutputStream().println(errorMessage);
-					}
-				} catch (NullPointerException e) {
-					System.out.println(e.getMessage());
+			if (errorMessage == null) {
+				SubjectsBean sBean = new SubjectsBean(subjectId, newSubjectName, departmentId);
+				
+				if (SubjectsDAO.update(sBean)) {
+					response.getOutputStream().println("Subject has been updated successfully.");
+				} else {
+					response.getOutputStream().println("Some troubles were occurred during updating a subject.");
 				}
+			} else {
+				response.getOutputStream().println(errorMessage);
 			}
 		}
 	}

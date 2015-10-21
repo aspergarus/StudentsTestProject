@@ -69,7 +69,7 @@
 		<thead>
 			<tr>
 				<% if (user.getRole() == 2) { %>
-				<th data-field="id" data-align="center" data-sortable="true">ID</th>
+					<th data-field="id" data-align="center" data-sortable="true">ID</th>
 				<% } %>
 				<th data-field="subjectName" data-align="center" data-sortable="true">
 					<span class="translate" data-lang-key="Subject name"></span>
@@ -78,9 +78,6 @@
 					<span class="translate" data-lang-key="Department"></span>
 				</th>
 				<% if (user.getRole() == 2) { %>
-					<th data-field="edit" data-align="center">
-						<span class="translate" data-lang-key="Edit"></span>
-					</th>
 					<th data-field="delete" data-align="center">
 						<span class="translate" data-lang-key="Delete"></span>
 					</th>
@@ -91,20 +88,22 @@
 		    <% for (SubjectsBean subject: subjects) { %>
 				<tr>
 					<% if (user.getRole() == 2) { %>
-			        <td><% out.print(subject.getId()); %></td>
+			        	<td><% out.print(subject.getId()); %></td>
 			        <% } %>
-			        <td><% out.print(subject.getSubjectName()); %></td>
+			        <td>
+			        	<span class="transformer-text" data-path="subjects" data-id=<%= subject.getId() %>>
+			        		<%= subject.getSubjectName() %>
+			        	</span>
+			        	<input type="text" style="display: none">
+			        </td>
 			        <td><% out.print (departmentsMap.get(subject.getDepartmentId())); %></td>
 			        <% if (user.getRole() == 2) { %>
-			        <td><a href="subjects?edit=true&id=<%= subject.getId() %>">
-			        	<span class="translate" data-lang-key="Edit"></span>
-			        </a></td>
-			        <td>
-						<button class="btn btn-danger delete-item" data-id="<%= subject.getId() %>"
-							data-path="/subjects" data-item="subject">
-							<span class="translate" data-lang-key="Delete"></span>	
-						</button>
-			        </td>
+				        <td>
+							<button class="btn btn-danger delete-item" data-id="<%= subject.getId() %>"
+								data-path="/subjects" data-item="subject">
+								<span class="translate" data-lang-key="Delete"></span>	
+							</button>
+				        </td>
 			        <% } %>
 			    </tr>
 			<% } %>

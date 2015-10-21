@@ -32,8 +32,10 @@ public class CommentsServlet extends HttpServlet {
 		} else {
 			// Get info of new comment
 			CommentsBean comment = new CommentsBean();
-			comment.setTitle(request.getParameter("title"));
-			comment.setBody(request.getParameter("body"));
+			String title = java.net.URLDecoder.decode(request.getHeader("title"), "UTF-8");
+			String body = java.net.URLDecoder.decode(request.getHeader("msg"), "UTF-8");
+			comment.setTitle(title);
+			comment.setBody(body);
 			comment.setOwnerId(Integer.valueOf(request.getParameter("ownerId")));
 			comment.setAuthor(Integer.valueOf(request.getParameter("author")));
 			comment.setOwnerType(request.getParameter("ownerType"));
