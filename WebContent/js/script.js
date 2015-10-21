@@ -201,6 +201,9 @@ $(function () {
 			var cid = $this.data('comment-id');
 			var title = $parent.find('input[type=text]').val();
 			var msg = $parent.find('textarea').val();
+			
+			title = encodeURIComponent(title);
+			msg = encodeURIComponent(msg);
 
 			if (cid && title.length != 0 && msg.length != 0) {
 				$.ajax(basePath + "/comments", {
@@ -445,35 +448,6 @@ $(function () {
 							}
 						});   
 					} 
-			});
-		});
-	}
-	
-	updateItem();
-	
-	function updateItem() {
-		$('.update-subject').on('click', function(e) {
-			e.preventDefault();
-			
-			var $button = $(this);
-			var itemId = $button.data('id');
-			
-			var subject = $('input[name=subjectName]').val();
-			var department = $('input[name=departmentName]').val();
-			
-			$.ajax(basePath + "/subjects", {
-				headers: {id : itemId, subject : encodeURIComponent(subject), department : encodeURIComponent(department)},
-				method: "PUT",
-				success: function(result) {
-					if (result.indexOf('troubles') > -1) {
-						$('body > .container').prepend($('<div></div>').addClass('alert alert-warning').text(result));
-					} else {
-						$('body > .container').prepend($('<div></div>').addClass('alert alert-success').text(result));
-					}
-				},
-				error: function () {
-					$('body > .container').prepend($('<div></div>').addClass('alert alert-warning').text("Some errors."));
-				}
 			});
 		});
 	}

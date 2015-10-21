@@ -118,7 +118,7 @@ public class GroupServlet extends HttpServlet {
 		} else {
 			//Update in DB
 			int id = Integer.valueOf(request.getHeader("id"));
-			String newGroupName = java.net.URLDecoder.decode(request.getHeader("name"), "UTF-8");
+			String newGroupName = java.net.URLDecoder.decode(request.getHeader("data"), "UTF-8");
 			GroupBean group = new GroupBean(id, newGroupName);
 			GroupsDAO.update(group);
 			response.getOutputStream().println("Group has been updated successfully.");

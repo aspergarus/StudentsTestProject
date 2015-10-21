@@ -213,7 +213,29 @@ public class SubjectsDAO {
 		}
 	}
 	
-	
+
+	@SuppressWarnings("finally")
+    public static int findDepartment(int subjectId) {
+		String query = "SELECT department_id FROM subjects WHERE id = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		ResultSet rs = null;
+		int departmentId = 0;
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, subjectId);
+			rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				departmentId = rs.getInt("department_id");
+			}
+		} catch (SQLException e) {
+	        System.out.println(e.getMessage());
+        } finally {
+        	return departmentId;
+        }
+	}
 	
 	public static String subjectValidate(String subjectName, int departmentId) {
 		String query = "SELECT * FROM subjects WHERE subject_name = ? AND department_id = ?";

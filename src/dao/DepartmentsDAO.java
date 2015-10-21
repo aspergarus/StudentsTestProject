@@ -77,7 +77,6 @@ public class DepartmentsDAO {
         } finally {
         	return department;
         }
-		
 	}
 	
 	@SuppressWarnings("finally")
@@ -186,8 +185,6 @@ public class DepartmentsDAO {
 		}
 	}
 	
-	
-	
 	public static HashMap<Integer, String> getDepartmentsMap () {
 		String query = "SELECT * FROM departments";
 		
@@ -210,4 +207,6 @@ public class DepartmentsDAO {
         }
 		return departmentsMap;
 	}
+	
+	
 }
