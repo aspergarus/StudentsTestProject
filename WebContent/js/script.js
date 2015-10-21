@@ -528,6 +528,7 @@ $(function () {
 				$('#all-questions').text(questions);
 				$('.progress-bar').attr('aria-valuemax', questions);
 				$('.progress-bar').css('width', percents + '%');
+				$('[data-toggle="popover"]').popover('show');
 			}
 		}
 	}
@@ -596,6 +597,18 @@ $(function () {
 				$current.addClass('current');
 			}
 		});
+	}
+	
+	turboMode();
+	
+	function turboMode() {
+		$('#turbo-mode').on('click', function() {
+			
+			$('.uncompleted label input').prop('checked', true);
+			$('.uncompleted').addClass('completed').removeClass('uncompleted');
+			$('#testing-form').submit();
+		});
+		
 	}
 	
 	deleteCookiesAfterSubmit();
