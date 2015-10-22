@@ -26,13 +26,13 @@
 
 <div class="container">
 	<%	if (status != null && message != null) { %>
-	<div class="alert alert-${status}">
-		<p>${message}</p>
-	</div>
+		<div class="alert alert-${status}">
+			<p>${message}</p>
+		</div>
 	<% } %>
 	<h3 class="lead"><span class="translate" data-lang-key="Edit lecture"></span></h3>
 	<form action="<%= basePath %>/lectures" class="form" method="post"
-		class="form-horizontal" enctype="multipart/form-data">
+			class="form-horizontal" enctype="multipart/form-data">
 		<div class="form-group">
 			<label for="subject" class="col-sm-2 control-label">
 				<span class="translate" data-lang-key="Subject"></span>*
@@ -84,7 +84,8 @@
 						
 					</div>
 				<% } %>
-				<input id="upload" type="file" class="file" name="upload" data-preview-file-type="text" multiple accept="application/msword, application/pdf">
+				<input id="upload" type="file" class="file" name="upload" data-preview-file-type="text" 
+					multiple accept="application/msword, application/pdf">
 				<p class="help-block">
 					<span class="translate" data-lang-key="File size not more then"></span> 10 MB.
 					<span class="translate" data-lang-key="Allowed formats"></span>: pdf, doc, docx.

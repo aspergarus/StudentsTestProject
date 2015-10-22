@@ -18,8 +18,8 @@ public class TestsDAO {
 	
 	@SuppressWarnings("finally")
     public static HashMap<String, ArrayList<TestBean>> findAll(UserBean user) {
+		String query;
 		
-		String query = "";
 		if (user.getRole() == 2) {
 			query = "SELECT * FROM tests";
 		} else if (user.getRole() == 1) {
@@ -89,7 +89,6 @@ public class TestsDAO {
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
-
 		int rowsAffected = 0;
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
@@ -101,15 +100,12 @@ public class TestsDAO {
 			stmt.setInt(6, newTest.getTestQuestions());
 
 			rowsAffected = stmt.executeUpdate();
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-		}
-		finally {
+		} finally {
 			return rowsAffected > 0;
 		}
 	}
-	
 	
 	@SuppressWarnings("finally")
     public static TestBean find(int id) {
@@ -122,7 +118,6 @@ public class TestsDAO {
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, id);
-			
 			rs = stmt.executeQuery();
 			
 			while (rs.next()) {
@@ -135,7 +130,6 @@ public class TestsDAO {
 				test.setTime(rs.getInt("time"));
 				test.setTestQuestions(rs.getInt("test_questions"));
 			}
-			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
         } finally {
@@ -266,7 +260,6 @@ public class TestsDAO {
 				UserBean student = new UserBean(id, firstName, lastName, groupId);
 				students.add(student);
 			}
-			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
         }
@@ -274,7 +267,6 @@ public class TestsDAO {
 	}
 	
 	public static boolean removeReadyStudents(int testId) {
-		
 		String query = "DELETE FROM ready_students"
 				+ " WHERE test_id = ?";
 		
@@ -293,7 +285,6 @@ public class TestsDAO {
 	}
 	
 	public static boolean removeReadyStudents(int testId, int studentId) {
-		
 		String query = "DELETE FROM ready_students"
 				+ " WHERE test_id = ?"
 				+ " AND student_id = ?";
@@ -333,7 +324,6 @@ public class TestsDAO {
 					query += ", ";
 				}
 			}
-					
 			try (PreparedStatement stmt = con.prepareStatement(query)) {
 				int i = 0;
 				for (UserBean student : students) {
@@ -404,7 +394,6 @@ public class TestsDAO {
 		int rowsAffected = 0;
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			
 			stmt.setInt(1, testId);
 			stmt.setInt(2, student.getId());
 			
@@ -426,7 +415,6 @@ public class TestsDAO {
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, testId);
-			
 			rowsAffected = stmt.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -447,7 +435,6 @@ public class TestsDAO {
 		ResultSet rs = null;
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			
 			stmt.setInt(1, user.getId());
 			stmt.setInt(2, testId);
 			rs = stmt.executeQuery();
@@ -462,7 +449,6 @@ public class TestsDAO {
 	}
 	
 	public static int getResult(List<QuestionAnswersBean> questionAnswers) {
-		
 		int listSize = questionAnswers.size();
 		int [] questionsId = new int[listSize];
 		
@@ -477,7 +463,6 @@ public class TestsDAO {
 			int[] userAnswers = question.getAnswers();
 			int[] trueAnswers = questionsMap.get(questionId);
 			
-			// calculate the result
 			result += calcMark(userAnswers, trueAnswers);	
 		}
 		return (int)Math.round(result);
@@ -502,7 +487,6 @@ public class TestsDAO {
 			} else {
 				mark = (double) count / numUserAnswers;
 			}
-			
 		} else {
 			if (trueAnswers[0] == userAnswers[0]) {
 				mark = 1;

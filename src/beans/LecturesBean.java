@@ -7,6 +7,15 @@ public class LecturesBean {
 	private String title;
 	private String body = "";	
 	
+	public LecturesBean(int teacher, int subjectId, String title, String body) {
+		this.teacherId = teacher;
+		this.subjectId = subjectId;
+		this.title = title;
+		this.body = body;
+	}
+	
+	public LecturesBean() {}
+	
 	public int getId() {
 		return id;
 	}
@@ -42,17 +51,11 @@ public class LecturesBean {
 		this.body = body;
 	}
 	
-	public LecturesBean(int teacher, int subjectId, String title, String body) {
-		this.teacherId = teacher;
-		this.subjectId = subjectId;
-		this.title = title;
-		this.body = body;
-	}
-	public LecturesBean() {}
-	
 	@Override
 	public String toString() {
-		return this.title + " " + this.body;
+		return "Lecture. ID: " + id + "."
+				+ " Author: " + teacherId + "."
+				+ " Title: " + title + "."
+				+ " Body: " + body + ".";
 	}
-	
 }

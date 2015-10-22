@@ -7,9 +7,11 @@ $(function () {
 	lang = lang ? lang : "en";
 	switch (lang) {
 		case "en":
+			$('.translate-trigger').attr('data-lang', 'en');
 			$(".change-picture").attr('src', basePath + '/imgs/ua.png');
 			break;
 		case "ua":
+			$('.translate-trigger').attr('data-lang', 'ua');
 			$(".change-picture").attr('src', basePath + '/imgs/gb.png');
 			break;
 	}

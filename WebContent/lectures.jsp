@@ -67,7 +67,8 @@
 					<input id="upload" type="file" class="file" name="upload" data-preview-file-type="text" multiple>
 					<p class="help-block">
 						<span class="translate" data-lang-key="File size not more then"></span> 10 MB. 
-						<span class="translate" data-lang-key="Allowed formats"></span>: pdf, doc, docx.</p>
+						<span class="translate" data-lang-key="Allowed formats"></span>: pdf, doc, docx.
+					</p>
 				</div>
 			</div>
 	
@@ -134,20 +135,24 @@
 									<th data-field="delete" data-align="center">
 										<span class="translate" data-lang-key="Delete"></span>
 									</th>
-								<%} %>
+								<% } %>
 							</tr>
 						</thead>
 						<tbody>
 						<% for (LecturesBean lecture : lecturesMap.get(subject)) { %>
 							<tr>
 								<td><%= lecture.getTitle() %></td>
-								<td><a href="lectures?id=<%= lecture.getId() %>">
+								<td>
+									<a href="lectures?id=<%= lecture.getId() %>">
 										<span class="translate" data-lang-key="View"></span>
-								</a></td>
+									</a>
+								</td>
 								<% if (currentUser.getRole() > 0) { %>
-								<td><a href="lectures?edit=true&id=<%= lecture.getId() %>">
-									<span class="translate" data-lang-key="Edit"></span>
-								</a></td>
+								<td>
+									<a href="lectures?edit=true&id=<%= lecture.getId() %>">
+										<span class="translate" data-lang-key="Edit"></span>
+									</a>
+								</td>
 								<td>
 									<button class="btn btn-danger delete-item" data-id="<%= lecture.getId() %>" 
 											data-path="/lectures" data-item="lecture">

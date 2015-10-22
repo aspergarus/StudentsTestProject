@@ -32,9 +32,9 @@
 
 <div class="container">
 	<%	if (status != null && message != null) { %>
-	<div class="alert alert-${status}">
-		<p>${message}</p>
-	</div>
+		<div class="alert alert-${status}">
+			<p>${message}</p>
+		</div>
 	<% } %>
 </div>
 
@@ -82,7 +82,8 @@
 									<p class="link-author"><%= commentAuthor.getReadableName() %></p>
 									<span class="comment-date">
 										<% SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy HH:mm"); %>
-										<%= dateFormat.format(comment.getDate()) %></span>
+										<%= dateFormat.format(comment.getDate()) %>
+									</span>
 								</div>
 								<div class="comment-entry">
 									<h4><div class="comment-title"><%= comment.getTitle() %></div></h4>

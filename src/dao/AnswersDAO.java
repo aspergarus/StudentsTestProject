@@ -43,4 +43,22 @@ public class AnswersDAO {
 			return rowsAffected > 0;
 		}
 	}
+	
+
+	public static boolean deleteAnswers(int questionId) {
+		String query = "DELETE FROM answers WHERE question_id = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		int rowsAffected = 0;
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, questionId);
+			
+			rowsAffected = stmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return rowsAffected > 0;
+	}
 }

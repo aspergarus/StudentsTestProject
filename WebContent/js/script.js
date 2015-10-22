@@ -516,7 +516,6 @@ $(function () {
 			if (compeletedQuestions === questions) {
 				$('#next-question').hide();
 				$('#miss-question').hide();
-				$('.progress').fadeOut(1000);
 				$('.test-complete-info').removeClass('hidden');
 				$('input[type=submit]').removeClass('hidden');
 			} else {
@@ -544,7 +543,7 @@ $(function () {
 			var questionId;
 			var answersId = "";
 			$('.current label input').each(function() {
-				$this = $(this);
+				var $this = $(this);
 				if (($this).prop('checked')) {
 					hasAnswer = true;
 					answersId += $this.val();
@@ -603,12 +602,10 @@ $(function () {
 	
 	function turboMode() {
 		$('#turbo-mode').on('click', function() {
-			
 			$('.uncompleted label input').prop('checked', true);
 			$('.uncompleted').addClass('completed').removeClass('uncompleted');
 			$('#testing-form').submit();
 		});
-		
 	}
 	
 	deleteCookiesAfterSubmit();
@@ -689,10 +686,10 @@ $(function () {
 	
 	function removeStudentFromReady () {
 		$('.remove-student').on('click', function() {
-			$this = $(this);
+			var $this = $(this);
 			
 			var testId = $('input[name=id]').attr('value');
-			$parent = $this.parent();
+			var $parent = $this.parent();
 			var studentId = $parent.find('input[type=hidden]').attr('value');
 			
 			$.ajax(basePath + "/openTest", {
@@ -711,7 +708,7 @@ $(function () {
 	setCountdown();
 	
 	function setCountdown() {
-		$timer = $(".timer").TimeCircles({"direction": "Counter-clockwise",
+		var $timer = $(".timer").TimeCircles({"direction": "Counter-clockwise",
 			"animation": "ticks",
 			"bg_width": 1.2,
 		    "fg_width": 0.13,

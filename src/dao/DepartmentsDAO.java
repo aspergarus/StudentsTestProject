@@ -15,8 +15,8 @@ public class DepartmentsDAO {
 	
 	public static ArrayList<DepartmentBean> findAll() {
 		String query = "SELECT * FROM departments";
-		ArrayList<DepartmentBean> departments = new ArrayList<>();
 		
+		ArrayList<DepartmentBean> departments = new ArrayList<>();
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		
@@ -36,8 +36,8 @@ public class DepartmentsDAO {
 
 	public static ArrayList<String> findAllByName(String searchString) {
 		String query = "SELECT * FROM departments WHERE department_name LIKE ?";
-		ArrayList<String> departments = new ArrayList<>();
 		
+		ArrayList<String> departments = new ArrayList<>();
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		
@@ -126,7 +126,7 @@ public class DepartmentsDAO {
 	}
 	
 	@SuppressWarnings("finally")
-    public static boolean insert (String departmentName) {
+    public static boolean insert(String departmentName) {
 		String query = "INSERT INTO departments " 
 					+ "(department_name) "
 					+ "VALUES (?)";
@@ -147,7 +147,7 @@ public class DepartmentsDAO {
 	}
 	
 	@SuppressWarnings("finally")
-    public static boolean delete (int id) {
+    public static boolean delete(int id) {
 		String query = "DELETE FROM departments WHERE id = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -166,7 +166,7 @@ public class DepartmentsDAO {
 	}
 	
 	@SuppressWarnings("finally")
-    public static boolean update (DepartmentBean department) {
+    public static boolean update(DepartmentBean department) {
 		String query = "UPDATE departments SET department_name = ? WHERE id = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -207,6 +207,4 @@ public class DepartmentsDAO {
         }
 		return departmentsMap;
 	}
-	
-	
 }

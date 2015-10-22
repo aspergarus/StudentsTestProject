@@ -42,11 +42,11 @@
 		            	<span class="translate" data-lang-key="Last Name"></span>
 		            </th>
 		            <th data-field="groupId" data-align="center" data-sortable="true">
-		            <span class="translate" data-lang-key="Group"></span> / 
-		            <span class="translate" data-lang-key="Department"></span>
+			            <span class="translate" data-lang-key="Group"></span> / 
+			            <span class="translate" data-lang-key="Department"></span>
 		            </th>
 		            <th data-field="registered" data-align="center" data-sortable="true">
-		            <span class="translate" data-lang-key="Registration Date"></span>
+		           		<span class="translate" data-lang-key="Registration Date"></span>
 		            </th>
 		            <th data-field="role" data-align="center" data-sortable="true">
 		            	<span class="translate" data-lang-key="Role"></span>
@@ -60,9 +60,9 @@
 		    <% for (UserBean user: users) { %>
 				<tr>
 					<td>
-						<%  if (user.getAvatar().isEmpty()) { %>
-						<img src="<%= defaultAvatar %>" class="img-circle avatar-table"><% } else { %>
-						<img src="<%= uploadAvatarPath + File.separator + user.getAvatar() %>" class="img-circle avatar-table">
+						<% if (user.getAvatar().isEmpty()) { %>
+							<img src="<%= defaultAvatar %>" class="img-circle avatar-table"><% } else { %>
+							<img src="<%= uploadAvatarPath + File.separator + user.getAvatar() %>" class="img-circle avatar-table">
 						<% } %>
 					</td>
 			        <td><%= user.getUsername() %></td>

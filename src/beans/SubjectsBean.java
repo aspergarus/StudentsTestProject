@@ -5,8 +5,6 @@ public class SubjectsBean {
 	private String subjectName;
 	private int departmentId;
 	
-	public SubjectsBean() {}
-	
 	public SubjectsBean(String subjectName, int departmentId) {
 		this.subjectName = subjectName;
 		this.departmentId = departmentId;
@@ -17,6 +15,8 @@ public class SubjectsBean {
 		this.subjectName = subjectName;
 		this.departmentId = departmentId;
 	}
+	
+	public SubjectsBean() {}
 	
 	public int getId() {
 	    return id;

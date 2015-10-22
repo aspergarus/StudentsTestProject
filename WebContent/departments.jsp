@@ -45,7 +45,7 @@
 	
 <div class="container">
 	<% if (departments.size() == 0) { %>
-		<h1>There are no departments yet</h1>
+		<h1><span class="translate" data-lang-key="There are no departments yet"></span></h1>
 	<% } else { %>
 		<h1><span class="translate" data-lang-key="Departments"></span> (<%= departments.size() %>)</h1>
 	<% } %>
@@ -53,11 +53,15 @@
 		<thead>
 			<tr>
 				<% if (user.getRole() == 2) { %>
-				<th data-field="id" data-align="center" data-sortable="true">ID</th>
+					<th data-field="id" data-align="center" data-sortable="true">ID</th>
 				<% } %>
-				<th data-field="department" data-align="center" data-sortable="true"><span class="translate" data-lang-key="Department"></span></th>
+					<th data-field="department" data-align="center" data-sortable="true">
+						<span class="translate" data-lang-key="Department"></span>
+					</th>
 				<% if (user.getRole() == 2) { %>
-				<th data-field="delete" data-align="center"><span class="translate" data-lang-key="Delete"></span></th>
+					<th data-field="delete" data-align="center">
+						<span class="translate" data-lang-key="Delete"></span>
+					</th>
 				<% } %>
 			</tr>
 		</thead>
@@ -65,19 +69,25 @@
 		    <% for (DepartmentBean department: departments) { %>
 				<tr class="department-record">
 					<% if (user.getRole() == 2) { %>
-			        <td><% out.print(department.getId()); %></td>
+			        	<td><% out.print(department.getId()); %></td>
 			        <% } %>
 			        <td>
-			        	<span class="transformer-text" data-path="department" data-id=<%= department.getId() %>><% out.print(department.getDepartmentName()); %></span>
-			        	<input type="text" style="display: none">
+			        	<% if (user.getRole() == 2) { %>
+				        	<span class="transformer-text" data-path="department" data-id=<%= department.getId() %>>
+				        		<% out.print(department.getDepartmentName()); %>
+				        	</span>
+				        	<input type="text" style="display: none">
+			        	<% } else { %>
+			        		<% out.print(department.getDepartmentName()); %>
+			        	<% } %>
 			        </td>
 			        <% if (user.getRole() == 2) { %>
-			        <td>
-						<button type="button" class="btn btn-danger delete-item" data-id=<%= department.getId() %>
-							data-path="/department" data-item="department">
-							<span class="translate" data-lang-key="Delete"></span>
-						</button>
-			        </td>
+				        <td>
+							<button type="button" class="btn btn-danger delete-item" data-id=<%= department.getId() %>
+									data-path="/department" data-item="department">
+								<span class="translate" data-lang-key="Delete"></span>
+							</button>
+				        </td>
 			        <% } %>
 			    </tr>
 			<% } %>

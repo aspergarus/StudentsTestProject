@@ -19,18 +19,15 @@ public class PracticalsDAO {
 
 	@SuppressWarnings("finally")
 	public static Map<String, ArrayList<PracticalsBean>> findAll(UserBean user) {
-		
 		String query;
 		
 		if (user.getRole() == 0) {
 			query = "SELECT * FROM practicals p "
 					+ "INNER JOIN stgrelations s ON p.teacher_id = s.teacher_id AND p.subject_id = s.subject_id "
 					+ "WHERE s.group_id = ?";
-		}
-		else if (user.getRole() == 1) {
+		} else if (user.getRole() == 1) {
 			query = "SELECT * FROM practicals WHERE teacher_id = ? ORDER BY subject_id";
-		}
-		else {
+		} else {
 			query = "SELECT * FROM practicals ORDER BY subject_id";
 		}
 		
@@ -46,11 +43,9 @@ public class PracticalsDAO {
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			if (user.getRole() == 0) {
 				stmt.setInt(1, user.getGroupId());
-			}
-			else if (user.getRole() == 1) {
+			} else if (user.getRole() == 1) {
 				stmt.setInt(1, user.getId());
 			}
-			
 			rs = stmt.executeQuery();
 
 			int tmpSubjectId = 0, subjectId = 0;
@@ -79,11 +74,9 @@ public class PracticalsDAO {
 				subjectName = subjectsMap.get(subjectId);
 				practicalMap.put(subjectName, practicalList);
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-		}
-		finally {
+		} finally {
 			return practicalMap;
 		}
 	}
@@ -96,7 +89,6 @@ public class PracticalsDAO {
 
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
-
 		int rowsAffected = 0;
 
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
@@ -106,11 +98,9 @@ public class PracticalsDAO {
 			stmt.setString(4, bean.getBody());
 
 			rowsAffected = stmt.executeUpdate();
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-		}
-		finally {
+		} finally {
 			return rowsAffected > 0;
 		}
 	}
@@ -132,11 +122,9 @@ public class PracticalsDAO {
 			if (rs.next()) {
 				practicalsCount = rs.getInt("practicals_count");
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-		}
-		finally {
+		} finally {
 			return practicalsCount;
 		}
 	}
@@ -160,56 +148,13 @@ public class PracticalsDAO {
 				pBean.setTitle(rs.getString("title"));
 				pBean.setBody(rs.getString("body"));
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-		}
-		finally {
+		} finally {
 			return pBean;
 		}
 	}
-
-	@SuppressWarnings("finally")
-    public static boolean delete(int id) {
-		String query = "DELETE FROM practicals WHERE id = ?";
-
-		ConnectionManager conM = new ConnectionManager();
-		Connection con = conM.getConnection();
-
-		int rowsAffected = 0;
-
-		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setInt(1, id);
-
-			rowsAffected = stmt.executeUpdate();
-		}
-		catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		finally {
-			return rowsAffected > 0;
-		}
-	}
-
-	public static boolean update(PracticalsBean bean) {
-		String query = "UPDATE practicals SET subject_id=?, title=?, body=? WHERE id = ?";
-
-		ConnectionManager conM = new ConnectionManager();
-		con = conM.getConnection();
-		int rowsAffected = 0;
-		try (PreparedStatement updateStmt = con.prepareStatement(query)) {
-			updateStmt.setInt(1, bean.getSubjectId());
-			updateStmt.setString(2, bean.getTitle());
-			updateStmt.setString(3, bean.getBody());
-			updateStmt.setInt(4, bean.getId());
-
-			rowsAffected = updateStmt.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		return rowsAffected > 0;
-	}
-
+	
 	public static PracticalsBean find(int subjectId, String title) {
 		String query = "SELECT * FROM practicals WHERE subject_id = ? AND title = ?";
 
@@ -229,11 +174,47 @@ public class PracticalsDAO {
 				pBean.setTitle(rs.getString("title"));
 				pBean.setBody(rs.getString("body"));
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
 		return pBean;
 	}
+	
+	public static boolean update(PracticalsBean bean) {
+		String query = "UPDATE practicals SET subject_id=?, title=?, body=? WHERE id = ?";
 
+		ConnectionManager conM = new ConnectionManager();
+		con = conM.getConnection();
+		int rowsAffected = 0;
+		try (PreparedStatement updateStmt = con.prepareStatement(query)) {
+			updateStmt.setInt(1, bean.getSubjectId());
+			updateStmt.setString(2, bean.getTitle());
+			updateStmt.setString(3, bean.getBody());
+			updateStmt.setInt(4, bean.getId());
+
+			rowsAffected = updateStmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return rowsAffected > 0;
+	}
+
+	@SuppressWarnings("finally")
+    public static boolean delete(int id) {
+		String query = "DELETE FROM practicals WHERE id = ?";
+
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		int rowsAffected = 0;
+
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, id);
+
+			rowsAffected = stmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			return rowsAffected > 0;
+		}
+	}
 }

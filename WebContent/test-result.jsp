@@ -18,9 +18,9 @@
 	<div class="container">
 
 		<%	if (status != null && message != null) { %>
-		<div class="alert alert-${status}">
-			<p>${message}</p>
-		</div>
+			<div class="alert alert-${status}">
+				<p>${message}</p>
+			</div>
 		<% } %>
 		
 		<div class="page-header">
@@ -28,7 +28,6 @@
 				<span class="translate" data-lang-key="Your mark"></span>: <%= result %>
 			</h1>
 		</div>
-		
 		<div class="reference-block">
 			<h2>
 				<span class="translate" data-lang-key="Thanks"></span>! 
@@ -37,9 +36,7 @@
 				<span class="translate" data-lang-key="or go to the"></span> 
 				<a href="<%= basePath %>"><span class="translate" data-lang-key="main page"></span></a>.
 			</h2>
-			
 		</div>
-		
 	</div>
 
 <%@ include file="footer.jsp" %>

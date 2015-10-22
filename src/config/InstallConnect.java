@@ -30,10 +30,8 @@ public class InstallConnect {
 		
 		if (con == null) {
 			return -1;
-		}
-		else {
+		} else {
 			ArrayList<String> existTables = selectExistTables();
-			
 			return requiredTables.length - existTables.size();
 		}
 	}
@@ -45,7 +43,6 @@ public class InstallConnect {
 		if (conM.insertDBSettings(host, port, dataBaseName, admin, password)) {
 			return true;
 		}
-		
 		return false;
 	}
 	
@@ -65,8 +62,7 @@ public class InstallConnect {
             while (rs.next()) {
 				existTables.add(rs.getString("TABLE_NAME"));
 			}
-		} 
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
 		return existTables;
@@ -280,8 +276,7 @@ public class InstallConnect {
 			System.out.println(e.getMessage());
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
-		}
-				
+		}		
 		return con;
 	}
 	
@@ -306,7 +301,6 @@ public class InstallConnect {
 			System.out.println(e.getMessage());
 		return false;
 		}	
-		
 		return true;
 	}
 }

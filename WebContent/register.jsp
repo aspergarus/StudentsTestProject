@@ -96,7 +96,7 @@
 		
 		<div class="form-group">
 			<label for="group" class="col-sm-2 control-label required">
-			<span class="translate" data-lang-key="Group"></span> / <span class="translate" data-lang-key="Department"></span> 
+				<span class="translate" data-lang-key="Group"></span> / <span class="translate" data-lang-key="Department"></span> 
 			 </label>
 			<div class="col-sm-10">
 				<input name="group" type="text" class="form-control typeahead"

@@ -28,9 +28,7 @@ public class ConnectionManager {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-
 		return con;
-		
 	}
 }
 

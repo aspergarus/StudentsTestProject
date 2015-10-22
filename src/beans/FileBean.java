@@ -40,4 +40,11 @@ public class FileBean {
 		this.ownerId = ownerId;
 	}
 	
+	@Override
+	public String toString() {
+		return "File: " + name + "."
+				+ " ID: " + fid + "." 
+				+ " Type: " + type + "."
+				+ " Owner ID: " + ownerId + ".";
+	}
 }

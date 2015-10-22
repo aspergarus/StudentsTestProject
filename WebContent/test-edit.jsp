@@ -22,9 +22,9 @@
 	<div class="container">
 
 		<%	if (status != null && message != null) { %>
-		<div class="alert alert-${status}">
-			<p>${message}</p>
-		</div>
+			<div class="alert alert-${status}">
+				<p>${message}</p>
+			</div>
 		<% } %>
 		<div class="page-header">
 			<h1><span class="translate" data-lang-key="Add a question"></span></h1>
@@ -77,7 +77,7 @@
 				
 				<div class="form-group answer">
 					<label for="answer" class="col-sm-2 control-label required">
-					<span class="translate" data-lang-key="Answer"></span>*
+						<span class="translate" data-lang-key="Answer"></span>*
 					</label>
 					<div class="col-sm-8">
 						<input name="answer-2" type="text" class="form-control"
@@ -124,13 +124,13 @@
 		<% for (QuestionBean question : questions) { %>
 		<% i++; %>
   			<div class="panel-heading">
-  			<form action="<%= basePath %>/test/<%= editedTest.getId() %>" method="post">
-    			<h3 class="panel-title"><%= i + ". " + question.getQuestionText() %>
-    				<input type="hidden" name="delete-question-id" value="<%= question.getId() %>">
-    				<input class="submit-delete-question hidden" type="submit">
-    				<a class="delete-question" href="#"><span class="glyphicon glyphicon-remove-circle delete-question" aria-hidden="true"></span></a>
-    			</h3>
-    		</form>
+	  			<form action="<%= basePath %>/test/<%= editedTest.getId() %>" method="post">
+	    			<h3 class="panel-title"><%= i + ". " + question.getQuestionText() %>
+	    				<input type="hidden" name="delete-question-id" value="<%= question.getId() %>">
+	    				<input class="submit-delete-question hidden" type="submit">
+	    				<a class="delete-question" href="#"><span class="glyphicon glyphicon-remove-circle delete-question" aria-hidden="true"></span></a>
+	    			</h3>
+	    		</form>
   			</div>
   			<div class="panel-body">
   				<% FileBean image = question.getImage(); %>
@@ -165,7 +165,7 @@
 									<td class="warning"><%= answer.getAnswerText() %></td>
 								<% } %>
 							</tr>
-						<% j++; %>
+							<% j++; %>
 						<% } %>
 						</tbody>
 					</table>

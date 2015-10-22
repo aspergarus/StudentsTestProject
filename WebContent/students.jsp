@@ -27,9 +27,9 @@
 <div class="container">
 
 	<h1><span class="translate" data-lang-key="Students"></span></h1>
-		<% out.print(studentList.isEmpty() ? "You don't have any students" : ""); %>
-		<% int i = 0; %>
-		<% for (StudentGroupBean group : studentList) { %>
+	<% out.print(studentList.isEmpty() ? "You don't have any students" : ""); %>
+	<% int i = 0; %>
+	<% for (StudentGroupBean group : studentList) { %>
 		<% i++; %>
 		<% int j = 1; %>
 		<div class="panel panel-default">
@@ -79,7 +79,7 @@
 				</div>
 			</div>
 		</div>
-		<% } %>
+	<% } %>
 </div>
 
 <%@ include file="footer.jsp" %>

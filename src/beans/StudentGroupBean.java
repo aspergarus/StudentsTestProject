@@ -15,7 +15,7 @@ public class StudentGroupBean {
 	public StudentGroupBean () {
 		this.students = new ArrayList<>();
 	}
-
+	
 	public String getGroupName() {
 	    return groupName;
     }
@@ -26,11 +26,9 @@ public class StudentGroupBean {
 	public ArrayList<UserBean> getStudents() {
 	    return students;
     }
-
 	public void setStudents(ArrayList<UserBean> students) {
 	    this.students = students;
     }
-	
 	public void add (UserBean student) {
 		this.students.add(student);
 	}
@@ -38,5 +36,4 @@ public class StudentGroupBean {
 	public int size() {
 		return this.students.size();
 	}
-
 }

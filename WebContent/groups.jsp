@@ -43,7 +43,7 @@
 	
 <div class="container">
 	<% if (groups.size() == 0) { %>
-		<h1>There are no groups yet</h1>
+		<h1><span class="translate" data-lang-key="There are no groups yet"></span></h1>
 	<% } else { %>
 		<h1><span class="translate" data-lang-key="Groups"></span> (<%= groups.size() %>)</h1>
 	<% } %>
@@ -51,12 +51,16 @@
 		<thead>
 			<tr>
 				<% if (user.getRole() == 2) { %>
-				<th data-field="id" data-align="center" data-sortable="true">ID</th>
+					<th data-field="id" data-align="center" data-sortable="true">ID</th>
 				<% } %>
-				<th data-field="group" data-align="center" data-sortable="true"><span class="translate" data-lang-key="Group"></span></th>
-				<th data-field="studentsCount" data-align="center" data-sortable="true"><span class="translate" data-lang-key="Number of students"></span></th>
+					<th data-field="group" data-align="center" data-sortable="true">
+						<span class="translate" data-lang-key="Group"></span>
+					</th>
+					<th data-field="studentsCount" data-align="center" data-sortable="true">
+						<span class="translate" data-lang-key="Number of students"></span>
+					</th>
 				<% if (user.getRole() == 2) { %>
-				<th data-field="delete" data-align="center"><span class="translate" data-lang-key="Delete"></span></th>
+					<th data-field="delete" data-align="center"><span class="translate" data-lang-key="Delete"></span></th>
 				<% } %>
 			</tr>
 		</thead>
@@ -64,20 +68,26 @@
 		    <% for (GroupBean group: groups) { %>
 				<tr class="group-record">
 					<% if (user.getRole() == 2) { %>
-			        <td><% out.print(group.getId()); %></td>
+			        	<td><% out.print(group.getId()); %></td>
 			        <% } %>
-			        <td>
-			        	<span class="transformer-text" data-path="groups" data-id=<%= group.getId() %>><% out.print(group.getGroupName()); %></span>
-			        	<input type="text" style="display: none">
-			        </td>
-			        <td><%= group.getCountStudents() %></td>
 			        <% if (user.getRole() == 2) { %>
-			        <td>
-						<button type="button" class="btn btn-danger delete-item" data-id=<%= group.getId() %>
-						 data-path="/groups" data-item="group">
-							<span class="translate" data-lang-key="Delete"></span>
-						</button>
-			        </td>
+				        <td>
+				        	<span class="transformer-text" data-path="groups" data-id=<%= group.getId() %>>
+				        		<% out.print(group.getGroupName()); %>
+				        	</span>
+				        	<input type="text" style="display: none">
+				        </td>
+					<% } else { %>
+						<% out.print(group.getGroupName()); %>
+					<% } %>
+					<td><%= group.getCountStudents() %></td>
+			        <% if (user.getRole() == 2) { %>
+				        <td>
+							<button type="button" class="btn btn-danger delete-item" data-id=<%= group.getId() %>
+							 data-path="/groups" data-item="group">
+								<span class="translate" data-lang-key="Delete"></span>
+							</button>
+				        </td>
 			        <% } %>
 			    </tr>
 			<% } %>

@@ -20,9 +20,9 @@
 
 <div class="container">
 	<%	if (status != null && message != null) { %>
-	<div class="alert alert-${status}">
-		<p>${message}</p>
-	</div>
+		<div class="alert alert-${status}">
+			<p>${message}</p>
+		</div>
 	<% } %>
 	
 	<% if (currentUser.getRole() > 0) { %>
@@ -42,7 +42,7 @@
 	
 			<div class="form-group">
 				<label for="title" class="col-sm-2 control-label">
-				<span class="translate" data-lang-key="Title"></span>*
+					<span class="translate" data-lang-key="Title"></span>*
 				</label>
 				<div class="col-sm-10">
 					<input name="title" type="text" class="form-control" id="title" required>
@@ -140,16 +140,20 @@
 						<% for (PracticalsBean practical : practicalsMap.get(subject)) { %>
 							<tr>
 								<td><%= practical.getTitle() %></td>
-								<td><a href="practicals?id=<%= practical.getId() %>">
-									<span class="translate" data-lang-key="View"></span>
-								</a></td>
+								<td>
+									<a href="practicals?id=<%= practical.getId() %>">
+										<span class="translate" data-lang-key="View"></span>
+									</a>
+								</td>
 								<% if (currentUser.getRole() > 0) { %>
-									<td><a href="practicals?edit=true&id=<%= practical.getId() %>">
-										<span class="translate" data-lang-key="Edit"></span>
-									</a></td>
+									<td>
+										<a href="practicals?edit=true&id=<%= practical.getId() %>">
+											<span class="translate" data-lang-key="Edit"></span>
+										</a>
+									</td>
 									<td>
 										<button class="btn btn-danger delete-item" data-id="<%= practical.getId() %>" 
-											data-path="/practicals" data-item="practical">
+												data-path="/practicals" data-item="practical">
 											<span class="translate" data-lang-key="Delete"></span>
 										</button>
 									</td>

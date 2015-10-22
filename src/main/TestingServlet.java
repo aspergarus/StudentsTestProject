@@ -3,6 +3,7 @@ package main;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -91,12 +92,14 @@ public class TestingServlet extends HttpServlet {
 			
 			for (int i = 0; i < questionsNumber; i++) {
 				String sQuestionId = request.getParameter("question-id" + i);
-				String sAnswerId = request.getParameter("answer-to-question" + i);
+				
+				String [] sAnswerId = request.getParameterValues("answer-to-question" + i);
 				
 				if (sQuestionId != null && sAnswerId != null) {
 					int questionId = Integer.parseInt(sQuestionId);
-					int answerId = Integer.parseInt(sAnswerId);
-					QuestionAnswersBean questionAnswer = new QuestionAnswersBean(questionId, answerId);
+					int[] answersId = Arrays.asList(sAnswerId).stream().mapToInt(Integer::parseInt).toArray();
+					
+					QuestionAnswersBean questionAnswer = new QuestionAnswersBean(questionId, answersId);
 					questionAnswers.add(questionAnswer);
 				}
 			}

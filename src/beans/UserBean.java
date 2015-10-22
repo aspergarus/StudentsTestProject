@@ -51,7 +51,7 @@ public class UserBean {
 		this.groupId = groupId;
 	}
 
-	public UserBean() {}
+	public UserBean() { }
 
 	public String getFirstName() {
 		return firstName;
@@ -196,5 +196,4 @@ public class UserBean {
 		}
 		return false;
 	}
-
 }

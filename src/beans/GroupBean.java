@@ -17,6 +17,8 @@ public class GroupBean {
 		this.groupName = groupName;
 	}
 	
+	public GroupBean() { }
+	
 	public int getId() {
 	    return id;
     }
@@ -40,7 +42,6 @@ public class GroupBean {
 	
 	@Override
 	public String toString() {
-		return "Group: " + groupName + ". ID: " + id + ". Students: " + countStudents;
+		return "Group: " + groupName + ". ID: " + id + ". Students: " + countStudents + ".";
 	}
-
 }

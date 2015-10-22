@@ -33,9 +33,9 @@
 
 <div class="container">
 	<%	if (status != null && message != null) { %>
-	<div class="alert alert-${status}">
-		<p>${message}</p>
-	</div>
+		<div class="alert alert-${status}">
+			<p>${message}</p>
+		</div>
 	<% } %>
 </div>
 

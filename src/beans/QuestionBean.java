@@ -84,9 +84,7 @@ public class QuestionBean {
 	public FileBean getImage() {
 	    return image;
     }
-
 	public void setImage(FileBean image) {
 	    this.image = image;
     }
-	
 }
