@@ -332,3 +332,17 @@ ol {
 .answers-list {
 	list-style-type: none;
 }
+.footer-container {
+	text-align: center;
+	bottom: -55px;
+	left: 0;
+	right: 0;
+	position: absolute;
+}
+.copyright {
+	margin-top: 30px;
+}
+body {
+	min-height: 610px;
+	position: relative;
+}

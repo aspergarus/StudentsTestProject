@@ -496,7 +496,7 @@ public class TestsDAO {
 	}
 	
 	public static boolean saveResult(UserBean user, int testId, int result, long completed) {
-		String query = "INSERT INTO test_result (student_id, test_id, result, completed)"
+		String query = "INSERT INTO test_results (student_id, test_id, result, completed)"
 				+ " VALUES (?,?,?,?)";
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -542,7 +542,7 @@ public class TestsDAO {
 	}
 	
 	public static ArrayList<TestResultBean> getResults(int testId) {
-		String query = "SELECT tr.*, u.first_name, u.last_name, u.group_id FROM test_result tr"
+		String query = "SELECT tr.*, u.first_name, u.last_name, u.group_id FROM test_results tr"
 				+ " INNER JOIN users u ON tr.student_id = u.id"
 				+ " WHERE test_id = ?";
 		
