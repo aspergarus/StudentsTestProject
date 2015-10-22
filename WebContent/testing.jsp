@@ -90,8 +90,9 @@
 				</div>
 				
 	            <div class="form-group">
-	           		<input type="button" class="btn btn-lg btn-info" id="miss-question" value="Miss"/>
-					<input type="button" class="btn btn-lg btn-success" id="next-question" value="Next"/>	
+	           		<button type="button" class="btn btn-lg btn-info" id="miss-question">Miss</button>
+					<button type="button" class="btn btn-lg btn-success" id="next-question">Next</button>
+					
 				</div>
 				<div class="form-group">
 					<input type="hidden" name="test-id" value="<%= test.getId() %>"/>
@@ -100,10 +101,16 @@
 				</div>
 			</form>
 		</div>
-		<div class="col-md-3">
+		<div class="col-md-3 timer-container">
 			<div class="timer" data-timer="<%= test.getTime() %>"></div>
 			<span id="test-time" class="hidden"><%= test.getTime() %></span>
+			
 		</div>
+		<div>
+				<button type="button" class="btn btn-lg btn-danger pull-right" id="turbo-mode" 
+						data-toggle="popover" data-content="Система автоматично підставить відповіді на всі запитання та відправить на перевірку!"
+							title="Режим швидкого тестування" data-placement="top">TURBO MODE</button>
+			</div>
 		<input type="hidden" name="questions-id-list" value="<%= Arrays.toString(questionsId) %>" />
 	</div>
 	

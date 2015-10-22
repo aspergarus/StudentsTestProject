@@ -290,10 +290,10 @@ ol {
 	font-size: 22px;
 	font-weight: 400;
 }
-.question-block {
+.question-block, .timer-container {
 	min-height: 450px;
 }
-#next-question, #miss-question {
+#next-question, #miss-question, #turbo-mode {
 	margin-top: 1%;
 	margin-left: 1%;
 	width: 20%;
@@ -315,7 +315,7 @@ ol {
 	margin-top: 8px;
 }
 .question-img {
-	max-width: 60%;
+	max-width: 55%;
 	height: auto;
 	margin-bottom: 1%;
 }
