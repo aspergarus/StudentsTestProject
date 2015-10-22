@@ -26,9 +26,9 @@
 
 <div class="container">
 	<%	if (status != null && message != null) { %>
-	<div class="alert alert-${status}">
-		<p>${message}</p>
-	</div>
+		<div class="alert alert-${status}">
+			<p>${message}</p>
+		</div>
 	<% } %>
 	<h3 class="lead"><span class="translate" data-lang-key="Edit practical"></span></h3>
 	<form action="<%= basePath %>/practicals" class="form" method="post"
@@ -71,17 +71,19 @@
 					<div class="file">
 						<div class="file-info">
 							<a href="<%= saveDir + File.separator + fileBean.getName() %>" download>
-								<img src="imgs/icons/<%= FileUploadManager.extractFileExt(fileBean.getName()) %>.png" alt="<%= fileBean.getName() %>" />
+								<img src="imgs/icons/<%= FileUploadManager.extractFileExt(fileBean.getName()) %>.png" 
+									alt="<%= fileBean.getName() %>" />
 								<%= fileBean.getName() %>
 							</a>
 						</div>
 						<div class="file-delete-button">
-							<button type="button" class="btn btn-danger delete-file-btn" data-fid=<%= fileBean.getFid() %>>Delete</button>
+							<button type="button" class="btn btn-danger delete-file-btn" 
+								data-fid=<%= fileBean.getFid() %>>Delete</button>
 						</div>
-						
 					</div>
 				<% } %>
-				<input id="upload" type="file" class="file" name="upload" data-preview-file-type="text" multiple accept="application/msword, application/pdf">
+				<input id="upload" type="file" class="file" name="upload" data-preview-file-type="text" 
+					multiple accept="application/msword, application/pdf">
 				<p class="help-block">
 					<span class="translate" data-lang-key="File size not more then"></span> 10 MB.
 					<span class="translate" data-lang-key="Allowed formats"></span>: pdf, doc, docx.

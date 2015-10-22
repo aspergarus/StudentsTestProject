@@ -6,6 +6,15 @@ public class PracticalsBean {
 	private int subjectId;
 	private String title;
 	private String body = "";
+	
+	public PracticalsBean(int teacher, int subjectId, String title, String body) {
+		this.teacherId = teacher;
+		this.subjectId = subjectId;
+		this.title = title;
+		this.body = body;
+	}
+	
+	public PracticalsBean() {}
 
 	public int getId() {
 		return id;
@@ -13,12 +22,14 @@ public class PracticalsBean {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
 	public int getTeacherId() {
 		return teacherId;
 	}
 	public void setTeacherId(int teacherId) {
 		this.teacherId = teacherId;
 	}
+	
 	public String getTitle() {
 		return title;
 	}
@@ -39,16 +50,11 @@ public class PracticalsBean {
 		this.subjectId = subjectId;
 	}
 
-	public PracticalsBean(int teacher, int subjectId, String title, String body) {
-		this.teacherId = teacher;
-		this.subjectId = subjectId;
-		this.title = title;
-		this.body = body;
-	}
-	public PracticalsBean() {}
-	
 	@Override
 	public String toString() {
-		return this.title + " " + this.body;
+		return "Practical. ID: " + id + "."
+				+ " Author: " + teacherId + "."
+				+ " Title: " + title + "."
+				+ " Body: " + body + ".";
 	}
 }

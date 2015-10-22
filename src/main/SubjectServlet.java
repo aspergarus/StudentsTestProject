@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import dao.DepartmentsDAO;
 import dao.SubjectsDAO;
+import beans.DepartmentBean;
 import beans.SubjectsBean;
 import beans.UserBean;
 
@@ -95,8 +96,18 @@ public class SubjectServlet extends HttpServlet {
 			response.sendError(403);
 		} else {
 			String subjectName = request.getParameter("subjectName").trim();
-			String department = request.getParameter("departmentName").trim();
-			int departmentId = DepartmentsDAO.find(department).getId();
+			String departmentName = request.getParameter("departmentName").trim();
+			int departmentId = 0;
+			
+			DepartmentBean department = DepartmentsDAO.find(departmentName);
+			if (department != null) {
+				departmentId = department.getId();
+			} else {
+				session.setAttribute("status", "danger");
+				session.setAttribute("message", "This department doesn't exist.");
+				response.sendRedirect(request.getContextPath() + "/subjects");
+				return;
+			}
 			
 			String errorMessage = SubjectsDAO.subjectValidate(subjectName, departmentId);
 			if (errorMessage == null) {

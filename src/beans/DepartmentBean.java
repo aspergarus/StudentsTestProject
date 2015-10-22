@@ -10,6 +10,8 @@ public class DepartmentBean {
 		this.departmentName = departmentName;
 	}
 	
+	public DepartmentBean() { }
+	
 	public int getId() {
 	    return id;
     }
@@ -28,5 +30,4 @@ public class DepartmentBean {
 	public String toString() {
 		return "Department: " + departmentName + ". ID: " + id;
 	}
-
 }

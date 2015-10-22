@@ -55,8 +55,7 @@ public class UserDAO {
 				bean.setAvatar(rs.getString("avatar_name"));
 				bean.setValid(true);
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
 		
@@ -64,12 +63,12 @@ public class UserDAO {
 	}
 
 	public static UserBean find(int id) {
-		UserBean bean = null;
-
 		String query = "SELECT * FROM users WHERE id = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
+		UserBean bean = null;
+		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
@@ -95,6 +94,14 @@ public class UserDAO {
 	}
 
 	public static UserBean register(UserBean bean) throws Exception {
+		String query = "INSERT INTO users "
+				+ "(user_name, password, email, role, first_name, last_name, group_id, registered) "
+				+ "VALUES (?,?,?,?,?,?,?,?)";
+		
+		ConnectionManager conM = new ConnectionManager();
+		con = conM.getConnection();
+        int rowsAffected = 0;
+		
 		StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
 
 		String username = bean.getUsername();
@@ -106,13 +113,6 @@ public class UserDAO {
 		int groupId = bean.getGroupId();
 		long registered = bean.getRegistered();
 
-		String query = "INSERT INTO users "
-				+ "(user_name, password, email, role, first_name, last_name, group_id, registered) "
-				+ "VALUES (?,?,?,?,?,?,?,?)";
-
-		ConnectionManager conM = new ConnectionManager();
-		con = conM.getConnection();
-        int rowsAffected = 0;
 		try (PreparedStatement insertUser = con.prepareStatement(query)) {
 			insertUser.setString(1, username);
 	        insertUser.setString(2, password);
@@ -127,22 +127,20 @@ public class UserDAO {
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-		
         bean.setValid(rowsAffected > 0);
 		return bean;
 	}
 	
 	public static ArrayList<String> formValidate(String name, String pass, String email) {
+		String findName = "SELECT * FROM users "
+				+ "WHERE user_name = ?";
+		String findEmail = "SELECT * FROM users "
+				+ "WHERE email = ?";
 		
 		ArrayList<String> errorMessageList = new ArrayList<>();
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
-		
-		String findName = "SELECT * FROM users "
-				+ "WHERE user_name = ?";
-		String findEmail = "SELECT * FROM users "
-				+ "WHERE email = ?";
 		
 		try (PreparedStatement stmt = con.prepareStatement(findName)) {
 			stmt.setString(1, name);
@@ -190,7 +188,7 @@ public class UserDAO {
 		con = conM.getConnection();
 		try (Statement stmt = con.createStatement()) {
 			String query = "SELECT * FROM users u"
-					+ " INNER JOIN groups g ON u.group_id = g.id"
+					+ " LEFT JOIN groups g ON u.group_id = g.id"
 					+ " ORDER BY role DESC, g.group_name";
 			rs = stmt.executeQuery(query);
 			
@@ -206,32 +204,32 @@ public class UserDAO {
 				bean.setGroupId(rs.getInt("group_id"));
 				bean.setRegistered(rs.getLong("registered"));
 				users.add(bean);
-				
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
 		return users.isEmpty() ? null : users;
 	}
 
 	public static boolean update(UserBean user, UserBean updatedUser) {
+		String query = "UPDATE users SET user_name=?, email=?, role=?, first_name=?, last_name=?, avatar_name=?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		con = conM.getConnection();
+        int rowsAffected = 0;
+        
 		StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
 		String password = passwordEncryptor.encryptPassword(updatedUser.getPassword());
 		int id = user.getId();
 
 		boolean setPass = false;
 
-		String query = "UPDATE users SET user_name=?, email=?, role=?, first_name=?, last_name=?, avatar_name=?";
 		if (!updatedUser.getPassword().trim().isEmpty()) {
 			query += ", password=?";
 			setPass = true;
 		}
 		query += "WHERE id = ?";
 
-		ConnectionManager conM = new ConnectionManager();
-		con = conM.getConnection();
-        int rowsAffected = 0;
 		try (PreparedStatement updateUser = con.prepareStatement(query)) {
 			updateUser.setString(1, updatedUser.getUsername());
 			updateUser.setString(2, updatedUser.getEmail());
@@ -242,11 +240,9 @@ public class UserDAO {
 			if (setPass) {
 				updateUser.setString(7, password);
 				updateUser.setInt(8, id);
-			}
-			else {
+			} else {
 				updateUser.setInt(7, id);
 			}
-
 	        rowsAffected = updateUser.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -271,8 +267,7 @@ public class UserDAO {
 			while (rs.next()) {
 				list.add(rs.getString("first_name") + " " + rs.getString("last_name") + " [" + rs.getInt("id") +"]");
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
 		return list;
@@ -299,7 +294,6 @@ public class UserDAO {
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-		
 		return nameList;
 	}
 	
@@ -326,7 +320,6 @@ public class UserDAO {
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
         }
-		
 		return teacherMap;
 	}
 	
@@ -340,7 +333,6 @@ public class UserDAO {
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, id);
-			
 			rs = stmt.executeQuery();
 			
 			if (rs.next()) {

@@ -49,4 +49,9 @@ public class AnswerBean {
 	public void setCorrect(boolean isCorrect) {
 	    this.isCorrect = isCorrect;
     }
+	
+	@Override 
+	public String toString () {
+		return "ID: " + answerId + ". Answer <" + answerText + "> for question ID: " + questionId;
+	}
 }

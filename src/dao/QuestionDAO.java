@@ -38,7 +38,6 @@ public class QuestionDAO {
 			if (rowsAffected == 0) {
 				return rowsAffected;
 			}
-			
 			if (rs.next()){
 			    result = rs.getInt(1);
 			}
@@ -84,7 +83,6 @@ public class QuestionDAO {
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-		
 		if (questions.size() > 0) {
 			return addAnswersToQuestions(questions);
 		} else {
@@ -108,7 +106,6 @@ public class QuestionDAO {
 			}
 		}
 		query += ")";
-		
 		ArrayList<AnswerBean> answers = new ArrayList<>();
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
@@ -146,7 +143,7 @@ public class QuestionDAO {
 	public static boolean delete(int questionId) {
 		String query = "DELETE FROM questions WHERE id = ?";
 		
-		if (deleteAnswers(questionId)) {
+		if (AnswersDAO.deleteAnswers(questionId)) {
 			
 			ConnectionManager conM = new ConnectionManager();
 			Connection con = conM.getConnection();
@@ -163,23 +160,6 @@ public class QuestionDAO {
 		} else {
 			return false;
 		}
-	}
-	
-	public static boolean deleteAnswers(int questionId) {
-		String query = "DELETE FROM answers WHERE question_id = ?";
-		
-		ConnectionManager conM = new ConnectionManager();
-		Connection con = conM.getConnection();
-		int rowsAffected = 0;
-		
-		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setInt(1, questionId);
-			
-			rowsAffected = stmt.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		return rowsAffected > 0;
 	}
 	
 	public static HashMap<Integer, int[]> getQuestionsWithTrueAnswers(int[] questionsId) {
@@ -211,7 +191,6 @@ public class QuestionDAO {
 			for (int i = 0; i < questionsId.length; i++) {
 				stmt.setInt(i + 1, questionsId[i]);
 			}
-			
 			rs = stmt.executeQuery();
 			
 			while(rs.next()) {

@@ -18,7 +18,6 @@ public class FileDAO {
 
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
-
 		int rowsAffected = 0;
 
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
@@ -29,8 +28,7 @@ public class FileDAO {
 
 				rowsAffected += stmt.executeUpdate();
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
 		return rowsAffected > 0;
@@ -57,8 +55,7 @@ public class FileDAO {
 
 				beans.add(bean);
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
 		return beans;
@@ -81,8 +78,7 @@ public class FileDAO {
 				stmt.setInt(i + 1, fileBeans.get(i).getFid());
 			}
 			stmt.executeUpdate();
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
@@ -106,8 +102,7 @@ public class FileDAO {
 				bean.setType(rs.getString("type"));
 				bean.setName(rs.getString("name"));
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
 		return bean;
@@ -122,10 +117,8 @@ public class FileDAO {
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, fid);
 			stmt.executeUpdate();
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
 	}
-
 }

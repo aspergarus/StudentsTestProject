@@ -21,9 +21,9 @@
 	<div class="container">
 
 		<%	if (status != null && message != null) { %>
-		<div class="alert alert-${status}">
-			<p>${message}</p>
-		</div>
+			<div class="alert alert-${status}">
+				<p>${message}</p>
+			</div>
 		<% } %>
 		<div class="page-header">
 			<h2><span class="translate" data-lang-key="Add students to list"></span></h2>
@@ -71,7 +71,6 @@
 			
 			<h1><span class="translate" data-lang-key="Students"></span></h1>
 			<table class="table" data-search="true" data-show-columns="true">
-			<% out.print(students == null ? "Test is not available" : ""); %>
 		    <thead>
 		        <tr>
 		        	<th data-field="number" data-align="center" data-sortable="true">№</th>
@@ -140,7 +139,6 @@
 		</table>
 		<div class="col-sm-12">
 			<input id="open-test-to-students" type="button" class="btn btn-info" value="Apply">
-			
 		</div>
 	</div>
 	

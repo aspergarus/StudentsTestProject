@@ -51,4 +51,13 @@ public class CommentsBean {
 	public void setDate(long l) {
 		this.date = l;
 	}
+	
+	@Override
+	public String toString() {
+		return "Comment. ID: " + this.cid + "."
+				+ " Owner ID: " + ownerId + "."
+				+ " Author: " + author + "."
+				+ " Title: " + title + "."
+				+ " Message: " + body + ".";
+	}
 }

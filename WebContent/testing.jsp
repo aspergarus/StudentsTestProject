@@ -62,7 +62,7 @@
 										  	</label>
 										</div>
 									<% } else { %>
-										<div>
+										<div class="checkboxes">
 											<label class="answer-text">
 										    	<input type="checkbox" name="answer-to-question<%= i %>" value="<%= answer.getAnswerId() %>">
 										    	<span class="answer-text"><%= answer.getAnswerText() %></span>
@@ -82,17 +82,15 @@
 						</h2>
 						<h3>
 							<small>
-							<span class="translate" data-lang-key="For checking click the Complete"></span>.
+								<span class="translate" data-lang-key="For checking click the Complete"></span>.
 							</small>
 						</h3>
 					</div>
 					<hr>
 				</div>
-				
 	            <div class="form-group">
 	           		<button type="button" class="btn btn-lg btn-info" id="miss-question">Miss</button>
 					<button type="button" class="btn btn-lg btn-success" id="next-question">Next</button>
-					
 				</div>
 				<div class="form-group">
 					<input type="hidden" name="test-id" value="<%= test.getId() %>"/>
@@ -104,12 +102,11 @@
 		<div class="col-md-3 timer-container">
 			<div class="timer" data-timer="<%= test.getTime() %>"></div>
 			<span id="test-time" class="hidden"><%= test.getTime() %></span>
-			
 		</div>
 		<div>
-				<button type="button" class="btn btn-lg btn-danger pull-right" id="turbo-mode" 
-						data-toggle="popover" data-content="Система автоматично підставить відповіді на всі запитання та відправить на перевірку!"
-							title="Режим швидкого тестування" data-placement="top">TURBO MODE</button>
+			<button type="button" class="btn btn-lg btn-danger pull-right" id="turbo-mode" 
+				data-toggle="popover" data-content="Система автоматично підставить відповіді на всі запитання та відправить на перевірку!"
+					title="Режим швидкого тестування" data-placement="top">TURBO MODE</button>
 			</div>
 		<input type="hidden" name="questions-id-list" value="<%= Arrays.toString(questionsId) %>" />
 	</div>

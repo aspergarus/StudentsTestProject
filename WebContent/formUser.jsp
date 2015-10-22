@@ -14,16 +14,16 @@
 	<div class="container">
 
 		<%	if (status != null && message != null) { %>
-		<div class="alert alert-${status}">
-			<p>${message}</p>
-		</div>
+			<div class="alert alert-${status}">
+				<p>${message}</p>
+			</div>
 		<% } %>
 		<div class="page-header">
 			<h1><span class="translate" data-lang-key="Edit profile"></span></h1>
 		</div>
 
 		<form action="<%= basePath %>/user/<%= editedUser.getId() %>" id="form" method="post" enctype="multipart/form-data"
-			class="form-horizontal">
+				class="form-horizontal">
 			<div class="form-group">
 				<label for="editedusername" class="col-sm-2 control-label required">
 					<span class="translate" data-lang-key="Username"></span>*
@@ -84,7 +84,8 @@
 				</label>
 				<div class="col-sm-10">
 					<input name="firstname" type="text" class="form-control"
-						id="firstname" placeholder="First Name" required value="<%= editedUser.getFirstName() == null ? "" : editedUser.getFirstName() %>">
+						id="firstname" placeholder="First Name" required 
+							value="<%= editedUser.getFirstName() == null ? "" : editedUser.getFirstName() %>">
 				</div>
 			</div>
 
@@ -94,7 +95,8 @@
 				</label>
 				<div class="col-sm-10">
 					<input name="lastname" type="text" class="form-control"
-						id="lastname" placeholder="Last Name" required value="<%= editedUser.getLastName() == null ? "" : editedUser.getLastName() %>">
+						id="lastname" placeholder="Last Name" required 
+							value="<%= editedUser.getLastName() == null ? "" : editedUser.getLastName() %>">
 				</div>
 			</div>
 			

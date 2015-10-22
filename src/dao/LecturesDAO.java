@@ -19,7 +19,6 @@ public class LecturesDAO {
 	
 	@SuppressWarnings("finally")
 	public static Map<String, ArrayList<LecturesBean>> findAll(UserBean user){
-		
 		String query;
 		
 		if (user.getRole() == 0){
@@ -45,8 +44,7 @@ public class LecturesDAO {
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			if (user.getRole() == 1){
 				stmt.setInt(1, user.getId());
-			}
-			else if (user.getRole() == 0) {
+			} else if (user.getRole() == 0) {
 				stmt.setInt(1, user.getGroupId());
 			}
 			rs = stmt.executeQuery();
@@ -80,36 +78,8 @@ public class LecturesDAO {
 			}
 		} catch(SQLException e) {
 			System.out.println(e.getMessage());
-		}
-		finally {
+		} finally {
 			return lecturesMap;
-		}
-	}
-	
-	@SuppressWarnings("finally")
-	public static boolean insert(LecturesBean bean) {
-		String query = "INSERT INTO lectures "
-				+ "(teacher_id, subject_id, title, body) "
-				+ "VALUES (?, ?, ?, ?)";
-
-		ConnectionManager conM = new ConnectionManager();
-		con = conM.getConnection();
-
-		int rowsAffected = 0;
-
-		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setInt(1, bean.getTeacherId());
-			stmt.setInt(2, bean.getSubjectId());
-			stmt.setString(3, bean.getTitle());
-			stmt.setString(4, bean.getBody());
-
-			rowsAffected = stmt.executeUpdate();
-		}
-		catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		finally {
-			return rowsAffected > 0;
 		}
 	}
 	
@@ -130,11 +100,9 @@ public class LecturesDAO {
 			if (rs.next()) {
 				lecturesCount = rs.getInt("lecturesCount");
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-		}
-		finally {
+		} finally {
 			return lecturesCount;
 		}
 	}
@@ -159,56 +127,13 @@ public class LecturesDAO {
 				lBean.setTitle(rs.getString("title"));
 				lBean.setBody(rs.getString("body"));
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-		}
-		finally {
+		} finally {
 			return lBean;
 		}
 	}
 	
-	@SuppressWarnings("finally")
-    public static boolean delete(int id) {
-		String query = "DELETE FROM lectures WHERE id = ?";
-
-		ConnectionManager conM = new ConnectionManager();
-		Connection con = conM.getConnection();
-
-		int rowsAffected = 0;
-
-		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setInt(1, id);
-
-			rowsAffected = stmt.executeUpdate();
-		}
-		catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		finally {
-			return rowsAffected > 0;
-		}
-	}
-	
-	public static boolean update(LecturesBean bean) {
-		String query = "UPDATE lectures SET subject_id=?, title=?, body=? WHERE id = ?";
-
-		ConnectionManager conM = new ConnectionManager();
-		con = conM.getConnection();
-		int rowsAffected = 0;
-		try (PreparedStatement updateStmt = con.prepareStatement(query)) {
-			updateStmt.setInt(1, bean.getSubjectId());
-			updateStmt.setString(2, bean.getTitle());
-			updateStmt.setString(3, bean.getBody());
-			updateStmt.setInt(4, bean.getId());
-
-			rowsAffected = updateStmt.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		return rowsAffected > 0;
-	}
-
 	public static LecturesBean find(int subjectId, String title) {
 		String query = "SELECT * FROM lectures WHERE subject_id = ? and title = ?";
 
@@ -235,5 +160,66 @@ public class LecturesDAO {
 		return lBean;
 	}
 	
+	@SuppressWarnings("finally")
+	public static boolean insert(LecturesBean bean) {
+		String query = "INSERT INTO lectures "
+				+ "(teacher_id, subject_id, title, body) "
+				+ "VALUES (?, ?, ?, ?)";
+
+		ConnectionManager conM = new ConnectionManager();
+		con = conM.getConnection();
+		int rowsAffected = 0;
+
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, bean.getTeacherId());
+			stmt.setInt(2, bean.getSubjectId());
+			stmt.setString(3, bean.getTitle());
+			stmt.setString(4, bean.getBody());
+
+			rowsAffected = stmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			return rowsAffected > 0;
+		}
+	}
+	
+	public static boolean update(LecturesBean bean) {
+		String query = "UPDATE lectures SET subject_id=?, title=?, body=? WHERE id = ?";
+
+		ConnectionManager conM = new ConnectionManager();
+		con = conM.getConnection();
+		int rowsAffected = 0;
+		
+		try (PreparedStatement updateStmt = con.prepareStatement(query)) {
+			updateStmt.setInt(1, bean.getSubjectId());
+			updateStmt.setString(2, bean.getTitle());
+			updateStmt.setString(3, bean.getBody());
+			updateStmt.setInt(4, bean.getId());
+
+			rowsAffected = updateStmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return rowsAffected > 0;
+	}
+	
+	@SuppressWarnings("finally")
+    public static boolean delete(int id) {
+		String query = "DELETE FROM lectures WHERE id = ?";
+
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		int rowsAffected = 0;
+
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, id);
+			rowsAffected = stmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			return rowsAffected > 0;
+		}
+	}
 	
 }

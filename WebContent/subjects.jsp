@@ -17,7 +17,7 @@
 <%@ include file="menu.jsp" %>
 
 <div class="container">
-	<%	if (status != null && message != null) { %>
+	<% if (status != null && message != null) { %>
 		<div class="alert alert-${status}">
 			<p>${message}</p>
 		</div>
@@ -65,7 +65,6 @@
 		<h1><span class="translate" data-lang-key="Subjects"></span> (<%= subjects.size() %>)</h1>
 	<% } %>
 	<table class="table" data-search="true" data-show-columns="true">
-		<% out.print(subjects == null ? "Subjects are not exists" : ""); %>
 		<thead>
 			<tr>
 				<% if (user.getRole() == 2) { %>
@@ -100,7 +99,7 @@
 			        <% if (user.getRole() == 2) { %>
 				        <td>
 							<button class="btn btn-danger delete-item" data-id="<%= subject.getId() %>"
-								data-path="/subjects" data-item="subject">
+									data-path="/subjects" data-item="subject">
 								<span class="translate" data-lang-key="Delete"></span>	
 							</button>
 				        </td>

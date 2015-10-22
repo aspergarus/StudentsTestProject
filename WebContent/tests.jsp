@@ -128,13 +128,15 @@
 		
 					<div id="collapse-<%= i %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-<%= i %>">
 						<div class="panel-body">
-							<p class="help-block"><span class="translate" data-lang-key="Share this subject to groups"></span>:
-								<input type="text" class="tokenfield" 
-									value="<%= groups.get(subject) == null ? "" :  groups.get(subject) %>" 
-										name="groupName" required autocomplete="off" />
-								<input type="submit" value="Share" class="btn btn-info btn-share assign-subject-group" 
-									data-num="<%= i %>" data-subject="<%= subject %>" />
-							</p>
+							<% if (currentUser.getRole() == 1) { %>
+								<p class="help-block"><span class="translate" data-lang-key="Share this subject to groups"></span>:
+									<input type="text" class="tokenfield" 
+										value="<%= groups.get(subject) == null ? "" :  groups.get(subject) %>" 
+											name="groupName" required autocomplete="off" />
+									<input type="submit" value="Share" class="btn btn-info btn-share assign-subject-group" 
+										data-num="<%= i %>" data-subject="<%= subject %>" />
+								</p>
+							<% } %>
 							<table class="table">
 								<thead>
 									<tr>
@@ -204,20 +206,26 @@
 											</span>
 											<input type="text" style="display: none">
 										</td>
-										<td><a href="test/<%= test.getId() %>">
-											<span class="translate" data-lang-key="Edit"></span>
-										</a></td>
-										<td><a href="openTest?id=<%= test.getId() %>">
-											<span class="translate" data-lang-key="Open"></span>
-										</a></td>
-										<td><a href="testResults?id=<%= test.getId() %>">
-											<span class="translate" data-lang-key="Results"></span>
-										</a></td>
+										<td>
+											<a href="test/<%= test.getId() %>">
+												<span class="translate" data-lang-key="Edit"></span>
+											</a>
+										</td>
+										<td>
+											<a href="openTest?id=<%= test.getId() %>">
+												<span class="translate" data-lang-key="Open"></span>
+											</a>
+										</td>
+										<td>
+											<a href="testResults?id=<%= test.getId() %>">
+												<span class="translate" data-lang-key="Results"></span>
+											</a>
+										</td>
 										<td>
 											<a href="testing/<%= test.getId() %>">
-											<button class="btn btn-success">
-												<span class="translate" data-lang-key="Begin test"></span>
-											</button>
+												<button class="btn btn-success">
+													<span class="translate" data-lang-key="Begin test"></span>
+												</button>
 											</a>
 										</td>	
 										<td>

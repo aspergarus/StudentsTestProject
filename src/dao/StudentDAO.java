@@ -19,7 +19,6 @@ public class StudentDAO {
 
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
-
 		int rowsAffected = 0;
 
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
@@ -27,11 +26,9 @@ public class StudentDAO {
 			stmt.setInt(2, studentId);
 
 			rowsAffected = stmt.executeUpdate();
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-		}
-		finally {
+		} finally {
 			return rowsAffected > 0;
 		}
 	}
@@ -45,14 +42,12 @@ public class StudentDAO {
 					+ " INNER JOIN groups g ON u.group_id = g.id"
 					+ " WHERE (u.role = 0 AND s.teacher_id = ?)"
 					+ " ORDER BY g.group_name";
-		}
-		else {
+		} else {
 			query = "SELECT first_name, last_name, avatar_name, group_id, g.group_name FROM users u"
 					+ " INNER JOIN groups g ON u.group_id = g.id"
 					+ " WHERE u.role = 0"
 					+ " ORDER BY g.group_name";
 		}
-		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		
@@ -86,12 +81,10 @@ public class StudentDAO {
 				prevGroupName = groupName;
 			}
 			groupsList.add(group);
-			
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-			return groupsList;
+		return groupsList;
 	}
 
 	@SuppressWarnings("finally")
@@ -110,11 +103,9 @@ public class StudentDAO {
 			if (rs.next()) {
 				studentsCount = rs.getInt("count_students");
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-		}
-		finally {
+		} finally {
 			return studentsCount;
 		}
 	}
@@ -155,13 +146,14 @@ public class StudentDAO {
 	}
 	
 	public static boolean appendToReady(int testId, int studentId) {
-		int groupId = UserDAO.getGroupId(studentId);
 		String query = "INSERT INTO ready_students (test_id, student_id, group_id)"
 				+ " VALUES (?, ?, ?)";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		int rowsAffected = 0;
+		
+		int groupId = UserDAO.getGroupId(studentId);
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, testId);

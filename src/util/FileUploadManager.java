@@ -19,12 +19,10 @@ public class FileUploadManager {
 			if (fileFullName.indexOf(".") > 0) {
 				fileExt = fileFullName.substring(fileFullName.indexOf("."));
 				fileName = fileFullName.substring(0, fileFullName.indexOf("."));
-			}
-			else {
+			} else {
 				fileExt = "";
 				fileName = fileFullName;
 			}
-
 			int counter = 0;
 			do {
 				destination = dir + File.separator + fileName + '_' + counter++ + fileExt;
@@ -96,9 +94,9 @@ public class FileUploadManager {
 		if (fullFilePath != null && !fullFilePath.isEmpty()) {
 			File file = new File(fullFilePath);
 			 
-			if(file.delete()){
+			if (file.delete()) {
 				System.out.println(file.getName() + " is deleted!");
-			}else{
+			} else {
 				System.out.println("Delete operation is failed.");
 			}
 		}
@@ -110,7 +108,7 @@ public class FileUploadManager {
 				
 				File file = new File(path + File.separator + bean.getName());
 					 
-				if(file.delete()){
+				if (file.delete()) {
 					System.out.println(file.getName() + " is deleted!");
 				} else {
 					System.out.println("Delete operation is failed.");
@@ -118,5 +116,4 @@ public class FileUploadManager {
 			}
 		}
 	}
-
 }

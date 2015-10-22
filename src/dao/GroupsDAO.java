@@ -92,7 +92,6 @@ public class GroupsDAO {
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
-		
 		GroupBean group = null;
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
@@ -112,12 +111,10 @@ public class GroupsDAO {
 	
 	@SuppressWarnings("finally")
     public static GroupBean find(String groupName) {
-		
 		String query = "SELECT * FROM groups WHERE group_name = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
-		
 		GroupBean group = null;
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
@@ -169,7 +166,6 @@ public class GroupsDAO {
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setString(1, groupName);
 			rowsAffected = stmt.executeUpdate();
-			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
         } finally {
@@ -188,7 +184,6 @@ public class GroupsDAO {
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, id);
 			rowsAffected = stmt.executeUpdate();
-		
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
         } finally {
@@ -220,7 +215,6 @@ public class GroupsDAO {
 		String query = "SELECT * FROM groups";
 		
 		HashMap<Integer, String> groupsMap = null;
-		
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		ResultSet rs = null;
@@ -357,7 +351,6 @@ public class GroupsDAO {
 				String groupsStr = rs.getString("groups_str");
 				groups.put(subjectName, groupsStr);
 			}
-			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} 
@@ -367,35 +360,18 @@ public class GroupsDAO {
 	@SuppressWarnings("finally")
     public static boolean appendToReady(int testId, int groupId) {
 		
-		ConnectionManager conM = new ConnectionManager();
-		Connection con = conM.getConnection();
-		ResultSet rs = null;
-		int rowsAffected = 0;
+		ArrayList<Integer> studentsId = getReadyStudentsId(groupId);
+		int listSize = studentsId.size();
 		
-		ArrayList<Integer> studentsId = new ArrayList<>();
-		
-		String selectQuery = "SELECT id FROM users"
-				+ " WHERE role = 0 AND group_id = ?"
-				+ " AND id NOT IN (SELECT student_id FROM ready_students)";
-		
-		try (PreparedStatement stmt = con.prepareStatement(selectQuery)) {
-			stmt.setInt(1, groupId);
-			
-			rs = stmt.executeQuery();
-	
-			while (rs.next()) {
-				studentsId.add(rs.getInt("id"));
-			}
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-        }
-		if (studentsId.size() == 0) {
+		if (listSize == 0) {
 			return false;
 		}
 		String insertQuery = "INSERT INTO ready_students (test_id, student_id, group_id) "
 				+ "VALUES ";
 		
-		int listSize = studentsId.size();
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		int rowsAffected = 0;
 		
 		for (int i = 0; i < listSize; i++) {
 			insertQuery += "(?, ?, ?)";
@@ -420,5 +396,26 @@ public class GroupsDAO {
 		}
 	}
 	
+	public static ArrayList<Integer> getReadyStudentsId (int groupId) {
+		String selectQuery = "SELECT id FROM users"
+				+ " WHERE role = 0 AND group_id = ?"
+				+ " AND id NOT IN (SELECT student_id FROM ready_students)";
+		
+		ArrayList<Integer> studentsId = new ArrayList<>();
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		ResultSet rs = null;
+		
+		try (PreparedStatement stmt = con.prepareStatement(selectQuery)) {
+			stmt.setInt(1, groupId);
+			rs = stmt.executeQuery();
 	
+			while (rs.next()) {
+				studentsId.add(rs.getInt("id"));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+        }
+		return studentsId;
+	}
 }
