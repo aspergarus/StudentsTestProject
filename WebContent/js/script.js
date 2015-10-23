@@ -464,16 +464,18 @@ $(function () {
     	return this;
     };
 	
-	initializeTest();
+	testing();
 	
-	function initializeTest() {
+	function testing() {
 		
 		if (document.URL.indexOf("testing") > -1) {
 			
 			var testTime = $('#test-time').text();
 			var testBegin = getCookie('testBegin');
+			
 			var questions = $('.question-block').length;
-			var compeletedQuestions = 0;
+			var completedQuestions = $('.completed').length;
+			
 			if (testBegin) {
 				var now = new Date().getTime() / 1000;
 				$('.timer').data('timer', testTime - (now - testBegin));
@@ -481,67 +483,31 @@ $(function () {
 				var questionsId = $('input[name=questions-id-list]').val();
 				var cookies = document.cookie.split(";");
 				
-				if (cookies.length > 1) {
-					for (var i = 0; i < cookies.length; i++) {
-						var cookie = cookies[i].trim();
-						var eqPos = cookie.indexOf("=");
-						var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-						var ids = getCookie(name).trim();
-						
-						if (questionsId.indexOf(name) > -1 ) {
-							$qb = $('.question-id-' + name);
-							
-							if (ids.indexOf(",") > -1) {
-								var idsArray = ids.split(",");
-								for (var j = 0; j < idsArray.length; j++) {
-									$qb.find('label input[value=' + idsArray[j] + ']').prop('checked', true);
-								}
-							} else {
-								$qb.find('label input[value=' + ids + ']').prop('checked', true);
-							}
-							
-							$qb.removeClass('current').removeClass('uncompleted').addClass('completed');
-						}
-					}
-				}
+				setAnswersFromCookie(cookies, questionsId);
+				
 				$('.uncompleted').first().removeClass('hidden').addClass('current');
-				compeletedQuestions = $('.completed').length || 0;
-				var percents = ((compeletedQuestions / questions) * 100);
+				completedQuestions = $('.completed').length || 0;
 			} else {
 				var testStart = new Date().getTime() / 1000;
 				setCookie('testBegin', testStart, {path: "/"});
 				$('.uncompleted').first().removeClass('hidden').addClass('current');
 				var percents = 3;
 			}
-			if (compeletedQuestions === questions) {
-				$('#next-question').hide();
-				$('#miss-question').hide();
-				$('.test-complete-info').removeClass('hidden');
-				$('input[type=submit]').removeClass('hidden');
+			if (completedQuestions === questions) {
+				showSubmitButton();
 			} else {
-				if (percents === 0) {
-					percents = 3;
-				}
 				$('ul').randomize();
-				$('#current-number-question').text(compeletedQuestions);
-				$('#all-questions').text(questions);
-				$('.progress-bar').attr('aria-valuemax', questions);
-				$('.progress-bar').css('width', percents + '%');
-				$('[data-toggle="popover"]').popover('show');
 			}
+			setProgressBar(questions, completedQuestions);
+			$('[data-toggle="popover"]').popover('show');
+			
 		}
-	}
-	
-	seeNextQuestion();
-	
-	function seeNextQuestion() {
-		var numberQuestions = $('.question-block').length;
-		var completed = $('.completed').length;
 		
 		$('body').on('click', '#next-question', function() {
 			var hasAnswer = false;
 			var questionId;
 			var answersId = "";
+			
 			$('.current label input').each(function() {
 				var $this = $(this);
 				if (($this).prop('checked')) {
@@ -560,22 +526,14 @@ $(function () {
 				} else {
 					$('.uncompleted').first().addClass('current');
 				}
-				completed++;
-				$('.progress-bar').attr('aria-valuenow', completed);
-				$('#current-number-question').text(completed);
-				var percents = completed / numberQuestions * 100;
-				$('.progress-bar').css('width', percents + '%');
+				completedQuestions++;
+				setProgressBar(questions, completedQuestions);
 				
 				answersId = answersId.substring(0, answersId.length - 1);
-				
 				setCookie(questionId, answersId, {path: "/"});
 				
-				if (completed === numberQuestions) {
-					$('#next-question').hide();
-					$('#miss-question').hide();
-					$('.progress').fadeOut(1000);
-					$('.test-complete-info').removeClass('hidden');
-					$('input[type=submit]').removeClass('hidden');
+				if (completedQuestions === questions) {
+					showSubmitButton();
 				}
 			}
 		});
@@ -596,6 +554,49 @@ $(function () {
 				$current.addClass('current');
 			}
 		});
+	}
+	
+	function setAnswersFromCookie(cookies, questionsId) {
+		if (cookies.length > 1) {
+			for (var i = 0; i < cookies.length; i++) {
+				var cookie = cookies[i].trim();
+				var eqPos = cookie.indexOf("=");
+				var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+				var ids = getCookie(name).trim();
+				
+				if (questionsId.indexOf(name) > -1 ) {
+					$qb = $('.question-id-' + name);
+					
+					if (ids.indexOf(",") > -1) {
+						var idsArray = ids.split(",");
+						for (var j = 0; j < idsArray.length; j++) {
+							$qb.find('label input[value=' + idsArray[j] + ']').prop('checked', true);
+						}
+					} else {
+						$qb.find('label input[value=' + ids + ']').prop('checked', true);
+					}
+					$qb.removeClass('current').removeClass('uncompleted').addClass('completed');
+				}
+			}
+		}
+	}
+	
+	function showSubmitButton() {
+		$('#next-question').hide();
+		$('#miss-question').hide();
+		$('.test-complete-info').removeClass('hidden');
+		$('input[type=submit]').removeClass('hidden');
+	}
+	
+	function setProgressBar(questions, completedQuestions) {
+		var percents = (completedQuestions / questions) * 100;
+		if (percents === 0) {
+			percents = 3;
+		}
+		$('#current-number-question').text(completedQuestions);
+		$('#all-questions').text(questions);
+		$('.progress-bar').attr('aria-valuemax', questions);
+		$('.progress-bar').css('width', percents + '%');
 	}
 	
 	turboMode();
