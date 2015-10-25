@@ -55,44 +55,27 @@
 			</div>
  			
  			<div class="answers">
-
-	 			<div class="form-group answer">
-					<label for="answer" class="col-sm-2 control-label required">
-						<span class="translate" data-lang-key="Answer"></span>*
-					</label>
-					<div class="col-sm-8">
-						<input name="answer-1" type="text" class="form-control"
-							placeholder="Answer*" required>
-					</div>
-					<div class="col-sm-1">
-						<label>
-							<input type="checkbox" name="correct-answer-1" class="true-answer">
-							<span class="translate" data-lang-key="Correct"></span>
+				<% for (int k = 0; k < 2; k++) { %>
+		 			<div class="form-group answer">
+						<label for="answer" class="col-sm-2 control-label required">
+							<span class="translate" data-lang-key="Answer"></span>*
 						</label>
+						<div class="col-sm-8">
+							<input name="answer-1" type="text" class="form-control"
+								placeholder="Answer*" required>
+						</div>
+						<div class="col-sm-1 correct-answer-label">
+							<label>
+								<input type="checkbox" name="correct-answer-1" class="true-answer">
+								<span class="translate" data-lang-key="Correct"></span>
+							</label>
+						</div>
+						<div class="col-sm-1">
+							<input type="button" class="delete-answer btn btn-danger btn-xs" value="Delete">
+						</div>
 					</div>
-					<div class="col-sm-1">
-						<input type="button" class="delete-answer btn btn-danger btn-xs" value="Delete">
-					</div>
-				</div>
+				<% } %>
 				
-				<div class="form-group answer">
-					<label for="answer" class="col-sm-2 control-label required">
-						<span class="translate" data-lang-key="Answer"></span>*
-					</label>
-					<div class="col-sm-8">
-						<input name="answer-2" type="text" class="form-control"
-							placeholder="Answer*" required>
-					</div>
-					<div class="col-sm-1">
-						<label>
-							<input type="checkbox" name="correct-answer-2" class="true-answer">
-							<span class="translate" data-lang-key="Correct"></span>
-						</label>
-					</div>
-					<div class="col-sm-1">
-						<input type="button" class="delete-answer btn btn-danger btn-xs" value="Delete">
-					</div>
-				</div>
 			</div>	
 				
 			<div class="form-group">
@@ -107,7 +90,9 @@
 
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
-					<input type="submit" id="add-question" class="btn btn-primary btn-lg" value="Add a question">
+					<button type="submit" id="add-question" class="btn btn-primary btn-lg">
+						<span class="translate" data-lang-key="Add a question"></span>
+					</button>
 				</div>
 			</div>
 			<input type="hidden" id="count" name="count" value="2">

@@ -75,7 +75,7 @@
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
 					<button type="submit" class="btn btn-primary">
-						<span class="translate" data-lang-key="Add lecture"></span>
+						<span class="translate" data-lang-key="Add"></span>
 					</button>
 				</div>
 			</div>

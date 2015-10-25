@@ -346,3 +346,6 @@ body {
 	min-height: 610px;
 	position: relative;
 }
+.correct-answer-label {
+	padding: 0;
+}
