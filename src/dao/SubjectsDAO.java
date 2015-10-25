@@ -75,7 +75,7 @@ public class SubjectsDAO {
 	}
 	
 	@SuppressWarnings("finally")
-    public static int find(String subject) {
+    public static int find(String subjectName) {
 		String query = "SELECT id FROM subjects WHERE subject_name = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -83,7 +83,7 @@ public class SubjectsDAO {
 		int id = 0;
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setString(1, subject);
+			stmt.setString(1, subjectName);
 			rs = stmt.executeQuery();
 			
 			if (rs.next()) {
