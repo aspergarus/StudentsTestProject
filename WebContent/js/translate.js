@@ -1,5 +1,5 @@
 $(function () {
-	if(typeof(Storage) == "undefined") {
+	if(typeof(Storage) === "undefined") {
 		alert("Use modern browser like Chrome or Mozilla");
 	}
 	
@@ -21,13 +21,13 @@ $(function () {
 		e.preventDefault();
 		
 		var $this = $(this);
+		var lang = $this.attr("data-lang");
 		
-		if($this.attr("data-lang") == "en"){
+		if(lang === "en"){
 			$this.attr("data-lang", "ua");
 			localStorage.setItem("lang", "ua");
 			$this.find('.change-picture').attr('src', basePath + '/imgs/gb.png');
-		}
-		else {
+		} else {
 			$this.attr("data-lang", "en");
 			localStorage.setItem("lang", "en");
 			$this.find('.change-picture').attr('src', basePath + '/imgs/ua.png');

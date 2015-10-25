@@ -108,7 +108,9 @@
 				<textarea class="form-control" rows="7" cols="150" name="body" id="body" required placeholder="Comment message..."></textarea>
 			</div>
 			<div class="form-group">
-				<input type="submit" value="Submit" class="btn btn-primary btn-lg">
+				<button type="submit" class="btn btn-primary btn-lg">
+					<span class="translate" data-lang-key="Send"></span>
+				</button>
 			</div>
 			<input name="ownerId" type="hidden" value="<%= lBean.getId() %>" />
 			<input name="author" type="hidden" value="<%= user.getId() %>" />

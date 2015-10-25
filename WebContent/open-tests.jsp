@@ -44,7 +44,9 @@
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
 					<input type="hidden" name="id" value="<%= currentTest.getId() %>">
-					<input type="submit" class="btn btn-primary" value="Add Group">
+					<button type="submit" class="btn btn-primary">
+						<span class="translate" data-lang-key="Add group"></span>
+					</button>
 				</div>
 			</div>
 		</form>
@@ -64,7 +66,9 @@
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
 					<input type="hidden" name="id" value="<%= currentTest.getId() %>">
-					<input type="submit" class="btn btn-primary" value="Add Student">
+					<button type="submit" class="btn btn-primary">
+						<span class="translate" data-lang-key="Add student"></span>
+					</button>
 				</div>
 			</div>
 		</form>
@@ -138,7 +142,9 @@
 			</tbody>
 		</table>
 		<div class="col-sm-12">
-			<input id="open-test-to-students" type="button" class="btn btn-info" value="Apply">
+			<button type="button" id="open-test-to-students" class="btn btn-info">
+				<span class="translate" data-lang-key="Apply"></span>
+			</button>
 		</div>
 	</div>
 	

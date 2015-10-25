@@ -106,5 +106,10 @@
   "Role": {"ua": "Роль", "en": "Role"},
   "Administration": {"ua": "Адміністрація", "en": "Administration"},
   "Login": {"ua": "Увійти", "en": "Login"},
-  "Remove all": {"ua": "Видалити всіх", "en": "Remove all"}
+  "Remove all": {"ua": "Видалити всіх", "en": "Remove all"},
+  "Question": {"ua": "Запитання", "en": "Question"},
+  "Send": {"ua": "Надіслати", "en": "Send"},
+  "Add": {"ua": "Додати", "en": "Add"},
+  "Add student": {"ua": "Додати студента", "en": "Add student"},
+  "Apply": {"ua": "Застосувати", "en": "Apply"}
 }

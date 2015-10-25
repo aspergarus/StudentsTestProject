@@ -36,7 +36,7 @@
 			</div>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10 add-subject">
-					<button type="submit" class="btn btn-primary"><span class="translate" data-lang-key="Add department"></span></button>
+					<button type="submit" class="btn btn-primary"><span class="translate" data-lang-key="Add"></span></button>
 				</div>
 			</div>
 		</form>
