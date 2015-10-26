@@ -9,7 +9,7 @@
 <html>
 <head>
 
-<title>Login page</title>
+<title>Students Project</title>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -59,7 +59,7 @@
 			</h2>
 			<label for="login" class="sr-only"><span class="translate" data-lang-key="Email address or Username"></span></label>
 			<input type="text" id="login" class="form-control" 
-				placeholder="Email address or Username" name="login" required>
+				placeholder="Email address or Username" name="login" required autofocus>
 			
 			<label for="pass" class="sr-only"><span class="translate" data-lang-key="Password"></span></label>
 			<input type="password" id="pass" class="form-control"

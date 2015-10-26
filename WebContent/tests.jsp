@@ -58,7 +58,7 @@
 					<span class="translate" data-lang-key="Module"></span>*
 				</label>
 				<div class="col-sm-10">
-					<input name="module" type="number" class="form-control" required/>
+					<input name="module" type="number" class="form-control" required min="0" max="8"/>
 				</div>
 			</div>
 			

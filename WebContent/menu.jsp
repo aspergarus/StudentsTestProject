@@ -23,7 +23,7 @@
 					<li><a href="<%= basePathMenu %>/register"><span class="translate" data-lang-key="Register"></span></a></li>
 				<% } %>
 				<% if (currentUserMenu.getRole() != 0) {%>
-					<li><a href="<%= basePathMenu %>/department"><span class="translate" data-lang-key="Departments"></span></a></li>
+					<li><a href="<%= basePathMenu %>/departments"><span class="translate" data-lang-key="Departments"></span></a></li>
 					<li><a href="<%= basePathMenu %>/subjects"><span class="translate" data-lang-key="Subjects"></span></a></li>
 					<li><a href="<%= basePathMenu %>/groups"><span class="translate" data-lang-key="Groups"></span></a></li>
 				<% } %>
@@ -37,7 +37,7 @@
 					</a>
 					<ul class="dropdown-menu" role="menu">
 						<li><a href="<%= basePathMenu %>/user/<%= currentUserMenu.getId() %>"><span class="translate" data-lang-key="Edit profile"></span></a></li>
-						<li><a href="<%= basePathMenu %>/logout"><span class="translate" data-lang-key="Logout"></span></a></li>
+						<li><a href="<%= basePathMenu %>/logout"><span class="translate" data-lang-key="Log out"></span></a></li>
 					</ul>
 				</li>
 				<li><a href="#" data-lang="en" class="translate-trigger"><img class="change-picture" src="<%= basePathMenu %>/imgs/ua.png"></a></li>

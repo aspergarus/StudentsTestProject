@@ -17,7 +17,7 @@ import beans.UserBean;
 /**
  * Servlet implementation class DepartmentServlet
  */
-@WebServlet("/department")
+@WebServlet("/departments")
 public class DepartmentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
