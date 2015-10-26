@@ -10,7 +10,7 @@
   "Home": {"ua": "Домівка", "en": "Home"},
   "Users": {"ua": "Юзерята", "en": "Users"},
   "Welcome": {"ua": "Ласкаво просимо", "en": "Welcome"},
-  "Logout": {"ua": "Вийти", "en": "Logout"},
+  "Log out": {"ua": "Вийти", "en": "Log out"},
   "Language": {"ua": "Мова рідна", "en": "Language"},
   "Group": {"ua": "Група", "en": "Group"},
   "Groups": {"ua": "Групи", "en": "Groups"},

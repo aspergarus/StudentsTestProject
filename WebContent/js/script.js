@@ -3,7 +3,6 @@ $(function () {
 		alert("Use modern browser like Chrome or Mozilla");
 	}
 	$('.table').bootstrapTable();
-	
 	$('.tooltip-element').tooltip();
 	
 	setAutocomplete();
