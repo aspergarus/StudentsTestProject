@@ -97,7 +97,7 @@ public class GroupServlet extends HttpServlet {
 						session.setAttribute("message", "Some troubles were occurred during adding a group");
 					}
 				} else {
-					session.setAttribute("status", "danger");
+					session.setAttribute("status", "warning");
 					session.setAttribute("message", errorMessage);
 				}
 				response.sendRedirect(request.getContextPath() + "/groups");
@@ -119,9 +119,15 @@ public class GroupServlet extends HttpServlet {
 			//Update in DB
 			int id = Integer.valueOf(request.getHeader("id"));
 			String newGroupName = java.net.URLDecoder.decode(request.getHeader("data"), "UTF-8");
-			GroupBean group = new GroupBean(id, newGroupName);
-			GroupsDAO.update(group);
-			response.getOutputStream().println("Group has been updated successfully.");
+			String errorMessage = GroupsDAO.groupValidate(newGroupName);
+			
+			if (errorMessage == null) {
+				GroupBean group = new GroupBean(id, newGroupName);
+				GroupsDAO.update(group);
+				response.getOutputStream().println("Group has been updated successfully.");
+			} else {
+				response.getOutputStream().println(errorMessage);
+			}
 		}
 	}
 

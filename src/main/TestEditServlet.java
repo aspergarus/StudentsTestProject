@@ -98,17 +98,21 @@ public class TestEditServlet extends HttpServlet {
 			String deleteQuestionId = request.getParameter("delete-question-id");
 			
 			// Deleting question
-			if (deleteQuestionId != null && !deleteQuestionId.equals("")) {
-				int questionId = Integer.parseInt(deleteQuestionId);
-				
-				if (QuestionDAO.delete(questionId)) {
-					session.setAttribute("status", "success");
-					session.setAttribute("message", "Question was deleted successfully!");
-				} else {
-					session.setAttribute("status", "danger");
-					session.setAttribute("message", "Some troubles during deleting question.");
+			if (deleteQuestionId != null) {
+				try {
+					int questionId = Integer.parseInt(deleteQuestionId);
+					
+					if (QuestionDAO.delete(questionId)) {
+						session.setAttribute("status", "success");
+						session.setAttribute("message", "Question was deleted successfully!");
+					} else {
+						session.setAttribute("status", "danger");
+						session.setAttribute("message", "Some troubles during deleting question.");
+					}
+				} catch (Exception e) {
+					response.sendRedirect(request.getRequestURI());
+					return;
 				}
-				
 			} else {
 				// Adding new question
 				String sTestId = request.getParameter("id");
@@ -130,6 +134,7 @@ public class TestEditServlet extends HttpServlet {
 						session.setAttribute("status", "danger");
 						session.setAttribute("message", "Some troubles during adding a question.");
 						response.sendRedirect(request.getRequestURI());
+						return;
 					}
 					question.setId(questionId);
 					for (int i = 1; i <= answersCount; i++) {

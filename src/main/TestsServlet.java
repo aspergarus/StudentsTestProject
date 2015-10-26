@@ -88,7 +88,7 @@ public class TestsServlet extends HttpServlet {
 			int id = 0;
 			
 			if (subjectId == 0) {
-				session.setAttribute("status", "danger");
+				session.setAttribute("status", "warning");
 				session.setAttribute("message", "Please select subject from autocomplete list.");
 				response.sendRedirect(request.getContextPath() + "/tests");
 				return;
@@ -99,7 +99,7 @@ public class TestsServlet extends HttpServlet {
 				try {
 					id = Integer.parseInt(name.substring(name.indexOf("[") + 1, name.indexOf("]")));
 				} catch (Exception e) {
-					session.setAttribute("status", "danger");
+					session.setAttribute("status", "warning");
 					session.setAttribute("message", "Please select teacher from autocomplete list.");
 					response.sendRedirect(request.getContextPath() + "/tests");
 					return;

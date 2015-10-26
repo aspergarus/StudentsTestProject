@@ -115,23 +115,23 @@ public class UserEditServlet extends HttpServlet {
 			try {
 				editedUser = UserDAO.find(id);
 				UserBean updatedUser = new UserBean(userName, password, email, role, firstName, lastName, avatarName);
-			    if (UserDAO.update(editedUser, updatedUser)) {
+			    
+				if (UserDAO.update(editedUser, updatedUser)) {
 			    	session.setAttribute("status", "success");
 			    	if (user.getId() == editedUser.getId()) {
 			    		session.setAttribute("user", updatedUser);
 			    	}
 					session.setAttribute("message", "User '" + userName + "' was updated successfully");
-			    }
-			    else {
+			    } else {
 			    	session.setAttribute("status", "danger");
 					session.setAttribute("message", "Some problem appears during updating the user.");
 			    }
 			    response.sendRedirect(request.getRequestURI());
+			    return;
 			} catch (Throwable theException) {
 			     System.out.println(theException);
 			}
-		}
-		else {
+		} else {
 			session.setAttribute("status", "danger");
 			session.setAttribute("message", message);
 			response.sendRedirect(request.getRequestURI());

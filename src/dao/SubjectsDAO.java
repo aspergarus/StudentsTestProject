@@ -234,7 +234,7 @@ public class SubjectsDAO {
 
 			rs = updateStmt.executeQuery();
 			if (rs.next()) {
-				errorMessage = "This subject is already exist. Change Subject name or Department.";
+				errorMessage = "Warning! This subject is already exist. Change Subject name or Department.";
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());

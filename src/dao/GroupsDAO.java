@@ -145,7 +145,7 @@ public class GroupsDAO {
 			rs = stmt.executeQuery();
 			
 			if (rs.next()) {
-				errorMessage = "This group is already exist!";
+				errorMessage = "Warning! This group is already exist!";
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());

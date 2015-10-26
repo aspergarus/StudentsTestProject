@@ -164,6 +164,14 @@ public class PracticalsServlet extends HttpServlet {
 			String body = request.getParameter("body").trim();
 			
 			int subjectId = SubjectsDAO.find(subject);
+			
+			if (subjectId == 0) {
+				session.setAttribute("status", "danger");
+				session.setAttribute("message", "Please select subject from autocomplete list.");
+				response.sendRedirect(request.getContextPath() + "/practicals");
+				return;
+			}
+			
 			String errorMessage = practicalValidate(title, subject, 0);
 
 			if (errorMessage == null) {

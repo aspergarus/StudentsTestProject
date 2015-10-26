@@ -54,6 +54,7 @@ public class LecturesServlet extends HttpServlet {
 		} else {
 			String status = (String) session.getAttribute("status");
 			String message = (String) session.getAttribute("message");
+			
 			if (status != null && message != null) {
 				request.setAttribute("status", status);
 				request.setAttribute("message", message);
@@ -164,6 +165,14 @@ public class LecturesServlet extends HttpServlet {
 			String body = request.getParameter("body").trim();
 			
 			int subjectId = SubjectsDAO.find(subject);
+			
+			if (subjectId == 0) {
+				session.setAttribute("status", "danger");
+				session.setAttribute("message", "Please select subject from autocomplete list.");
+				response.sendRedirect(request.getContextPath() + "/lectures");
+				return;
+			}
+			
 			String errorMessage = lectureValidate(title, subjectId, 0);
 			
 			if (errorMessage == null) {
