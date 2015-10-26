@@ -51,6 +51,47 @@ public class QuestionDAO {
 		String query = "SELECT * FROM questions q"
 				+ " LEFT JOIN files f ON q.id = f.owner_id"
 				+ " WHERE test_id = ?"
+				+ " ORDER BY q.id";
+		
+		ConnectionManager conM = new ConnectionManager();
+		Connection con = conM.getConnection();
+		ResultSet rs = null;
+		
+		ArrayList<QuestionBean> questions = new ArrayList<>();
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, test.getId());
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				int id = rs.getInt("id");
+				String questionText = rs.getString("question_text");
+				QuestionBean question = new QuestionBean(id, test.getId(), questionText);
+				
+				int fileId = rs.getInt("fid");
+				if (fileId != 0) {
+					int questionId = rs.getInt("owner_id");
+					String type = rs.getString("type");
+					String name = rs.getString("name");
+					FileBean bean = new FileBean(fileId, type, name, questionId);
+					question.setImage(bean);
+				}
+				questions.add(question);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		if (questions.size() > 0) {
+			return addAnswersToQuestions(questions);
+		} else {
+			return questions;
+		}
+	}
+    
+    public static ArrayList<QuestionBean> getTestQuestions(TestBean test) {
+		String query = "SELECT * FROM questions q"
+				+ " LEFT JOIN files f ON q.id = f.owner_id"
+				+ " WHERE test_id = ?"
 				+ " ORDER BY RAND()"
 				+ " LIMIT ?";
 		

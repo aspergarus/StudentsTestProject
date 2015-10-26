@@ -30,6 +30,7 @@
 			<p>${message}</p>
 		</div>
 	<% } %>
+	<p class="go-back"><a href="<%= basePath %>/lectures">back to lectures</a></p>
 	<h3 class="lead"><span class="translate" data-lang-key="Edit lecture"></span></h3>
 	<form action="<%= basePath %>/lectures" class="form" method="post"
 			class="form-horizontal" enctype="multipart/form-data">

@@ -26,6 +26,7 @@
 				<p>${message}</p>
 			</div>
 		<% } %>
+		<p class="go-back"><a href="<%= basePath %>/tests">back to tests</a></p>
 		<div class="page-header">
 			<h1><span class="translate" data-lang-key="Add a question"></span></h1>
 		</div>
@@ -55,18 +56,18 @@
 			</div>
  			
  			<div class="answers">
-				<% for (int k = 0; k < 2; k++) { %>
+				<% for (int k = 1; k <= 2; k++) { %>
 		 			<div class="form-group answer">
 						<label for="answer" class="col-sm-2 control-label required">
 							<span class="translate" data-lang-key="Answer"></span>*
 						</label>
 						<div class="col-sm-8">
-							<input name="answer-1" type="text" class="form-control"
+							<input name="answer-<%= k %>" type="text" class="form-control"
 								placeholder="Answer*" required>
 						</div>
 						<div class="col-sm-1 correct-answer-label">
 							<label>
-								<input type="checkbox" name="correct-answer-1" class="true-answer">
+								<input type="checkbox" name="correct-answer-<%= k %>" class="true-answer">
 								<span class="translate" data-lang-key="Correct"></span>
 							</label>
 						</div>
