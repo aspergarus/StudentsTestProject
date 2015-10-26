@@ -105,7 +105,11 @@
 					<span class="translate" data-lang-key="Avatar"></span>
 				</label>
 				<div class="col-sm-10">
-					<img src="<%= avatar %>" class="img-circle avatar-form">
+					<% if (editedUser.getAvatar().isEmpty()) { %>
+						<img src="<%= defaultAvatar %>" class="img-circle avatar-form">
+					<% } else { %>
+						<img src="<%= uploadAvatarPath + File.separator + editedUser.getAvatar() %>" class="img-circle avatar-form">
+					<% } %>
 					<div class="fileinput fileinput-new" data-provides="fileinput">
   						<span class="btn btn-default btn-file">
   							<span class="fileinput-new"><span class="translate" data-lang-key="Select file"></span></span>

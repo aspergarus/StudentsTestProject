@@ -105,7 +105,7 @@ public class UserEditServlet extends HttpServlet {
 		int id = Integer.valueOf(pathParts[1]);
 		
 		// Save uploaded file, and retrieve his path.
-		String avatarName = uploadFile("avatar", request, session);
+		String avatarName = uploadFile(id, "avatar", request, session);
 
 		String message = formValidate(id, userName, email);
 
@@ -115,7 +115,7 @@ public class UserEditServlet extends HttpServlet {
 			try {
 				editedUser = UserDAO.find(id);
 				UserBean updatedUser = new UserBean(userName, password, email, role, firstName, lastName, avatarName);
-			    
+				updatedUser.setId(id);
 				if (UserDAO.update(editedUser, updatedUser)) {
 			    	session.setAttribute("status", "success");
 			    	if (user.getId() == editedUser.getId()) {
@@ -181,24 +181,28 @@ public class UserEditServlet extends HttpServlet {
 		return errorMessage; 
 	}
 	
-	private String uploadFile(String fileFieldName, HttpServletRequest request, HttpSession session) {
+	private String uploadFile(int editedUserId, String fileFieldName, HttpServletRequest request, HttpSession session) {
 		String appPath = request.getServletContext().getRealPath("");
 		String savePath = appPath + File.separator + saveDir;
 		String fileName = null;
 		
-		UserBean user = (UserBean) session.getAttribute("user");
-		if (!user.getAvatar().isEmpty()) {
-			File file = new File(savePath + File.separator + user.getAvatar());
-			file.delete();
-		}
+		UserBean user = UserDAO.find(editedUserId);
 		
 		try {
 			for (Part part : request.getParts()) {
 				String name = part.getName();
 				if (name.equals(fileFieldName)) {
 					fileName = extractFileName(part);
+					String userAvatar = user.getAvatar();
 					if (!fileName.isEmpty()) {
+						
+						if (!userAvatar.isEmpty()) {
+							File file = new File(savePath + File.separator + user.getAvatar());
+							file.delete();
+						}
 						part.write(savePath + File.separator + fileName);
+					} else if (fileName.isEmpty() && !userAvatar.isEmpty()) {
+						return user.getAvatar();
 					}
 				}
 			}
