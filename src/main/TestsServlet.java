@@ -84,23 +84,41 @@ public class TestsServlet extends HttpServlet {
 			byte module = Byte.valueOf(request.getParameter("module"));
 			String note = request.getParameter("note");
 			int time = Integer.parseInt(request.getParameter("time")) * 60;
-			int testQuestions = Integer.parseInt(request.getParameter("testQuestions"));
-			int id;
+			int testQuestions = Integer.parseInt(request.getParameter("test-questions"));
+			int teacherId = 0;
+			
+			if (subjectId == 0) {
+				session.setAttribute("status", "warning");
+				session.setAttribute("message", "Please select subject from autocomplete list.");
+				response.sendRedirect(request.getContextPath() + "/tests");
+				return;
+			}
 			
 			if (user.getRole() == 2) {
 				String name = request.getParameter("teacher");
-				id = Integer.parseInt(name.substring(name.indexOf("[") + 1, name.indexOf("]")));
+				try {
+					teacherId = Integer.parseInt(name.substring(name.indexOf("[") + 1, name.indexOf("]")));
+				} catch (Exception e) {
+					session.setAttribute("status", "warning");
+					session.setAttribute("message", "Please select teacher from autocomplete list.");
+					response.sendRedirect(request.getContextPath() + "/tests");
+					return;
+				}
 			} else {
-				id = user.getId();
+				teacherId = user.getId();
 			}
-			TestBean newTest = new TestBean(id, subjectId, module, note, time, testQuestions);
+			UserBean teacher = UserDAO.findTeacher(teacherId);
 			
-			if (TestsDAO.insert(newTest)) {
-				session.setAttribute("status", "success");
-				session.setAttribute("message", "Test has been added successfully");
-			} else {
-				session.setAttribute("status", "danger");
-				session.setAttribute("message", "Some troubles were occurred during addition a test");
+			if (teacher != null) {
+				TestBean newTest = new TestBean(teacherId, subjectId, module, note, time, testQuestions);
+				
+				if (TestsDAO.insert(newTest)) {
+					session.setAttribute("status", "success");
+					session.setAttribute("message", "Test has been added successfully");
+				} else {
+					session.setAttribute("status", "danger");
+					session.setAttribute("message", "Some troubles were occurred during addition a test");
+				}
 			}
 		}
 		response.sendRedirect(request.getContextPath() + "/tests");

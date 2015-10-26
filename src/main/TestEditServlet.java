@@ -98,17 +98,21 @@ public class TestEditServlet extends HttpServlet {
 			String deleteQuestionId = request.getParameter("delete-question-id");
 			
 			// Deleting question
-			if (deleteQuestionId != null && !deleteQuestionId.equals("")) {
-				int questionId = Integer.parseInt(deleteQuestionId);
-				
-				if (QuestionDAO.delete(questionId)) {
-					session.setAttribute("status", "success");
-					session.setAttribute("message", "Question was deleted successfully!");
-				} else {
-					session.setAttribute("status", "danger");
-					session.setAttribute("message", "Some troubles during deleting question.");
+			if (deleteQuestionId != null) {
+				try {
+					int questionId = Integer.parseInt(deleteQuestionId);
+					
+					if (QuestionDAO.delete(questionId)) {
+						session.setAttribute("status", "success");
+						session.setAttribute("message", "Question was deleted successfully!");
+					} else {
+						session.setAttribute("status", "danger");
+						session.setAttribute("message", "Some troubles during deleting question.");
+					}
+				} catch (Exception e) {
+					response.sendRedirect(request.getRequestURI());
+					return;
 				}
-				
 			} else {
 				// Adding new question
 				String sTestId = request.getParameter("id");
@@ -130,6 +134,7 @@ public class TestEditServlet extends HttpServlet {
 						session.setAttribute("status", "danger");
 						session.setAttribute("message", "Some troubles during adding a question.");
 						response.sendRedirect(request.getRequestURI());
+						return;
 					}
 					question.setId(questionId);
 					for (int i = 1; i <= answersCount; i++) {
@@ -146,19 +151,20 @@ public class TestEditServlet extends HttpServlet {
 						} else {
 							if (FileDAO.insert(question.getId(), "questions", fileNames)) {
 								session.setAttribute("status", "success");
-								session.setAttribute("message", "Question and answers was added successfully!");
+								session.setAttribute("message", "Question was added successfully!");
 							} else {
 								session.setAttribute("status", "danger");
 								session.setAttribute("message", "Some troubles were occurred during writing file info to db");
 							}
 						}
 					} else {
+						QuestionDAO.delete(questionId);
 						session.setAttribute("status", "danger");
-						session.setAttribute("message", "Question was added, but we have some troubles during adding answers.");
+						session.setAttribute("message", "Some troubles were occurred during adding answers.");
 					}
 				} else {
 					session.setAttribute("status", "warning");
-					session.setAttribute("message", "Some troubles during adding the question.");
+					session.setAttribute("message", "Some troubles were occurred during adding the question.");
 				}
 			}
 			response.sendRedirect(request.getRequestURI());

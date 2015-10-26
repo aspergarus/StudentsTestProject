@@ -97,7 +97,7 @@ $(function () {
 			});
 		});
 	}
-	/* Function for transfom Text element to <input type="text"> */
+	/* Function for transfom Text element to <input type="text"> and update in DB */
 	transformer();
 	
 	function transformer() {
@@ -131,9 +131,14 @@ $(function () {
 						headers: {'id': id, 'parameterName' : parameter, 'data' : encodeURIComponent(newText) },
 						method: "PUT",
 						success: function(result) {
-							$this.text(newText);
-							$this.show();
-							$input.hide();
+							$('.alert').remove();
+							if (result.indexOf("Warning") > -1) {
+								$('.lead').before('<div class="alert alert-warning"><p>' + result + '</p></div>');
+							} else {
+								$this.text(newText);
+								$this.show();
+								$input.hide();
+							}
 						},
 						error: function(result) {
 							$this.show();

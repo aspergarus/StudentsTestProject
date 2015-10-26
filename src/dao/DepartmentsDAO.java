@@ -117,7 +117,7 @@ public class DepartmentsDAO {
 			rs = stmt.executeQuery();
 			
 			if (rs.next()) {
-				errorMessage = "This department is already exist!";
+				errorMessage = "Warning! This department is already exist!";
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
