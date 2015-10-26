@@ -37,9 +37,8 @@
 			<p>${message}</p>
 		</div>
 	<% } %>
-</div>
 
-<div class="container">
+	<p class="go-back"><a href="<%= basePath %>/practicals">back to practicals</a></p>
 	<h1 class="lead"><%= subjectsMap.get(pBean.getSubjectId()) %></h1>
 	<h2><%= pBean.getTitle() %></h2>
 	<% if (!body.isEmpty()) { %>

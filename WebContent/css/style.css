@@ -349,3 +349,7 @@ body {
 .correct-answer-label {
 	padding: 0;
 }
+.go-back a {
+	color: #737373;
+	text-decoration: underline;
+}

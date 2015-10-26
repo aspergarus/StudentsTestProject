@@ -22,7 +22,7 @@
 				<p>${message}</p>
 			</div>
 		<% } %>
-	
+		<p class="go-back"><a href="<%= basePath %>/tests">back to tests</a></p>
 		<h1><span class="translate" data-lang-key="Results of the Test"></span></h1>
 		<table class="table" data-search="true" data-show-columns="true">
 		    <thead>

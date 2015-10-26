@@ -133,7 +133,7 @@ $(function () {
 						success: function(result) {
 							$('.alert').remove();
 							if (result.indexOf("Warning") > -1) {
-								$('.lead').before('<div class="alert alert-warning"><p>' + result + '</p></div>');
+								$('body > .container').first().prepend('<div class="alert alert-warning"><p>' + result + '</p></div>');
 							} else {
 								$this.text(newText);
 								$this.show();
@@ -635,8 +635,6 @@ $(function () {
 		  if (expires && expires.toUTCString) {
 		    options.expires = expires.toUTCString();
 		  }
-
-		 /* value = encodeURIComponent(value);*/
 
 		  var updatedCookie = name + "=" + value;
 

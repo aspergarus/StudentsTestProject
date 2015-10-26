@@ -26,6 +26,7 @@
 				<p>${message}</p>
 			</div>
 		<% } %>
+		<p class="go-back"><a href="<%= basePath %>/tests">back to tests</a></p>
 		<div class="page-header">
 			<h1><span class="translate" data-lang-key="Add a question"></span></h1>
 		</div>
