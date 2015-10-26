@@ -32,6 +32,7 @@
 
 		<form action="<%= basePath %>/lectures" class="form" method="post"
 			class="form-horizontal" enctype="multipart/form-data">
+			
 			<div class="form-group">
 				<label for="subject" class="col-sm-2 control-label">
 					<span class="translate" data-lang-key="Subject"></span>*
@@ -41,6 +42,19 @@
 						required autocomplete="off" data-autocomplete-url="autocomplete/subjects">
 				</div>
 			</div>
+			
+			<% if (currentUser.getRole() == 2) { %>
+				<div class="form-group">
+					<label for="teacher" class="col-sm-2 control-label">
+						<span class="translate" data-lang-key="Teacher"></span>*
+					</label>
+					<div class="col-sm-10">
+						<input name="teacher" type="text" class="form-control typeahead"
+							required autocomplete="off" data-autocomplete-url="autocomplete/teachers">
+					</div>
+				</div>
+			<% } %>
+			
 			<div class="form-group">
 				<label for="title" class="col-sm-2 control-label">
 					<span class="translate" data-lang-key="Title"></span>*
@@ -49,6 +63,7 @@
 					<input name="title" type="text" class="form-control" id="title" required>
 				</div>
 			</div>
+			
 			<div class="form-group">
 				<label for="body" class="col-sm-2 control-label required">
 					<span class="translate" data-lang-key="Body"></span>
@@ -58,7 +73,6 @@
 				</div>
 			</div>
 			
-	
 			<div class="form-group">
 				<label for="upload" class="col-sm-2 control-label required">
 					<span class="translate" data-lang-key="Upload files"></span>

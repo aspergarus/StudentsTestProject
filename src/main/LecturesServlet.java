@@ -22,6 +22,7 @@ import dao.FileDAO;
 import dao.GroupsDAO;
 import dao.LecturesDAO;
 import dao.SubjectsDAO;
+import dao.UserDAO;
 
 /**
  * Servlet implementation class LecturesServlet
@@ -163,9 +164,9 @@ public class LecturesServlet extends HttpServlet {
 			String subject = request.getParameter("subject").trim();
 			String title = request.getParameter("title").trim();
 			String body = request.getParameter("body").trim();
+			int teacherId = 0;
 			
 			int subjectId = SubjectsDAO.find(subject);
-			
 			if (subjectId == 0) {
 				session.setAttribute("status", "danger");
 				session.setAttribute("message", "Please select subject from autocomplete list.");
@@ -173,11 +174,25 @@ public class LecturesServlet extends HttpServlet {
 				return;
 			}
 			
+			if (user.getRole() == 2) {
+				String name = request.getParameter("teacher");
+				try {
+					teacherId = Integer.parseInt(name.substring(name.indexOf("[") + 1, name.indexOf("]")));
+				} catch (Exception e) {
+					session.setAttribute("status", "warning");
+					session.setAttribute("message", "Please select teacher from autocomplete list.");
+					response.sendRedirect(request.getContextPath() + "/practicals");
+					return;
+				}
+			} else {
+				teacherId = user.getId();
+			}
+			UserBean teacher = UserDAO.findTeacher(teacherId);
 			String errorMessage = lectureValidate(title, subjectId, 0);
 			
-			if (errorMessage == null) {
+			if (errorMessage == null && teacher != null) {
 				// Create new lectures bean.
-				LecturesBean bean = new LecturesBean(user.getId(), subjectId, title, body);
+				LecturesBean bean = new LecturesBean(teacher.getId(), subjectId, title, body);
 				
 				if (LecturesDAO.insert(bean)) {
 					if (fileNames.isEmpty()) {
