@@ -61,7 +61,7 @@ public class TestingServlet extends HttpServlet {
 					
 					ArrayList<QuestionBean> questions = (ArrayList<QuestionBean>) session.getAttribute("questions");
 					if (questions == null) {
-						questions = QuestionDAO.getQuestions(test);
+						questions = QuestionDAO.getTestQuestions(test);
 						session.setAttribute("questions", questions);
 					}
 					request.setAttribute("status", "success");

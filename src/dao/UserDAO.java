@@ -92,6 +92,39 @@ public class UserDAO {
 		}
 		return bean;
 	}
+	
+	public static UserBean findTeacher(int id) {
+		String query = "SELECT * FROM users"
+				+ " WHERE id = ?"
+				+ " AND role = 1";
+		
+		ConnectionManager conM = new ConnectionManager();
+		con = conM.getConnection();
+		UserBean bean = null;
+		
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setInt(1, id);
+			rs = stmt.executeQuery();
+
+			// if user exists set the isValid variable to true
+			if (rs.next()) {
+				bean = new UserBean();
+				bean.setId(rs.getInt("id"));
+				bean.setUserName(rs.getString("user_name"));
+				bean.setFirstName(rs.getString("first_name"));
+				bean.setLastName(rs.getString("last_name"));
+				bean.setGroupId(rs.getInt("group_id"));
+				bean.setEmail(rs.getString("email"));
+				bean.setRole(rs.getByte("role"));
+				bean.setPassword(rs.getString("password"));
+				bean.setAvatar(rs.getString("avatar_name"));
+				bean.setValid(true);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return bean;
+	}
 
 	public static UserBean register(UserBean bean) throws Exception {
 		String query = "INSERT INTO users "

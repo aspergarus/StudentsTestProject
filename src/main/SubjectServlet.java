@@ -103,7 +103,7 @@ public class SubjectServlet extends HttpServlet {
 			if (department != null) {
 				departmentId = department.getId();
 			} else {
-				session.setAttribute("status", "danger");
+				session.setAttribute("status", "warning");
 				session.setAttribute("message", "This department doesn't exist.");
 				response.sendRedirect(request.getContextPath() + "/subjects");
 				return;
@@ -121,7 +121,7 @@ public class SubjectServlet extends HttpServlet {
 					session.setAttribute("message", "Some troubles were occurred during adding a subject");
 				}
 			} else {
-				session.setAttribute("status", "danger");
+				session.setAttribute("status", "warning");
 				session.setAttribute("message", errorMessage);
 			}
 			response.sendRedirect(request.getContextPath() + "/subjects");

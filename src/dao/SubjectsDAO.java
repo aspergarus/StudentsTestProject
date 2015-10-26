@@ -75,7 +75,7 @@ public class SubjectsDAO {
 	}
 	
 	@SuppressWarnings("finally")
-    public static int find(String subject) {
+    public static int find(String subjectName) {
 		String query = "SELECT id FROM subjects WHERE subject_name = ?";
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -83,7 +83,7 @@ public class SubjectsDAO {
 		int id = 0;
 		
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			stmt.setString(1, subject);
+			stmt.setString(1, subjectName);
 			rs = stmt.executeQuery();
 			
 			if (rs.next()) {
@@ -234,7 +234,7 @@ public class SubjectsDAO {
 
 			rs = updateStmt.executeQuery();
 			if (rs.next()) {
-				errorMessage = "This subject is already exist. Change Subject name or Department.";
+				errorMessage = "Warning! This subject is already exist. Change Subject name or Department.";
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());

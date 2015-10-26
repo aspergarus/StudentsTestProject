@@ -76,11 +76,11 @@ public class DepartmentServlet extends HttpServlet {
 					session.setAttribute("status", "success");
 					session.setAttribute("message", "Department has been added");
 				} else {
-					session.setAttribute("status", "danger");
+					session.setAttribute("status", "warning");
 					session.setAttribute("message", "Some troubles were occurred during adding a department");
 				}
 			} else {
-				session.setAttribute("status", "danger");
+				session.setAttribute("status", "warning");
 				session.setAttribute("message", errorMessage);
 			}
 			response.sendRedirect(request.getContextPath() + "/department");
@@ -100,12 +100,18 @@ public class DepartmentServlet extends HttpServlet {
 			//Update in DB
 			int id = Integer.valueOf(request.getHeader("id"));
 			String newDepartmentName = java.net.URLDecoder.decode(request.getHeader("data"), "UTF-8");
-			DepartmentBean department = new DepartmentBean(id, newDepartmentName);
+			String errorMessage = DepartmentsDAO.departmentValidate(newDepartmentName);
 			
-			if (DepartmentsDAO.update(department)) {
-				response.getOutputStream().println("Department has been updated successfully.");
+			if (errorMessage == null) {
+				DepartmentBean department = new DepartmentBean(id, newDepartmentName);
+				
+				if (DepartmentsDAO.update(department)) {
+					response.getOutputStream().println("Department has been updated successfully.");
+				} else {
+					response.getOutputStream().println("Some troubles were occurred during updating a department.");
+				}
 			} else {
-				response.getOutputStream().println("Some troubles were occurred during updating a department.");
+				response.getOutputStream().println(errorMessage);
 			}
 		}
 	}
