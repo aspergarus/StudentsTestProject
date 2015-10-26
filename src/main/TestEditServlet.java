@@ -151,19 +151,20 @@ public class TestEditServlet extends HttpServlet {
 						} else {
 							if (FileDAO.insert(question.getId(), "questions", fileNames)) {
 								session.setAttribute("status", "success");
-								session.setAttribute("message", "Question and answers was added successfully!");
+								session.setAttribute("message", "Question was added successfully!");
 							} else {
 								session.setAttribute("status", "danger");
 								session.setAttribute("message", "Some troubles were occurred during writing file info to db");
 							}
 						}
 					} else {
+						QuestionDAO.delete(questionId);
 						session.setAttribute("status", "danger");
-						session.setAttribute("message", "Question was added, but we have some troubles during adding answers.");
+						session.setAttribute("message", "Some troubles were occurred during adding answers.");
 					}
 				} else {
 					session.setAttribute("status", "warning");
-					session.setAttribute("message", "Some troubles during adding the question.");
+					session.setAttribute("message", "Some troubles were occurred during adding the question.");
 				}
 			}
 			response.sendRedirect(request.getRequestURI());
