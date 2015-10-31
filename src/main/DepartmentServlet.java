@@ -83,7 +83,7 @@ public class DepartmentServlet extends HttpServlet {
 				session.setAttribute("status", "warning");
 				session.setAttribute("message", errorMessage);
 			}
-			response.sendRedirect(request.getContextPath() + "/department");
+			response.sendRedirect(request.getContextPath() + "/departments");
 		}
 	}
 
