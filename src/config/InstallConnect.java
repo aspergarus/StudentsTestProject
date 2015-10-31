@@ -178,7 +178,7 @@ public class InstallConnect {
 				+ "(id INT(11) NOT NULL AUTO_INCREMENT, "
 				+ "test_id INT(11) NOT NULL DEFAULT '0', "
 				+ "question_text VARCHAR(128) NOT NULL DEFAULT '0', "
-				+ "PRIMARY KEY (question_id));";
+				+ "PRIMARY KEY (id));";
 		tablesQuery.put("questions", questionsQuery);
 		
 		//answers
@@ -187,7 +187,7 @@ public class InstallConnect {
 				+ "question_id INT(11) NOT NULL DEFAULT '0', "
 				+ "answer_text VARCHAR(64) NOT NULL DEFAULT '0', "
 				+ "correct TINYTEXT NOT NULL, "
-				+ "PRIMARY KEY (answer_id));";
+				+ "PRIMARY KEY (id));";
 		tablesQuery.put("answers", answersQuery);
 		
 		//test_students
@@ -195,7 +195,7 @@ public class InstallConnect {
 				+ "(test_id INT(11) NOT NULL, "
 				+ "student_id INT(11) NOT NULL, "
 				+ "group_id INT(11) NOT NULL)";
-		tablesQuery.put("open_tests", testStudentsQuery);
+		tablesQuery.put("test_students", testStudentsQuery);
 		
 		//ready_students
 		String readyStudentsQuery = "CREATE TABLE ready_students "
