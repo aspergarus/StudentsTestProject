@@ -67,8 +67,8 @@
 					</td>
 			        <td><%= user.getUsername() %></td>
 			        <td><%= user.getEmail() %></td>
-			        <td><%= user.getFirstName() %></td>
-			        <td><%= user.getLastName() %></td>
+			        <td><%= user.getFirstName() != null ? user.getFirstName() : "" %></td>
+			        <td><%= user.getLastName()  != null ? user.getLastName()  : "" %></td>
 			        <% if (user.getRole() == 0) { %>
 			        	<td><%= groupsMap.get(user.getGroupId()) %></td>
 			        <% } else if (user.getRole() == 1) { %>

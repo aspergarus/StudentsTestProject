@@ -164,7 +164,7 @@ public class UserDAO {
 		return bean;
 	}
 	
-	public static ArrayList<String> formValidate(String name, String pass, String email) {
+	public static ArrayList<String> formValidate(String name, String pass, String email, int groupId) {
 		String findName = "SELECT * FROM users "
 				+ "WHERE user_name = ?";
 		String findEmail = "SELECT * FROM users "
@@ -209,6 +209,11 @@ public class UserDAO {
 		//Name and password validator
 		if (name.isEmpty() || pass.isEmpty()) {
 			errorMessageList.add("Name or password is Empty");
+		}
+		
+		// Group / department validtion
+		if (groupId == 0) {
+			errorMessageList.add("Group or department is not exists.");
 		}
 		return errorMessageList; 
 	}

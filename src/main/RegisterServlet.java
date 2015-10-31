@@ -13,6 +13,8 @@ import javax.servlet.http.HttpSession;
 import dao.DepartmentsDAO;
 import dao.GroupsDAO;
 import dao.UserDAO;
+import beans.DepartmentBean;
+import beans.GroupBean;
 import beans.UserBean;
 
 /**
@@ -60,18 +62,24 @@ public class RegisterServlet extends HttpServlet {
 		byte role = Byte.valueOf(request.getParameter("role"));
 		String firstName = request.getParameter("firstname").trim();
 		String lastName = request.getParameter("lastname").trim();
-		String groupName = request.getParameter("group").trim();
+		
 		int groupId = 0;
 		
 		long registered = System.currentTimeMillis();
 		
 		if (role == 1) {
-			groupId = DepartmentsDAO.find(groupName).getId();
+			String groupName = request.getParameter("department").trim();
+			DepartmentBean b = DepartmentsDAO.find(groupName);
+			groupId = b != null ? b.getId() : 0;
+			
 		} else if (role == 0) {
-			groupId = GroupsDAO.find(groupName).getId();
+			String groupName = request.getParameter("group").trim();
+			GroupBean b = GroupsDAO.find(groupName);
+			groupId = b != null ? b.getId() : 0;
 		}
+		
 		String avatarName = "";
-		ArrayList<String> errorMessageList = UserDAO.formValidate(userName, password, email);
+		ArrayList<String> errorMessageList = UserDAO.formValidate(userName, password, email, groupId);
 
 		HttpSession session = request.getSession(false);
 
