@@ -13,6 +13,7 @@
 <% String message = (String) request.getAttribute("message"); %>
 <% HashMap<String, ArrayList<PracticalsBean>> practicalsMap = (HashMap<String, ArrayList<PracticalsBean>>) request.getAttribute("practicalsMap"); %>
 <% HashMap<String, String> groups = (HashMap<String, String>) request.getAttribute("groupsMap"); %>
+<% int practicalsNum = (int) request.getAttribute("practicalsNum"); %>
 
 <%@ include file="header.jsp" %>
 
@@ -96,7 +97,7 @@
 </div>
 
 <div class="container">
-	<% if (practicalsMap.size() == 0) { %>
+	<% if (practicalsNum == 0) { %>
 		<% if (currentUser.getRole() == 0) { %>
 			<h1><span class="translate" data-lang-key="We don't have practicals for you"></span>.</h1>
 		<% } else if (currentUser.getRole() == 1) { %>
@@ -108,7 +109,7 @@
 	<% } else { %>
 		<h1>
 			<span class="translate" data-lang-key="Practicals"></span>
-			(<span class="item-number"><%= practicalsMap.size() %></span>)
+			<span class="item-number">(<%= practicalsNum %>)</span>
 		</h1>
 	<% } %>
 	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">

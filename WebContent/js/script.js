@@ -446,7 +446,7 @@ $(function () {
 	deleteItem();
 	
 	function deleteItem() {
-		$('.delete-item').on('click', function(e) {
+		$('.bootstrap-table').on('click', '.delete-item', function(e) {
 			e.preventDefault();
 			var $button = $(this);
 			var item = $button.data('item');
@@ -459,7 +459,7 @@ $(function () {
 					confirmButtonText: "Yes, delete it!",   
 					cancelButtonText: "No, cancel!",   
 					closeOnConfirm: false   
-				}, function(isConfirm) {   
+				}, function(isConfirm) {
 					if (isConfirm) {
 						var itemId = $button.data('id');
 						var morePath = $button.data('path');

@@ -14,6 +14,7 @@
 <% String message = (String) request.getAttribute("message"); %>
 <% Map<String, ArrayList<LecturesBean>> lecturesMap = (HashMap<String, ArrayList<LecturesBean>>) request.getAttribute("lecturesMap"); %>
 <% HashMap<String, String> groups = (HashMap<String, String>) request.getAttribute("groupsMap"); %>
+<% int lecturesNum = (int) request.getAttribute("lecturesNum"); %>
 
 <%@ include file="header.jsp"%>
 
@@ -98,7 +99,7 @@
 </div>
 
 <div class="container">
-	<% if (lecturesMap.size() == 0) { %>
+	<% if (lecturesNum == 0) { %>
 		<% if (currentUser.getRole() == 0) { %>
 			<h1><span class="translate" data-lang-key="We don't have lectures for you"></span>.</h1>
 		<% } else if (currentUser.getRole() == 1) { %>
@@ -110,7 +111,7 @@
 	<% } else { %>
 		<h1>
 			<span class="translate" data-lang-key="Lectures"></span>
-			(<span class="item-number"><%= lecturesMap.size() %></span>)
+			<span class="item-number">(<%= lecturesNum %>)</span>
 		 </h1>
 	<% } %>
 	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">

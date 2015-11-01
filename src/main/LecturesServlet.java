@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import util.FileUploadManager;
 import beans.FileBean;
 import beans.LecturesBean;
+import beans.PracticalsBean;
 import beans.UserBean;
 import dao.FileDAO;
 import dao.GroupsDAO;
@@ -71,7 +72,13 @@ public class LecturesServlet extends HttpServlet {
 				
 				HashMap<String, String> groups = GroupsDAO.getGroupsByTeacher(user.getId());
 				
+				int num = 0;
+				for (ArrayList<LecturesBean> beans : lecturesMap.values()) {
+					num += beans.size();
+				}
+				
 				request.setAttribute("lecturesMap", lecturesMap);
+				request.setAttribute("lecturesNum", num);
 				request.setAttribute("currentUser", user);
 				request.setAttribute("groupsMap", groups);
 				request.getRequestDispatcher("lectures.jsp").forward(request, response);

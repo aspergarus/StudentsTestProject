@@ -66,8 +66,14 @@ public class PracticalsServlet extends HttpServlet {
 				// Show all practicals
 				Map<String, ArrayList<PracticalsBean>> practicalsMap = PracticalsDAO.findAll(user);
 				HashMap<String, String> groups = GroupsDAO.getGroupsByTeacher(user.getId());
-
+				
+				int num = 0;
+				for (ArrayList<PracticalsBean> beans : practicalsMap.values()) {
+					num += beans.size();
+				}
+				
 				request.setAttribute("practicalsMap", practicalsMap);
+				request.setAttribute("practicalsNum", num);
 				request.setAttribute("currentUser", user);
 				request.setAttribute("groupsMap", groups);
 				request.getRequestDispatcher("practicals.jsp").forward(request, response);
