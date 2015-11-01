@@ -94,7 +94,7 @@
   "Add test": {"ua": "Додати тест", "en": "Add test"},
   "Module": {"ua": "Модуль", "en": "Module"},
   "Note": {"ua": "Нотатка", "en": "Note"},
-  "Time": {"ua": "Час", "en": "Time"},
+  "Time, min": {"ua": "Час, хв", "en": "Time, min"},
   "Number of questions": {"ua": "Кількість запитань", "en": "Number of questions"},
   "No one test for you now": {"ua": "На даний момент тести для вас не доступні", "en": "No one test for you now"},
   "You don't have any test": {"ua": "У вас немає жодного тесту", "en": "You don't have any test"},

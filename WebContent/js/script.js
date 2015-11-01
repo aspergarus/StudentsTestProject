@@ -760,4 +760,38 @@ $(function () {
 		);
 	}
 	
+	toggleLeftMenu();
+	
+	function toggleLeftMenu() {
+		
+		var menu = localStorage.getItem("menu");
+		menu = menu ? menu : "on";
+		switch (menu) {
+			case "on":
+				$('#left-menu').css('left', '0px').find('span').css('left', '75px');
+				break;
+			case "off":
+				$('#left-menu').css('left', '-150px');
+				$('#show-left-menu-container').css('left', '0px');
+				break;
+		}
+		
+		$('#hide-left-menu').on('click', function(e) {
+			e.preventDefault();
+			$(this).find('span').animate({left: '-150px'});
+			$('#left-menu').animate({left: '-150px'}, function() {
+				$('#show-left-menu-container').animate({left: '0px'});
+				localStorage.setItem("menu", "off");
+			});
+		});
+		
+		$('#show-left-menu').on('click', function(e) {
+			$('#show-left-menu-container').animate({left: '-150px'}, function() {
+				$('#left-menu').animate({left: '0px'}).find('span').animate({left: '75px'});
+				localStorage.setItem("menu", "on");
+			});
+			
+		})
+	}
+	
 });

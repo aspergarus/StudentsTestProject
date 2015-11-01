@@ -356,3 +356,43 @@ body {
 div.tooltip-element {
 	display: inline-block;
 }
+#left-menu {
+	position: fixed;
+	left: 0;
+	top: 25%;
+	background-image: linear-gradient(to bottom, #3c3c3c 0%, #222 100%);
+	border-radius: 0 20px 20px 0;
+}
+#left-menu ul {
+	list-style-type: none;
+	padding: 10px;
+}
+#left-menu li {
+	margin-top: 15%;
+}
+#left-menu a {
+	color: #9d9d9d;
+	font-size: 1em;
+}
+#hide-left-menu span {
+	position: relative;
+	top: 10px;
+	left: 75px;
+}
+#show-left-menu-container {
+	position: fixed;
+	height: 6%;
+	width: 2%;
+	left: -150px;
+	top: 25%;
+	background-image: linear-gradient(to bottom, #3c3c3c 0%, #222 100%);
+	border-radius: 0 20px 20px 0;
+}
+#show-left-menu span {
+	color: #9d9d9d;
+	position: relative;
+  	top: 50%;
+  	left: 20%;
+  	transform: translateY(-50%);
+}
+	
