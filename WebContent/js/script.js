@@ -5,7 +5,31 @@ $(function () {
 	$('.table').bootstrapTable();
 	$('.tooltip-element').tooltip();
 	
+	setTranslate();
 	setAutocomplete();
+	
+	$('div.th-inner.sortable.both').on('click', function() {
+		setTranslate();
+	});
+	
+	// Language toggle
+	$(".translate-trigger").click(function(e) {
+		e.preventDefault();
+		
+		var $this = $(this);
+		var lang = $this.attr("data-lang");
+		
+		if(lang === "en"){
+			$this.attr("data-lang", "ua");
+			localStorage.setItem("lang", "ua");
+			$this.find('.change-picture').attr('src', basePath + '/imgs/gb.png');
+		} else {
+			$this.attr("data-lang", "en");
+			localStorage.setItem("lang", "en");
+			$this.find('.change-picture').attr('src', basePath + '/imgs/ua.png');
+		}
+		updateTranslate($this.attr("data-lang"));
+	});
 	
 	function setAutocomplete() {
 		$('input.typeahead').each(function() {
@@ -439,20 +463,21 @@ $(function () {
 						var itemId = $button.data('id');
 						var morePath = $button.data('path');
 						var $parent = $button.closest('tr');
+						var itemNumber = $('.item-number').text();
 						
 						$.ajax(basePath + morePath, {
 							headers: {id : itemId},
 							method: "DELETE",
 							success: function(result) {
 								$('.table').bootstrapTable('removeByUniqueId', itemId);
-								swal("Deleted!", "Your " + item + " has been deleted.", "success");
+								setTranslate();
+								$('.item-number').text(itemNumber - 1);
+								swal("Deleted!", "The " + item + " has been deleted.", "success");
 							},
 							error: function () {
 								$button.parent().append($('<span></span>').addClass('span-alert alert-warning').text("Error"));
 							}
 						});
-						
-						
 					} 
 			});
 		});
@@ -678,6 +703,7 @@ $(function () {
 				method: "DELETE",
 				success: function(result) {
 					$('.table').bootstrapTable('removeAll');
+					
 				},
 				error: function () {
 					$('body > .container').prepend($('<div></div>').addClass('alert alert-warning').text("Some errors."));

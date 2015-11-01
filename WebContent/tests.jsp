@@ -110,7 +110,10 @@
 			<h2><span class="translate" data-lang-key="There are no any test"></span>.</h2>
 		<% } %>
 	<% } else { %>
-		<h1><span class="translate" data-lang-key="Tests"></span> (<%= tests.size() %>)</h1>
+		<h1>
+			<span class="translate" data-lang-key="Tests"></span>
+			(<span class="item-number"><%= tests.size() %></span>)
+		</h1>
 		<% if (currentUser.getRole() > 0) { %>
 		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 			<% int i = 0; %>

@@ -45,7 +45,10 @@
 	<% if (groups.size() == 0) { %>
 		<h1><span class="translate" data-lang-key="There are no groups yet"></span></h1>
 	<% } else { %>
-		<h1><span class="translate" data-lang-key="Groups"></span> (<%= groups.size() %>)</h1>
+		<h1>
+			<span class="translate" data-lang-key="Groups"></span>
+			(<span class="item-number"><%= groups.size() %></span>)
+		</h1>
 	<% } %>
 	<table class="table" data-search="true" data-show-columns="true" data-unique-id="id">
 		<thead>

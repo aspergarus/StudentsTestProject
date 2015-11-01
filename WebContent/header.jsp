@@ -42,8 +42,9 @@
 <script>var basePath = "<%= basePathHeader %>";</script>
 <script>var userId = "<%= uid %>";</script>
 <!-- Custom javascripts -->
-<script src="<%= basePathHeader %>/js/script.js"></script>
 <script src="<%= basePathHeader %>/js/translate.js"></script>
+<script src="<%= basePathHeader %>/js/script.js"></script>
+
 
 </head>
 <body>

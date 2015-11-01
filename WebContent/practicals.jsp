@@ -106,7 +106,10 @@
 			<h1><span class="translate" data-lang-key="There are no any practicals"></span></h1>
 		<% } %>
 	<% } else { %>
-		<h1><span class="translate" data-lang-key="Practicals"></span> (<%= practicalsMap.size() %>)</h1>
+		<h1>
+			<span class="translate" data-lang-key="Practicals"></span>
+			(<span class="item-number"><%= practicalsMap.size() %></span>)
+		</h1>
 	<% } %>
 	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 		<% int i = 0; %>
