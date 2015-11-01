@@ -76,9 +76,9 @@
 			        <% } %>
 			        <td>
 			        	<% if (user.getRole() == 2) { %>
-				        	<span class="transformer-text" data-path="departments" data-id=<%= department.getId() %>>
+				        	<a href="#" class="transformer-text" data-path="departments" data-id=<%= department.getId() %>>
 				        		<% out.print(department.getDepartmentName()); %>
-				        	</span>
+				        	</a>
 				        	<input type="text" style="display: none">
 			        	<% } else { %>
 			        		<% out.print(department.getDepartmentName()); %>

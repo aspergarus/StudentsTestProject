@@ -93,9 +93,9 @@
 			        	<td><% out.print(subject.getId()); %></td>
 			        <% } %>
 			        <td>
-			        	<span class="transformer-text" data-path="subjects" data-id=<%= subject.getId() %>>
+			        	<a class="transformer-text" data-path="subjects" data-id=<%= subject.getId() %>>
 			        		<%= subject.getSubjectName() %>
-			        	</span>
+			        	</a>
 			        	<input type="text" style="display: none">
 			        </td>
 			        <td><% out.print (departmentsMap.get(subject.getDepartmentId())); %></td>

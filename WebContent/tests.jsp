@@ -58,7 +58,7 @@
 					<span class="translate" data-lang-key="Module"></span>*
 				</label>
 				<div class="col-sm-10">
-					<input name="module" type="number" class="form-control" required min="0" max="8"/>
+					<input name="module" type="number" class="form-control" required min="1" max="8"/>
 				</div>
 			</div>
 			
@@ -74,18 +74,23 @@
 			<div class="form-group">
 				<label for="time" class="col-sm-2 control-label required">
 					<span class="translate" data-lang-key="Time"></span>*
+					<span class="tooltip-element" data-placement="top" 
+						data-toggle="tooltip" title="Час, який виділяється на проходження тесту"><sub>?</sub></span>
 				</label>
+				
 				<div class="col-sm-10">
-					<input type="number" name="time" class="form-control" required/>
+					<input type="number" name="time" class="form-control" required min="1"/>
 				</div>
 			</div>
 			
 			<div class="form-group">
 				<label for="test-questions" class="col-sm-2 control-label required">
 					<span class="translate" data-lang-key="Number of questions"></span>*
+					<span class="tooltip-element" data-placement="top" 
+						data-toggle="tooltip" title="Кількість запитань, які будуть вибрані рандомно"><sub>?</sub></span>
 				</label>
 				<div class="col-sm-10">
-					<input type="number" name="test-questions" class="form-control" required/>
+					<input type="number" name="test-questions" class="form-control" required min="1"/>
 				</div>
 			</div>
 			
@@ -188,31 +193,31 @@
 										<% } %>
 										<td><%= teachers.get(test.getTeacherId()) %></td>
 										<td>
-											<span class="transformer-text" data-path="tests" data-parameter="module" 
-												data-id=<%= test.getId() %>><%= test.getModule() %></span>
+											<a class="transformer-text" data-path="tests" data-parameter="module" 
+												data-id=<%= test.getId() %>><%= test.getModule() %></a>
 											<input type="text" style="display: none">
 										</td>
 										<% if (currentUser.getRole() == 1) { %>
 											<td>
-												<span class="transformer-text" data-path="tests" data-parameter="note" 
+												<a class="transformer-text" data-path="tests" data-parameter="note" 
 													data-id=<%= test.getId() %>>
 													<%= (!test.getNote().equals("")) ? test.getNote() : "-" %>
-												</span>
+												</a>
 												<input type="text" style="display: none">
 											</td>
 										<% } %>
 										<td>
-											<span class="transformer-text" data-path="tests" data-parameter="time" 
+											<a class="transformer-text" data-path="tests" data-parameter="time" 
 												data-id=<%= test.getId() %>>
 												<%= test.getTime() / 60 %>
-											</span>
+											</a>
 											<input type="text" style="display: none">
 										</td>
 										<td>
-											<span class="transformer-text" data-path="tests" data-parameter="test_questions" 
+											<a class="transformer-text" data-path="tests" data-parameter="test_questions" 
 												data-id=<%= test.getId() %>>
 												<%= test.getTestQuestions() %>
-											</span>
+											</a>
 											<input type="text" style="display: none">
 										</td>
 										<td>

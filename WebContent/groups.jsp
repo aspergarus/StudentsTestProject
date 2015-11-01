@@ -75,9 +75,9 @@
 			        <% } %>
 			        <% if (user.getRole() == 2) { %>
 				        <td>
-				        	<span class="transformer-text" data-path="groups" data-id=<%= group.getId() %>>
+				        	<a class="transformer-text" data-path="groups" data-id=<%= group.getId() %>>
 				        		<% out.print(group.getGroupName()); %>
-				        	</span>
+				        	</a>
 				        	<input type="text" style="display: none">
 				        </td>
 					<% } else { %>

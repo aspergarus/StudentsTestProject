@@ -91,9 +91,12 @@
 
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
-					<button type="submit" id="add-question" class="btn btn-primary btn-lg">
-						<span class="translate" data-lang-key="Add a question"></span>
-					</button>
+					<div class="tooltip-element" data-toggle="tooltip" data-placement="right" 
+						title="Запитання повинне мати хоча б одну правильну відповідь">
+						<button type="submit" id="add-question" class="btn btn-primary btn-lg">
+							<span class="translate" data-lang-key="Add a question"></span>
+						</button>
+					</div>
 				</div>
 			</div>
 			<input type="hidden" id="count" name="count" value="2">
@@ -143,7 +146,7 @@
 								<% if (answer.isCorrect()) { %>
 									<td class="success"><%= j %></td>
 									<td class="success">
-										<span class="tooltip-element tooltip-container" data-placement="right" data-toggle="tooltip" 
+										<span class="tooltip-element" data-placement="right" data-toggle="tooltip" 
 												title="Правильна відповідь"><%= answer.getAnswerText() %></span>
 									</td>
 								<% } else { %>

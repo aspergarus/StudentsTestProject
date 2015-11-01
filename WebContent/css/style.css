@@ -353,3 +353,6 @@ body {
 	color: #737373;
 	text-decoration: underline;
 }
+div.tooltip-element {
+	display: inline-block;
+}
