@@ -359,14 +359,15 @@ $(function () {
 			var trueQuestions = $('#question-form .true-answer').toArray().filter(function(el) {
 			  return el.checked;
 			});
+			var $button = $('#question-form #add-question');
 			if (trueQuestions.length < 1) {
-				$('#question-form #add-question').prop('disabled', true);
-			}
-			else {
-				$('#question-form #add-question').prop('disabled', false);
+				$button.prop('disabled', true);
+				$button.parent().tooltip();
+			} else {
+				$button.prop('disabled', false);
+				$button.parent().tooltip('destroy');
 			}
 		});
-
 		$('#question-form .true-answer').trigger('change');
 	}
 	
