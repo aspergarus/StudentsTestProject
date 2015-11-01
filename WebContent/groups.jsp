@@ -47,7 +47,7 @@
 	<% } else { %>
 		<h1><span class="translate" data-lang-key="Groups"></span> (<%= groups.size() %>)</h1>
 	<% } %>
-	<table class="table" data-search="true" data-show-columns="true">
+	<table class="table" data-search="true" data-show-columns="true" data-unique-id="id">
 		<thead>
 			<tr>
 				<% if (user.getRole() == 2) { %>

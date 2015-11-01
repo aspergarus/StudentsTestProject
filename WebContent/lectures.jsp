@@ -133,9 +133,12 @@
 					</p>
 				<% } %>
 					
-					<table class="table">
+					<table class="table" data-unique-id="id">
 						<thead>
 							<tr>
+								<% if (currentUser.getRole() == 2) { %>
+									<th data-field="id" data-align="center" data-sortable="true">ID</th>
+								<% } %>
 								<th data-field="title" data-align="center" data-sortable="true">
 									<span class="translate" data-lang-key="Title"></span>
 								</th>
@@ -155,6 +158,9 @@
 						<tbody>
 						<% for (LecturesBean lecture : lecturesMap.get(subject)) { %>
 							<tr>
+								<% if (currentUser.getRole() == 2) { %>
+									<td><%= lecture.getId() %></td>
+								<% } %>
 								<td><%= lecture.getTitle() %></td>
 								<td>
 									<a href="lectures?id=<%= lecture.getId() %>">

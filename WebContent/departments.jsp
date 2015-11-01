@@ -52,7 +52,7 @@
 			<span class="depatments-number">(<%= departments.size() %>)</span>
 		</h1>
 	<% } %>
-	<table class="table" data-search="true" data-show-columns="true">
+	<table class="table" data-search="true" data-show-columns="true" data-unique-id="id">
 		<thead>
 			<tr>
 				<% if (user.getRole() == 2) { %>

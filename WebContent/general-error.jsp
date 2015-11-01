@@ -20,8 +20,8 @@
 <link rel="stylesheet" href="<%= basePath %>/css/bootstrap.min.css">
 <link rel="stylesheet" href="<%= basePath %>/css/bootstrap-theme.min.css">
 
-<script src="<%= basePath %>/js/jquery.min.js"></script>
-<script src="<%= basePath %>/js/bootstrap.min.js"></script>
+<script src="<%= basePath %>/js/lib/jquery.min.js"></script>
+<script src="<%= basePath %>/js/lib/bootstrap/bootstrap.min.js"></script>
 </head>
 <body>
 	<nav class="navbar navbar-inverse navbar-fixed-top">

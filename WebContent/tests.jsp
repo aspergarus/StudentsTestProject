@@ -137,9 +137,12 @@
 										data-num="<%= i %>" data-subject="<%= subject %>" />
 								</p>
 							<% } %>
-							<table class="table">
+							<table class="table" data-unique-id="id">
 								<thead>
 									<tr>
+										<% if (currentUser.getRole() == 2) { %>
+											<th data-field="id" data-align="center" data-sortable="true">ID</th>
+										<% } %>
 										<th data-field="teacher" data-align="center" data-sortable="true">
 											<span class="translate" data-lang-key="Teacher"></span>
 										</th>
@@ -177,6 +180,9 @@
 								<tbody>
 								<% for (TestBean test : tests.get(subject)) { %>
 									<tr>
+										<% if (currentUser.getRole() == 2) { %>
+											<td><%= test.getId() %></td>
+										<% } %>
 										<td><%= teachers.get(test.getTeacherId()) %></td>
 										<td>
 											<span class="transformer-text" data-path="tests" data-parameter="module" 
