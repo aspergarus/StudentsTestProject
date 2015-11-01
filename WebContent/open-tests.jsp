@@ -9,6 +9,7 @@
 <% String basePath = request.getContextPath(); %>
 <% String status = (String) request.getAttribute("status"); %>
 <% String message = (String) request.getAttribute("message"); %>
+<% UserBean user = (UserBean) session.getAttribute("user"); %>
 <% TestBean currentTest = (TestBean) request.getAttribute("currentTest"); %>
 <% ArrayList<UserBean> students = (ArrayList<UserBean>) request.getAttribute("students"); %>
 <% ArrayList<Integer> testStudentsId = (ArrayList<Integer>) request.getAttribute("testStudentsId"); %>
@@ -75,10 +76,14 @@
 		</form>
 			
 			<h1><span class="translate" data-lang-key="Students"></span></h1>
-			<table class="table" data-search="true" data-show-columns="true">
+			<table class="table" data-search="true" data-show-columns="true" data-unique-id="id">
 		    <thead>
 		        <tr>
-		        	<th data-field="number" data-align="center" data-sortable="true">№</th>
+		        	<% if (user.getRole() == 2) { %>
+		        		<th data-field="id" data-align="center" data-sortable="true">ID</th>
+		        	<% } else { %>
+		        		<th data-field="number" data-align="center" data-sortable="true">№</th>
+		        	<% } %>
 		        	<th data-field="group" data-align="center" data-sortable="true">
 		        		<span class="translate" data-lang-key="Group"></span>
 		        	</th>
@@ -100,7 +105,11 @@
 		    <% int i = 1; %>
 		    <% for (UserBean student: students) { %>
 				<tr>
-					<td><%= i %></td>
+					<% if (user.getRole() == 2) { %>
+						<td><%= student.getId() %></td>
+					<% } else { %>
+						<td><%= i %></td>
+					<% } %>
 					<td><% out.print(groupsMap.get(student.getGroupId())); %></td>
 			        <td><% out.print(student.getFirstName()); %></td>
 			        <td><% out.print(student.getLastName()); %></td>

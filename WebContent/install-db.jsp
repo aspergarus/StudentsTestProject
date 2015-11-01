@@ -21,8 +21,8 @@
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/bootstrap-theme.css">
 
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="js/lib/jquery.min.js"></script>
+<script src="js/lib/bootstrap/bootstrap.min.js"></script>
 <script src="js/createTables.js"></script>
 
 <script>var basePath = "<%= basePath %>";</script>

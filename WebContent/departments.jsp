@@ -49,10 +49,10 @@
 	<% } else { %>
 		<h1>
 			<span class="translate departments-title-form" data-lang-key="Departments"></span>
-			<span class="depatments-number">(<%= departments.size() %>)</span>
+			(<span class="item-number"><%= departments.size() %></span>)
 		</h1>
 	<% } %>
-	<table class="table" data-search="true" data-show-columns="true">
+	<table class="table" data-search="true" data-show-columns="true" data-unique-id="id">
 		<thead>
 			<tr>
 				<% if (user.getRole() == 2) { %>
@@ -76,9 +76,9 @@
 			        <% } %>
 			        <td>
 			        	<% if (user.getRole() == 2) { %>
-				        	<span class="transformer-text" data-path="departments" data-id=<%= department.getId() %>>
+				        	<a href="#" class="transformer-text" data-path="departments" data-id=<%= department.getId() %>>
 				        		<% out.print(department.getDepartmentName()); %>
-				        	</span>
+				        	</a>
 				        	<input type="text" style="display: none">
 			        	<% } else { %>
 			        		<% out.print(department.getDepartmentName()); %>

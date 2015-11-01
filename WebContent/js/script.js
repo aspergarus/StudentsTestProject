@@ -5,7 +5,31 @@ $(function () {
 	$('.table').bootstrapTable();
 	$('.tooltip-element').tooltip();
 	
+	setTranslate();
 	setAutocomplete();
+	
+	$('div.th-inner.sortable.both').on('click', function() {
+		setTranslate();
+	});
+	
+	// Language toggle
+	$(".translate-trigger").click(function(e) {
+		e.preventDefault();
+		
+		var $this = $(this);
+		var lang = $this.attr("data-lang");
+		
+		if(lang === "en"){
+			$this.attr("data-lang", "ua");
+			localStorage.setItem("lang", "ua");
+			$this.find('.change-picture').attr('src', basePath + '/imgs/gb.png');
+		} else {
+			$this.attr("data-lang", "en");
+			localStorage.setItem("lang", "en");
+			$this.find('.change-picture').attr('src', basePath + '/imgs/ua.png');
+		}
+		updateTranslate($this.attr("data-lang"));
+	});
 	
 	function setAutocomplete() {
 		$('input.typeahead').each(function() {
@@ -367,10 +391,10 @@ $(function () {
 			var testId = $('input[name=id]').attr('value');
 
 			$('.selected-student').each(function() {
-				$this = $(this);
+				var $this = $(this);
 				var i = 0;
 				if ($this.prop('checked')) {
-					$parent = $this.parent();
+					var $parent = $this.parent();
 					var id = $parent.find('input[type=hidden]').attr('value');
 					studentsId += id;
 					studentsId += ",";
@@ -401,7 +425,7 @@ $(function () {
 	
 	function changeAutocomplete () {
 		$('.radio-user-status').change(function() {
-			$radio = $(this);
+			var $radio = $(this);
 			var status = parseInt($radio.val());
 			
 			if (status == 2) {
@@ -439,18 +463,21 @@ $(function () {
 						var itemId = $button.data('id');
 						var morePath = $button.data('path');
 						var $parent = $button.closest('tr');
+						var itemNumber = $('.item-number').text();
 						
 						$.ajax(basePath + morePath, {
 							headers: {id : itemId},
 							method: "DELETE",
 							success: function(result) {
-								$parent.remove();
-								swal("Deleted!", "Your " + item + " has been deleted.", "success"); 
+								$('.table').bootstrapTable('removeByUniqueId', itemId);
+								setTranslate();
+								$('.item-number').text(itemNumber - 1);
+								swal("Deleted!", "The " + item + " has been deleted.", "success");
 							},
 							error: function () {
 								$button.parent().append($('<span></span>').addClass('span-alert alert-warning').text("Error"));
 							}
-						});   
+						});
 					} 
 			});
 		});
@@ -522,7 +549,7 @@ $(function () {
 			});
 			
 			if (hasAnswer) {
-				$current = $('.current').removeClass('current').removeClass('uncompleted').addClass('completed');
+				var $current = $('.current').removeClass('current').removeClass('uncompleted').addClass('completed');
 				questionId = $current.find('.question-id').val();
 				
 				if ($current.next('.uncompleted').length > 0) {
@@ -545,7 +572,7 @@ $(function () {
 		$('body').on('click', '#miss-question', function() {
 			if ($('.uncompleted').length > 1) {
 				
-				$current = $('.current').removeClass('current').addClass('uncompleted');
+				var $current = $('.current').removeClass('current').addClass('uncompleted');
 				
 				do {
 					if ($current.next('.question-block').length > 0)  {
@@ -569,7 +596,7 @@ $(function () {
 				var ids = getCookie(name).trim();
 				
 				if (questionsId.indexOf(name) > -1 ) {
-					$qb = $('.question-id-' + name);
+					var $qb = $('.question-id-' + name);
 					
 					if (ids.indexOf(",") > -1) {
 						var idsArray = ids.split(",");
@@ -675,8 +702,8 @@ $(function () {
 				headers: {testId : testId},
 				method: "DELETE",
 				success: function(result) {
-					$('tbody tr').remove();
-					$('tbody').append('<tr class="no-records-found"><td colspan="6">No matching records found</td></tr>');
+					$('.table').bootstrapTable('removeAll');
+					
 				},
 				error: function () {
 					$('body > .container').prepend($('<div></div>').addClass('alert alert-warning').text("Some errors."));
@@ -699,7 +726,7 @@ $(function () {
 				headers: {studentId : studentId, testId : testId},
 				method: "DELETE",
 				success: function(result) {
-					$parent.parent().remove();
+					$('.table').bootstrapTable('removeByUniqueId', studentId);
 				},
 				error: function () {
 					$('body > .container').prepend($('<div></div>').addClass('alert alert-warning').text("Some errors."));

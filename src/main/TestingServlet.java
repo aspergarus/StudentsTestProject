@@ -62,7 +62,15 @@ public class TestingServlet extends HttpServlet {
 					ArrayList<QuestionBean> questions = (ArrayList<QuestionBean>) session.getAttribute("questions");
 					if (questions == null) {
 						questions = QuestionDAO.getTestQuestions(test);
-						session.setAttribute("questions", questions);
+						
+						if (questions.size() > 0) {
+							session.setAttribute("questions", questions);
+						} else {
+							session.setAttribute("status", "warning");
+							session.setAttribute("message", "Questions are not exists.");
+							response.sendRedirect(request.getContextPath() + "/tests");
+							return;
+						}
 					}
 					request.setAttribute("status", "success");
 					request.setAttribute("test", test);

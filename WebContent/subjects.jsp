@@ -62,9 +62,12 @@
 	<% if (subjects.size() == 0) { %>
 		<h1><span class="translate" data-lang-key="There are no subjects yet"></span></h1>
 	<% } else { %>
-		<h1><span class="translate" data-lang-key="Subjects"></span> (<%= subjects.size() %>)</h1>
+		<h1>
+			<span class="translate" data-lang-key="Subjects"></span>
+		 	(<span class="item-number"><%= subjects.size() %></span>)
+		</h1>
 	<% } %>
-	<table class="table" data-search="true" data-show-columns="true">
+	<table class="table" data-search="true" data-show-columns="true" data-unique-id="id">
 		<thead>
 			<tr>
 				<% if (user.getRole() == 2) { %>
@@ -90,9 +93,9 @@
 			        	<td><% out.print(subject.getId()); %></td>
 			        <% } %>
 			        <td>
-			        	<span class="transformer-text" data-path="subjects" data-id=<%= subject.getId() %>>
+			        	<a class="transformer-text" data-path="subjects" data-id=<%= subject.getId() %>>
 			        		<%= subject.getSubjectName() %>
-			        	</span>
+			        	</a>
 			        	<input type="text" style="display: none">
 			        </td>
 			        <td><% out.print (departmentsMap.get(subject.getDepartmentId())); %></td>

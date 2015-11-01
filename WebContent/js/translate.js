@@ -1,8 +1,4 @@
-$(function () {
-	if(typeof(Storage) === "undefined") {
-		alert("Use modern browser like Chrome or Mozilla");
-	}
-	
+function setTranslate() {
 	var lang = localStorage.getItem("lang");
 	lang = lang ? lang : "en";
 	switch (lang) {
@@ -16,34 +12,16 @@ $(function () {
 			break;
 	}
 	updateTranslate(lang);
+}
 
-	$(".translate-trigger").click(function(e) {
-		e.preventDefault();
-		
-		var $this = $(this);
-		var lang = $this.attr("data-lang");
-		
-		if(lang === "en"){
-			$this.attr("data-lang", "ua");
-			localStorage.setItem("lang", "ua");
-			$this.find('.change-picture').attr('src', basePath + '/imgs/gb.png');
-		} else {
-			$this.attr("data-lang", "en");
-			localStorage.setItem("lang", "en");
-			$this.find('.change-picture').attr('src', basePath + '/imgs/ua.png');
-		}
-		updateTranslate($this.attr("data-lang"));
-	});
-
-	function updateTranslate(lang) {
-		$.getJSON(basePath + "/js/translate.json" , function(translateData) {
-			$(".translate").each(function() {
-				var $this = $(this);
-				var key = $this.data("lang-key");
-				if (translateData[key] != undefined) {
-					$this.text(translateData[key][lang]);
-				}
-			});
+function updateTranslate(lang) {
+	$.getJSON(basePath + "/js/translate.json" , function(translateData) {
+		$(".translate").each(function() {
+			var $this = $(this);
+			var key = $this.data("lang-key");
+			if (translateData[key] != undefined) {
+				$this.text(translateData[key][lang]);
+			}
 		});
-	}
-});
+	});
+}

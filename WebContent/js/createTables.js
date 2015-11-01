@@ -3,7 +3,7 @@ $(function () {
 		alert("Use modern browser like Chrome or Mozilla");
 	}
 
-createTables();
+	createTables();
 	
 	function createTables() {
 		$('.create-tables').click(function(e) {

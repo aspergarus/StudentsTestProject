@@ -25,25 +25,26 @@
 <link rel="stylesheet" href="<%= basePathHeader %>/css/sweetalert.css"> 
 
 <!-- js libraries -->
-<script  src="<%= basePathHeader %>/js/jquery.min.js"></script>
-<script src="<%= basePathHeader %>/js/jquery-ui.min.js"></script>
-<script src="<%= basePathHeader %>/js/bootstrap.min.js"></script>
-<script src="<%= basePathHeader %>/js/bootstrap-table.min.js"></script>
-<script src="<%= basePathHeader %>/js/bootstrap-typeahead.js"></script>
-<script src="<%= basePathHeader %>/js/fileinput.js"></script>
-<script src="<%= basePathHeader %>/js/fileinput_locale_uk.js"></script>
-<script src="<%= basePathHeader %>/js/bootstrap-tokenfield.js"></script>
-<script src="<%= basePathHeader %>/js/bootstrap-dialog.min.js"></script>
+<script  src="<%= basePathHeader %>/js/lib/jquery.min.js"></script>
+<script src="<%= basePathHeader %>/js/lib/jquery-ui.min.js"></script>
+<script src="<%= basePathHeader %>/js/lib/bootstrap/bootstrap.min.js"></script>
+<script src="<%= basePathHeader %>/js/lib/bootstrap/bootstrap-table.js"></script>
+<script src="<%= basePathHeader %>/js/lib/bootstrap/bootstrap-typeahead.js"></script>
+<script src="<%= basePathHeader %>/js/lib/fileinput.js"></script>
+<script src="<%= basePathHeader %>/js/lib/fileinput_locale_uk.js"></script>
+<script src="<%= basePathHeader %>/js/lib/bootstrap/bootstrap-tokenfield.js"></script>
+<script src="<%= basePathHeader %>/js/lib/bootstrap/bootstrap-dialog.min.js"></script>
 <script src="<%= basePathHeader %>/js/lib/ck/ckeditor.js"></script>
-<script src="<%= basePathHeader %>/js/TimeCircles.js"></script>
-<script src="<%= basePathHeader %>/js/sweetalert.min.js"></script>
+<script src="<%= basePathHeader %>/js/lib/timeCircles.js"></script>
+<script src="<%= basePathHeader %>/js/lib/sweetalert.min.js"></script>
 
 <!-- Custom javascripts variables -->
 <script>var basePath = "<%= basePathHeader %>";</script>
 <script>var userId = "<%= uid %>";</script>
 <!-- Custom javascripts -->
-<script src="<%= basePathHeader %>/js/script.js"></script>
 <script src="<%= basePathHeader %>/js/translate.js"></script>
+<script src="<%= basePathHeader %>/js/script.js"></script>
+
 
 </head>
 <body>

@@ -45,9 +45,12 @@
 	<% if (groups.size() == 0) { %>
 		<h1><span class="translate" data-lang-key="There are no groups yet"></span></h1>
 	<% } else { %>
-		<h1><span class="translate" data-lang-key="Groups"></span> (<%= groups.size() %>)</h1>
+		<h1>
+			<span class="translate" data-lang-key="Groups"></span>
+			(<span class="item-number"><%= groups.size() %></span>)
+		</h1>
 	<% } %>
-	<table class="table" data-search="true" data-show-columns="true">
+	<table class="table" data-search="true" data-show-columns="true" data-unique-id="id">
 		<thead>
 			<tr>
 				<% if (user.getRole() == 2) { %>
@@ -72,9 +75,9 @@
 			        <% } %>
 			        <% if (user.getRole() == 2) { %>
 				        <td>
-				        	<span class="transformer-text" data-path="groups" data-id=<%= group.getId() %>>
+				        	<a class="transformer-text" data-path="groups" data-id=<%= group.getId() %>>
 				        		<% out.print(group.getGroupName()); %>
-				        	</span>
+				        	</a>
 				        	<input type="text" style="display: none">
 				        </td>
 					<% } else { %>

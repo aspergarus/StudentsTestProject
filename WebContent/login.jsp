@@ -22,10 +22,12 @@
 
 <script>var basePath = "<%= basePath %>";</script>
 
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="js/lib/jquery.min.js"></script>
+<script src="js/lib/bootstrap/bootstrap.min.js"></script>
+<script src="<%= basePath %>/js/lib/bootstrap/bootstrap-table.js"></script>
 
 <script src="<%= basePath %>/js/translate.js"></script>
+<script src="<%= basePath %>/js/script.js"></script>
 
 </head>
 <body>
