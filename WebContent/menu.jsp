@@ -18,15 +18,6 @@
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="nav navbar-nav top-menu">
 				<li><a href="<%= basePathMenu %>"><span class="translate" data-lang-key="Home"></span></a></li>
-				<% if (currentUserMenu.getRole() == 2) { %>
-					<li><a href="<%= basePathMenu %>/users"><span class="translate" data-lang-key="Users"></span></a></li>
-					<li><a href="<%= basePathMenu %>/register"><span class="translate" data-lang-key="Register"></span></a></li>
-				<% } %>
-				<% if (currentUserMenu.getRole() != 0) {%>
-					<li><a href="<%= basePathMenu %>/departments"><span class="translate" data-lang-key="Departments"></span></a></li>
-					<li><a href="<%= basePathMenu %>/subjects"><span class="translate" data-lang-key="Subjects"></span></a></li>
-					<li><a href="<%= basePathMenu %>/groups"><span class="translate" data-lang-key="Groups"></span></a></li>
-				<% } %>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li></li>
@@ -46,3 +37,19 @@
 		</div>
 	</div>
 </nav>
+<% if (currentUserMenu.getRole() == 2) { %>
+	<div id="show-left-menu-container">
+		<a href="#" id="show-left-menu"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></a>
+	</div>
+	<div id="left-menu">
+		<a href="#" id="hide-left-menu"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></a>
+		<ul>
+			
+				<li><a href="<%= basePathMenu %>/users"><span class="translate" data-lang-key="Users"></span></a></li>
+				<li><a href="<%= basePathMenu %>/register"><span class="translate" data-lang-key="Register"></span></a></li>
+				<li><a href="<%= basePathMenu %>/departments"><span class="translate" data-lang-key="Departments"></span></a></li>
+				<li><a href="<%= basePathMenu %>/subjects"><span class="translate" data-lang-key="Subjects"></span></a></li>
+				<li><a href="<%= basePathMenu %>/groups"><span class="translate" data-lang-key="Groups"></span></a></li>
+		</ul>
+	</div>
+<% } %>

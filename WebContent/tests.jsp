@@ -73,7 +73,7 @@
 			
 			<div class="form-group">
 				<label for="time" class="col-sm-2 control-label required">
-					<span class="translate" data-lang-key="Time"></span>*
+					<span class="translate" data-lang-key="Time, min"></span>*
 					<span class="tooltip-element" data-placement="top" 
 						data-toggle="tooltip" title="Час, який виділяється на проходження тесту"><sub>?</sub></span>
 				</label>
@@ -163,7 +163,7 @@
 											</th>
 										<% } %>
 										<th data-field="time" data-align="center" data-sortable="true">
-											<span class="translate" data-lang-key="Time"></span>
+											<span class="translate" data-lang-key="Time, min"></span>
 										</th>
 										<th data-field="test-questions" data-align="center" data-sortable="true">
 											<span class="translate" data-lang-key="Number of questions"></span>
