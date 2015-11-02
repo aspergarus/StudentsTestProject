@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
+import beans.UserBean;
+import dao.UserDAO;
+
 
 public class InstallConnect {
 	
@@ -46,6 +49,18 @@ public class InstallConnect {
 		return false;
 	}
 	
+	public static boolean addAdmin() {
+		
+		UserBean admin = UserDAO.find("admin");
+		if (admin == null) {
+			admin = new UserBean("admin", "admin", "default@email.com", (byte) 2);
+			if (UserDAO.register(admin) != null) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public static ArrayList<String> selectExistTables() {
 		
 		ConnectionManager conM = new ConnectionManager();
@@ -53,7 +68,7 @@ public class InstallConnect {
 		ResultSet rs;
 		
 		DatabaseMetaData databaseMetaData;
-		ArrayList<String> existTables = new ArrayList<>();;
+		ArrayList<String> existTables = new ArrayList<>();
 		
 		try {
             databaseMetaData = con.getMetaData();
@@ -299,7 +314,7 @@ public class InstallConnect {
 			return false;
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
-		return false;
+			return false;
 		}	
 		return true;
 	}

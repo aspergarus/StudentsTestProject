@@ -20,7 +20,7 @@ public class UserDAO {
 	static Connection con = null;
 	static ResultSet rs = null;
 
-	public static UserBean find(String username) throws SQLException {
+	public static UserBean find(String username) {
 		UserBean bean = null;
 		
 		String EMAIL_PATTERN = 
@@ -126,7 +126,7 @@ public class UserDAO {
 		return bean;
 	}
 
-	public static UserBean register(UserBean bean) throws Exception {
+	public static UserBean register(UserBean bean) {
 		String query = "INSERT INTO users "
 				+ "(user_name, password, email, role, first_name, last_name, group_id, registered) "
 				+ "VALUES (?,?,?,?,?,?,?,?)";

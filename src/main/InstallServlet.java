@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import config.InstallConnect;
 import dao.UserDAO;
@@ -31,7 +32,17 @@ public class InstallServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
 		
+		String status = (String) session.getAttribute("status");
+		String message = (String) session.getAttribute("message");
+
+		if (status != null && message != null) {
+			request.setAttribute("status", status);
+			request.setAttribute("message", message);
+			session.setAttribute("status", null);
+			session.setAttribute("message", null);
+		}
 		// Status: 0 - all right, N - number of missing tables, -1 - no connection
 		int statusDB = InstallConnect.testConnect();
 		
@@ -48,6 +59,7 @@ public class InstallServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
 		
 		String host = request.getParameter("host");
 		String port = request.getParameter("port");
@@ -56,6 +68,10 @@ public class InstallServlet extends HttpServlet {
 		String password = request.getParameter("password");
 		
 		if (InstallConnect.insertSettings(host, port, dataBaseName, admin, password)) {
+			if (InstallConnect.addAdmin()) {
+				session.setAttribute("status", "success");
+				session.setAttribute("message", "Setting was applied. User admin created.");
+			}
 			response.sendRedirect(request.getContextPath() + "/install");
 		}
 	}
@@ -64,27 +80,12 @@ public class InstallServlet extends HttpServlet {
 	 * @see HttpServlet#doPut(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		HttpSession session = request.getSession(false);
 		InstallConnect.createTables();
 		
-		String username = request.getHeader("name");
-		String password = request.getHeader("pass");
-		
-		if (username != null && password != null && !username.isEmpty() && !password.isEmpty()) {
-			username = java.net.URLDecoder.decode(username, "UTF-8");
-			password = java.net.URLDecoder.decode(password, "UTF-8");
-			UserBean user = new UserBean();
-			user.setUserName(username);
-			user.setPassword(password);
-			user.setRole((byte) 2);
-			user.setEmail("example@gmail.com");
-			user.setGroupId(0);
-	        try {
-	            UserDAO.register(user);
-            } catch (Exception e) {
-            	System.out.println(e.getMessage());
-            }
-            
+		if (InstallConnect.addAdmin()) {
+			session.setAttribute("status", "success");
+			session.setAttribute("message", "Setting was applied. User admin created.");
 		}
 		response.getOutputStream().println("Success.");
 	}
