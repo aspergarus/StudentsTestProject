@@ -115,7 +115,7 @@ $(function () {
 				},
 				error: function() {
 					$parent.find('div').remove();
-					$parent.append($('<span></span>').addClass('span-alert alert-danger').text("Could not delete this file"));
+					swal("Oops...", "Something went wrong!", "error");
 				}
 			});
 		});
@@ -252,6 +252,7 @@ $(function () {
 						$this.hide();
 					},
 					error: function(result, status, statusText) {
+						swal("Oops...", "Something went wrong!", "error");
 						console.log(statusText);
 					}
 				});
@@ -476,7 +477,7 @@ $(function () {
 								swal("Deleted!", "The " + item + " has been deleted.", "success");
 							},
 							error: function () {
-								$button.parent().append($('<span></span>').addClass('span-alert alert-warning').text("Error"));
+								swal("Oops...", "Something went wrong!", "error");
 							}
 						});
 					} 
@@ -572,7 +573,6 @@ $(function () {
 		
 		$('body').on('click', '#miss-question', function() {
 			if ($('.uncompleted').length > 1) {
-				
 				var $current = $('.current').removeClass('current').addClass('uncompleted');
 				
 				do {
@@ -704,10 +704,9 @@ $(function () {
 				method: "DELETE",
 				success: function(result) {
 					$('.table').bootstrapTable('removeAll');
-					
 				},
 				error: function () {
-					$('body > .container').prepend($('<div></div>').addClass('alert alert-warning').text("Some errors."));
+					swal("Oops...", "Something went wrong!", "error");
 				}
 			});
 		});
@@ -730,7 +729,7 @@ $(function () {
 					$('.table').bootstrapTable('removeByUniqueId', studentId);
 				},
 				error: function () {
-					$('body > .container').prepend($('<div></div>').addClass('alert alert-warning').text("Some errors."));
+					swal("Oops...", "Something went wrong!", "error");
 				}
 			});
 		});
@@ -787,6 +786,7 @@ $(function () {
 		});
 		
 		$('#show-left-menu').on('click', function(e) {
+			e.preventDefault();
 			$('#show-left-menu-container').animate({left: '-150px'}, function() {
 				$('#left-menu').animate({left: '0px'}).find('span').animate({left: '75px'});
 				localStorage.setItem("menu", "on");

@@ -19,6 +19,13 @@ public class UserBean {
 	public UserBean(String name) {
 		this.userName = name;
 	}
+	
+	public UserBean(String name, String password, String email, byte role) {
+		this.userName = name;
+		this.email = email;
+		this.role = role;
+		this.setPassword(password);
+	}
 
 	public UserBean(String name, String password, String email,
 			byte role, String firstName, String lastName, String avatarName, int groupId, long registered) {

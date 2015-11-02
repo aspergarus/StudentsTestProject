@@ -12,17 +12,22 @@ $(function () {
 			$this = $(this);
 			$parent = $this.parent();
 			
-			var name = $('#name').val();
-			var password = $('#pass').val();
-			
 			$.ajax(basePath + "/install", {
-				headers: {'name' : name, 'pass' : password},
+				headers: {},
 				method: "PUT",
 				success: function(result) {
-					window.location.replace(basePath);
+					swal({
+						title: "Sweet!",   
+						text: "Tables created! Admin registered!",   
+						type: "success",   
+						}, function(isConfirm) {   
+							if (isConfirm) {     
+								window.location.replace(basePath);
+							}
+						});
 				},
 				error: function() {
-					$parent.append($('<span></span>').addClass('span-alert alert-danger').text("Can't create tables."));
+					swal("Oops...", "Something went wrong!", "error");
 				}
 			});
 		}); 

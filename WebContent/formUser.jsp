@@ -114,7 +114,7 @@
   						<span class="btn btn-default btn-file">
   							<span class="fileinput-new"><span class="translate" data-lang-key="Select file"></span></span>
   							<span class="fileinput-exists"><span class="translate" data-lang-key="Change"></span></span>
-  							<input type="file" name="avatar">
+  							<input type="file" name="avatar" data-preview-file-type="picture">
   						</span>
   						<span class="fileinput-filename"></span>
   						<a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">&times;</a>
