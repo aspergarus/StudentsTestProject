@@ -17,7 +17,6 @@ import javax.servlet.http.HttpSession;
 import util.FileUploadManager;
 import beans.FileBean;
 import beans.LecturesBean;
-import beans.PracticalsBean;
 import beans.UserBean;
 import dao.FileDAO;
 import dao.GroupsDAO;

@@ -54,6 +54,9 @@ public class InstallConnect {
 		UserBean admin = UserDAO.find("admin");
 		if (admin == null) {
 			admin = new UserBean("admin", "admin", "default@email.com", (byte) 2);
+			long registered = System.currentTimeMillis();
+			admin.setRegistered(registered);
+			
 			if (UserDAO.register(admin) != null) {
 				return true;
 			}
