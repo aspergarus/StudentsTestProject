@@ -9,8 +9,8 @@ $(function () {
 		$('.create-tables').click(function(e) {
 			e.preventDefault();
 			
-			$this = $(this);
-			$parent = $this.parent();
+			var $this = $(this);
+			var $parent = $this.parent();
 			
 			$.ajax(basePath + "/install", {
 				headers: {},
@@ -18,7 +18,7 @@ $(function () {
 				success: function(result) {
 					swal({
 						title: "Sweet!",   
-						text: "Tables created! Admin registered!",   
+						text: "Tables created! Login: admin. Password: admin.",   
 						type: "success",   
 						}, function(isConfirm) {   
 							if (isConfirm) {     

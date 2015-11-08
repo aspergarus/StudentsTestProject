@@ -10,9 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import config.InstallConnect;
-import dao.UserDAO;
-import beans.UserBean;
-
 /**
  * Servlet implementation class InstallServlet
  */
