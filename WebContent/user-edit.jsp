@@ -113,7 +113,7 @@
 					<div class="fileinput fileinput-new" data-provides="fileinput">
   						<span class="btn btn-default btn-file">
   							<span class="fileinput-new"><span class="translate" data-lang-key="Select file"></span></span>
-  							<span class="fileinput-exists"><span class="translate" data-lang-key="Change"></span></span>
+  							<span class="fileinput-exists"><span class="translate" data-lang-key="Change avatar"></span></span>
   							<input type="file" name="avatar" data-preview-file-type="picture">
   						</span>
   						<span class="fileinput-filename"></span>

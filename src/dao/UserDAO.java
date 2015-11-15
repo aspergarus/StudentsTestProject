@@ -40,7 +40,7 @@ public class UserDAO {
 			stmt.setString(1, username);
 			rs = stmt.executeQuery();
 			boolean more = rs.next();
-
+			
 			// if user exists set the isValid variable to true
 			if (more) {
 				bean = new UserBean();
@@ -55,6 +55,7 @@ public class UserDAO {
 				bean.setAvatar(rs.getString("avatar_name"));
 				bean.setValid(true);
 			}
+			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -380,5 +381,23 @@ public class UserDAO {
 			System.out.println(e.getMessage());
         }
 		return groupId;
+	}
+	
+	public static boolean updateAvatar(UserBean updatedUser, String avatarName) {
+		String query = "UPDATE users SET avatar_name=?"
+					+ " WHERE id = ?";
+		
+		ConnectionManager conM = new ConnectionManager();
+		con = conM.getConnection();
+        int rowsAffected = 0;
+    
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
+			stmt.setString(1, avatarName);
+			stmt.setInt(2, updatedUser.getId());
+	        rowsAffected = stmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return rowsAffected > 0;
 	}
 }

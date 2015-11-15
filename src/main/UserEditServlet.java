@@ -70,7 +70,7 @@ public class UserEditServlet extends HttpServlet {
 				if (editedUser != null) {
 					request.setAttribute("editedUser", editedUser);
 					request.setAttribute("userRole", user.getRole());
-					request.getRequestDispatcher("/formUser.jsp").forward(request, response);
+					request.getRequestDispatcher("/user-edit.jsp").forward(request, response);
 				} else {
 					response.sendError(404);
 				}

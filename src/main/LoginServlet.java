@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import util.FileUploadManager;
 import beans.UserBean;
 import dao.UserDAO;
 
@@ -51,12 +52,17 @@ public class LoginServlet extends HttpServlet {
 		
 		try {
 			UserBean user = UserDAO.find(name);
-			
 			if (user == null) {
 				request.setAttribute("status", "warning");
 				request.setAttribute("message", "Username or password not found.");
 				request.getRequestDispatcher("login.jsp").forward(request, response);
 			} else if (user.isValid() && user.isPasswordValid(password)) {
+				String appPath = request.getServletContext().getRealPath("");
+				
+				if (!FileUploadManager.fileExist(appPath, "avatars", user.getAvatar())) {
+					UserDAO.updateAvatar(user, "");
+					user.setAvatar("");
+				}
 		    	HttpSession session = request.getSession(true);
 		    	session.setAttribute("user", user);
 		    	response.sendRedirect(request.getContextPath() + "/");

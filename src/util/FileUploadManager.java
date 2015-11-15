@@ -116,4 +116,15 @@ public class FileUploadManager {
 			}
 		}
 	}
+	
+	public static boolean fileExist(String basePath, String saveDir, String fileName) {
+		
+		String filePath = basePath + File.separator + "files" + File.separator + saveDir + File.separator + fileName;
+		File file = new File(filePath);
+		if (file.exists()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
