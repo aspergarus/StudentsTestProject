@@ -39,7 +39,7 @@
   "Last Name": {"ua": "Прізвище", "en": "Last Name"},
   "Avatar": {"ua": "Зображення", "en": "Avatar"},
   "Select File": {"ua" : "Вибрати файл", "en": "Select File"},
-  "Change": {"ua": "Змінити", "en": "Change"},
+  "Change avatar": {"ua": "Змінити аватарку", "en": "Change avatar"},
   "Save changes": {"ua": "Зберегти зміни", "en": "Save changes"},
   "Title": {"ua": "Заголовок", "en": "Title"},
   "Body": {"ua": "Текст", "en": "Body"},

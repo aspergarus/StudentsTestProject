@@ -25,6 +25,7 @@
 <% Map<Integer, String> subjectsMap = SubjectsDAO.getSubjectsMap(); %>
 <% ArrayList<Object[]> comments = CommentsDAO.findByOwner(lBean.getId(), "lectures"); %>
 <% UserBean user = (UserBean) session.getAttribute("user"); %>
+<% String appPath = request.getServletContext().getRealPath(""); %>
 
 <%@ include file="header.jsp" %>
 
@@ -43,12 +44,17 @@
 		<div class="body"><%= body %></div>
 	<% } %>
 	<% for (FileBean fileBean : fileBeans) { %>
-		<div class="file">
-			<a href="<%= saveDir + File.separator + fileBean.getName() %>" download>
-			<img src="imgs/icons/<%= FileUploadManager.extractFileExt(fileBean.getName()) %>.png" alt="<%= fileBean.getName() %>" />
-			<%= fileBean.getName() %>
-			</a>
-		</div>
+		<% File file = new File(appPath + File.separator + saveDir + File.separator + fileBean.getName()); %>
+		<% if (file.exists()) { %>
+			<div class="file">
+				<a href="<%= saveDir + File.separator + fileBean.getName() %>" download>
+				<img src="imgs/icons/<%= FileUploadManager.extractFileExt(fileBean.getName()) %>.png" alt="<%= fileBean.getName() %>" />
+				<%= fileBean.getName() %>
+				</a>
+			</div>
+		<% } else { %>
+			<p>File "<%= fileBean.getName() %>" disappeared from the server. </p>
+		<% } %>
 	<% } %>
 
 	<% if (!comments.isEmpty()) { %>
