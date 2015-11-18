@@ -27,13 +27,15 @@
 				<p>${message}</p>
 			</div>
 		<% } %>
-		<div class="progress">
-  			<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="1" 
-  				aria-valuemin="0" aria-valuemax="15">
-    			<p><span id="current-number-question"></span> / <span id="all-questions"></span></p> 
-  			</div>
+		<div class="col-xs-12 col-sm-12 col-md-12">
+			<div class="progress">
+	  			<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="1" 
+	  				aria-valuemin="0" aria-valuemax="15">
+	    			<p><span id="current-number-question"></span> / <span id="all-questions"></span></p> 
+	  			</div>
+			</div>
 		</div>
-		<div class="col-md-8 col-md-offset-1">
+		<div class="col-md-8 col-md-offset-1 col-sm-8 col-sm-offset-1 col-xs-12">
 			<form action="<%= basePath %>/testing/" id="testing-form" method="post" id="testing-form" class="form-horizontal" >
 				<% int i = 0; %>
 				<% for(QuestionBean question : questions) { %>
@@ -99,7 +101,7 @@
 				</div>
 			</form>
 		</div>
-		<div class="col-md-3 timer-container">
+		<div class="col-xs-12 col-sm-3 col-md-3 timer-container">
 			<div class="timer" data-timer="<%= test.getTime() %>"></div>
 			<span id="test-time" class="hidden"><%= test.getTime() %></span>
 		</div>
@@ -107,7 +109,7 @@
 			<button type="button" class="btn btn-lg btn-danger pull-right" id="turbo-mode" 
 				data-toggle="popover" data-content="Система автоматично підставить відповіді на всі запитання та відправить на перевірку!"
 					title="Режим швидкого тестування" data-placement="top">TURBO MODE</button>
-			</div>
+		</div>
 		<input type="hidden" name="questions-id-list" value="<%= Arrays.toString(questionsId) %>" />
 	</div>
 	
