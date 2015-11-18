@@ -111,5 +111,6 @@
   "Send": {"ua": "Надіслати", "en": "Send"},
   "Add": {"ua": "Додати", "en": "Add"},
   "Add student": {"ua": "Додати студента", "en": "Add student"},
-  "Apply": {"ua": "Застосувати", "en": "Apply"}
+  "Apply": {"ua": "Застосувати", "en": "Apply"},
+  "You don't have students": {"ua": "У вас немає студентів", "en": "You don't have students"}
 }

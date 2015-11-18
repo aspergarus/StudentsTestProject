@@ -26,8 +26,11 @@
 
 <div class="container">
 
-	<h1><span class="translate" data-lang-key="Students"></span></h1>
-	<% out.print(studentList.isEmpty() ? "You don't have any students" : ""); %>
+	<% if (studentList.size() == 0) { %>
+		<h1><span class="translate" data-lang-key="You don't have students"></span>.</h1>
+	<% } else { %>
+		<h1><span class="translate" data-lang-key="Students"></span></h1>
+	<% } %>
 	<% int i = 0; %>
 	<% for (StudentGroupBean group : studentList) { %>
 		<% i++; %>
@@ -42,40 +45,42 @@
 			</div>
 			<div id="collapse-<%= i %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-<%= i %>">
 				<div class="panel-body">
-					<table class="table">
-						<thead>
-							<tr>
-								<th data-field="number" data-align="center" data-sortable="true">№</th>
-								<th data-field="avatar" data-align="center" data-sortable="false">
-									<span class="translate" data-lang-key="Avatar"></span>
-								</th>
-								<th data-field="firstName" data-align="center" data-sortable="true">
-									<span class="translate" data-lang-key="First Name"></span>
-								</th>
-								<th data-field="lastName" data-align="center" data-sortable="true">
-									<span class="translate" data-lang-key="Last Name"></span>
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<% for (UserBean student : group.getStudents()) { %>
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
 								<tr>
-									<td><%= j %></td>
-									<td>
-										<%  if (student.getAvatar().isEmpty()) { %>
-											<img src="<%= defaultAvatar %>" class="img-circle avatar-table">
-										<% } else { %>
-											<img src="<%= uploadAvatarPath + File.separator + student.getAvatar() %>" 
-												class="img-circle avatar-table">
-										<% } %>
-									</td>
-									<td><%= student.getFirstName() %></td>
-									<td><%= student.getLastName() %></td>
+									<th data-field="number" data-align="center" data-sortable="true">№</th>
+									<th data-field="avatar" data-align="center" data-sortable="false">
+										<span class="translate" data-lang-key="Avatar"></span>
+									</th>
+									<th data-field="firstName" data-align="center" data-sortable="true">
+										<span class="translate" data-lang-key="First Name"></span>
+									</th>
+									<th data-field="lastName" data-align="center" data-sortable="true">
+										<span class="translate" data-lang-key="Last Name"></span>
+									</th>
 								</tr>
-								<% j++; %>
-							<% } %>
-						</tbody>
-					</table>
+							</thead>
+							<tbody>
+								<% for (UserBean student : group.getStudents()) { %>
+									<tr>
+										<td><%= j %></td>
+										<td>
+											<%  if (student.getAvatar().isEmpty()) { %>
+												<img src="<%= defaultAvatar %>" class="img-circle avatar-table">
+											<% } else { %>
+												<img src="<%= uploadAvatarPath + File.separator + student.getAvatar() %>" 
+													class="img-circle avatar-table">
+											<% } %>
+										</td>
+										<td><%= student.getFirstName() %></td>
+										<td><%= student.getLastName() %></td>
+									</tr>
+									<% j++; %>
+								<% } %>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>

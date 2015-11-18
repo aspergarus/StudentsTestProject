@@ -34,20 +34,20 @@
 		<form action="<%= basePath %>/test/<%= editedTest.getId() %>" id="question-form" method="post"
 			class="form-horizontal" enctype="multipart/form-data">
 			<div class="form-group">
-				<label for="question" class="col-sm-2 control-label required">
+				<label for="question" class="col-xs-12 col-sm-2 col-md-2 control-label required">
 					<span class="translate" data-lang-key="Question"></span>*
 				</label>
-				<div class="col-sm-10">
+				<div class="col-xs-12 col-sm-10 col-md-10">
 					<textarea name="question" id="question" class="form-control" rows="3" 
 						placeholder="Question*" required></textarea>
 				</div>
 			</div>
 			
 			<div class="form-group">
-				<label for="upload" class="col-sm-2 control-label required">
+				<label for="upload" class="col-xs-12 col-sm-2 col-md-2 control-label required">
 					<span class="translate" data-lang-key="Upload image"></span>
 				</label>
-				<div class="col-sm-10">
+				<div class="col-xs-12 col-sm-10 col-md-10">
 					<input id="upload" type="file" class="file" name="upload" data-preview-file-type="picture">
 					<p class="help-block">
 						<span class="translate" data-lang-key="File size not more then"></span> 10 MB.
@@ -58,20 +58,20 @@
  			<div class="answers">
 				<% for (int k = 1; k <= 2; k++) { %>
 		 			<div class="form-group answer">
-						<label for="answer" class="col-sm-2 control-label required">
+						<label for="answer" class="col-xs-2 col-sm-2 col-md-2 control-label required">
 							<span class="translate" data-lang-key="Answer"></span>*
 						</label>
-						<div class="col-sm-8">
+						<div class="col-xs-6 col-sm-8 col-md-8">
 							<input name="answer-<%= k %>" type="text" class="form-control"
 								placeholder="Answer*" required>
 						</div>
-						<div class="col-sm-1 correct-answer-label">
+						<div class="col-xs-2 col-sm-1 col-md-1 correct-answer-label">
 							<label>
 								<input type="checkbox" name="correct-answer-<%= k %>" class="true-answer">
 								<span class="translate" data-lang-key="Correct"></span>
 							</label>
 						</div>
-						<div class="col-sm-1">
+						<div class="col-xs-2 col-sm-1 col-md-1">
 							<input type="button" class="delete-answer btn btn-danger btn-xs" value="Delete">
 						</div>
 					</div>
@@ -80,7 +80,7 @@
 			</div>	
 				
 			<div class="form-group">
-				<div class="col-sm-offset-2 col-sm-10">
+				<div class="col-sm-offset-2 col-sm-10 col-md-offset-2 col-md-10">
 					<button type="button" id="add-answer" class="btn btn-primary btn-xs">
 						<span class="translate" data-lang-key="Add answer"></span>
 					</button>
@@ -90,7 +90,7 @@
  			<hr>
 
 			<div class="form-group">
-				<div class="col-sm-offset-2 col-sm-10">
+				<div class="col-sm-offset-2 col-sm-10 col-md-offset-2 col-md-10">
 					<div class="tooltip-element" data-toggle="tooltip" data-placement="right" 
 						title="Запитання повинне мати хоча б одну правильну відповідь">
 						<button type="submit" id="add-question" class="btn btn-primary btn-lg">

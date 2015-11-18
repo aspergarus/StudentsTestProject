@@ -35,10 +35,10 @@
 			class="form-horizontal" enctype="multipart/form-data">
 			
 			<div class="form-group">
-				<label for="subject" class="col-sm-2 control-label">
+				<label for="subject" class="col-sm-2 col-xs-12 col-md-2 control-label">
 					<span class="translate" data-lang-key="Subject"></span>*
 				</label>
-				<div class="col-sm-10">
+				<div class="col-sm-10 col-xs-12 col-md-10">
 					<input name="subject" type="text" class="form-control typeahead"
 						required autocomplete="off" data-autocomplete-url="autocomplete/subjects">
 				</div>
@@ -46,10 +46,10 @@
 			
 			<% if (currentUser.getRole() == 2) { %>
 				<div class="form-group">
-					<label for="teacher" class="col-sm-2 control-label">
+					<label for="teacher" class="col-sm-2 col-xs-12 col-md-2 control-label">
 						<span class="translate" data-lang-key="Teacher"></span>*
 					</label>
-					<div class="col-sm-10">
+					<div class="col-sm-10 col-xs-12 col-md-10">
 						<input name="teacher" type="text" class="form-control typeahead"
 							required autocomplete="off" data-autocomplete-url="autocomplete/teachers">
 					</div>
@@ -57,28 +57,28 @@
 			<% } %>
 			
 			<div class="form-group">
-				<label for="title" class="col-sm-2 control-label">
+				<label for="title" class="col-sm-2 col-xs-12 col-md-2 control-label">
 					<span class="translate" data-lang-key="Title"></span>*
 				</label>
-				<div class="col-sm-10">
+				<div class="col-sm-10 col-xs-12 col-md-10">
 					<input name="title" type="text" class="form-control" id="title" required>
 				</div>
 			</div>
 			
 			<div class="form-group">
-				<label for="body" class="col-sm-2 control-label required">
+				<label for="body" class="col-sm-2 col-xs-12 col-md-2 control-label required">
 					<span class="translate" data-lang-key="Body"></span>
 				</label>
-				<div class="col-sm-10">
+				<div class="col-sm-10 col-xs-12 col-md-10">
 					<textarea class="ckeditor" id="editor1" name="body" class="form-control text-area" rows="3"></textarea>
 				</div>
 			</div>
 			
 			<div class="form-group">
-				<label for="upload" class="col-sm-2 control-label required">
+				<label for="upload" class="col-sm-2 col-xs-12 col-md-2 control-label required">
 					<span class="translate" data-lang-key="Upload files"></span>
 				</label>
-				<div class="col-sm-10">
+				<div class="col-sm-10 col-xs-12 col-md-10">
 					<input id="upload" type="file" class="file" name="upload" data-preview-file-type="text" multiple>
 					<p class="help-block">
 						<span class="translate" data-lang-key="File size not more then"></span> 10 MB. 
@@ -88,7 +88,7 @@
 			</div>
 	
 			<div class="form-group">
-				<div class="col-sm-offset-2 col-sm-10">
+				<div class="col-xs-12 col-sm-offset-2 col-sm-10 col-md-offset-2 col-md-10">
 					<button type="submit" class="btn btn-primary">
 						<span class="translate" data-lang-key="Add"></span>
 					</button>
@@ -136,7 +136,7 @@
 						<input type="submit" value="Share" class="btn btn-info btn-share assign-subject-group" data-num="<%= i %>" data-subject="<%= subject %>">
 					</p>
 				<% } %>
-					
+				<div class="table-responsive">
 					<table class="table" data-unique-id="id">
 						<thead>
 							<tr>
@@ -188,6 +188,7 @@
 						<% } %>
 						</tbody>
 					</table>
+					</div>
 				</div>
 			</div>
 		</div>

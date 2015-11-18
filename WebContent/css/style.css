@@ -395,4 +395,6 @@ div.tooltip-element {
   	left: 20%;
   	transform: translateY(-50%);
 }
-	
+.transformer-text {
+	cursor: pointer;
+}

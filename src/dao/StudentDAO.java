@@ -60,8 +60,10 @@ public class StudentDAO {
 			ResultSet rs = stmt.executeQuery();
 			StudentGroupBean group = new StudentGroupBean();
 			String prevGroupName = "";
+			boolean hasStudents = false;
 			
 			while (rs.next()) {
+				hasStudents = true;
 				String groupName = rs.getString("group_name");
 				
 				UserBean student = new UserBean();
@@ -80,7 +82,9 @@ public class StudentDAO {
 				group.add(student);
 				prevGroupName = groupName;
 			}
-			groupsList.add(group);
+			if (hasStudents) {
+				groupsList.add(group);
+			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
