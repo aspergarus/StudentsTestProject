@@ -16,58 +16,58 @@ import beans.TestBean;
 import config.ConnectionManager;
 
 public class QuestionDAO {
-	
-    public static int add(QuestionBean question) {
+
+	public static int add(QuestionBean question) {
 		String query = "INSERT INTO questions "
 				+ "(test_id, question_text) VALUES "
 				+ "(?, ?)";
-		
+
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		int rowsAffected = 0;
 		int result = 0;
-		
+
 		try (PreparedStatement stmt = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-			
+
 			stmt.setInt(1, question.getTestId());
 			stmt.setString(2, question.getQuestionText());
-			
+
 			rowsAffected = stmt.executeUpdate();
 			ResultSet rs = stmt.getGeneratedKeys();
-			
+
 			if (rowsAffected == 0) {
 				return rowsAffected;
 			}
 			if (rs.next()){
-			    result = rs.getInt(1);
+				result = rs.getInt(1);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
 		return result;
 	}
-    
-    public static ArrayList<QuestionBean> getQuestions(TestBean test) {
+
+	public static ArrayList<QuestionBean> getQuestions(TestBean test) {
 		String query = "SELECT * FROM questions q"
 				+ " LEFT JOIN files f ON q.id = f.owner_id"
 				+ " WHERE test_id = ?"
 				+ " ORDER BY q.id";
-		
+
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		ResultSet rs = null;
-		
+
 		ArrayList<QuestionBean> questions = new ArrayList<>();
-		
+
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, test.getId());
 			rs = stmt.executeQuery();
-			
+
 			while(rs.next()) {
 				int id = rs.getInt("id");
 				String questionText = rs.getString("question_text");
 				QuestionBean question = new QuestionBean(id, test.getId(), questionText);
-				
+
 				int fileId = rs.getInt("fid");
 				if (fileId != 0) {
 					int questionId = rs.getInt("owner_id");
@@ -87,30 +87,30 @@ public class QuestionDAO {
 			return questions;
 		}
 	}
-    
-    public static ArrayList<QuestionBean> getTestQuestions(TestBean test) {
+
+	public static ArrayList<QuestionBean> getTestQuestions(TestBean test) {
 		String query = "SELECT * FROM questions q"
 				+ " LEFT JOIN files f ON q.id = f.owner_id"
 				+ " WHERE test_id = ?"
 				+ " ORDER BY RAND()"
 				+ " LIMIT ?";
-		
+
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		ResultSet rs = null;
-		
+
 		ArrayList<QuestionBean> questions = new ArrayList<>();
-		
+
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, test.getId());
 			stmt.setInt(2, test.getTestQuestions());
 			rs = stmt.executeQuery();
-			
+
 			while(rs.next()) {
 				int id = rs.getInt("id");
 				String questionText = rs.getString("question_text");
 				QuestionBean question = new QuestionBean(id, test.getId(), questionText);
-				
+
 				int fileId = rs.getInt("fid");
 				if (fileId != 0) {
 					int questionId = rs.getInt("owner_id");
@@ -130,32 +130,32 @@ public class QuestionDAO {
 			return questions;
 		}
 	}
-	
+
 	public static ArrayList<QuestionBean> addAnswersToQuestions(ArrayList<QuestionBean> questions) {
 		String query = "SELECT * FROM answers WHERE question_id IN (";
-		
+
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		ResultSet rs = null;
 		int listSize = questions.size();
-		
+
 		for (int i = 0; i < listSize; i++) {
 			query += "?";
-			
+
 			if (i != listSize - 1) {
 				query += ", ";
 			}
 		}
 		query += ")";
 		ArrayList<AnswerBean> answers = new ArrayList<>();
-		
+
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
-			
+
 			for (int i = 0; i < listSize; i++) {
 				stmt.setInt(i + 1, questions.get(i).getId());
 			}
 			rs = stmt.executeQuery();
-			
+
 			while(rs.next()) {
 				int answerId = rs.getInt("id");
 				int questionId = rs.getInt("question_id");
@@ -167,7 +167,7 @@ public class QuestionDAO {
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-		
+
 		for (QuestionBean question : questions) {
 			for (int i = 0; i < answers.size(); i++) {
 				if (answers.get(i).getQuestionId() == question.getId()) {
@@ -180,19 +180,19 @@ public class QuestionDAO {
 		}
 		return questions;
 	}
-	
+
 	public static boolean delete(int questionId) {
 		String query = "DELETE FROM questions WHERE id = ?";
-		
+
 		if (AnswersDAO.deleteAnswers(questionId)) {
-			
+
 			ConnectionManager conM = new ConnectionManager();
 			Connection con = conM.getConnection();
 			int rowsAffected = 0;
-			
+
 			try (PreparedStatement stmt = con.prepareStatement(query)) {
 				stmt.setInt(1, questionId);
-				
+
 				rowsAffected = stmt.executeUpdate();
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
@@ -202,7 +202,7 @@ public class QuestionDAO {
 			return false;
 		}
 	}
-	
+
 	public static HashMap<Integer, int[]> getQuestionsWithTrueAnswers(int[] questionsId) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < questionsId.length; i++) {
@@ -212,7 +212,7 @@ public class QuestionDAO {
 			}
 		}
 		String symbols = sb.toString();
-		
+
 		String query = "SELECT q.id, GROUP_CONCAT(a.id) as answer_id FROM questions q"
 				+ " INNER JOIN answers a"
 				+ " ON q.id = a.question_id"
@@ -221,25 +221,25 @@ public class QuestionDAO {
 				+ ")"
 				+ " AND a.correct = 1"
 				+ " GROUP BY q.id";
-		
+
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		ResultSet rs = null;
-		
+
 		HashMap<Integer, int[]> questions = new HashMap<>();
-		
+
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			for (int i = 0; i < questionsId.length; i++) {
 				stmt.setInt(i + 1, questionsId[i]);
 			}
 			rs = stmt.executeQuery();
-			
+
 			while(rs.next()) {
 				int questionId = rs.getInt("id");
 				String answerIds = rs.getString("answer_id");
 				// Convert String Array to int Array
 				int[] answers = Arrays.asList(answerIds.split(",")).stream().mapToInt(Integer::parseInt).toArray();
-				
+
 				questions.put(questionId, answers);
 			}
 		} catch (SQLException e) {

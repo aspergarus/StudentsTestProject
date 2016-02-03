@@ -22,25 +22,25 @@ public class UserDAO {
 
 	public static UserBean find(String username) {
 		UserBean bean = null;
-		
+
 		String EMAIL_PATTERN = 
 				"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+						+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 		String query;
-		
+
 		if (username.matches(EMAIL_PATTERN)) {
 			query = "SELECT * FROM users WHERE email = ?";
 		} else {
 			query = "SELECT * FROM users WHERE user_name = ?";
 		}
-		
+
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setString(1, username);
 			rs = stmt.executeQuery();
 			boolean more = rs.next();
-			
+
 			// if user exists set the isValid variable to true
 			if (more) {
 				bean = new UserBean();
@@ -55,21 +55,21 @@ public class UserDAO {
 				bean.setAvatar(rs.getString("avatar_name"));
 				bean.setValid(true);
 			}
-			
+
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-		
+
 		return bean;
 	}
 
 	public static UserBean find(int id) {
 		String query = "SELECT * FROM users WHERE id = ?";
-		
+
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
 		UserBean bean = null;
-		
+
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
@@ -93,16 +93,16 @@ public class UserDAO {
 		}
 		return bean;
 	}
-	
+
 	public static UserBean findTeacher(int id) {
 		String query = "SELECT * FROM users"
 				+ " WHERE id = ?"
 				+ " AND role = 1";
-		
+
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
 		UserBean bean = null;
-		
+
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
@@ -131,11 +131,11 @@ public class UserDAO {
 		String query = "INSERT INTO users "
 				+ "(user_name, password, email, role, first_name, last_name, group_id, registered) "
 				+ "VALUES (?,?,?,?,?,?,?,?)";
-		
+
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
-        int rowsAffected = 0;
-		
+		int rowsAffected = 0;
+
 		StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
 
 		String username = bean.getUsername();
@@ -149,33 +149,33 @@ public class UserDAO {
 
 		try (PreparedStatement insertUser = con.prepareStatement(query)) {
 			insertUser.setString(1, username);
-	        insertUser.setString(2, password);
-	        insertUser.setString(3, email);
-	        insertUser.setByte(4, role);
-	        insertUser.setString(5, firstName);
-	        insertUser.setString(6, lastName);
-	        insertUser.setInt(7, groupId);
-	        insertUser.setLong(8, registered);
-	        
-	        rowsAffected = insertUser.executeUpdate();
+			insertUser.setString(2, password);
+			insertUser.setString(3, email);
+			insertUser.setByte(4, role);
+			insertUser.setString(5, firstName);
+			insertUser.setString(6, lastName);
+			insertUser.setInt(7, groupId);
+			insertUser.setLong(8, registered);
+
+			rowsAffected = insertUser.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-        bean.setValid(rowsAffected > 0);
+		bean.setValid(rowsAffected > 0);
 		return bean;
 	}
-	
+
 	public static ArrayList<String> formValidate(String name, String pass, String email, int groupId) {
 		String findName = "SELECT * FROM users "
 				+ "WHERE user_name = ?";
 		String findEmail = "SELECT * FROM users "
 				+ "WHERE email = ?";
-		
+
 		ArrayList<String> errorMessageList = new ArrayList<>();
-		
+
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
-		
+
 		try (PreparedStatement stmt = con.prepareStatement(findName)) {
 			stmt.setString(1, name);
 			ResultSet rs = stmt.executeQuery();
@@ -185,7 +185,7 @@ public class UserDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		try (PreparedStatement stmt = con.prepareStatement(findEmail)) {
 			stmt.setString(1, email);
 			ResultSet rs = stmt.executeQuery();
@@ -195,23 +195,23 @@ public class UserDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		//Email validator
 		String EMAIL_PATTERN = 
 				"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-		
+						+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
 		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
 		Matcher matcher = pattern.matcher(email);
 		if (matcher.matches() == false) {
 			errorMessageList.add("Email is not valid.");
 		}
-		
+
 		//Name and password validator
 		if (name.isEmpty() || pass.isEmpty()) {
 			errorMessageList.add("Name or password is Empty");
 		}
-		
+
 		// Group / department validtion
 		if (groupId == 0) {
 			errorMessageList.add("Group or department is not exists.");
@@ -230,7 +230,7 @@ public class UserDAO {
 					+ " LEFT JOIN groups g ON u.group_id = g.id"
 					+ " ORDER BY role DESC, g.group_name";
 			rs = stmt.executeQuery(query);
-			
+
 			while (rs.next()) {
 				bean = new UserBean();
 				bean.setId(rs.getInt("id"));
@@ -252,11 +252,11 @@ public class UserDAO {
 
 	public static boolean update(UserBean user, UserBean updatedUser) {
 		String query = "UPDATE users SET user_name=?, email=?, role=?, first_name=?, last_name=?, avatar_name=?";
-		
+
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
-        int rowsAffected = 0;
-        
+		int rowsAffected = 0;
+
 		StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
 		String password = passwordEncryptor.encryptPassword(updatedUser.getPassword());
 		int id = user.getId();
@@ -282,7 +282,7 @@ public class UserDAO {
 			} else {
 				updateUser.setInt(7, id);
 			}
-	        rowsAffected = updateUser.executeUpdate();
+			rowsAffected = updateUser.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -311,22 +311,22 @@ public class UserDAO {
 		}
 		return list;
 	}
-	
+
 	public static ArrayList<String> findTeachers(String namePart) {
 		String query = "SELECT id, first_name, last_name FROM users "
 				+ "WHERE role = 1 AND (first_name LIKE ? OR last_name LIKE ?)";
-		
+
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		ResultSet rs = null;
-		
+
 		ArrayList<String> nameList = new ArrayList<>();
-		
+
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setString(1, "%" + namePart.trim() + "%");
 			stmt.setString(2, "%" + namePart.trim() + "%");
 			rs = stmt.executeQuery();
-			
+
 			while (rs.next()) {
 				nameList.add(rs.getString("first_name") + " " + rs.getString("last_name") + " [" + rs.getInt("id") + "]");
 			}
@@ -335,66 +335,66 @@ public class UserDAO {
 		}
 		return nameList;
 	}
-	
+
 	public static HashMap<Integer, String> getTeachersMap() {
 		String query = "SELECT id, first_name, last_name FROM users "
 				+ "WHERE role = 1";
-		
+
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		ResultSet rs = null;
-		
+
 		HashMap<Integer, String> teacherMap = new HashMap<>();
-		
+
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			rs = stmt.executeQuery();
-			
+
 			while(rs.next()) {
 				int teacherId = rs.getInt("id");
 				String firstName = rs.getString("first_name");
 				String lastName = rs.getString("last_name");
-				
+
 				teacherMap.put(teacherId, firstName + " " + lastName);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-        }
+		}
 		return teacherMap;
 	}
-	
+
 	public static int getGroupId(int id) {
 		String query = "SELECT group_id FROM users WHERE id = ?";
-		
+
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		ResultSet rs = null;
 		int groupId = 0;
-		
+
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
-			
+
 			if (rs.next()) {
 				groupId = rs.getInt("group_id");
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-        }
+		}
 		return groupId;
 	}
-	
+
 	public static boolean updateAvatar(UserBean updatedUser, String avatarName) {
 		String query = "UPDATE users SET avatar_name=?"
-					+ " WHERE id = ?";
-		
+				+ " WHERE id = ?";
+
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
-        int rowsAffected = 0;
-    
+		int rowsAffected = 0;
+
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setString(1, avatarName);
 			stmt.setInt(2, updatedUser.getId());
-	        rowsAffected = stmt.executeUpdate();
+			rowsAffected = stmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}

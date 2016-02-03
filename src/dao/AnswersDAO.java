@@ -9,16 +9,16 @@ import config.ConnectionManager;
 import beans.AnswerBean;
 
 public class AnswersDAO {
-	
+
 	@SuppressWarnings("finally")
-    public static boolean add(ArrayList<AnswerBean> answers) {
+	public static boolean add(ArrayList<AnswerBean> answers) {
 		String query = "INSERT INTO answers "
 				+ "(question_id, answer_text, correct) "
 				+ "VALUES";
-		
+
 		for (int i = 0; i < answers.size(); i++) {
 			query += " (?, ?, ?)";
-			
+
 			if (i != answers.size() - 1) {
 				query += ",";
 			}
@@ -26,7 +26,7 @@ public class AnswersDAO {
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		int rowsAffected = 0;
-		
+
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			int i = 0;
 			for (AnswerBean answer : answers) {
@@ -36,25 +36,25 @@ public class AnswersDAO {
 				i += 3;
 			}
 			rowsAffected = stmt.executeUpdate();
-			
+
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {
 			return rowsAffected > 0;
 		}
 	}
-	
+
 
 	public static boolean deleteAnswers(int questionId) {
 		String query = "DELETE FROM answers WHERE question_id = ?";
-		
+
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		int rowsAffected = 0;
-		
+
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, questionId);
-			
+
 			rowsAffected = stmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());

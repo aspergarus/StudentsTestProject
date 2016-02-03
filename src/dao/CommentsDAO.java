@@ -21,10 +21,10 @@ public class CommentsDAO {
 				+ "WHERE owner_id = ? AND owner_type = ? "
 				+ "ORDER BY date";
 		ArrayList<Object[]> comments = new ArrayList<>();
-		
+
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
-		
+
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, ownerId);
 			stmt.setString(2, type);
@@ -38,7 +38,7 @@ public class CommentsDAO {
 				comment.setTitle(rs.getString("title"));
 				comment.setBody(rs.getString("body"));
 				comment.setOwnerType(rs.getString("owner_type"));
-				
+
 				UserBean author = new UserBean();
 				author.setId(rs.getInt("id"));
 				author.setAvatar(rs.getString("avatar_name"));
@@ -63,12 +63,12 @@ public class CommentsDAO {
 				+ "INNER JOIN users u ON u.id = c.author "
 				+ "WHERE cid = ? AND author = ? "
 				+ "ORDER BY date";
-		
+
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 
 		boolean result = false;
-		
+
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, cid);
 			stmt.setInt(2, uid);
@@ -86,13 +86,13 @@ public class CommentsDAO {
 	 */
 	public static boolean insert (CommentsBean comment) {
 		String query = "INSERT INTO comments " 
-					+ "(author, owner_id, date, title, body, owner_type) "
-					+ "VALUES (?, ?, ?, ?, ?, ?)";
+				+ "(author, owner_id, date, title, body, owner_type) "
+				+ "VALUES (?, ?, ?, ?, ?, ?)";
 
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		int rowsAffected = 0;
-		
+
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, comment.getAuthor());
 			stmt.setInt(2, comment.getOwnerId());
@@ -113,15 +113,15 @@ public class CommentsDAO {
 	 */
 	public static boolean delete (int cid) {
 		String query = "DELETE FROM comments WHERE cid = ?";
-		
+
 		ConnectionManager conM = new ConnectionManager();
 		Connection con = conM.getConnection();
 		int rowsAffected = 0;
-		
+
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setInt(1, cid);
 			rowsAffected = stmt.executeUpdate();
-		
+
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}

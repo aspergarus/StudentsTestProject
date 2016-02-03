@@ -11,9 +11,9 @@ public class ConnectionManager {
 	static String admin;
 	static String password;
 
-    public Connection getConnection() {
-    	
-    	try {
+	public Connection getConnection() {
+
+		try {
 			ClassLoader classLoader = getClass().getClassLoader();
 			String filePath = classLoader.getResource("resources/config_project.ini").getPath();
 			Properties p = new Properties();

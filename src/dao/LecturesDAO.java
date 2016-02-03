@@ -13,34 +13,34 @@ import beans.LecturesBean;
 import beans.UserBean;
 
 public class LecturesDAO {
-	
+
 	private static Connection con;
 	private static ResultSet rs;
-	
+
 	@SuppressWarnings("finally")
 	public static Map<String, ArrayList<LecturesBean>> findAll(UserBean user){
 		String query;
-		
+
 		if (user.getRole() == 0){
 			query = "SELECT * FROM lectures l "
-				+ "INNER JOIN stgrelations s ON l.teacher_id = s.teacher_id AND l.subject_id = s.subject_id "
-				+ "WHERE s.group_id = ?";
-			
+					+ "INNER JOIN stgrelations s ON l.teacher_id = s.teacher_id AND l.subject_id = s.subject_id "
+					+ "WHERE s.group_id = ?";
+
 		} else if (user.getRole() == 1) {
 			query = "SELECT * FROM lectures WHERE teacher_id = ? ORDER BY subject_id";
 		} else {
 			query = "SELECT * FROM lectures ORDER BY subject_id";
 		}
-		
+
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
-		
+
 		ArrayList<LecturesBean> lecturesList = new ArrayList<>();
 		Map<String, ArrayList<LecturesBean>> lecturesMap = new HashMap<>();
-		
+
 		Map<Integer, String> subjectsMap = SubjectsDAO.getSubjectsMap();
 		String subjectName;
-		
+
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			if (user.getRole() == 1){
 				stmt.setInt(1, user.getId());
@@ -48,9 +48,9 @@ public class LecturesDAO {
 				stmt.setInt(1, user.getGroupId());
 			}
 			rs = stmt.executeQuery();
-			
+
 			int tmpSubjectId = 0, subjectId = 0;
-			
+
 			while (rs.next()) {
 				subjectId = rs.getInt("subject_id");
 				LecturesBean bean = new LecturesBean();
@@ -66,7 +66,7 @@ public class LecturesDAO {
 				if (tmpSubjectId != subjectId) {
 					subjectName = subjectsMap.get(tmpSubjectId);
 					lecturesMap.put(subjectName, lecturesList);
-					
+
 					tmpSubjectId = subjectId;
 					lecturesList = new ArrayList<>();
 				}
@@ -82,9 +82,9 @@ public class LecturesDAO {
 			return lecturesMap;
 		}
 	}
-	
+
 	@SuppressWarnings("finally")
-    public static int findLecturesCountInSubject(String title, int subjectId) {
+	public static int findLecturesCountInSubject(String title, int subjectId) {
 		String query = "SELECT COUNT(*) as lecturesCount FROM lectures "
 				+ " WHERE title = ? AND subject_id = ?";
 
@@ -133,7 +133,7 @@ public class LecturesDAO {
 			return lBean;
 		}
 	}
-	
+
 	public static LecturesBean find(int subjectId, String title) {
 		String query = "SELECT * FROM lectures WHERE subject_id = ? and title = ?";
 
@@ -159,7 +159,7 @@ public class LecturesDAO {
 		}
 		return lBean;
 	}
-	
+
 	@SuppressWarnings("finally")
 	public static boolean insert(LecturesBean bean) {
 		String query = "INSERT INTO lectures "
@@ -183,14 +183,14 @@ public class LecturesDAO {
 			return rowsAffected > 0;
 		}
 	}
-	
+
 	public static boolean update(LecturesBean bean) {
 		String query = "UPDATE lectures SET subject_id=?, title=?, body=? WHERE id = ?";
 
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
 		int rowsAffected = 0;
-		
+
 		try (PreparedStatement updateStmt = con.prepareStatement(query)) {
 			updateStmt.setInt(1, bean.getSubjectId());
 			updateStmt.setString(2, bean.getTitle());
@@ -203,9 +203,9 @@ public class LecturesDAO {
 		}
 		return rowsAffected > 0;
 	}
-	
+
 	@SuppressWarnings("finally")
-    public static boolean delete(int id) {
+	public static boolean delete(int id) {
 		String query = "DELETE FROM lectures WHERE id = ?";
 
 		ConnectionManager conM = new ConnectionManager();
@@ -221,5 +221,5 @@ public class LecturesDAO {
 			return rowsAffected > 0;
 		}
 	}
-	
+
 }

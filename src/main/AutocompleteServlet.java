@@ -55,50 +55,50 @@ public class AutocompleteServlet extends HttpServlet {
 		ArrayList<String> list = new ArrayList<>();
 		String out = "";
 		String[] pathParts = pathInfo.split("/");
-		
+
 		if (pathParts.length == 2) {
 			switch (pathInfo) {
-				case "/students":
-					list = UserDAO.findStudents(query);
-					out = gson.toJson(list);
-					break;
-				
-				case "/subjects":
-					list = SubjectsDAO.findSubjects(query);
-					out = gson.toJson(list);
-					break;
-		
-				case "/groups":
-					list = GroupsDAO.findGroups(query);
-					out = gson.toJson(list);
-					break;
-					
-				case "/departments":
-					list = DepartmentsDAO.findAllByName(query);
-					out = gson.toJson(list);
-					break;
-				
-				case "/teachers":
-					list = UserDAO.findTeachers(query);
-					out = gson.toJson(list);
-					break;
+			case "/students":
+				list = UserDAO.findStudents(query);
+				out = gson.toJson(list);
+				break;
+
+			case "/subjects":
+				list = SubjectsDAO.findSubjects(query);
+				out = gson.toJson(list);
+				break;
+
+			case "/groups":
+				list = GroupsDAO.findGroups(query);
+				out = gson.toJson(list);
+				break;
+
+			case "/departments":
+				list = DepartmentsDAO.findAllByName(query);
+				out = gson.toJson(list);
+				break;
+
+			case "/teachers":
+				list = UserDAO.findTeachers(query);
+				out = gson.toJson(list);
+				break;
 			}
 		} else {
 			int subjectId = Integer.parseInt(pathParts[2]);
-			
+
 			switch ("/" + pathParts[1]) {
-				case "/assignedGroups":
-					list = GroupsDAO.findAssignedGroups(query, subjectId);
-					out = gson.toJson(list);
-					break;
-					
-				case "/assignedStudents":
-					list = StudentDAO.findAssignedStudents(query, subjectId);
-					out = gson.toJson(list);
-					break;
+			case "/assignedGroups":
+				list = GroupsDAO.findAssignedGroups(query, subjectId);
+				out = gson.toJson(list);
+				break;
+
+			case "/assignedStudents":
+				list = StudentDAO.findAssignedStudents(query, subjectId);
+				out = gson.toJson(list);
+				break;
 			}
 		}
-		
+
 		return out;
 	}
 

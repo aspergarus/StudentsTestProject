@@ -13,14 +13,14 @@ import beans.UserBean;
 import config.ConnectionManager;
 
 public class PracticalsDAO {
-	
+
 	static Connection con = null;
 	static ResultSet rs = null;
 
 	@SuppressWarnings("finally")
 	public static Map<String, ArrayList<PracticalsBean>> findAll(UserBean user) {
 		String query;
-		
+
 		if (user.getRole() == 0) {
 			query = "SELECT * FROM practicals p "
 					+ "INNER JOIN stgrelations s ON p.teacher_id = s.teacher_id AND p.subject_id = s.subject_id "
@@ -30,16 +30,16 @@ public class PracticalsDAO {
 		} else {
 			query = "SELECT * FROM practicals ORDER BY subject_id";
 		}
-		
+
 		ConnectionManager conM = new ConnectionManager();
 		con = conM.getConnection();
 
 		ArrayList<PracticalsBean> practicalList = new ArrayList<>();
 		Map<String, ArrayList<PracticalsBean>> practicalMap = new HashMap<>();
-		
+
 		Map<Integer, String> subjectsMap = SubjectsDAO.getSubjectsMap();
 		String subjectName;
-		
+
 		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			if (user.getRole() == 0) {
 				stmt.setInt(1, user.getGroupId());
@@ -64,7 +64,7 @@ public class PracticalsDAO {
 				if (tmpSubjectId != subjectId) {
 					subjectName = subjectsMap.get(tmpSubjectId);
 					practicalMap.put(subjectName, practicalList);
-					
+
 					tmpSubjectId = subjectId;
 					practicalList = new ArrayList<>();
 				}
@@ -106,7 +106,7 @@ public class PracticalsDAO {
 	}
 
 	@SuppressWarnings("finally")
-    public static int findPracticalsCountInSubject(String title, String subject) {
+	public static int findPracticalsCountInSubject(String title, String subject) {
 		String query = "SELECT COUNT(*) as practicals_count FROM practicals "
 				+ " WHERE title = ? AND subject_id = ?";
 
@@ -130,7 +130,7 @@ public class PracticalsDAO {
 	}
 
 	@SuppressWarnings("finally")
-    public static PracticalsBean find(int id) {
+	public static PracticalsBean find(int id) {
 		String query = "SELECT * FROM practicals WHERE id = ?";
 
 		ConnectionManager conM = new ConnectionManager();
@@ -154,7 +154,7 @@ public class PracticalsDAO {
 			return pBean;
 		}
 	}
-	
+
 	public static PracticalsBean find(int subjectId, String title) {
 		String query = "SELECT * FROM practicals WHERE subject_id = ? AND title = ?";
 
@@ -179,7 +179,7 @@ public class PracticalsDAO {
 		}
 		return pBean;
 	}
-	
+
 	public static boolean update(PracticalsBean bean) {
 		String query = "UPDATE practicals SET subject_id=?, title=?, body=? WHERE id = ?";
 
@@ -200,7 +200,7 @@ public class PracticalsDAO {
 	}
 
 	@SuppressWarnings("finally")
-    public static boolean delete(int id) {
+	public static boolean delete(int id) {
 		String query = "DELETE FROM practicals WHERE id = ?";
 
 		ConnectionManager conM = new ConnectionManager();

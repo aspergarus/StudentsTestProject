@@ -18,16 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebFilter("/*")
 public class requestFilter implements Filter {
 
-    /**
-     * Default constructor. 
-     */
-    public requestFilter() {
-        // TODO Auto-generated constructor stub
-    }
 
-	/**
-	 * @see Filter#destroy()
-	 */
 	public void destroy() {
 		// TODO Auto-generated method stub
 	}
@@ -36,12 +27,12 @@ public class requestFilter implements Filter {
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		
+
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		String basePath = req.getContextPath(); 
 		String r = req.getRequestURL().toString();
-		
+
 		if (r.contains(".jsp")) {
 			res.sendRedirect(basePath + "/login");
 			return;
