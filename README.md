@@ -1,6 +1,8 @@
-#Students Test Project
+# Students Test Project
 
-##Installation instructions:
+
+
+## Installation instructions:
 
 Put all neccessary libraries to WebContent/WEB-INF/lib. All libraries you can find here:
 
